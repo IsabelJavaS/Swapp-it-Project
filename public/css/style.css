@@ -1,3 +1,18 @@
+/* Fix logo size and left alignment inside navbar-custom */
+
+.navbar-custom .navbar-brand img {
+    width: 160px;  /* fixed width for logo */
+    height: auto;  /* keep aspect ratio */
+    display: block;
+}
+
+.navbar-custom .container {
+    display: flex;
+    justify-content: flex-start; /* align content left */
+    padding-left: 0; /* optional to reduce left padding for flush left */
+}
+
+
 /* =========================================
    SWAPPIT Web Application Styles
    Version: 1.0
