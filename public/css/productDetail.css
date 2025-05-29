@@ -1,3 +1,12 @@
+/* Logo de Swapp-it a la izquierda de nav */
+
+/* Fix logo size */
+.marketplace-header .navbar-brand img {
+  width: 160px; /* fixed width to control logo size */
+  height: auto; /* maintain aspect ratio */
+  display: block;
+}
+
 /* Product Detail Page Styles */
 .product-detail-page {
     padding-top: 2rem;

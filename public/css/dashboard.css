@@ -1,3 +1,13 @@
+/* Logo de Swapp-it a la izquierda de nav */
+
+/* Fix logo size */
+.marketplace-header .navbar-brand img {
+  width: 160px; /* fixed width to control logo size */
+  height: auto; /* maintain aspect ratio */
+  display: block;
+}
+
+
 /* Dashboard Layout */
 .dashboard-container {
     display: flex;
