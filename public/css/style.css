@@ -991,10 +991,16 @@ textarea.form-control {
    Footer Section Styles
    ========================================= */
 .footer-section {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: var(--swappit-orange);
     color: white;
     position: relative;
     overflow: hidden;
+
+}
+.footer-main img{
+    width: 160px;
+    height: auto;
+    display: block;
 }
 
 .footer-main {
@@ -1026,7 +1032,7 @@ textarea.form-control {
 .footer-social .social-link {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background: black;
     border-radius: 10px;
     display: flex;
     align-items: center;
