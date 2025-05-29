@@ -234,7 +234,7 @@ main {
     padding: 4rem 0;
     padding-top: 8rem;
     position: relative;
-    overflow: hidden;
+    overflow: hidden;   
 }
 
 .hero-content {
@@ -254,7 +254,7 @@ main {
 }
 
 .hero-title span {
-    color: var(--swappit-orange);
+    color: var(--swappit-blue);
 }
 
 .hero-subtitle {
