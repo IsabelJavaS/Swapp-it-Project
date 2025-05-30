@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapp-it - Registro</title>
+    <link rel="stylesheet" href="./css/register.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <img src="../assets/logo.png" alt="Swapp-it Logo" class="logo">
+            <h2>Crear Cuenta</h2>
+            
+            <div class="role-selector">
+                <button class="role-btn active" data-role="personal">Usuario Personal</button>
+                <button class="role-btn" data-role="business">Negocio</button>
+            </div>
+
+            <form id="registerForm">
+                <!-- Campos comunes para ambos roles -->
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" required>
+                </div>
+
+                <!-- Campos para usuario personal -->
+                <div class="personal-fields" id="personalFields">
+                    <div class="form-group">
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="direccion" name="direccion" placeholder="Dirección" required>
+                    </div>
+                </div>
+
+                <!-- Campos para negocio -->
+                <div class="business-fields hidden" id="businessFields">
+                    <div class="form-group">
+                        <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Nombre del negocio">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="ruc" name="ruc" placeholder="RUC">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Dirección del negocio">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Teléfono del negocio">
+                    </div>
+                    <div class="form-group">
+                        <select id="tipoNegocio" name="tipoNegocio">
+                            <option value="">Selecciona el tipo de negocio</option>
+                            <option value="restaurante">Restaurante</option>
+                            <option value="tienda">Tienda</option>
+                            <option value="servicio">Servicio</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Descripción del negocio"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn">Registrarse</button>
+            </form>
+
+            <div class="additional-options">
+                <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Firebase -->
+    <script type="module" src="../src/firebase/firebaseConfig.js"></script>
+    <script type="module" src="../src/firebase/auth.js"></script>
+    <script type="module" src="./js/register.js"></script>
+</body>
+</html>
