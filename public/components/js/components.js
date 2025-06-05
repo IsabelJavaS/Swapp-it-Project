@@ -79,7 +79,7 @@ function handleSearch(searchTerm) {
 // Cargar los componentes cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async () => {
     // Cargar header
-    await loadComponent('../src/components/html/header.html', 'header-container');
+    await loadComponent('../public/components/html/header.html', 'header-container');
     // Cargar footer
-    await loadComponent('../src/components/html/footer.html', 'footer-container');
+    await loadComponent('../public/components/html/footer.html', 'footer-container');
 });
