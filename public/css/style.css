@@ -1013,7 +1013,7 @@ textarea.form-control {
     font-family: var(--font-primary);
     font-weight: 800;
     font-size: 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 5px;
 }
 
 .footer-description {
@@ -1051,7 +1051,8 @@ textarea.form-control {
     font-family: var(--font-primary);
     font-weight: 600;
     font-size: 1.25rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px;
+    margin-top: 30px;
     color: white;
 }
 
