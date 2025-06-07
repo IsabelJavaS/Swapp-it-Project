@@ -28,7 +28,7 @@ body {
 
 .logo {
     display: block;
-    margin: 0 auto 30px;
+    margin: 0 auto 2px;
     max-width: 150px;
     height: auto;
 }
@@ -48,17 +48,17 @@ h2 {
 
 .role-btn {
     padding: 10px 20px;
-    border: 2px solid #4CAF50;
+    border: 2px solid #3468c0;
     background: none;
-    color: #4CAF50;
+    color: #3468c0;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 16px;s
     transition: all 0.3s ease;
 }
 
 .role-btn.active {
-    background-color: #4CAF50;
+    background-color: #3468c0;
     color: white;
 }
 
@@ -77,7 +77,7 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #ffa424;
 }
 
 textarea {
@@ -96,7 +96,7 @@ select {
 .register-btn {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #ffa424;
     color: white;
     border: none;
     border-radius: 5px;
@@ -107,7 +107,7 @@ select {
 }
 
 .register-btn:hover {
-    background-color: #45a049;
+    background-color: #ffa424;
 }
 
 .additional-options {
@@ -116,7 +116,7 @@ select {
 }
 
 .additional-options a {
-    color: #4CAF50;
+    color: #3468c0;
     text-decoration: none;
 }
 

@@ -60,7 +60,7 @@ input:focus {
 .login-btn {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #ffa424;
     color: white;
     border: none;
     border-radius: 5px;
@@ -70,7 +70,7 @@ input:focus {
 }
 
 .login-btn:hover {
-    background-color: #45a049;
+    background-color: #3468c0;
 }
 
 .additional-options {
@@ -79,7 +79,7 @@ input:focus {
 }
 
 .additional-options a {
-    color: #4CAF50;
+    color: #3468c0;
     text-decoration: none;
     font-size: 14px;
 }
