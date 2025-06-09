@@ -532,12 +532,17 @@ body {
     padding: 4rem 0 0;
     margin-top: 4rem;
 }
-
+.footer-main img{
+    width: 160px;
+    height: auto;
+    display: block;
+}
 .footer-brand {
     font-family: var(--font-primary);
     font-weight: 800;
     font-size: 2rem;
 }
+
 
 .footer-description {
     color: rgba(255, 255, 255, 0.7);

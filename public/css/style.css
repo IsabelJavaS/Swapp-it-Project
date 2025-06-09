@@ -26,8 +26,8 @@
    ========================================= */
 :root {
     /* Brand Colors */
-    --swappit-blue: #2563eb;
-    --swappit-orange: #ff6b35;
+    --swappit-blue: #3468c0;
+    --swappit-orange: #ffa424;
     --swappit-blue-hover: #1d4ed8;
     --swappit-orange-hover: #ff5722;
 
@@ -991,20 +991,22 @@ textarea.form-control {
    Footer Section Styles
    ========================================= */
 .footer-section {
-    background: var(--swappit-orange);
+    background: var(--neutral-dark);
     color: white;
     position: relative;
     overflow: hidden;
 
 }
+
 .footer-main img{
     width: 160px;
     height: auto;
     display: block;
 }
 
+
 .footer-main {
-    padding: 5rem 0 3rem;
+    padding: 3rem 0 3rem;
     position: relative;
 }
 
