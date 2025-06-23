@@ -1,23 +1,18 @@
 {
-  "name": "swapp-it-project",
+  "name": "swappit-project",
   "version": "1.0.0",
-  "description": "Swapp-it Project",
-  "main": "index.js",
-  "type": "module",
+  "description": "SWAPPIT - School Supplies Marketplace",
+  "main": "backend/index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "cd backend && node index.js",
+    "dev": "cd backend && nodemon index.js",
+    "install-deps": "cd backend && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["marketplace", "school-supplies", "firebase", "express"],
+  "author": "SWAPPIT Team",
   "license": "ISC",
-  "dependencies": {
-    "firebase": "^11.8.1"
-  },
   "devDependencies": {
-    "vite": "^6.3.5"
+    "nodemon": "^3.0.0"
   }
-}
+} 
