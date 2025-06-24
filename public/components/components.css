@@ -138,20 +138,36 @@ body {
 .marketplace-footer {
     background: var(--neutral-dark);
     color: white;
-    padding: 4rem 0 0;
-    margin-top: 4rem;
+    padding: 2rem 0 0;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-main {
+    padding: 2rem 0 2rem;
+    position: relative;
+}
+
+.footer-main img {
+    width: 160px;
+    height: auto;
+    display: block;
 }
 
 .footer-brand {
     font-family: var(--font-primary);
     font-weight: 800;
     font-size: 2rem;
+    margin-bottom: 5px;
 }
 
 .footer-description {
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
 }
 
 .footer-social {
@@ -182,8 +198,9 @@ body {
     font-family: var(--font-primary);
     font-weight: 600;
     margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    margin-top: 30px;
 }
-
 
 .footer-links {
     list-style: none;
@@ -199,6 +216,7 @@ body {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: all 0.3s ease;
+    font-size: 0.95rem;
 }
 
 .footer-links a:hover {
@@ -206,9 +224,20 @@ body {
     padding-left: 5px;
 }
 
+.footer-contact {
+    margin-top: 1rem;
+}
+
+.footer-contact p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
 .footer-newsletter-text {
     color: rgba(255, 255, 255, 0.7);
     margin-bottom: 1rem;
+    font-size: 0.95rem;
 }
 
 .footer-newsletter {
@@ -223,6 +252,13 @@ body {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     color: white;
+    font-size: 0.95rem;
+}
+
+.footer-newsletter input:focus {
+    outline: none;
+    border-color: var(--swappit-blue);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .footer-newsletter input::placeholder {
@@ -249,14 +285,16 @@ body {
 }
 
 .footer-bottom {
-    margin-top: 3rem;
-    padding: 1.5rem 0;
+    margin-top: 1.5rem;
+    padding: 1rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
 }
 
 .copyright {
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
+    font-size: 0.95rem;
 }
 
 .footer-bottom-links {
@@ -269,6 +307,7 @@ body {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: color 0.3s ease;
+    font-size: 0.95rem;
 }
 
 .footer-bottom-links a:hover {
@@ -311,9 +350,14 @@ body {
 /* Media Queries */
 @media (max-width: 991px) {
     .search-container {
-        display: none !important;
+        margin: 1rem 0;
+        max-width: 100%;
     }
-    
+
+    .footer-main {
+        padding: 2rem 0 1.5rem;
+    }
+
     .footer-bottom-links {
         justify-content: center;
         margin-top: 1rem;
@@ -323,18 +367,65 @@ body {
 @media (max-width: 768px) {
     .footer-newsletter {
         flex-direction: column;
+        align-items: center;
     }
-    
+
     .footer-newsletter button {
         width: 100%;
+        height: 45px;
     }
-    
+
     .footer-bottom {
         text-align: center;
     }
-    
+
     .footer-bottom-links {
         justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /* Center all footer content in mobile */
+    .footer-main .row > div {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .footer-brand {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-description {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-social {
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-links {
+        text-align: center;
+    }
+    
+    .footer-links li {
+        text-align: center;
+    }
+    
+    .footer-contact {
+        text-align: center;
+    }
+    
+    .footer-contact p {
+        text-align: center;
+        margin-bottom: 0.5rem;
     }
 }
 
@@ -342,4 +433,156 @@ body {
     .navbar-brand {
         font-size: 1.5rem;
     }
+}
+
+/* Avatar de usuario mejorado */
+.user-avatar {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  background: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  border: 3px solid #fff;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.user-avatar:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+}
+
+.avatar-initials {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  z-index: 1;
+}
+
+.avatar-arrow {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  background: #2563eb;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.15);
+  border: 2px solid #fff;
+}
+
+.avatar-arrow svg {
+  display: block;
+}
+
+/* Opcional: ocultar la antigua imagen de perfil si queda algún rastro */
+.profile-img { display: none !important; }
+
+/* Avatar profesional solo círculo con iniciales */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #2563eb 60%, #1d4ed8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
+  border: 2px solid #fff;
+  transition: box-shadow 0.2s, background 0.2s;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+}
+
+.avatar-circle:focus, .avatar-circle:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
+  background: linear-gradient(135deg, #1d4ed8 80%, #2563eb 100%);
+  outline: none;
+}
+
+.avatar-initials {
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+.user-name {
+  font-size: 1rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-right: 0.25rem;
+  white-space: nowrap;
+}
+
+.avatar-dropdown-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.avatar-dropdown-btn:focus {
+  outline: none;
+}
+
+.avatar-dropdown-btn svg {
+  display: block;
+  transition: transform 0.2s;
+}
+
+.avatar-dropdown-btn[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+/* Responsive header y menú hamburguesa */
+@media (max-width: 991px) {
+  .navbar-custom .container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-center {
+    width: 100%;
+    justify-content: center;
+  }
+  .user-profile {
+    margin-left: auto;
+  }
+  .navbar-collapse {
+    background: #fff;
+    padding: 1rem 0;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  }
+}
+@media (max-width: 576px) {
+  .navbar-brand img {
+    max-width: 120px;
+  }
+  .avatar-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
 } 

@@ -5,15 +5,24 @@ async function loadComponent(url, targetId) {
         if (!response.ok) {
             throw new Error(`Error loading component: ${response.statusText}`);
         }
-        const html = await response.text();
-        document.getElementById(targetId).innerHTML = html;
+        let html = await response.text();
+        
+        // Ajustar rutas de imágenes si es el footer y estamos en marketplace
+        if (targetId === 'footer-container' && window.location.pathname.includes('/marketplace/')) {
+            html = html.replace(/src="assets\//g, 'src="../assets/');
+        }
+        
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            targetElement.innerHTML = html;
+        }
         
         // Si es el header, inicializamos sus funcionalidades específicas
         if (targetId === 'header-container') {
             initializeHeaderFunctions();
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error loading component:', error);
     }
 }
 
@@ -78,8 +87,21 @@ function handleSearch(searchTerm) {
 
 // Cargar los componentes cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', async () => {
-    // Cargar header
-    await loadComponent('../public/components/html/header.html', 'header-container');
-    // Cargar footer
-    await loadComponent('../public/components/html/footer.html', 'footer-container');
+    // Verificar si estamos en la página principal (index.html)
+    const isMainPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/');
+    
+    // Determinar la ruta base para los componentes
+    let basePath = './components/';
+    if (window.location.pathname.includes('/marketplace/')) {
+        basePath = '../components/';
+    }
+    
+    if (isMainPage) {
+        // En la página principal solo cargar el footer
+        await loadComponent(basePath + 'footer.html', 'footer-container');
+    } else {
+        // En otras páginas cargar header y footer
+        await loadComponent(basePath + 'header.html', 'header-container');
+        await loadComponent(basePath + 'footer.html', 'footer-container');
+    }
 });
