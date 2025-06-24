@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Test backend and Firebase connections
+    testConnections();
+
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-link');
     
@@ -76,4 +79,61 @@ document.addEventListener('DOMContentLoaded', function() {
     sections.forEach(section => {
         sectionObserver.observe(section);
     });
+
+    // Add click handlers for CTA buttons
+    setupCTAButtons();
 });
+
+// Test backend and Firebase connections
+async function testConnections() {
+    console.log('Testing connections...');
+    
+    // Test backend
+    if (window.api) {
+        const backendTest = await window.api.testBackend();
+        console.log('Backend test:', backendTest);
+        
+        const firebaseTest = await window.api.testFirebase();
+        console.log('Firebase test:', firebaseTest);
+    } else {
+        console.log('API module not loaded');
+    }
+}
+
+// Setup CTA button handlers
+function setupCTAButtons() {
+    // Start Selling button
+    const startSellingBtn = document.querySelector('.btn-primary-large');
+    if (startSellingBtn) {
+        startSellingBtn.addEventListener('click', function() {
+            // Check if user is logged in
+            if (isUserLoggedIn()) {
+                window.location.href = '/products';
+            } else {
+                window.location.href = '/register';
+            }
+        });
+    }
+
+    // Browse Items button
+    const browseItemsBtn = document.querySelector('.btn-secondary-large');
+    if (browseItemsBtn) {
+        browseItemsBtn.addEventListener('click', function() {
+            window.location.href = '/products';
+        });
+    }
+
+    // Register as Business button
+    const businessBtn = document.querySelector('.cta-buttons .btn-primary-large');
+    if (businessBtn) {
+        businessBtn.addEventListener('click', function() {
+            window.location.href = '/register';
+        });
+    }
+}
+
+// Check if user is logged in (you can implement this based on your auth system)
+function isUserLoggedIn() {
+    // For now, return false - you can implement this with your auth system
+    return false;
+}
