@@ -4,28 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapp-it - Login</title>
-    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
-            <img src="./assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
+            <img src="../assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
             <h2>Log In</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="login-btn">Log In</button>
             </form>
             <div class="additional-options">
-                <a href="#" id="forgotPassword">Forgot your password?</a>
+                <a href="forgot-password.html" id="forgotPassword">Forgot your password?</a>
                 <p>Don't have an account? <a href="register.html">Sign Up</a></p>
             </div>
         </div>
     </div>
-    <script type="module" src="../src/firebase/auth.js"></script>
+    
+    <!-- Firebase Scripts -->
+    <script type="module" src="../js/login.js"></script>
 </body>
 </html>

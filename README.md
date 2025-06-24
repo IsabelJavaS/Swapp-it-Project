@@ -1,117 +1,223 @@
-# SWAPPIT - Marketplace para Estudiantes
+# 🎓 Swapp-it - Marketplace de Útiles Escolares
 
-## Configuración de Firebase
+[![Deploy to GitHub Pages](https://github.com/tu-usuario/swapp-it-project/actions/workflows/deploy.yml/badge.svg)](https://github.com/tu-usuario/swapp-it-project/actions/workflows/deploy.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue?style=flat&logo=github)](https://tu-usuario.github.io/swapp-it-project/)
 
-### Opción 1: Configuración Manual (Recomendado)
+## 🌟 Descripción
 
-1. **Edita `src/firebase/config.js`**:
-   - Reemplaza las credenciales de `development` con tu proyecto de prueba
-   - Cuando tengas tu proyecto real, agrega las credenciales en `production`
+**Swapp-it** es una plataforma innovadora que conecta estudiantes y negocios para el intercambio de útiles escolares. Los estudiantes pueden vender sus materiales usados y los negocios pueden ofrecer productos nuevos, creando un ecosistema sostenible y económico.
 
-2. **Para cambiar de proyecto**:
-   - En `src/firebase/config.js`, cambia la línea:
-     ```js
-     return 'development'; // Para proyecto de prueba
-     // return 'production'; // Para proyecto real
-     ```
+## ✨ Características Principales
 
-3. **Obtener credenciales de Firebase**:
-   - Ve a [Firebase Console](https://console.firebase.google.com/)
-   - Selecciona tu proyecto
-   - Ve a Configuración del proyecto > General
-   - En "Tus apps", crea una app web si no tienes una
-   - Copia la configuración
+### 🔐 **Sistema de Autenticación Completo**
+- ✅ Registro de usuarios personales y de negocios
+- ✅ Login con redirección según tipo de cuenta
+- ✅ Recuperación de contraseña personalizada
+- ✅ Cambio de contraseña con validación de fortaleza
+- ✅ Gestión de perfiles en tiempo real
 
-### Opción 2: Firebase CLI (Opcional)
+### 🛒 **Marketplace Inteligente**
+- 🎯 Dashboard personalizado para estudiantes y negocios
+- 📦 Gestión de productos con imágenes
+- 💰 Sistema de puntos integrado
+- ⭐ Sistema de reseñas y calificaciones
+- 🔍 Búsqueda y filtros avanzados
 
-Si quieres usar Firebase CLI:
+### 🎨 **Interfaz Moderna**
+- 📱 Diseño responsive y accesible
+- 🌙 Modo oscuro/claro
+- ⚡ Carga rápida y optimizada
+- 🎭 Componentes reutilizables
 
+## 🚀 Demo en Vivo
+
+**🌐 [Ver Demo en GitHub Pages](https://tu-usuario.github.io/swapp-it-project/)**
+
+## 🛠️ Tecnologías Utilizadas
+
+### **Frontend**
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+### **Backend & Base de Datos**
+- ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+- ![Firestore](https://img.shields.io/badge/Firestore-FF6B6B?style=for-the-badge&logo=firebase&logoColor=white)
+- ![Firebase Auth](https://img.shields.io/badge/Firebase%20Auth-4285F4?style=for-the-badge&logo=firebase&logoColor=white)
+
+### **Herramientas de Desarrollo**
+- ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+- ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+- ![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+
+## 📦 Instalación y Configuración
+
+### **Prerrequisitos**
+- Node.js (versión 18 o superior)
+- Cuenta de Firebase
+- Git
+
+### **Pasos de Instalación**
+
+1. **Clonar el repositorio**
+```bash
+git clone https://github.com/tu-usuario/swapp-it-project.git
+cd swapp-it-project
+```
+
+2. **Instalar dependencias**
+```bash
+npm install
+```
+
+3. **Configurar Firebase**
+   - Ve a [Firebase Console](https://console.firebase.google.com)
+   - Crea un nuevo proyecto
+   - Habilita Authentication, Firestore y Storage
+   - Copia las credenciales a `src/firebase/config.js`
+
+4. **Ejecutar localmente**
+```bash
+# Usar Live Server (recomendado)
+# Instalar extensión "Live Server" en VS Code
+# Click derecho en public/index.html → "Open with Live Server"
+
+# O usar Python
+python -m http.server 8000
+
+# O usar Node.js
+npx serve public
+```
+
+## 🌐 Despliegue
+
+### **GitHub Pages (Automático)**
+El proyecto se despliega automáticamente en GitHub Pages cuando haces push a la rama `main` o `master`.
+
+**URL del sitio**: `https://tu-usuario.github.io/swapp-it-project/`
+
+### **Firebase Hosting (Alternativo)**
 ```bash
 # Instalar Firebase CLI
 npm install -g firebase-tools
 
-# Login
+# Login a Firebase
 firebase login
 
-# Inicializar proyecto
-firebase init hosting
-firebase init firestore
-firebase init storage
-firebase init functions
-
-# Agregar múltiples proyectos
-firebase use --add
-
-# Cambiar entre proyectos
-firebase use nombre-proyecto-prueba
-firebase use nombre-proyecto-real
+# Desplegar
+firebase deploy
 ```
 
-## Estructura del Proyecto
+## 📁 Estructura del Proyecto
 
 ```
 Swapp-it-Project/
-├── public/                    # Frontend (HTML, CSS, JS)
-│   ├── index.html
-│   ├── marketplace/
-│   ├── css/
-│   ├── js/
-│   └── components/
-├── src/
-│   ├── firebase/             # Configuración de Firebase
-│   │   ├── config.js         # Configuración principal
-│   │   ├── auth.js           # Funciones de autenticación
-│   │   ├── firestore.js      # Funciones de base de datos
-│   │   └── storage.js        # Funciones de almacenamiento
-│   └── js/                   # Lógica de negocio
-│       ├── app.js            # Inicialización de la app
-│       └── marketplace.js    # Lógica del marketplace
-├── firebase.json             # Configuración de Firebase Hosting
-├── firestore.rules           # Reglas de seguridad de Firestore
-├── storage.rules             # Reglas de seguridad de Storage
-└── README.md
+├── 📁 public/                    # Frontend - Archivos públicos
+│   ├── 📁 assets/logos/         # Logos de la aplicación
+│   ├── 📁 components/           # Componentes reutilizables
+│   ├── 📁 css/                  # Hojas de estilo
+│   ├── 📁 js/                   # JavaScript del frontend
+│   ├── 📁 marketplace/          # Páginas del marketplace
+│   ├── 📁 pages/                # Páginas de autenticación
+│   └── 📄 index.html            # Página principal
+├── 📁 src/                      # Backend - Lógica de aplicación
+│   ├── 📁 firebase/            # Configuración y funciones de Firebase
+│   └── 📁 js/                  # Lógica de negocio
+└── 📄 firebase.json            # Configuración de Firebase
 ```
 
-## Servicios Firebase Utilizados
+## 🔐 Configuración de Seguridad
 
-- **Firebase Auth**: Autenticación de usuarios
-- **Firestore**: Base de datos para productos, usuarios, transacciones
-- **Firebase Storage**: Almacenamiento de imágenes
-- **Firebase Hosting**: Despliegue del frontend
+### **Firestore Rules**
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
 
-## Desarrollo
+### **Storage Rules**
+```javascript
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /users/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
 
-1. **Servir localmente**:
-   ```bash
-   # Con servidor local simple
-   npx http-server public
-   
-   # O con Firebase CLI
-   firebase serve
-   ```
+## 🧪 Testing
 
-2. **Desplegar**:
-   ```bash
-   # Con Firebase CLI
-   firebase deploy
-   
-   # O manualmente subiendo la carpeta public a tu hosting
-   ```
+### **Páginas de Prueba**
+- **Login**: `/public/pages/login.html`
+- **Registro**: `/public/pages/register.html`
+- **Recuperación**: `/public/pages/forgot-password.html`
+- **Cambio de contraseña**: `/public/pages/change-password.html`
 
-## Características del Marketplace
+### **Funcionalidades Testeadas**
+- ✅ Registro de usuarios
+- ✅ Login y logout
+- ✅ Recuperación de contraseña
+- ✅ Cambio de contraseña
+- ✅ Gestión de perfiles
+- ✅ Navegación entre páginas
 
-- ✅ Sistema de autenticación
-- ✅ Gestión de productos
-- ✅ Sistema de puntos
-- ✅ Transacciones
-- ✅ Reseñas y calificaciones
-- ✅ Dashboard para estudiantes y negocios
-- ✅ Responsive design
+## 📊 Estado del Proyecto
 
-## Próximos Pasos
+### ✅ **Completado**
+- [x] Sistema de autenticación completo
+- [x] Registro de usuarios personales y de negocios
+- [x] Login con redirección según tipo
+- [x] Recuperación de contraseña
+- [x] Cambio de contraseña
+- [x] Gestión de perfiles
+- [x] Estructura del marketplace
+- [x] Componentes reutilizables
+- [x] Despliegue en GitHub Pages
 
-1. Configurar credenciales de Firebase en `src/firebase/config.js`
-2. Implementar lógica de autenticación
-3. Crear funciones de productos y transacciones
-4. Implementar sistema de puntos
-5. Agregar Cloud Functions para lógica avanzada
+### 🔄 **En Desarrollo**
+- [ ] Funcionalidades del marketplace
+- [ ] Sistema de transacciones
+- [ ] Gestión de productos
+- [ ] Sistema de puntos
+- [ ] Notificaciones
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 👨‍💻 Autor
+
+**Tu Nombre**
+- GitHub: [@tu-usuario](https://github.com/tu-usuario)
+- LinkedIn: [Tu LinkedIn](https://linkedin.com/in/tu-perfil)
+
+## 🙏 Agradecimientos
+
+- Firebase por proporcionar una excelente plataforma backend
+- Font Awesome por los iconos
+- La comunidad de desarrolladores por las herramientas y recursos
+
+## 📞 Contacto
+
+- 📧 Email: tu-email@example.com
+- 🌐 Website: [tu-sitio-web.com](https://tu-sitio-web.com)
+- 🐦 Twitter: [@tu-twitter](https://twitter.com/tu-twitter)
+
+---
+
+⭐ **Si te gusta este proyecto, ¡dale una estrella en GitHub!**
