@@ -1,200 +1,117 @@
-# SWAPPIT - School Supplies Marketplace
+# SWAPPIT - Marketplace para Estudiantes
 
-Una plataforma de intercambio de útiles escolares construida con Express.js, Firebase y Bootstrap.
+## Configuración de Firebase
 
-## 🏗️ Arquitectura
+### Opción 1: Configuración Manual (Recomendado)
 
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap (carpeta `public`)
-- **Backend**: Express.js + Firebase (carpeta `backend`)
+1. **Edita `src/firebase/config.js`**:
+   - Reemplaza las credenciales de `development` con tu proyecto de prueba
+   - Cuando tengas tu proyecto real, agrega las credenciales en `production`
 
-## 📁 Estructura del Proyecto
+2. **Para cambiar de proyecto**:
+   - En `src/firebase/config.js`, cambia la línea:
+     ```js
+     return 'development'; // Para proyecto de prueba
+     // return 'production'; // Para proyecto real
+     ```
+
+3. **Obtener credenciales de Firebase**:
+   - Ve a [Firebase Console](https://console.firebase.google.com/)
+   - Selecciona tu proyecto
+   - Ve a Configuración del proyecto > General
+   - En "Tus apps", crea una app web si no tienes una
+   - Copia la configuración
+
+### Opción 2: Firebase CLI (Opcional)
+
+Si quieres usar Firebase CLI:
+
+```bash
+# Instalar Firebase CLI
+npm install -g firebase-tools
+
+# Login
+firebase login
+
+# Inicializar proyecto
+firebase init hosting
+firebase init firestore
+firebase init storage
+firebase init functions
+
+# Agregar múltiples proyectos
+firebase use --add
+
+# Cambiar entre proyectos
+firebase use nombre-proyecto-prueba
+firebase use nombre-proyecto-real
+```
+
+## Estructura del Proyecto
 
 ```
 Swapp-it-Project/
-├── backend/
-│   ├── index.js          # Servidor Express + Firebase
-│   ├── package.json      # Dependencias del backend
-│   ├── env.example       # Ejemplo de variables de entorno
-│   ├── .env              # Variables de entorno (crear manualmente)
-│   └── node_modules/
-├── public/
-│   ├── index.html        # Página principal
-│   ├── login.html        # Página de login
-│   ├── register.html     # Página de registro
-│   ├── productsPage.html # Página de productos
-│   ├── productDetail.html # Detalle de producto
-│   ├── js/
-│   │   ├── main.js       # JavaScript principal
-│   │   ├── api.js        # Módulo de comunicación con API
-│   │   └── marketplace.js
+├── public/                    # Frontend (HTML, CSS, JS)
+│   ├── index.html
+│   ├── marketplace/
 │   ├── css/
-│   │   └── style.css     # Estilos principales
-│   └── assets/           # Imágenes y recursos
-└── package.json          # Scripts de desarrollo
+│   ├── js/
+│   └── components/
+├── src/
+│   ├── firebase/             # Configuración de Firebase
+│   │   ├── config.js         # Configuración principal
+│   │   ├── auth.js           # Funciones de autenticación
+│   │   ├── firestore.js      # Funciones de base de datos
+│   │   └── storage.js        # Funciones de almacenamiento
+│   └── js/                   # Lógica de negocio
+│       ├── app.js            # Inicialización de la app
+│       └── marketplace.js    # Lógica del marketplace
+├── firebase.json             # Configuración de Firebase Hosting
+├── firestore.rules           # Reglas de seguridad de Firestore
+├── storage.rules             # Reglas de seguridad de Storage
+└── README.md
 ```
 
-## 🚀 Instalación y Configuración
+## Servicios Firebase Utilizados
 
-### 1. Instalar Dependencias
-```bash
-# Instalar dependencias del backend
-npm run install-deps
+- **Firebase Auth**: Autenticación de usuarios
+- **Firestore**: Base de datos para productos, usuarios, transacciones
+- **Firebase Storage**: Almacenamiento de imágenes
+- **Firebase Hosting**: Despliegue del frontend
 
-# Instalar nodemon para desarrollo (opcional)
-npm install
-```
+## Desarrollo
 
-### 2. Configurar Variables de Entorno
-```bash
-# Copiar el archivo de ejemplo
-cp backend/env.example backend/.env
+1. **Servir localmente**:
+   ```bash
+   # Con servidor local simple
+   npx http-server public
+   
+   # O con Firebase CLI
+   firebase serve
+   ```
 
-# Editar el archivo .env con tus credenciales de Firebase
-```
+2. **Desplegar**:
+   ```bash
+   # Con Firebase CLI
+   firebase deploy
+   
+   # O manualmente subiendo la carpeta public a tu hosting
+   ```
 
-**Contenido del archivo `.env`:**
-```env
-# Firebase Configuration
-FIREBASE_API_KEY=tu_api_key_aqui
-FIREBASE_AUTH_DOMAIN=tu_project.firebaseapp.com
-FIREBASE_PROJECT_ID=tu_project_id
-FIREBASE_STORAGE_BUCKET=tu_project.firebasestorage.app
-FIREBASE_MESSAGING_SENDER_ID=tu_sender_id
-FIREBASE_APP_ID=tu_app_id
-FIREBASE_MEASUREMENT_ID=tu_measurement_id
+## Características del Marketplace
 
-# Server Configuration
-PORT=3000
-NODE_ENV=development
+- ✅ Sistema de autenticación
+- ✅ Gestión de productos
+- ✅ Sistema de puntos
+- ✅ Transacciones
+- ✅ Reseñas y calificaciones
+- ✅ Dashboard para estudiantes y negocios
+- ✅ Responsive design
 
-# CORS Configuration
-CORS_ORIGIN=http://localhost:3000
-```
+## Próximos Pasos
 
-### 3. Iniciar el Servidor
-
-**Para desarrollo (con auto-restart):**
-```bash
-npm run dev
-```
-
-**Para producción:**
-```bash
-npm start
-```
-
-### 4. Acceder a la Aplicación
-- **Frontend**: http://localhost:3000
-- **API Health**: http://localhost:3000/api/health
-- **Firebase Test**: http://localhost:3000/api/firebase-test
-
-## 🔧 Funcionalidades
-
-### Backend (Express + Firebase)
-- ✅ Servidor Express configurado
-- ✅ Firebase Authentication
-- ✅ Firebase Firestore
-- ✅ Firebase Storage
-- ✅ CORS habilitado
-- ✅ Servir archivos estáticos
-- ✅ Rutas API básicas
-- ✅ Variables de entorno seguras
-
-### Frontend (HTML + CSS + JS + Bootstrap)
-- ✅ Diseño responsive con Bootstrap
-- ✅ Navegación suave
-- ✅ Animaciones CSS
-- ✅ Comunicación con API
-- ✅ Testing de conexiones
-- ✅ Botones CTA funcionales
-
-## 📡 API Endpoints
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | `/api/health` | Verificar estado del backend |
-| GET | `/api/firebase-test` | Verificar conexión Firebase |
-| GET | `/` | Página principal |
-| GET | `/login` | Página de login |
-| GET | `/register` | Página de registro |
-| GET | `/products` | Página de productos |
-| GET | `/product/:id` | Detalle de producto |
-
-## 🛠️ Desarrollo
-
-### Agregar Nuevas Rutas API
-Edita `backend/index.js`:
-```javascript
-// Ejemplo de nueva ruta
-app.get('/api/products', (req, res) => {
-  // Tu lógica aquí
-  res.json({ products: [] });
-});
-```
-
-### Comunicación Frontend-Backend
-Usa el módulo API en el frontend:
-```javascript
-// GET request
-const data = await window.api.get('/products');
-
-// POST request
-const result = await window.api.post('/products', { name: 'Product' });
-```
-
-## 🔥 Firebase
-
-El proyecto está configurado con:
-- **Authentication**: Login/Register de usuarios
-- **Firestore**: Base de datos para productos y usuarios
-- **Storage**: Almacenamiento de imágenes
-
-### Configuración Firebase
-1. Crea un proyecto en [Firebase Console](https://console.firebase.google.com/)
-2. Habilita Authentication (Email/Password)
-3. Crea una base de datos Firestore
-4. Configura Storage
-5. Copia las credenciales al archivo `.env`
-
-## 🔐 Seguridad
-
-- ✅ **Variables de entorno** para credenciales sensibles
-- ✅ **Archivo .env** excluido del control de versiones
-- ✅ **Validación** de variables de entorno requeridas
-- ✅ **Configuración separada** para desarrollo y producción
-
-## 📱 Responsive Design
-
-El proyecto es completamente responsive y funciona en:
-- 📱 Móviles
-- 📱 Tablets
-- 💻 Desktop
-
-## 🎨 Tecnologías Utilizadas
-
-- **Backend**: Express.js, Firebase, dotenv
-- **Frontend**: HTML5, CSS3, JavaScript ES6+, Bootstrap 5
-- **Herramientas**: Node.js, npm
-
-## 📝 Próximos Pasos
-
-1. Implementar autenticación completa
-2. Agregar CRUD de productos
-3. Implementar sistema de búsqueda
-4. Agregar carrito de compras
-5. Implementar sistema de pagos
-6. Agregar notificaciones
-7. Optimizar rendimiento
-
-## 🤝 Contribuir
-
-1. Fork el proyecto
-2. Crea una rama para tu feature
-3. Configura las variables de entorno
-4. Commit tus cambios
-5. Push a la rama
-6. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia ISC.
+1. Configurar credenciales de Firebase en `src/firebase/config.js`
+2. Implementar lógica de autenticación
+3. Crear funciones de productos y transacciones
+4. Implementar sistema de puntos
+5. Agregar Cloud Functions para lógica avanzada
