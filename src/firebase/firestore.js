@@ -2,6 +2,7 @@
 import { 
   collection,
   doc,
+  setDoc,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -37,24 +38,38 @@ const COLLECTIONS = {
 export const createUserProfile = async (userId, userData) => {
   try {
     const userRef = doc(db, COLLECTIONS.USERS, userId);
-    await setDoc(userRef, {
-      ...userData,
-      points: 0,
-      totalSales: 0,
-      totalPurchases: 0,
-      rating: 0,
-      reviewCount: 0,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
     
-    // Create points document for user
-    const pointsRef = doc(db, COLLECTIONS.POINTS, userId);
-    await setDoc(pointsRef, {
-      balance: 0,
-      history: [],
-      createdAt: serverTimestamp()
-    });
+    // Estructura completa del perfil de usuario
+    const completeUserProfile = {
+      ...userData,
+      // Datos básicos del usuario
+      userId: userId,
+      email: userData.email,
+      role: userData.role,
+      status: 'active',
+      
+      // Sistema de puntos integrado
+      points: {
+        balance: 0,
+        history: []
+      },
+      
+      // Estadísticas del usuario
+      stats: {
+        totalSales: 0,
+        totalPurchases: 0,
+        rating: 0,
+        reviewCount: 0,
+        productsCount: 0
+      },
+      
+      // Metadatos
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      lastLogin: serverTimestamp()
+    };
+    
+    await setDoc(userRef, completeUserProfile);
     
     return { success: true };
   } catch (error) {
@@ -93,16 +108,93 @@ export const updateUserProfile = async (userId, updates) => {
   }
 };
 
+// ==================== PROFILE MANAGEMENT ====================
+export const updatePersonalInfo = async (userId, personalData) => {
+  try {
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    await updateDoc(userRef, {
+      personal: personalData,
+      updatedAt: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating personal info:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateBusinessInfo = async (userId, businessData) => {
+  try {
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    await updateDoc(userRef, {
+      business: businessData,
+      updatedAt: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating business info:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateUserEmail = async (userId, newEmail) => {
+  try {
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    await updateDoc(userRef, {
+      email: newEmail,
+      updatedAt: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating email:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateUserStatus = async (userId, status) => {
+  try {
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    await updateDoc(userRef, {
+      status: status,
+      updatedAt: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateLastLogin = async (userId) => {
+  try {
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    await updateDoc(userRef, {
+      lastLogin: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating last login:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 // ==================== POINTS SYSTEM ====================
 export const getUserPoints = async (userId) => {
   try {
-    const pointsRef = doc(db, COLLECTIONS.POINTS, userId);
-    const pointsSnap = await getDoc(pointsRef);
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    const userSnap = await getDoc(userRef);
     
-    if (pointsSnap.exists()) {
-      return { success: true, data: pointsSnap.data() };
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      return { 
+        success: true, 
+        data: {
+          balance: userData.points?.balance || 0,
+          history: userData.points?.history || []
+        }
+      };
     } else {
-      return { success: false, error: 'Points record not found' };
+      return { success: false, error: 'User not found' };
     }
   } catch (error) {
     console.error('Error getting user points:', error);
@@ -112,29 +204,36 @@ export const getUserPoints = async (userId) => {
 
 export const addPoints = async (userId, amount, reason, transactionId = null) => {
   try {
-    const batch = writeBatch(db);
-    
-    // Update points balance
-    const pointsRef = doc(db, COLLECTIONS.POINTS, userId);
-    batch.update(pointsRef, {
-      balance: increment(amount),
-      history: arrayUnion({
-        amount,
-        reason,
-        transactionId,
-        timestamp: serverTimestamp(),
-        type: 'credit'
-      })
-    });
-    
-    // Update user profile
     const userRef = doc(db, COLLECTIONS.USERS, userId);
-    batch.update(userRef, {
-      points: increment(amount),
+    
+    // Get current user data
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      return { success: false, error: 'User not found' };
+    }
+    
+    const userData = userSnap.data();
+    const currentBalance = userData.points?.balance || 0;
+    const currentHistory = userData.points?.history || [];
+    
+    // Create new history entry
+    const historyEntry = {
+      amount,
+      reason,
+      transactionId,
+      timestamp: serverTimestamp(),
+      type: 'credit',
+      previousBalance: currentBalance,
+      newBalance: currentBalance + amount
+    };
+    
+    // Update user document
+    await updateDoc(userRef, {
+      'points.balance': currentBalance + amount,
+      'points.history': arrayUnion(historyEntry),
       updatedAt: serverTimestamp()
     });
     
-    await batch.commit();
     return { success: true };
   } catch (error) {
     console.error('Error adding points:', error);
@@ -144,29 +243,41 @@ export const addPoints = async (userId, amount, reason, transactionId = null) =>
 
 export const deductPoints = async (userId, amount, reason, transactionId = null) => {
   try {
-    const batch = writeBatch(db);
-    
-    // Update points balance
-    const pointsRef = doc(db, COLLECTIONS.POINTS, userId);
-    batch.update(pointsRef, {
-      balance: increment(-amount),
-      history: arrayUnion({
-        amount: -amount,
-        reason,
-        transactionId,
-        timestamp: serverTimestamp(),
-        type: 'debit'
-      })
-    });
-    
-    // Update user profile
     const userRef = doc(db, COLLECTIONS.USERS, userId);
-    batch.update(userRef, {
-      points: increment(-amount),
+    
+    // Get current user data
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      return { success: false, error: 'User not found' };
+    }
+    
+    const userData = userSnap.data();
+    const currentBalance = userData.points?.balance || 0;
+    const currentHistory = userData.points?.history || [];
+    
+    // Check if user has enough points
+    if (currentBalance < amount) {
+      return { success: false, error: 'Insufficient points' };
+    }
+    
+    // Create new history entry
+    const historyEntry = {
+      amount: -amount,
+      reason,
+      transactionId,
+      timestamp: serverTimestamp(),
+      type: 'debit',
+      previousBalance: currentBalance,
+      newBalance: currentBalance - amount
+    };
+    
+    // Update user document
+    await updateDoc(userRef, {
+      'points.balance': currentBalance - amount,
+      'points.history': arrayUnion(historyEntry),
       updatedAt: serverTimestamp()
     });
     
-    await batch.commit();
     return { success: true };
   } catch (error) {
     console.error('Error deducting points:', error);

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapp-it - Página No Encontrada</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-content {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .error-message {
+            font-size: 24px;
+            margin: 20px 0;
+            opacity: 0.9;
+        }
+        
+        .error-description {
+            font-size: 16px;
+            margin: 20px 0;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .search-suggestions {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .suggestion-link {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 8px 0;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .suggestion-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <img src="assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-message">¡Oops! Página no encontrada</h2>
+            <p class="error-description">
+                La página que buscas no existe o ha sido movida. 
+                No te preocupes, aquí tienes algunas opciones para continuar.
+            </p>
+            
+            <div class="search-suggestions">
+                <h3><i class="fas fa-search"></i> Páginas populares:</h3>
+                <a href="index.html" class="suggestion-link">
+                    <i class="fas fa-home"></i> Página Principal
+                </a>
+                <a href="pages/login.html" class="suggestion-link">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+                <a href="pages/register.html" class="suggestion-link">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </a>
+                <a href="marketplace/dashboardStudent.html" class="suggestion-link">
+                    <i class="fas fa-graduation-cap"></i> Dashboard Estudiante
+                </a>
+                <a href="marketplace/dashboardBusiness.html" class="suggestion-link">
+                    <i class="fas fa-store"></i> Dashboard Negocio
+                </a>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-home"></i> Volver al Inicio
+                </a>
+                <a href="pages/login.html" class="back-button">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-redirect after 10 seconds
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 10000);
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const errorCode = document.querySelector('.error-code');
+            const buttons = document.querySelectorAll('.back-button');
+            
+            // Animate error code
+            errorCode.style.opacity = '0';
+            errorCode.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                errorCode.style.transition = 'all 0.8s ease';
+                errorCode.style.opacity = '1';
+                errorCode.style.transform = 'translateY(0)';
+            }, 500);
+            
+            // Add hover effects to buttons
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.transform = 'translateY(-3px) scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

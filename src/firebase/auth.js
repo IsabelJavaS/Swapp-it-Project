@@ -5,7 +5,10 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
-  sendPasswordResetEmail
+  updateEmail as firebaseUpdateEmail,
+  updatePassword as firebaseUpdatePassword,
+  sendPasswordResetEmail,
+  confirmPasswordReset as firebaseConfirmPasswordReset
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
 import { auth } from './config.js';
 
@@ -52,11 +55,46 @@ export const logoutUser = async () => {
 // Password reset
 export const resetPassword = async (email) => {
   try {
-    await sendPasswordResetEmail(auth, email);
+    console.log('Starting password reset for email:', email);
+    
+    // Get the current domain for the action URL
+    const currentDomain = window.location.origin;
+    console.log('Current domain:', currentDomain);
+    
+    const actionCodeSettings = {
+      url: `${currentDomain}/public/pages/change-password.html`,
+      handleCodeInApp: true
+    };
+    
+    console.log('Action code settings:', actionCodeSettings);
+    
+    // Validate email format first
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new Error('invalid-email');
+    }
+    
+    // Check if Firebase auth is properly initialized
+    if (!auth) {
+      throw new Error('Firebase Auth not initialized');
+    }
+    
+    console.log('Sending password reset email...');
+    await sendPasswordResetEmail(auth, email, actionCodeSettings);
+    
+    console.log('Password reset email sent successfully');
     return { success: true };
   } catch (error) {
     console.error('Error sending password reset:', error);
-    return { success: false, error: error.message };
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    
+    // Return more specific error information
+    return { 
+      success: false, 
+      error: error.message,
+      errorCode: error.code 
+    };
   }
 };
 
@@ -73,4 +111,42 @@ export const getCurrentUser = () => {
 // Check if user is authenticated
 export const isAuthenticated = () => {
   return !!auth.currentUser;
+};
+
+// Update user email
+export const updateEmail = async (user, newEmail) => {
+  try {
+    await firebaseUpdateEmail(user, newEmail);
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating email:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Update user password
+export const updatePassword = async (newPassword) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return { success: false, error: 'No user is currently signed in' };
+    }
+    
+    await firebaseUpdatePassword(user, newPassword);
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating password:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Confirm password reset
+export const confirmPasswordReset = async (actionCode, newPassword) => {
+  try {
+    await firebaseConfirmPasswordReset(auth, actionCode, newPassword);
+    return { success: true };
+  } catch (error) {
+    console.error('Error confirming password reset:', error);
+    return { success: false, error: error.message };
+  }
 }; 
