@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapp-it - Registro</title>
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <img src="./assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
+            <h2>Create Account</h2>            
+            <div class="role-selector">
+                <button class="role-btn active" data-role="personal">Personal User</button>
+                <button class="role-btn" data-role="business">Business</button>
+            </div>
+
+            <form id="registerForm">
+                <!-- Campos comunes para ambos roles -->
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+
+                <!-- Campos para usuario personal -->
+                <div class="personal-fields" id="personalFields">
+                    <div class="form-group">
+                        <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="direccion" name="direccion" placeholder="Address" required>
+                    </div>
+                </div>
+
+                <!-- Campos para negocio -->
+                <div class="business-fields hidden" id="businessFields">
+                    <div class="form-group">
+                        <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="ruc" name="ruc" placeholder="RUC">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <select id="tipoNegocio" name="tipoNegocio">
+                            <option value="">Business Type</option>
+                            <option value="restaurante">Book Store</option>
+                            <option value="tienda">Factory</option>
+                            <option value="servicio">Super Market</option>
+                            <option value="otro">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn">Sign Up</button>
+            </form>
+
+            <div class="additional-options">
+                <p>You already have an account? <a href="login.html">Log In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module" src="../js/register.js"></script>
+</body>
+</html>

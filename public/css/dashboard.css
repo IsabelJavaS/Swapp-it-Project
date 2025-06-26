@@ -168,7 +168,9 @@
     flex: 1;
     margin-left: 280px;
     padding: 2rem;
+    padding-bottom: 4rem; /* Espacio para el footer fijo */
     transition: margin-left 0.3s ease;
+    min-height: calc(100vh - var(--header-height) - 60px); /* Altura menos header y footer */
 }
 
 .dashboard-main.expanded {
@@ -182,16 +184,24 @@
     border-top: 1px solid var(--border-color);
     margin-left: 280px;
     transition: margin-left 0.3s ease;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: calc(100% - 280px);
+    z-index: 100;
 }
 
 .dashboard-footer.expanded {
     margin-left: 0;
+    width: 100%;
 }
 
 .dashboard-footer .copyright {
     margin: 0;
     text-align: center;
-    color: var(--text-primary);
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
 }
 
 /* Mobile Overlay */
@@ -219,10 +229,12 @@
 
     .dashboard-main {
         margin-left: 0 !important;
+        padding-bottom: 4rem;
     }
 
     .dashboard-footer {
         margin-left: 0 !important;
+        width: 100% !important;
     }
 
     .sidebar-toggle {
