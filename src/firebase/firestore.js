@@ -19,7 +19,7 @@ import {
   serverTimestamp,
   writeBatch
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-import { db } from './config.js';
+import { db, auth } from './config.js';
 
 // Collections
 const COLLECTIONS = {
@@ -37,44 +37,99 @@ const COLLECTIONS = {
 // ==================== USER FUNCTIONS ====================
 export const createUserProfile = async (userId, userData) => {
   try {
-    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    console.log('createUserProfile called with:', { userId, userData });
     
-    // Estructura completa del perfil de usuario
+    // Verificar que tenemos los datos necesarios
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+    
+    if (!userData) {
+      throw new Error('User data is required');
+    }
+    
+    // Verificar que Firebase está inicializado
+    if (!db) {
+      throw new Error('Firestore database not initialized');
+    }
+    
+    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    console.log('User reference created:', userRef.path);
+    
+    // Estructura simplificada del perfil de usuario
     const completeUserProfile = {
-      ...userData,
-      // Datos básicos del usuario
       userId: userId,
       email: userData.email,
       role: userData.role,
       status: 'active',
-      
-      // Sistema de puntos integrado
-      points: {
-        balance: 0,
-        history: []
-      },
-      
-      // Estadísticas del usuario
-      stats: {
-        totalSales: 0,
-        totalPurchases: 0,
-        rating: 0,
-        reviewCount: 0,
-        productsCount: 0
-      },
-      
-      // Metadatos
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      lastLogin: serverTimestamp()
+      updatedAt: serverTimestamp()
     };
     
+    // Agregar datos específicos del rol
+    if (userData.role === 'personal' && userData.personal) {
+      completeUserProfile.personal = userData.personal;
+    } else if (userData.role === 'business' && userData.business) {
+      completeUserProfile.business = userData.business;
+    }
+    
+    // Agregar sistema de puntos
+    completeUserProfile.points = {
+      balance: 0,
+      history: []
+    };
+    
+    // Agregar estadísticas
+    completeUserProfile.stats = {
+      totalSales: 0,
+      totalPurchases: 0,
+      rating: 0,
+      reviewCount: 0,
+      productsCount: 0
+    };
+    
+    console.log('Complete user profile prepared:', completeUserProfile);
+    console.log('Attempting to write to Firestore...');
+    
+    // Intentar escribir directamente a Firestore
     await setDoc(userRef, completeUserProfile);
     
+    console.log('User profile created successfully in Firestore');
     return { success: true };
   } catch (error) {
     console.error('Error creating user profile:', error);
-    return { success: false, error: error.message };
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    console.error('Error details:', {
+      userId,
+      userData: userData ? 'present' : 'missing',
+      db: db ? 'initialized' : 'not initialized',
+      auth: auth ? 'initialized' : 'not initialized'
+    });
+    
+    // Provide more specific error information
+    let errorMessage = error.message;
+    
+    if (error.code === 'permission-denied') {
+      errorMessage = 'Permission denied: Check Firestore security rules. User may not have write permissions.';
+    } else if (error.code === 'unauthenticated') {
+      errorMessage = 'User not authenticated: Please ensure user is logged in before creating profile.';
+    } else if (error.code === 'not-found') {
+      errorMessage = 'Firestore database not found: Check Firebase configuration.';
+    } else if (error.code === 'unavailable') {
+      errorMessage = 'Firestore service unavailable: Check internet connection and Firebase status.';
+    } else if (error.code === 'resource-exhausted') {
+      errorMessage = 'Firestore quota exceeded: Check Firebase usage limits.';
+    } else if (error.code === 'invalid-argument') {
+      errorMessage = 'Invalid data provided: Check the user data structure.';
+    }
+    
+    return { 
+      success: false, 
+      error: errorMessage,
+      errorCode: error.code,
+      originalError: error.message
+    };
   }
 };
 

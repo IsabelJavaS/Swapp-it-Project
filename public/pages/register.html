@@ -75,11 +75,324 @@
 
             <div class="additional-options">
                 <p>You already have an account? <a href="login.html">Log In</a></p>
+                <p><a href="register-direct.html" style="color: #007bff; text-decoration: underline;">Probar versión directa del registro</a></p>
             </div>
         </div>
     </div>
 
-    <!-- Firebase Scripts -->
-    <script type="module" src="../js/register.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+        import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAExygTQjFqetanu5ndSmp2lu0RxNQGhU4",
+            authDomain: "proyect-swapp-it.firebaseapp.com",
+            databaseURL: "https://proyect-swapp-it-default-rtdb.firebaseio.com",
+            projectId: "proyect-swapp-it",
+            storageBucket: "proyect-swapp-it.appspot.com",
+            messagingSenderId: "909327451855",
+            appId: "1:909327451855:web:985769bf1a3eb9877e59ba",
+            measurementId: "G-ES8F41DRD0"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM elements
+        const roleButtons = document.querySelectorAll('.role-btn');
+        const personalFields = document.getElementById('personalFields');
+        const businessFields = document.getElementById('businessFields');
+        const registerForm = document.getElementById('registerForm');
+
+        // Loading state
+        let isLoading = false;
+
+        // Role selection
+        function handleRoleChange(event) {
+            const selectedRole = event.target.dataset.role;
+            
+            roleButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (selectedRole === 'personal') {
+                personalFields.classList.remove('hidden');
+                businessFields.classList.add('hidden');
+                toggleRequiredFields(personalFields, true);
+                toggleRequiredFields(businessFields, false);
+            } else {
+                personalFields.classList.add('hidden');
+                businessFields.classList.remove('hidden');
+                toggleRequiredFields(personalFields, false);
+                toggleRequiredFields(businessFields, true);
+            }
+        }
+
+        function toggleRequiredFields(container, required) {
+            const inputs = container.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (required) {
+                    input.setAttribute('required', '');
+                } else {
+                    input.removeAttribute('required');
+                }
+            });
+        }
+
+        // Form validation
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const selectedRole = document.querySelector('.role-btn.active').dataset.role;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address');
+                return false;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return false;
+            }
+
+            if (selectedRole === 'personal') {
+                const nombre = document.getElementById('nombre').value;
+                const telefono = document.getElementById('telefono').value;
+                const direccion = document.getElementById('direccion').value;
+
+                if (!nombre.trim() || !telefono.trim() || !direccion.trim()) {
+                    showError('Please fill in all required personal fields');
+                    return false;
+                }
+            } else {
+                const nombreNegocio = document.getElementById('nombreNegocio').value;
+                const ruc = document.getElementById('ruc').value;
+                const direccionNegocio = document.getElementById('direccionNegocio').value;
+                const telefonoNegocio = document.getElementById('telefonoNegocio').value;
+
+                if (!nombreNegocio.trim() || !ruc.trim() || !direccionNegocio.trim() || !telefonoNegocio.trim()) {
+                    showError('Please fill in all required business fields');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // User feedback
+        function showError(message) {
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.cssText = `
+                color: #dc3545;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 10px 0;
+                text-align: center;
+            `;
+
+            const form = document.getElementById('registerForm');
+            form.insertBefore(errorDiv, form.firstChild);
+
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const existingMessage = document.querySelector('.success-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            successDiv.style.cssText = `
+                color: #155724;
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 10px 0;
+                text-align: center;
+            `;
+
+            const form = document.getElementById('registerForm');
+            form.insertBefore(successDiv, form.firstChild);
+        }
+
+        function setLoadingState(loading) {
+            isLoading = loading;
+            const submitBtn = document.querySelector('.register-btn');
+            
+            if (loading) {
+                submitBtn.textContent = 'Creating Account...';
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+            } else {
+                submitBtn.textContent = 'Sign Up';
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        // Registration process
+        async function handleRegistration(formData) {
+            try {
+                setLoadingState(true);
+                
+                const email = formData.get('email');
+                const password = formData.get('password');
+                const selectedRole = document.querySelector('.role-btn.active').dataset.role;
+
+                console.log('Starting registration process...');
+                console.log('Email:', email);
+                console.log('Role:', selectedRole);
+
+                // 1. Create Firebase Auth user
+                console.log('Creating Firebase Auth user...');
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('Firebase Auth user created successfully:', user.uid);
+
+                // Update profile with display name
+                const displayName = formData.get('nombre') || formData.get('nombreNegocio');
+                await updateProfile(user, { displayName });
+
+                // 2. Prepare user profile data
+                const userProfile = {
+                    email: email,
+                    role: selectedRole,
+                    createdAt: new Date(),
+                    status: 'active',
+                    userId: user.uid,
+                    points: {
+                        balance: 0,
+                        history: []
+                    },
+                    stats: {
+                        totalSales: 0,
+                        totalPurchases: 0,
+                        rating: 0,
+                        reviewCount: 0,
+                        productsCount: 0
+                    },
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    lastLogin: serverTimestamp()
+                };
+
+                // Add role-specific data
+                if (selectedRole === 'personal') {
+                    userProfile.personal = {
+                        nombre: formData.get('nombre'),
+                        telefono: formData.get('telefono'),
+                        direccion: formData.get('direccion')
+                    };
+                } else {
+                    userProfile.business = {
+                        nombreNegocio: formData.get('nombreNegocio'),
+                        ruc: formData.get('ruc'),
+                        direccionNegocio: formData.get('direccionNegocio'),
+                        telefonoNegocio: formData.get('telefonoNegocio'),
+                        tipoNegocio: formData.get('tipoNegocio'),
+                        descripcionNegocio: formData.get('descripcionNegocio')
+                    };
+                }
+
+                console.log('User profile data prepared:', userProfile);
+
+                // 3. Create Firestore user profile
+                console.log('Creating Firestore user profile...');
+                const userRef = doc(db, 'users', user.uid);
+                await setDoc(userRef, userProfile);
+                
+                console.log('Firestore user profile created successfully');
+
+                // 4. Success - redirect to dashboard
+                showSuccess('Account created successfully! Redirecting...');
+                
+                setTimeout(() => {
+                    if (selectedRole === 'personal') {
+                        window.location.href = '../marketplace/dashboardStudent.html';
+                    } else {
+                        window.location.href = '../marketplace/dashboardBusiness.html';
+                    }
+                }, 2000);
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                
+                let errorMessage = error.message;
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Permission denied: Check Firestore security rules.';
+                } else if (error.code === 'unauthenticated') {
+                    errorMessage = 'User not authenticated: Please ensure user is logged in before creating profile.';
+                } else if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'An account with this email already exists. Please use a different email or try logging in.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password is too weak. Please choose a stronger password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Please enter a valid email address.';
+                }
+                
+                showError(errorMessage);
+            } finally {
+                setLoadingState(false);
+            }
+        }
+
+        // Form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            if (isLoading) return;
+
+            if (!validateForm()) {
+                return;
+            }
+
+            const formData = new FormData(registerForm);
+            await handleRegistration(formData);
+        }
+
+        // Event listeners
+        roleButtons.forEach(button => {
+            button.addEventListener('click', handleRoleChange);
+        });
+
+        registerForm.addEventListener('submit', handleFormSubmit);
+
+        // Initialize form state
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Registration page loaded with direct Firebase SDK');
+            document.querySelector('.role-btn.active').click();
+        });
+    </script>
 </body>
 </html>

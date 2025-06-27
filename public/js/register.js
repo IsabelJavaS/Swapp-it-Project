@@ -177,12 +177,20 @@ async function handleRegistration(formData) {
         const password = formData.get('password');
         const selectedRole = document.querySelector('.role-btn.active').dataset.role;
 
+        console.log('Starting registration process...');
+        console.log('Email:', email);
+        console.log('Role:', selectedRole);
+
         // 1. Create Firebase Auth user
+        console.log('Creating Firebase Auth user...');
         const authResult = await registerUser(email, password, formData.get('nombre') || formData.get('nombreNegocio'));
         
         if (!authResult.success) {
+            console.error('Auth creation failed:', authResult.error);
             throw new Error(authResult.error);
         }
+
+        console.log('Firebase Auth user created successfully:', authResult.user.uid);
 
         // 2. Prepare user profile data
         const userProfile = {
@@ -210,12 +218,28 @@ async function handleRegistration(formData) {
             };
         }
 
+        console.log('User profile data prepared:', userProfile);
+
         // 3. Create Firestore user profile
+        console.log('Creating Firestore user profile...');
+        console.log('User ID:', authResult.user.uid);
+        console.log('User Profile Data:', JSON.stringify(userProfile, null, 2));
+        
         const profileResult = await createUserProfile(authResult.user.uid, userProfile);
         
+        console.log('Profile creation result:', profileResult);
+        
         if (!profileResult.success) {
-            throw new Error(profileResult.error);
+            console.error('Profile creation failed:', profileResult.error);
+            console.error('Error code:', profileResult.errorCode);
+            console.error('Original error:', profileResult.originalError);
+            
+            // If profile creation fails, we should clean up the auth user
+            // But for now, let's just show the error
+            throw new Error(`Profile creation failed: ${profileResult.error}`);
         }
+
+        console.log('Firestore user profile created successfully');
 
         // 4. Success - redirect to dashboard
         showSuccess('Account created successfully! Redirecting...');
@@ -231,7 +255,23 @@ async function handleRegistration(formData) {
 
     } catch (error) {
         console.error('Registration error:', error);
-        showError(error.message);
+        
+        // Provide more specific error messages
+        let errorMessage = error.message;
+        
+        if (error.message.includes('permission') || error.message.includes('insufficient')) {
+            errorMessage = 'Permission error: Please check your Firebase configuration and security rules.';
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+            errorMessage = 'Network error: Please check your internet connection and try again.';
+        } else if (error.message.includes('auth/email-already-in-use')) {
+            errorMessage = 'An account with this email already exists. Please use a different email or try logging in.';
+        } else if (error.message.includes('auth/weak-password')) {
+            errorMessage = 'Password is too weak. Please choose a stronger password.';
+        } else if (error.message.includes('auth/invalid-email')) {
+            errorMessage = 'Please enter a valid email address.';
+        }
+        
+        showError(errorMessage);
     } finally {
         setLoadingState(false);
     }
@@ -264,8 +304,11 @@ registerForm.addEventListener('submit', handleFormSubmit);
 
 // Initialize form state
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Registration page loaded');
+    
     // Check if user is already authenticated
     if (isAuthenticated()) {
+        console.log('User already authenticated, redirecting...');
         navigateToDashboard();
         return;
     }

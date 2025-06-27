@@ -4,25 +4,7 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      "src/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(js|css)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=31536000"
-          }
-        ]
-      }
+      "**/node_modules/**"
     ]
   },
   "firestore": {
@@ -32,4 +14,4 @@
   "storage": {
     "rules": "storage.rules"
   }
-} 
+}
