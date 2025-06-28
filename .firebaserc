@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "proyect-swapp-it",
+    "swappit": "proyect-swapp-it"
+  },
+  "targets": {},
+  "etags": {}
+}
