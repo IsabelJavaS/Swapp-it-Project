@@ -280,6 +280,39 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Profile</h2>
+                </div>
+                <form id="profileForm" class="profile-form">
+                    <div class="profile-picture-wrapper text-center mb-4">
+                        <img id="profileImage" src="https://ui-avatars.com/api/?name=John+Doe" alt="Profile" class="rounded-circle" width="120" height="120">
+                        <div>
+                            <label for="profilePicInput" class="btn btn-outline-primary btn-sm mt-2">Change Photo</label>
+                            <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">Birthdate</label>
+                        <input type="date" class="form-control" id="birthdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Leave blank to keep current">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </section>
         </main>
     </div>
     
@@ -302,5 +335,33 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
     <script src="../components/components.js"></script>
     <script src="../js/dashboard.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navLinks = document.querySelectorAll('.sidebar-nav .nav-link[data-section]');
+        const sections = document.querySelectorAll('.dashboard-section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetSection = this.getAttribute('data-section');
+
+                // Oculta todas las secciones
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Muestra la sección seleccionada
+                const sectionToShow = document.getElementById(targetSection);
+                if (sectionToShow) {
+                    sectionToShow.classList.add('active');
+                }
+
+                // Marca el link como activo
+                navLinks.forEach(l => l.parentElement.classList.remove('active'));
+                this.parentElement.classList.add('active');
+            });
+        });
+    });
+    </script>
 </body>
 </html> 
