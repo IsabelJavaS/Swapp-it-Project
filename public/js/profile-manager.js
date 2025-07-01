@@ -8,8 +8,8 @@ import {
     updateBusinessInfo, 
     updateUserEmail,
     getUserProfile 
-} from '../../src/firebase/firestore.js';
-import { updateEmail } from '../../src/firebase/auth.js';
+} from '../firebase/firestore.js';
+import { updateEmail } from '../firebase/auth.js';
 
 // ==================== PROFILE UPDATE FUNCTIONS ====================
 export const updateUserPersonalProfile = async (personalData) => {

@@ -1,6 +1,6 @@
 // Firebase imports
-import { registerUser } from '../../src/firebase/auth.js';
-import { createUserProfile } from '../../src/firebase/firestore.js';
+import { registerUser } from '../firebase/auth.js';
+import { createUserProfile } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements

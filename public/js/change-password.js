@@ -1,5 +1,5 @@
 // Change Password Functionality
-import { updatePassword, confirmPasswordReset } from '../../src/firebase/auth.js';
+import { updatePassword, confirmPasswordReset } from '../firebase/auth.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements

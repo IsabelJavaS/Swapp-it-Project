@@ -1,6 +1,6 @@
 // Global Authentication State Management
-import { onAuthStateChange, getCurrentUser, logoutUser } from '../../src/firebase/auth.js';
-import { getUserProfile } from '../../src/firebase/firestore.js';
+import { onAuthStateChange, getCurrentUser, logoutUser } from '../firebase/auth.js';
+import { getUserProfile } from '../firebase/firestore.js';
 
 // Global state
 let currentUser = null;

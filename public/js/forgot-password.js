@@ -1,5 +1,5 @@
 // Forgot Password Functionality
-import { resetPassword } from '../../src/firebase/auth.js';
+import { resetPassword } from '../firebase/auth.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements

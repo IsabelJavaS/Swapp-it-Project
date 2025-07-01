@@ -19,7 +19,7 @@ import {
   serverTimestamp,
   writeBatch
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-import { db, auth } from './config.js';
+import { db, auth } from '../firebase/config.js';
 
 // Collections
 const COLLECTIONS = {

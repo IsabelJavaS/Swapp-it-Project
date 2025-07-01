@@ -9,7 +9,7 @@
     --neutral-light: #f3f4f6;
     --neutral-dark: #111827;
     --font-primary: 'Inter', sans-serif;
-    --header-height: 80px; /* Aumentado para dar más espacio */
+    --header-height: 80px; /* Consistent header height across all pages */
 }
 
 /* Estilos globales */
@@ -585,4 +585,65 @@ body {
     height: 36px;
     font-size: 1rem;
   }
+}
+
+/* MENÚ MÓVIL FULLSCREEN MEJORADO */
+.mobile-menu {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 2rem;
+    border-bottom: 1px solid #eee;
+    width: 100vw;
+    background: #fff;
+    position: relative;
+    z-index: 2100;
+}
+.mobile-menu .navbar-brand {
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+.mobile-menu .navbar-toggler {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+.mobile-menu .nav {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    min-height: 0;
+}
+.mobile-menu .auth-buttons {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    display: flex;
 } 
