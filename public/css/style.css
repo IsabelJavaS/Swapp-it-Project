@@ -295,8 +295,7 @@ body {
    Main Content Spacing
    ========================================= */
 main {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
+    /* ELIMINADO: width, max-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, transition, opacity, transform, etc. */
 }
 
 /* =========================================
@@ -1150,12 +1149,9 @@ html {
 
 /* Section Transition Styles */
 section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ELIMINADO: opacity, transform, transition, width, max-width, min-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, etc. */
 }
 
 section.visible {
-    opacity: 1;
-    transform: translateY(0);
+    /* ELIMINADO: opacity, transform, transition, width, max-width, min-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, etc. */
 }

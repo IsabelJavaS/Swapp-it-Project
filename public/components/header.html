@@ -1,10 +1,10 @@
 <!-- Marketplace Header -->
 <header class="marketplace-header">
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
             <!-- Brand Logo -->
-            <a class="navbar-brand" href="../index.html">
-                <img src="../assets/logos/LogoSinFondo.png" alt="Logo Swapp-it">
+            <a class="navbar-brand" href="/public/index.html">
+                <img src="/public/assets/logos/LogoSinFondo.png" alt="Logo Swapp-it">
             </a>
 
             <!-- Search Bar -->
@@ -18,28 +18,29 @@
             </div>
 
             <!-- Right Navigation Items -->
-            <div class="nav-right">
-                <!-- Theme Toggle -->
-                <button class="btn btn-theme-toggle" id="themeToggle">
-                    <i class="fas fa-sun"></i>
-                </button>
-
+            <div class="d-flex align-items-center ms-auto">
                 <!-- Cart -->
-                <a href="#" class="btn btn-cart">
+                <a href="#" class="btn btn-cart me-3">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
                 </a>
 
+                <!-- SwapCoin Info -->
+                <a href="/public/pages/swapcoin/info.html" class="swapcoin-info me-3" id="swapcoin-info" style="cursor:pointer; text-decoration: none;">
+                    <i class="fas fa-coins"></i>
+                    <span id="swapcoin-amount">0</span>
+                </a>
+
                 <!-- Profile Dropdown -->
                 <div class="dropdown user-profile">
-                    <button class="avatar-circle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="avatar-circle dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="avatar-initials">JD</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                        <li><a class="dropdown-item" href="/public/marketplace/dashboardStudent.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item" href="/public/pages/dashboards/Student/dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="../index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="/public/index.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
                 </div>
             </div>

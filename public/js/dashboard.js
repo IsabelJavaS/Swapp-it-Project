@@ -116,4 +116,41 @@ document.querySelectorAll('.btn-export')?.forEach(btn => {
         // Aquí se implementaría la lógica de exportación
         console.log('Exportar datos');
     });
+});
+
+// Navegación interna de secciones del dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.dashboard-sidebar .nav-link[data-section]');
+    const sections = document.querySelectorAll('.dashboard-section');
+
+    function showSection(sectionId) {
+        sections.forEach(sec => {
+            if (sec.id === sectionId) {
+                sec.classList.add('active');
+                sec.style.display = '';
+            } else {
+                sec.classList.remove('active');
+                sec.style.display = 'none';
+            }
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Quitar clase activa de todos los links
+            navLinks.forEach(l => l.parentElement.classList.remove('active'));
+            // Activar el link actual
+            this.parentElement.classList.add('active');
+            // Mostrar la sección correspondiente
+            const sectionId = this.getAttribute('data-section');
+            showSection(sectionId);
+        });
+    });
+
+    // Al cargar, mostrar solo la sección activa
+    const activeLink = document.querySelector('.dashboard-sidebar .nav-item.active .nav-link[data-section]');
+    if (activeLink) {
+        showSection(activeLink.getAttribute('data-section'));
+    }
 }); 

@@ -18,6 +18,11 @@ body {
     margin: 0;
 }
 
+/* Ensure body padding is correct when header is present */
+body:has(#header-container) {
+    padding-top: var(--header-height);
+}
+
 /* =========================================
    Marketplace Header Styles
    ========================================= */
@@ -36,6 +41,22 @@ body {
     align-items: center; /* Centrar verticalmente todo el contenido */
 }
 
+/* Ensure header is always on top and properly styled */
+#header-container .marketplace-header {
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1rem 0;
+    height: var(--header-height);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+}
+
 .navbar {
     padding: 0.75rem 0; /* Padding más balanceado para la navbar */
     width: 100%;
@@ -47,6 +68,15 @@ body {
     font-size: 1.75rem;
     margin-right: 2rem;
     padding: 0.5rem 0; /* Padding vertical para el logo */
+}
+
+/* Logo image styles with higher specificity */
+.marketplace-header .navbar-brand img,
+.navbar-custom .navbar-brand img {
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .brand-swap { color: var(--swappit-blue); }
@@ -646,4 +676,33 @@ body {
     margin-bottom: 2rem;
     align-items: center;
     display: flex;
-} 
+}
+
+/* Header SwapCoin Styles (for use in header component) */
+.swapcoin-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+    min-width: 80px;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.swapcoin-info:hover {
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    text-decoration: none;
+}
+
+.swapcoin-info i {
+    font-size: 1.2rem;
+}
