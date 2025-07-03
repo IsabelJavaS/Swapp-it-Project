@@ -76,7 +76,7 @@ export const onAuthStateChanged = (callback) => {
 };
 
 // ==================== ROUTE PROTECTION ====================
-export const requireAuth = (redirectTo = '/pages/login.html') => {
+export const requireAuth = (redirectTo = '../../pages/auth/login.html') => {
     if (!isAuthenticated()) {
         window.location.href = redirectTo;
         return false;
@@ -84,7 +84,7 @@ export const requireAuth = (redirectTo = '/pages/login.html') => {
     return true;
 };
 
-export const requireRole = (requiredRole, redirectTo = '/pages/login.html') => {
+export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.html') => {
     if (!requireAuth(redirectTo)) {
         return false;
     }
@@ -93,9 +93,9 @@ export const requireRole = (requiredRole, redirectTo = '/pages/login.html') => {
         // Redirect to appropriate dashboard based on user role
         const userRole = getUserRole();
         if (userRole === 'personal') {
-            window.location.href = '/marketplace/dashboardStudent.html';
+            window.location.href = '../../pages/dashboards/student/index-student.html';
         } else if (userRole === 'business') {
-            window.location.href = '/marketplace/dashboardBusiness.html';
+            window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
         } else {
             window.location.href = redirectTo;
         }
@@ -105,11 +105,11 @@ export const requireRole = (requiredRole, redirectTo = '/pages/login.html') => {
     return true;
 };
 
-export const requirePersonalUser = (redirectTo = '/pages/login.html') => {
+export const requirePersonalUser = (redirectTo = '../../pages/auth/login.html') => {
     return requireRole('personal', redirectTo);
 };
 
-export const requireBusinessUser = (redirectTo = '/pages/login.html') => {
+export const requireBusinessUser = (redirectTo = '../../pages/auth/login.html') => {
     return requireRole('business', redirectTo);
 };
 
@@ -123,7 +123,7 @@ export const handleLogout = async () => {
             userProfile = null;
             
             // Redirect to login page
-            window.location.href = '/pages/login.html';
+            window.location.href = '../../pages/auth/login.html';
         } else {
             console.error('Logout failed:', result.error);
         }
@@ -135,17 +135,17 @@ export const handleLogout = async () => {
 // ==================== NAVIGATION HELPERS ====================
 export const navigateToDashboard = () => {
     if (!isAuthenticated()) {
-        window.location.href = '/pages/login.html';
+        window.location.href = '../../pages/auth/login.html';
         return;
     }
     
     const role = getUserRole();
     if (role === 'personal') {
-        window.location.href = '/marketplace/dashboardStudent.html';
+        window.location.href = '../../pages/dashboards/student/index-student.html';
     } else if (role === 'business') {
-        window.location.href = '/marketplace/dashboardBusiness.html';
+        window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
     } else {
-        window.location.href = '/pages/login.html';
+        window.location.href = '../../pages/auth/login.html';
     }
 };
 

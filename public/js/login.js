@@ -135,9 +135,9 @@ async function handleLogin(formData) {
         
         setTimeout(() => {
             if (userProfile.role === 'personal') {
-                window.location.href = '../marketplace/dashboardStudent.html';
+                window.location.href = '../../pages/dashboards/student/index-student.html';
             } else {
-                window.location.href = '../marketplace/dashboardBusiness.html';
+                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
             }
         }, 1500);
 
