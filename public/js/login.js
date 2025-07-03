@@ -1,6 +1,6 @@
 // Firebase imports
-import { loginUser } from '../firebase/auth.js';
-import { getUserProfile, updateLastLogin } from '../firebase/firestore.js';
+import { loginUser } from '../../src/firebase/auth.js';
+import { getUserProfile, updateLastLogin } from '../../src/firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements

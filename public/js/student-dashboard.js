@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize sidebar collapse functionality
     initializeSidebarCollapse();
+    
+    addStatCardRippleEffect();
+    addActivityItemRippleEffect();
 });
 
 // Initialize navigation functionality
@@ -70,6 +73,12 @@ async function loadSection(sectionName) {
         
         // Initialize section-specific functionality
         initializeSectionFunctionality(sectionName);
+        
+        // Aplica el ripple si es dashboard
+        if (sectionName === 'dashboard') {
+            addStatCardRippleEffect();
+            addActivityItemRippleEffect();
+        }
         
         console.log(`Section ${sectionName} loaded successfully`);
         
@@ -278,4 +287,36 @@ function initializeSidebarCollapse() {
             footer: !!footer
         });
     }
+}
+
+function addStatCardRippleEffect() {
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = card.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            card.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    });
+}
+
+function addActivityItemRippleEffect() {
+    document.querySelectorAll('.activity-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = item.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            item.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    });
 } 

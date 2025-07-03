@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
+  "indexes": [],
+  "fieldOverrides": []
+} 
+=======
   "indexes": [
     {
       "collectionGroup": "products",
@@ -19,3 +24,4 @@
   ],
   "fieldOverrides": []
 }
+>>>>>>> 78e0f2246994f82fa7b9cedc4aa02b1829eff29d
