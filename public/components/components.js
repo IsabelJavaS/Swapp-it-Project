@@ -1,4 +1,4 @@
-// Función para cargar componentes HTML
+// Función para cargar componentes HTML desde la raíz
 async function loadComponent(url, targetId) {
     try {
         const response = await fetch(url);
@@ -6,20 +6,17 @@ async function loadComponent(url, targetId) {
             throw new Error(`Error loading component: ${response.statusText}`);
         }
         let html = await response.text();
-        
-        // Ajustar rutas de imágenes si es el footer y estamos en marketplace
-        if (targetId === 'footer-container' && window.location.pathname.includes('/marketplace/')) {
-            html = html.replace(/src="assets\//g, 'src="../assets/');
-        }
-        
         const targetElement = document.getElementById(targetId);
         if (targetElement) {
             targetElement.innerHTML = html;
         }
-        
         // Si es el header, inicializamos sus funcionalidades específicas
         if (targetId === 'header-container') {
             initializeHeaderFunctions();
+            // Load SwapCoin balance management
+            loadSwapCoinScript();
+            // Initialize Bootstrap dropdowns after header is loaded
+            initializeDropdowns();
         }
     } catch (error) {
         console.error('Error loading component:', error);
@@ -60,11 +57,7 @@ function initializeHeaderFunctions() {
         }
     });
 
-    // Initialize Bootstrap dropdowns
-    if (typeof bootstrap !== 'undefined') {
-        const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
-        const dropdownList = [...dropdownElementList].map(dropdownToggleEl => new bootstrap.Dropdown(dropdownToggleEl));
-    }
+    // Search functionality will be initialized separately
 }
 
 // Función auxiliar para actualizar el icono del tema
@@ -85,23 +78,68 @@ function handleSearch(searchTerm) {
     }
 }
 
-// Cargar los componentes cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', async () => {
-    // Verificar si estamos en la página principal (index.html)
-    const isMainPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/');
-    
-    // Determinar la ruta base para los componentes
-    let basePath = './components/';
-    if (window.location.pathname.includes('/marketplace/')) {
-        basePath = '../components/';
+// Función para cargar el script de SwapCoin
+function loadSwapCoinScript() {
+    // Check if script is already loaded
+    if (document.querySelector('script[src*="header-swapcoin.js"]')) {
+        return;
     }
     
+    const script = document.createElement('script');
+    script.src = '/public/js/header-swapcoin.js';
+    script.async = true;
+    document.head.appendChild(script);
+}
+
+// Función para inicializar dropdowns de Bootstrap
+function initializeDropdowns() {
+    console.log('Initializing Bootstrap dropdowns...');
+    
+    // Wait for Bootstrap to be available
+    const waitForBootstrap = () => {
+        if (typeof bootstrap !== 'undefined') {
+            const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+            console.log('Found dropdown elements:', dropdownElementList.length);
+            
+            const dropdownList = [...dropdownElementList].map(dropdownToggleEl => {
+                console.log('Initializing dropdown for:', dropdownToggleEl.id);
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+            
+            console.log('Initialized dropdowns:', dropdownList.length);
+            
+            // Add click event listeners as backup
+            dropdownElementList.forEach(dropdownToggleEl => {
+                dropdownToggleEl.addEventListener('click', function(e) {
+                    console.log('Dropdown clicked:', this.id);
+                });
+            });
+        } else {
+            console.log('Bootstrap not ready, retrying in 100ms...');
+            setTimeout(waitForBootstrap, 100);
+        }
+    };
+    
+    waitForBootstrap();
+}
+
+// Cargar los componentes cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Loading components...');
+    
+    // Verificar si estamos en la página principal (index.html)
+    const path = window.location.pathname;
+    const isMainPage = path.endsWith('index.html') || path === '/' || path === '/index.html';
+
+    console.log('Current path:', path);
+    console.log('Is main page:', isMainPage);
+
     if (isMainPage) {
-        // En la página principal solo cargar el footer
-        await loadComponent(basePath + 'footer.html', 'footer-container');
+        console.log('Loading footer only for main page');
+        await loadComponent('/public/components/footer.html', 'footer-container');
     } else {
-        // En otras páginas cargar header y footer
-        await loadComponent(basePath + 'header.html', 'header-container');
-        await loadComponent(basePath + 'footer.html', 'footer-container');
+        console.log('Loading header and footer for other pages');
+        await loadComponent('/public/components/header.html', 'header-container');
+        await loadComponent('/public/components/footer.html', 'footer-container');
     }
 });

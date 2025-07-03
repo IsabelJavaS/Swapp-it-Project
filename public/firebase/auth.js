@@ -10,7 +10,7 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset as firebaseConfirmPasswordReset
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-import { auth } from './config.js';
+import { auth } from '../firebase/config.js';
 
 // User registration
 export const registerUser = async (email, password, displayName) => {

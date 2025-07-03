@@ -53,8 +53,8 @@
 
                     <!-- Authentication Buttons -->
                     <div class="auth-buttons">
-                        <a href="./pages/login.html"><button class="btn btn-login" type="button">Login</button></a>
-                        <a href="./pages/register.html"><button class="btn btn-register" type="button">Register</button></a>
+                        <a href="./pages/auth/login.html"><button class="btn btn-login" type="button">Login</button></a>
+                        <a href="./pages/auth/register.html"><button class="btn btn-register" type="button">Register</button></a>
                     </div>
                 </div>
             </div>
@@ -65,14 +65,16 @@
     <main>
         <!-- Hero Section -->
         <section class="hero-section" id="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="hero-title">SWAPPIT</h1>
-                    <p class="hero-subtitle">Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment!</p>
-                    <div class="hero-buttons">
-                        <a href="pages/register.html" class="btn btn-primary">Get Started</a>
-                        <a href="pages/login.html" class="btn btn-secondary">Log In</a>
-                    </div>
+            <div class="hero-content">
+                <h1 class="hero-title">SWAPPIT</h1>
+                <p class="hero-subtitle">Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment!</p>
+                <div class="hero-buttons">
+                    <a href="pages/auth/register.html" class="btn btn-primary-large">
+                        <i class="fas fa-rocket me-2"></i>Get Started
+                    </a>
+                    <a href="pages/auth/login.html" class="btn btn-secondary-large">
+                        <i class="fas fa-sign-in-alt me-2"></i>Log In
+                    </a>
                 </div>
             </div>
         </section>
@@ -287,7 +289,7 @@
                                     </div>
                                     <div class="col-12">
                                         <select class="form-control" required>
-                                            <option value="">I am a...*</option>
+                                            <option value="">I am a/public.*</option>
                                             <option value="student">Student</option>
                                             <option value="business">Business</option>
                                             <option value="other">Other</option>
@@ -336,7 +338,7 @@
     <script src="js/main.js"></script>
 
     <!-- Components -->
-    <script type="module" src="./components/components.js"></script>
+    <script type="module" src="/public/components/components.js"></script>
 
 </body>
 </html> 

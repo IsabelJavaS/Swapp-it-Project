@@ -1,6 +1,6 @@
 // Firebase imports
-import { registerUser } from '../../src/firebase/auth.js';
-import { createUserProfile } from '../../src/firebase/firestore.js';
+import { registerUser } from '../firebase/auth.js';
+import { createUserProfile } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements
@@ -247,9 +247,9 @@ async function handleRegistration(formData) {
         setTimeout(() => {
             // Redirect based on role
             if (selectedRole === 'personal') {
-                window.location.href = '../marketplace/dashboardStudent.html';
+                window.location.href = '../../pages/dashboards/student/index-student.html';
             } else {
-                window.location.href = '../marketplace/dashboardBusiness.html';
+                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
             }
         }, 2000);
 

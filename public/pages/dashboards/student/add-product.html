@@ -1,0 +1,106 @@
+<section>
+    <div class="section-header">
+        <h2>Add New Product</h2>
+        <p class="text-muted">List your school supplies for sale or exchange</p>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Product Name *</label>
+                                    <input type="text" class="form-control" id="productName" placeholder="e.g., Calculus Textbook" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="productCategory" class="form-label">Category *</label>
+                                    <select class="form-select" id="productCategory" required>
+                                        <option value="">Select category</option>
+                                        <option value="books">Books & Textbooks</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="stationery">Stationery</option>
+                                        <option value="lab-supplies">Lab Supplies</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Description *</label>
+                            <textarea class="form-control" id="productDescription" rows="4" placeholder="Describe your product, condition, and any important details/public." required></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="productPrice" class="form-label">Price ($) *</label>
+                                    <input type="number" class="form-control" id="productPrice" placeholder="0.00" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="productCondition" class="form-label">Condition *</label>
+                                    <select class="form-select" id="productCondition" required>
+                                        <option value="">Select condition</option>
+                                        <option value="new">New</option>
+                                        <option value="like-new">Like New</option>
+                                        <option value="good">Good</option>
+                                        <option value="fair">Fair</option>
+                                        <option value="poor">Poor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="productImages" class="form-label">Product Images</label>
+                            <input type="file" class="form-control" id="productImages" multiple accept="image/*">
+                            <div class="form-text">Upload up to 5 images (optional)</div>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Product
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary">Save as Draft</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Tips for Better Sales</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Use clear, high-quality photos
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Be honest about the condition
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Set competitive prices
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Respond quickly to inquiries
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 

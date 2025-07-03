@@ -1,6 +1,6 @@
 // Firebase imports
-import { loginUser } from './firebase/auth.js';
-import { getUserProfile, updateLastLogin } from './firebase/firestore.js';
+import { loginUser } from '../../src/firebase/auth.js';
+import { getUserProfile, updateLastLogin } from '../../src/firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 
 // DOM elements
@@ -135,9 +135,9 @@ async function handleLogin(formData) {
         
         setTimeout(() => {
             if (userProfile.role === 'personal') {
-                window.location.href = '../marketplace/dashboardStudent.html';
+                window.location.href = '../../pages/dashboards/student/index-student.html';
             } else {
-                window.location.href = '../marketplace/dashboardBusiness.html';
+                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
             }
         }, 1500);
 
