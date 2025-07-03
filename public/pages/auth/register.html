@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapp-it - Register</title>
-    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="/public/css/register.css">
 </head>
 <body>
     <div class="register-container">
         <div class="register-box">
-            <img src="../assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
+            <img src="/public/assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
             <h2>Create Account</h2>            
             <div class="role-selector">
                 <button class="role-btn active" data-role="personal">Personal User</button>
@@ -248,7 +248,7 @@
             const submitBtn = document.querySelector('.register-btn');
             
             if (loading) {
-                submitBtn.textContent = 'Creating Account...';
+                submitBtn.textContent = 'Creating Account/public.';
                 submitBtn.disabled = true;
                 submitBtn.style.opacity = '0.7';
             } else {
@@ -267,12 +267,12 @@
                 const password = formData.get('password');
                 const selectedRole = document.querySelector('.role-btn.active').dataset.role;
 
-                console.log('Starting registration process...');
+                console.log('Starting registration process/public.');
                 console.log('Email:', email);
                 console.log('Role:', selectedRole);
 
                 // 1. Create Firebase Auth user
-                console.log('Creating Firebase Auth user...');
+                console.log('Creating Firebase Auth user/public.');
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 
@@ -326,20 +326,20 @@
                 console.log('User profile data prepared:', userProfile);
 
                 // 3. Create Firestore user profile
-                console.log('Creating Firestore user profile...');
+                console.log('Creating Firestore user profile/public.');
                 const userRef = doc(db, 'users', user.uid);
                 await setDoc(userRef, userProfile);
                 
                 console.log('Firestore user profile created successfully');
 
                 // 4. Success - redirect to dashboard
-                showSuccess('Account created successfully! Redirecting...');
+                showSuccess('Account created successfully! Redirecting/public.');
                 
                 setTimeout(() => {
                     if (selectedRole === 'personal') {
-                        window.location.href = '../marketplace/dashboardStudent.html';
+                        window.location.href = '/public/pages/dashboards/student/index-student.html';
                     } else {
-                        window.location.href = '../marketplace/dashboardBusiness.html';
+                        window.location.href = '/public/pages/dashboards/business/dashboardBusiness.html';
                     }
                 }, 2000);
 
