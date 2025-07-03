@@ -247,9 +247,9 @@ async function handleRegistration(formData) {
         setTimeout(() => {
             // Redirect based on role
             if (selectedRole === 'personal') {
-                window.location.href = '/public/pages/dashboards/student/index-student.html';
+                window.location.href = '../../pages/dashboards/student/index-student.html';
             } else {
-                window.location.href = '/public/pages/dashboards/business/dashboardBusiness.html';
+                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
             }
         }, 2000);
 
