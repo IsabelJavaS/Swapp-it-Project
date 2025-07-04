@@ -86,7 +86,7 @@ function loadSwapCoinScript() {
     }
     
     const script = document.createElement('script');
-    script.src = '/public/js/header-swapcoin.js';
+    script.src = '../../../js/header-swapcoin.js';
     script.async = true;
     document.head.appendChild(script);
 }
@@ -136,10 +136,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (isMainPage) {
         console.log('Loading footer only for main page');
-        await loadComponent('/public/components/footer.html', 'footer-container');
+        await loadComponent('components/footer.html', 'footer-container');
     } else {
         console.log('Loading header and footer for other pages');
-        await loadComponent('/public/components/header.html', 'header-container');
-        await loadComponent('/public/components/footer.html', 'footer-container');
+        await loadComponent('../../../components/header.html', 'header-container');
+        await loadComponent('../../../components/footer.html', 'footer-container');
     }
 });

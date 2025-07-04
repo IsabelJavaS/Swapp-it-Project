@@ -89,18 +89,18 @@ export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.h
         return false;
     }
     
-    if (getUserRole() !== requiredRole) {
-        // Redirect to appropriate dashboard based on user role
-        const userRole = getUserRole();
-        if (userRole === 'personal') {
-            window.location.href = '../../pages/dashboards/student/index-student.html';
-        } else if (userRole === 'business') {
-            window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-        } else {
-            window.location.href = redirectTo;
+            if (getUserRole() !== requiredRole) {
+            // Redirect to appropriate dashboard based on user role
+            const userRole = getUserRole();
+            if (userRole === 'personal') {
+                window.location.href = '../../pages/dashboards/student/index-student.html';
+            } else if (userRole === 'business') {
+                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
+            } else {
+                window.location.href = redirectTo;
+            }
+            return false;
         }
-        return false;
-    }
     
     return true;
 };

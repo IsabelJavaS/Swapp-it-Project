@@ -2,26 +2,33 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Student Dashboard initialized');
     
-    // Initialize navigation
-    initializeNavigation();
-    
-    // Load default section (dashboard)
-    loadSection('dashboard');
-    
-    // Initialize sidebar collapse functionality
-    initializeSidebarCollapse();
-    
-    addStatCardRippleEffect();
-    addActivityItemRippleEffect();
+    // Wait a bit for components to load
+    setTimeout(() => {
+        // Initialize navigation
+        initializeNavigation();
+        
+        // Load default section (dashboard)
+        loadSection('dashboard');
+        
+        // Initialize sidebar collapse functionality
+        initializeSidebarCollapse();
+        
+        addStatCardRippleEffect();
+        addActivityItemRippleEffect();
+    }, 100);
 });
 
 // Initialize navigation functionality
 function initializeNavigation() {
     const navLinks = document.querySelectorAll('.sidebar-nav .nav-link[data-section]');
     
+    console.log('Found nav links:', navLinks.length);
+    
     navLinks.forEach(link => {
+        console.log('Setting up event listener for:', link.getAttribute('data-section'));
         link.addEventListener('click', function(e) {
             e.preventDefault();
+            console.log('Nav link clicked:', this.getAttribute('data-section'));
             
             // Remove active class from all links
             navLinks.forEach(l => l.parentElement.classList.remove('active'));
@@ -60,7 +67,9 @@ async function loadSection(sectionName) {
         `;
         
         // Load section content
-        const response = await fetch(`/public/pages/dashboards/student/${sectionName}.html`);
+        const sectionUrl = `${sectionName}.html`;
+        console.log('Fetching section from:', sectionUrl);
+        const response = await fetch(sectionUrl);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -70,6 +79,9 @@ async function loadSection(sectionName) {
         
         // Update main content
         mainContent.innerHTML = content;
+        
+        // Re-initialize navigation after content is loaded
+        initializeNavigation();
         
         // Initialize section-specific functionality
         initializeSectionFunctionality(sectionName);

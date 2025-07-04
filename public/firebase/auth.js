@@ -11,6 +11,7 @@ import {
   confirmPasswordReset as firebaseConfirmPasswordReset
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
 import { auth } from '../firebase/config.js';
+import { getUserProfile, updateLastLogin } from '../firebase/firestore.js';
 
 // User registration
 export const registerUser = async (email, password, displayName) => {
@@ -62,7 +63,7 @@ export const resetPassword = async (email) => {
     console.log('Current domain:', currentDomain);
     
     const actionCodeSettings = {
-      url: `${currentDomain}/public/pages/change-password.html`,
+      url: `${currentDomain}/pages/auth/change-password.html`,
       handleCodeInApp: true
     };
     
