@@ -17,8 +17,10 @@
     
 </head>
 <body>
-    <!-- Header Component -->
-    <header-component></header-component>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
     
     <main class="product-detail-page">
         <!-- Breadcrumb -->
@@ -474,7 +476,11 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <!-- Web Components -->
     <script src="../../components/header-component.js"></script>
+    <script src="../../components/header-auth-component.js"></script>
     <script src="../../components/footer-component.js"></script>
+
+    <!-- Global Header Manager -->
+    <script src="../../js/global-header-manager.js"></script>
 
     <script>
         // Initialize Swiper

@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="../../css/swapcoin-info.css">
 </head>
 <body>
-    <!-- Header Universal -->
-    <header-component></header-component>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
     
     <!-- Main Content -->
     <main class="swapcoin-container">
@@ -87,7 +89,11 @@
     
     <!-- Web Components -->
     <script src="../../components/header-component.js"></script>
+    <script src="../../components/header-auth-component.js"></script>
     <script src="../../components/footer-component.js"></script>
+
+    <!-- Global Header Manager -->
+    <script src="../../js/global-header-manager.js"></script>
     
     <!-- Custom JavaScript -->
     <script src="../../js/swapcoin-info.js"></script>

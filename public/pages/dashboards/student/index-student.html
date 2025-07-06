@@ -13,8 +13,10 @@
     <link href="../../../css/dashboard-student.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header Component -->
-    <header-component></header-component>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
 
     
     <div class="dashboard-container">
@@ -106,9 +108,13 @@
     
     <!-- Web Components -->
     <script src="../../../components/header-component.js"></script>
+    <script src="../../../components/header-auth-component.js"></script>
     <script src="../../../components/footer-component.js"></script>
     
     <!-- Custom JavaScript -->
     <script src="../../../js/student-dashboard.js"></script>
+    
+    <!-- Global Header Manager -->
+    <script src="../../../js/global-header-manager.js"></script>
 </body>
 </html> 

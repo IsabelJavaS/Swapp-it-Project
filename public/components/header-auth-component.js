@@ -17,11 +17,11 @@ class HeaderAuthComponent extends HTMLElement {
     // Initialize Firebase Auth
     async initializeAuth() {
         try {
-            // Import Firebase Auth
-            const { getAuth, onAuthStateChanged } = await import('/public/firebase/auth.js');
-            const auth = getAuth();
+            // Use existing Firebase configuration
+            const { auth } = await import('/public/firebase/config.js');
+            const { onAuthStateChange } = await import('/public/firebase/auth.js');
             
-            onAuthStateChanged(auth, (user) => {
+            onAuthStateChange((user) => {
                 if (user) {
                     this.userData = {
                         uid: user.uid,
@@ -31,31 +31,27 @@ class HeaderAuthComponent extends HTMLElement {
                     };
                     this.updateUserInterface();
                 } else {
-                    // For demo purposes, create a mock user
-                    // In production, redirect to login
-                    this.userData = {
-                        uid: 'demo-user',
-                        email: 'demo@swappit.com',
-                        displayName: 'Demo User',
-                        photoURL: null
-                    };
-                    this.updateUserInterface();
-                    
-                    // Uncomment this line to redirect to login in production:
-                    // window.location.href = this.getLoginPath();
+                    // Redirect to landing page if not authenticated
+                    window.location.href = '/public/index.html';
                 }
             });
+            
+            // Check current user immediately
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                this.userData = {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    displayName: currentUser.displayName || currentUser.email.split('@')[0],
+                    photoURL: currentUser.photoURL || null
+                };
+                this.updateUserInterface();
+            }
+            
         } catch (error) {
             console.error('Error initializing auth:', error);
-            
-            // Fallback for demo purposes
-            this.userData = {
-                uid: 'demo-user',
-                email: 'demo@swappit.com',
-                displayName: 'Demo User',
-                photoURL: null
-            };
-            this.updateUserInterface();
+            // Redirect to landing page on error
+            window.location.href = '/public/index.html';
         }
     }
 
@@ -167,7 +163,7 @@ class HeaderAuthComponent extends HTMLElement {
 
     getDashboardPath() {
         const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        return isLiveServer ? '/public/pages/dashboards/student/dashboard.html' : 'pages/dashboards/student/dashboard.html';
+        return isLiveServer ? '/public/pages/dashboards/student/index-student.html' : 'pages/dashboards/student/index-student.html';
     }
 
     getLoginPath() {
@@ -876,11 +872,22 @@ class HeaderAuthComponent extends HTMLElement {
     
     async handleLogout() {
         try {
-            const { getAuth, signOut } = await import('/public/firebase/auth.js');
-            const auth = getAuth();
+            // Use existing Firebase configuration and logout function
+            const { logoutUser } = await import('/public/firebase/auth.js');
             
-            await signOut(auth);
-            window.location.href = this.getLoginPath();
+            // Close dropdown first
+            this.closeDropdown();
+            
+            // Sign out using existing function
+            const result = await logoutUser();
+            
+            if (result.success) {
+                // Redirect to landing page (index.html) instead of login
+                window.location.href = '/public/index.html';
+            } else {
+                throw new Error(result.error);
+            }
+            
         } catch (error) {
             console.error('Error signing out:', error);
             alert('Error signing out. Please try again.');

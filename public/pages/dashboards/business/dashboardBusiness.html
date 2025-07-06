@@ -15,8 +15,10 @@
     <link href="../../../css/dashboard-business.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Header Component -->
-    <header-component></header-component>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
 
     <!-- Dashboard Content -->
     <div class="dashboard-container">
@@ -311,7 +313,11 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
     <!-- Web Components -->
     <script src="../../../components/header-component.js"></script>
+    <script src="../../../components/header-auth-component.js"></script>
     <script src="../../../components/footer-component.js"></script>
+
+    <!-- Global Header Manager -->
+    <script src="../../../js/global-header-manager.js"></script>
     
     <!-- Custom JavaScript -->
     <script src="../../../js/dashboard.js"></script>
