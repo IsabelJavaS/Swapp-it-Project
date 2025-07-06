@@ -1,4 +1,4 @@
-// Header Component Simple
+// Header Component with SWAPPIT Branding
 class HeaderComponent extends HTMLElement {
     constructor() {
         super();
@@ -41,20 +41,39 @@ class HeaderComponent extends HTMLElement {
         
         this.shadowRoot.innerHTML = `
             <style>
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+                @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+                
                 :host {
                     display: block;
                     width: 100%;
                 }
                 
+                /* CSS Variables */
+                :host {
+                    --swappit-blue: #3468c0;
+                    --swappit-orange: #ffa424;
+                    --swappit-blue-hover: #1d4ed8;
+                    --swappit-orange-hover: #ff5722;
+                    --neutral-dark: #1e293b;
+                    --neutral-medium: #64748b;
+                    --neutral-light: #f1f5f9;
+                    --background-white: #ffffff;
+                    --shadow-color: rgba(37, 99, 235, 0.1);
+                    --font-primary: 'Poppins', sans-serif;
+                    --font-secondary: 'Inter', sans-serif;
+                }
+                
                 .header {
-                    background: white;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    background: var(--background-white);
+                    box-shadow: 0 4px 6px var(--shadow-color);
                     position: fixed;
                     top: 0;
                     left: 0;
                     right: 0;
                     z-index: 1000;
                     height: 80px;
+                    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
                 }
                 
                 .nav {
@@ -73,10 +92,16 @@ class HeaderComponent extends HTMLElement {
                     justify-content: space-between;
                 }
                 
-                /* Logo */
+                /* Logo - Left side */
                 .logo {
                     text-decoration: none;
                     flex-shrink: 0;
+                    transition: transform 0.3s ease;
+                    z-index: 10;
+                }
+                
+                .logo:hover {
+                    transform: translateY(-1px);
                 }
                 
                 .logo img {
@@ -85,81 +110,89 @@ class HeaderComponent extends HTMLElement {
                     display: block;
                 }
                 
-                /* Menu */
+                /* Menu - Center */
                 .menu {
                     display: flex;
-                    gap: 2rem;
+                    gap: 1.5rem;
                     justify-content: center;
+                    align-items: center;
                     flex: 1;
                     margin: 0 2rem;
                 }
                 
                 .menu a {
-                    color: #1f2937;
+                    color: var(--neutral-dark);
                     text-decoration: none;
-                    font-weight: 500;
-                    font-size: 1.1rem;
+                    font-family: var(--font-primary);
+                    font-weight: 400;
+                    font-size: 0.95rem;
                     padding: 0.5rem 1rem;
                     border-radius: 6px;
-                    transition: background 0.2s, color 0.2s;
+                    transition: all 0.3s ease;
                     white-space: nowrap;
+                    position: relative;
+                    overflow: hidden;
+                    text-transform: capitalize;
+                    letter-spacing: 0.2px;
+                }
+                
+                /* Interesting underline effect */
+                .menu a::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 3px;
+                    background: linear-gradient(90deg, var(--swappit-blue), var(--swappit-orange));
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    transform: translateX(-50%);
+                    opacity: 0;
+                    border-radius: 2px;
+                }
+                
+                .menu a::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(52, 104, 192, 0.08), transparent);
+                    transform: translateX(-50%) scaleX(0);
+                    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
                 }
                 
                 .menu a:hover {
-                    background: #f3f4f6;
-                    color: #2563eb;
+                    color: var(--swappit-blue);
+                    transform: translateY(-1px);
                 }
                 
-                /* Right side */
+                .menu a:hover::before {
+                    width: 80%;
+                    opacity: 1;
+                }
+                
+                .menu a:hover::after {
+                    transform: translateX(-50%) scaleX(1);
+                }
+                
+                .menu a.active {
+                    color: var(--swappit-blue);
+                    font-weight: 600;
+                }
+                
+                .menu a.active::before {
+                    width: 80%;
+                    opacity: 1;
+                }
+                
+                /* Right side - Auth buttons */
                 .right {
                     display: flex;
                     align-items: center;
                     gap: 1rem;
                     flex-shrink: 0;
-                }
-                
-                /* Search */
-                .search {
-                    position: relative;
-                    margin-right: 1rem;
-                }
-                
-                .search-btn {
-                    background: none;
-                    border: none;
-                    color: #1f2937;
-                    font-size: 1.2rem;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    padding: 0.5rem;
-                    border-radius: 50%;
-                    transition: background 0.2s;
-                }
-                
-                .search-btn:hover {
-                    background: #f3f4f6;
-                }
-                
-                .search-input {
-                    position: absolute;
-                    right: 0;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 0;
-                    opacity: 0;
-                    border: 1px solid #e5e7eb;
-                    border-radius: 25px;
-                    padding: 0.5rem 1rem;
-                    font-size: 1rem;
-                    background: #fff;
-                    transition: width 0.3s, opacity 0.3s;
-                    z-index: 10;
-                }
-                
-                .search.active .search-input {
-                    width: 200px;
-                    opacity: 1;
                 }
                 
                 /* Buttons */
@@ -171,63 +204,116 @@ class HeaderComponent extends HTMLElement {
                 
                 .btn {
                     border: none;
-                    border-radius: 25px;
-                    padding: 0.5rem 1.25rem;
-                    font-size: 0.95rem;
+                    border-radius: 50px;
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.9rem;
                     font-weight: 600;
                     cursor: pointer;
-                    transition: background 0.2s, color 0.2s;
+                    transition: all 0.3s ease;
                     text-decoration: none;
                     display: inline-flex;
                     align-items: center;
+                    font-family: var(--font-primary);
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .btn::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                    transition: left 0.5s ease;
+                }
+                
+                .btn:hover::before {
+                    left: 100%;
                 }
                 
                 .btn-signin {
-                    background: #f3f4f6;
-                    color: #2563eb;
+                    background: transparent;
+                    color: var(--swappit-blue);
+                    border: 2px solid var(--swappit-blue);
                 }
                 
                 .btn-signin:hover {
-                    background: #2563eb;
+                    background: var(--swappit-blue);
                     color: white;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3);
                 }
                 
                 .btn-signup {
-                    background: #2563eb;
+                    background: var(--swappit-orange);
                     color: white;
+                    box-shadow: 0 2px 4px rgba(255, 164, 36, 0.3);
                 }
                 
                 .btn-signup:hover {
-                    background: #1d4ed8;
+                    background: var(--swappit-orange-hover);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.4);
                 }
                 
-                /* Responsive */
-                @media (max-width: 768px) {
+                /* Mobile menu toggle */
+                .mobile-toggle {
+                    display: none;
+                    background: none;
+                    border: none;
+                    color: var(--neutral-dark);
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 6px;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-toggle:hover {
+                    background: var(--neutral-light);
+                    color: var(--swappit-blue);
+                }
+                
+                /* Responsive Design */
+                @media (max-width: 991px) {
                     .menu {
                         display: none;
                     }
                     
-                    .right {
-                        gap: 0.5rem;
+                    .mobile-toggle {
+                        display: block;
                     }
                     
-                    .search {
-                        margin-right: 0.5rem;
+                    .container {
+                        justify-content: space-between;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .container {
+                        padding: 0 0.5rem;
                     }
                     
                     .logo img {
                         width: 120px;
                     }
-                }
-                
-                @media (max-width: 480px) {
+                    
                     .buttons {
                         gap: 0.5rem;
                     }
                     
                     .btn {
-                        padding: 0.5rem 0.75rem;
-                        font-size: 0.85rem;
+                        padding: 0.4rem 1rem;
+                        font-size: 0.8rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .btn {
+                        padding: 0.3rem 0.8rem;
+                        font-size: 0.75rem;
                     }
                     
                     .logo img {
@@ -239,33 +325,34 @@ class HeaderComponent extends HTMLElement {
             <header class="header">
                 <nav class="nav">
                     <div class="container">
-                        <!-- Logo -->
-                        <a class="logo" href="${this.getHomePath()}">
-                            <img src="${logoPath}" alt="Logo Swapp-it">
+                        <!-- Logo - Left -->
+                        <a href="${this.getHomePath()}" class="logo">
+                            <img src="${logoPath}" alt="SWAPPIT Logo">
                         </a>
                         
-                        <!-- Menu -->
+                        <!-- Navigation Menu - Center -->
                         <div class="menu">
-                            <a href="${this.getHomePath()}">Home</a>
-                            <a href="${this.getMarketplacePath()}">Marketplace</a>
-                            <a href="${this.getHomePath()}#about">About Us</a>
-                            <a href="${this.getHomePath()}#contact">Contact</a>
+                            <a href="${this.getHomePath()}" class="nav-link">Home</a>
+                            <a href="${this.getMarketplacePath()}" class="nav-link">Marketplace</a>
+                            <a href="#about" class="nav-link">About Us</a>
+                            <a href="#contact" class="nav-link">Contact</a>
                         </div>
                         
-                        <!-- Right -->
+                        <!-- Right Side - Auth Buttons -->
                         <div class="right">
-                            <!-- Search -->
-                            <div class="search" id="search">
-                                <button class="search-btn" id="searchBtn">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
-                            </div>
+                            <!-- Mobile Menu Toggle -->
+                            <button class="mobile-toggle" id="mobileToggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
                             
-                            <!-- Buttons -->
+                            <!-- Auth Buttons -->
                             <div class="buttons">
-                                <a href="${this.getLoginPath()}" class="btn btn-signin">Sign In</a>
-                                <a href="${this.getRegisterPath()}" class="btn btn-signup">Sign Up</a>
+                                <a href="${this.getLoginPath()}" class="btn btn-signin">
+                                    Sign In
+                                </a>
+                                <a href="${this.getRegisterPath()}" class="btn btn-signup">
+                                    Sign Up
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -355,34 +442,42 @@ class HeaderComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Search functionality
-        const search = this.shadowRoot.getElementById('search');
-        const searchBtn = this.shadowRoot.getElementById('searchBtn');
-        const searchInput = this.shadowRoot.getElementById('searchInput');
-        
-        if (searchBtn && search && searchInput) {
-            searchBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                search.classList.toggle('active');
-                if (search.classList.contains('active')) {
-                    searchInput.focus();
-                }
-            });
-            
-            // Close on outside click
-            document.addEventListener('click', (e) => {
-                if (!this.shadowRoot.contains(e.target)) {
-                    search.classList.remove('active');
-                }
-            });
-            
-            // Enter to search
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    search.classList.remove('active');
-                }
+        // Mobile menu toggle
+        const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => {
+                // For now, just show an alert. You can implement a mobile menu later
+                alert('Menú móvil - Funcionalidad en desarrollo');
             });
         }
+        
+        // Active link highlighting
+        const navLinks = this.shadowRoot.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // Remove active class from all links
+                navLinks.forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                link.classList.add('active');
+            });
+        });
+        
+        // Set active link based on current page
+        this.setActiveLink();
+    }
+    
+    setActiveLink() {
+        const currentPath = window.location.pathname;
+        const navLinks = this.shadowRoot.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || 
+                (currentPath.includes('index.html') && href.includes('index.html')) ||
+                (currentPath.includes('marketplace') && href.includes('marketplace'))) {
+                link.classList.add('active');
+            }
+        });
     }
 }
 
