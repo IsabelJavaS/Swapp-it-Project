@@ -2,6 +2,7 @@
 import { registerUser } from '../firebase/auth.js';
 import { createUserProfile } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
+import pathConfig from './config.js';
 
 // DOM elements
 const roleButtons = document.querySelectorAll('.role-btn');
@@ -246,11 +247,7 @@ async function handleRegistration(formData) {
         
         setTimeout(() => {
             // Redirect based on role
-            if (selectedRole === 'personal') {
-                window.location.href = '../../pages/dashboards/student/index-student.html';
-            } else {
-                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-            }
+            pathConfig.redirectToDashboard(selectedRole);
         }, 2000);
 
     } catch (error) {

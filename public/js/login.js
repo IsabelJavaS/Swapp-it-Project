@@ -2,6 +2,7 @@
 import { loginUser } from '../firebase/auth.js';
 import { getUserProfile, updateLastLogin } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
+import pathConfig from './config.js';
 
 // DOM elements
 const loginForm = document.getElementById('loginForm');
@@ -134,11 +135,7 @@ async function handleLogin(formData) {
         showSuccess('Login successful! Redirecting...');
         
         setTimeout(() => {
-            if (userProfile.role === 'personal') {
-                window.location.href = '../../pages/dashboards/student/index-student.html';
-            } else {
-                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-            }
+            pathConfig.redirectToDashboard(userProfile.role);
         }, 1500);
 
     } catch (error) {

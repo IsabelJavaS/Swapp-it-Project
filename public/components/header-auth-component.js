@@ -137,43 +137,24 @@ class HeaderAuthComponent extends HTMLElement {
 
     // Get logo path
     getLogoPath() {
-        const currentPath = window.location.pathname;
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            return '/public/assets/logos/LogoSinFondo.png';
-        }
-        
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'assets/logos/LogoSinFondo.png';
-        }
-        
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}assets/logos/LogoSinFondo.png`;
+        return window.pathConfig ? window.pathConfig.getLogoPath() : '../../assets/logos/LogoSinFondo.png';
     }
 
     // Get paths
     getMarketplacePath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        return isLiveServer ? '/public/pages/marketplace/marketplace-page.html' : 'pages/marketplace/marketplace-page.html';
+        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '../../pages/marketplace/marketplace-page.html';
     }
 
     getDashboardPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        return isLiveServer ? '/public/pages/dashboards/student/index-student.html' : 'pages/dashboards/student/index-student.html';
+        return window.pathConfig ? window.pathConfig.getStudentDashboardPath() : '../../dashboards/student/student-dashboard.html';
     }
 
     getLoginPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        return isLiveServer ? '/public/pages/auth/login.html' : 'pages/auth/login.html';
+        return window.pathConfig ? window.pathConfig.getLoginPath() : '../../pages/auth/login.html';
     }
 
     getSwapcoinInfoPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        return isLiveServer ? '/public/pages/swapcoin/info.html' : 'pages/swapcoin/info.html';
+        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '../../pages/swapcoin/info.html';
     }
 
     render() {
@@ -241,6 +222,10 @@ class HeaderAuthComponent extends HTMLElement {
                     flex-shrink: 0;
                     transition: all 0.3s ease;
                     z-index: 10;
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
+                    padding: 0.5rem 0;
                 }
                 
                 .logo:hover {
@@ -251,6 +236,7 @@ class HeaderAuthComponent extends HTMLElement {
                     width: 140px;
                     height: auto;
                     display: block;
+                    object-fit: contain;
                 }
                 
                 /* Menu - Center */

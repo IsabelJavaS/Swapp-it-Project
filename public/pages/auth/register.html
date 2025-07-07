@@ -80,6 +80,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="../../js/config.js" type="module"></script>
+    
     <!-- Firebase SDK -->
     <script type="module">
         // Import Firebase modules
@@ -334,13 +337,19 @@
                 console.log('Firestore user profile created successfully');
 
                 // 4. Success - redirect to dashboard
-                showSuccess('Account created successfully! Redirecting/public.');
+                showSuccess('Account created successfully! Redirecting...');
                 
                 setTimeout(() => {
-                    if (selectedRole === 'personal') {
-                        window.location.href = '../dashboards/student/index-student.html';
+                    // Usar pathConfig si está disponible, sino usar rutas por defecto
+                    if (window.pathConfig) {
+                        window.pathConfig.redirectToDashboard(selectedRole);
                     } else {
-                        window.location.href = '../dashboards/business/dashboardBusiness.html';
+                        // Fallback para cuando pathConfig no esté disponible
+                        if (selectedRole === 'personal') {
+                            window.location.href = '/dashboards/student/student-dashboard.html';
+                        } else {
+                            window.location.href = '/dashboards/business/business-dashboard.html';
+                        }
                     }
                 }, 2000);
 

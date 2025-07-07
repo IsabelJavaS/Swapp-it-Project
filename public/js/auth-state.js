@@ -1,6 +1,7 @@
 // Global Authentication State Management
 import { onAuthStateChange, getCurrentUser, logoutUser } from '../firebase/auth.js';
 import { getUserProfile } from '../firebase/firestore.js';
+import pathConfig from './config.js';
 
 // Global state
 let currentUser = null;
@@ -88,20 +89,12 @@ export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.h
     if (!requireAuth(redirectTo)) {
         return false;
     }
-    
-            if (getUserRole() !== requiredRole) {
-            // Redirect to appropriate dashboard based on user role
-            const userRole = getUserRole();
-            if (userRole === 'personal') {
-                window.location.href = '../../pages/dashboards/student/index-student.html';
-            } else if (userRole === 'business') {
-                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-            } else {
-                window.location.href = redirectTo;
-            }
-            return false;
-        }
-    
+    if (getUserRole() !== requiredRole) {
+        // Redirect to appropriate dashboard based on user role
+        const userRole = getUserRole();
+        pathConfig.redirectToDashboard(userRole);
+        return false;
+    }
     return true;
 };
 
@@ -135,18 +128,11 @@ export const handleLogout = async () => {
 // ==================== NAVIGATION HELPERS ====================
 export const navigateToDashboard = () => {
     if (!isAuthenticated()) {
-        window.location.href = '../../pages/auth/login.html';
+        pathConfig.redirectTo(pathConfig.getLoginPath());
         return;
     }
-    
     const role = getUserRole();
-    if (role === 'personal') {
-        window.location.href = '../../pages/dashboards/student/index-student.html';
-    } else if (role === 'business') {
-        window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-    } else {
-        window.location.href = '../../pages/auth/login.html';
-    }
+    pathConfig.redirectToDashboard(role);
 };
 
 // Initialize auth state when module is loaded
