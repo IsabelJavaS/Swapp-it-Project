@@ -20,6 +20,12 @@ export const initializeAuthState = () => {
                 const profileResult = await getUserProfile(user.uid);
                 if (profileResult.success) {
                     userProfile = profileResult.data;
+                    // Guardar el rol en localStorage y sessionStorage
+                    if (userProfile && userProfile.role) {
+                        window.localStorage.setItem('userRole', userProfile.role);
+                        window.sessionStorage.setItem('userRole', userProfile.role);
+                        window.userProfile = userProfile; // Para acceso global
+                    }
                 } else {
                     console.error('Failed to get user profile:', profileResult.error);
                     userProfile = null;

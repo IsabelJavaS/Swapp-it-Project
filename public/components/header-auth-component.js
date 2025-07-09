@@ -146,7 +146,28 @@ class HeaderAuthComponent extends HTMLElement {
     }
 
     getDashboardPath() {
-        return window.pathConfig ? window.pathConfig.getStudentDashboardPath() : '../../dashboards/student/student-dashboard.html';
+        // Intentar obtener el rol del usuario desde el perfil global
+        let role = null;
+        if (window.userProfile && window.userProfile.role) {
+            role = window.userProfile.role;
+        } else if (window.localStorage.getItem('userRole')) {
+            role = window.localStorage.getItem('userRole');
+        } else if (window.sessionStorage.getItem('userRole')) {
+            role = window.sessionStorage.getItem('userRole');
+        }
+        if (window.pathConfig) {
+            if (role === 'business') {
+                return window.pathConfig.getBusinessDashboardPath();
+            } else {
+                return window.pathConfig.getStudentDashboardPath();
+            }
+        }
+        // Fallback
+        if (role === 'business') {
+            return '../../dashboards/business/business-dashboard.html';
+        } else {
+            return '../../dashboards/student/student-dashboard.html';
+        }
     }
 
     getLoginPath() {
