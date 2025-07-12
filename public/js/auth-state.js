@@ -83,7 +83,7 @@ export const onAuthStateChanged = (callback) => {
 };
 
 // ==================== ROUTE PROTECTION ====================
-export const requireAuth = (redirectTo = '../../pages/auth/login.html') => {
+export const requireAuth = (redirectTo = '/pages/auth/login.html') => {
     if (!isAuthenticated()) {
         window.location.href = redirectTo;
         return false;
@@ -91,7 +91,7 @@ export const requireAuth = (redirectTo = '../../pages/auth/login.html') => {
     return true;
 };
 
-export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.html') => {
+export const requireRole = (requiredRole, redirectTo = '/pages/auth/login.html') => {
     if (!requireAuth(redirectTo)) {
         return false;
     }
@@ -104,11 +104,11 @@ export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.h
     return true;
 };
 
-export const requirePersonalUser = (redirectTo = '../../pages/auth/login.html') => {
+export const requirePersonalUser = (redirectTo = '/pages/auth/login.html') => {
     return requireRole('personal', redirectTo);
 };
 
-export const requireBusinessUser = (redirectTo = '../../pages/auth/login.html') => {
+export const requireBusinessUser = (redirectTo = '/pages/auth/login.html') => {
     return requireRole('business', redirectTo);
 };
 
@@ -122,7 +122,7 @@ export const handleLogout = async () => {
             userProfile = null;
             
             // Redirect to login page
-            window.location.href = '../../pages/auth/login.html';
+            window.location.href = '/pages/auth/login.html';
         } else {
             console.error('Logout failed:', result.error);
         }
