@@ -8,6 +8,7 @@ class HeaderComponent extends HTMLElement {
     connectedCallback() {
         this.render();
         this.attachEventListeners();
+        this.setupMarketplaceDropdownHover();
     }
 
     // Función para obtener la ruta correcta del logo
@@ -321,6 +322,172 @@ class HeaderComponent extends HTMLElement {
                     }
                 }
             </style>
+            <style>
+                /* Dropdown styles for Marketplace - Prada style */
+                .dropdown-container {
+                    position: relative;
+                    display: inline-block;
+                }
+                .dropdown-menu.wide {
+                    display: none;
+                    position: fixed;
+                    left: 0;
+                    top: 80px;
+                    width: 100vw;
+                    min-width: unset;
+                    background: #fff;
+                    box-shadow: 0 8px 32px rgba(37,99,235,0.12), 0 1.5px 6px rgba(0,0,0,0.04);
+                    border-radius: 0 0 18px 18px;
+                    padding: 2.5rem max(8vw, 2.5rem) 2.5rem max(8vw, 2.5rem);
+                    z-index: 9999;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), top 0.35s cubic-bezier(0.4,0,0.2,1);
+                }
+                .dropdown-container:hover .dropdown-menu.wide,
+                .dropdown-container:focus-within .dropdown-menu.wide {
+                    display: block;
+                    opacity: 1;
+                    pointer-events: auto;
+                    top: 80px;
+                }
+                .dropdown-grid {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 2.5rem;
+                    align-items: flex-start;
+                }
+                .dropdown-col {
+                    flex: 1 1 0;
+                    min-width: 180px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.2rem;
+                }
+                .image-col {
+                    align-items: flex-start;
+                    text-align: left;
+                    justify-content: center;
+                }
+                .dropdown-image {
+                    width: 120px;
+                    height: auto;
+                    border-radius: 12px;
+                    margin-bottom: 0;
+                    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+                }
+                .links-col {
+                    align-items: flex-start;
+                    text-align: left;
+                    justify-content: center;
+                }
+                .desc-col {
+                    align-items: flex-start;
+                    text-align: left;
+                    justify-content: center;
+                }
+                .dropdown-title {
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: var(--swappit-blue);
+                    margin-bottom: 0.5rem;
+                    font-family: var(--font-primary);
+                }
+                .dropdown-list {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.7rem;
+                }
+                .dropdown-list li a {
+                    color: var(--neutral-dark);
+                    text-decoration: none;
+                    font-size: 1.05rem;
+                    font-family: var(--font-secondary);
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 6px;
+                    transition: background 0.2s, color 0.2s;
+                    display: block;
+                }
+                .dropdown-list li a:hover {
+                    background: var(--swappit-blue);
+                    color: #fff;
+                }
+                .dropdown-desc {
+                    font-size: 0.98rem;
+                    color: var(--neutral-dark);
+                    margin-top: 0;
+                    font-family: var(--font-secondary);
+                }
+                @media (max-width: 991px) {
+                    .dropdown-menu.wide {
+                        display: none !important;
+                    }
+                }
+                .dropdown-grid.prada-style {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 3rem;
+                    align-items: center;
+                    justify-content: flex-start;
+                }
+                .dropdown-col.image-col {
+                    flex: 0 0 340px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .dropdown-image-large {
+                    width: 320px;
+                    height: auto;
+                    border-radius: 14px;
+                    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+                    object-fit: cover;
+                }
+                .dropdown-col.links-col {
+                    flex: 1 1 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    min-width: 200px;
+                }
+                .dropdown-title {
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: var(--swappit-blue);
+                    margin-bottom: 0.5rem;
+                    font-family: var(--font-primary);
+                }
+                .dropdown-list {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.7rem;
+                }
+                .dropdown-list li a {
+                    color: var(--neutral-dark);
+                    text-decoration: none;
+                    font-size: 1.05rem;
+                    font-family: var(--font-secondary);
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 6px;
+                    transition: background 0.2s, color 0.2s;
+                    display: block;
+                }
+                .dropdown-list li a:hover {
+                    background: var(--swappit-blue);
+                    color: #fff;
+                }
+                /* Remove pointer-events for hover, now handled by JS */
+                .dropdown-menu.wide {
+                    pointer-events: none;
+                }
+            </style>
             
             <header class="header">
                 <nav class="nav">
@@ -333,7 +500,25 @@ class HeaderComponent extends HTMLElement {
                         <!-- Navigation Menu - Center -->
                         <div class="menu">
                             <a href="${this.getHomePath()}" class="nav-link">Home</a>
-                            <a href="${this.getMarketplacePath()}" class="nav-link">Marketplace</a>
+                            <div class="dropdown-container">
+                                <a href="${this.getMarketplacePath()}" class="nav-link marketplace-link" id="marketplaceLink">Marketplace</a>
+                                <div class="dropdown-menu wide" id="marketplaceDropdown">
+                                    <div class="dropdown-grid prada-style">
+                                        <!-- Column 1: Large Image -->
+                                        <div class="dropdown-col image-col">
+                                            <img src="assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
+                                        </div>
+                                        <!-- Column 2: Title + Links -->
+                                        <div class="dropdown-col links-col">
+                                            <div class="dropdown-title">Marketplace</div>
+                                            <ul class="dropdown-list">
+                                                <li><a href="${this.getMarketplacePath()}">View Products</a></li>
+                                                <li><a href="${this.getMarketplacePath()}?action=add">Post a Product</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <a href="#about" class="nav-link">About Us</a>
                             <a href="#contact" class="nav-link">Contact</a>
                         </div>
@@ -464,6 +649,47 @@ class HeaderComponent extends HTMLElement {
         
         // Set active link based on current page
         this.setActiveLink();
+    }
+
+    setupMarketplaceDropdownHover() {
+        const shadow = this.shadowRoot;
+        const container = shadow.querySelector('.dropdown-container');
+        const dropdown = shadow.getElementById('marketplaceDropdown');
+        if (!container || !dropdown) return;
+
+        let dropdownTimeout;
+        let hoverTimer;
+        let isDropdownOpen = false;
+
+        const showDropdown = () => {
+            dropdown.style.display = 'block';
+            setTimeout(() => {
+                dropdown.style.opacity = '1';
+                dropdown.style.pointerEvents = 'auto';
+            }, 10);
+            isDropdownOpen = true;
+        };
+        const hideDropdown = () => {
+            dropdown.style.opacity = '0';
+            dropdown.style.pointerEvents = 'none';
+            dropdownTimeout = setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 250);
+            isDropdownOpen = false;
+        };
+
+        container.addEventListener('mouseenter', () => {
+            clearTimeout(dropdownTimeout);
+            if (!isDropdownOpen) {
+                hoverTimer = setTimeout(() => {
+                    showDropdown();
+                }, 2000); // 2 segundos
+            }
+        });
+        container.addEventListener('mouseleave', () => {
+            clearTimeout(hoverTimer);
+            hideDropdown();
+        });
     }
     
     setActiveLink() {
