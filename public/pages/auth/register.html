@@ -19,44 +19,86 @@
 
             <form id="registerForm">
                 <!-- Campos comunes para ambos roles -->
-                <div class="form-group">
+                <!-- Email -->
+                <div class="form-group input-icon-group">
                     <input type="email" id="email" name="email" placeholder="Email" required>
+                    <span class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </span>
                 </div>
-                <div class="form-group">
+                <!-- Password y Confirm Password ya tienen icono -->
+                <div class="form-group password-group">
                     <input type="password" id="password" name="password" placeholder="Password" required>
+                    <button type="button" class="toggle-password" data-target="password" tabindex="-1" aria-label="Show/Hide password">
+                        <span class="eye-icon">
+                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </button>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-group">
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                    <button type="button" class="toggle-password" data-target="confirmPassword" tabindex="-1" aria-label="Show/Hide password">
+                        <span class="eye-icon">
+                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </button>
                 </div>
 
                 <!-- Campos para usuario personal -->
-                <div class="personal-fields" id="personalFields">
-                    <div class="form-group">
-                        <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="direccion" name="direccion" placeholder="Address" required>
-                    </div>
+                <!-- Nombre (personal) -->
+                <div class="form-group input-icon-group personal-fields" id="personalFields">
+                    <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
+                    <span class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M2 20c0-4 8-6 10-6s10 2 10 6"/></svg>
+                    </span>
+                </div>
+                <!-- Teléfono (personal) -->
+                <div class="form-group input-icon-group personal-fields">
+                    <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
+                    <span class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                </div>
+                <!-- Dirección (personal) -->
+                <div class="form-group input-icon-group personal-fields">
+                    <input type="text" id="direccion" name="direccion" placeholder="Address" required>
+                    <span class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </span>
                 </div>
 
                 <!-- Campos para negocio -->
                 <div class="business-fields hidden" id="businessFields">
-                    <div class="form-group">
+                    <!-- Nombre de negocio -->
+                    <div class="form-group input-icon-group">
                         <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name">
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4M8 3v4"/></svg>
+                        </span>
                     </div>
-                    <div class="form-group">
+                    <!-- RUC -->
+                    <div class="form-group input-icon-group">
                         <input type="text" id="ruc" name="ruc" placeholder="RUC">
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                        </span>
                     </div>
-                    <div class="form-group">
+                    <!-- Dirección de negocio -->
+                    <div class="form-group input-icon-group">
                         <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address">
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
                     </div>
-                    <div class="form-group">
+                    <!-- Teléfono de negocio -->
+                    <div class="form-group input-icon-group">
                         <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number">
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/></svg>
+                        </span>
                     </div>
-                    <div class="form-group">
+                    <!-- Business Type antes de Business Description -->
+                    <div class="form-group input-icon-group">
                         <select id="tipoNegocio" name="tipoNegocio">
                             <option value="">Business Type</option>
                             <option value="restaurante">Book Store</option>
@@ -64,9 +106,15 @@
                             <option value="servicio">Super Market</option>
                             <option value="otro">Other</option>
                         </select>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
+                        </span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group input-icon-group">
                         <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description"></textarea>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
+                        </span>
                     </div>
                 </div>
 
@@ -82,326 +130,6 @@
 
     <!-- Scripts -->
     <script src="../../js/config.js" type="module"></script>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-        import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAExygTQjFqetanu5ndSmp2lu0RxNQGhU4",
-            authDomain: "proyect-swapp-it.firebaseapp.com",
-            databaseURL: "https://proyect-swapp-it-default-rtdb.firebaseio.com",
-            projectId: "proyect-swapp-it",
-            storageBucket: "proyect-swapp-it.appspot.com",
-            messagingSenderId: "909327451855",
-            appId: "1:909327451855:web:985769bf1a3eb9877e59ba",
-            measurementId: "G-ES8F41DRD0"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // DOM elements
-        const roleButtons = document.querySelectorAll('.role-btn');
-        const personalFields = document.getElementById('personalFields');
-        const businessFields = document.getElementById('businessFields');
-        const registerForm = document.getElementById('registerForm');
-
-        // Loading state
-        let isLoading = false;
-
-        // Role selection
-        function handleRoleChange(event) {
-            const selectedRole = event.target.dataset.role;
-            
-            roleButtons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (selectedRole === 'personal') {
-                personalFields.classList.remove('hidden');
-                businessFields.classList.add('hidden');
-                toggleRequiredFields(personalFields, true);
-                toggleRequiredFields(businessFields, false);
-            } else {
-                personalFields.classList.add('hidden');
-                businessFields.classList.remove('hidden');
-                toggleRequiredFields(personalFields, false);
-                toggleRequiredFields(businessFields, true);
-            }
-        }
-
-        function toggleRequiredFields(container, required) {
-            const inputs = container.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                if (required) {
-                    input.setAttribute('required', '');
-                } else {
-                    input.removeAttribute('required');
-                }
-            });
-        }
-
-        // Form validation
-        function validateForm() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const selectedRole = document.querySelector('.role-btn.active').dataset.role;
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('Please enter a valid email address');
-                return false;
-            }
-
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters long');
-                return false;
-            }
-
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return false;
-            }
-
-            if (selectedRole === 'personal') {
-                const nombre = document.getElementById('nombre').value;
-                const telefono = document.getElementById('telefono').value;
-                const direccion = document.getElementById('direccion').value;
-
-                if (!nombre.trim() || !telefono.trim() || !direccion.trim()) {
-                    showError('Please fill in all required personal fields');
-                    return false;
-                }
-            } else {
-                const nombreNegocio = document.getElementById('nombreNegocio').value;
-                const ruc = document.getElementById('ruc').value;
-                const direccionNegocio = document.getElementById('direccionNegocio').value;
-                const telefonoNegocio = document.getElementById('telefonoNegocio').value;
-
-                if (!nombreNegocio.trim() || !ruc.trim() || !direccionNegocio.trim() || !telefonoNegocio.trim()) {
-                    showError('Please fill in all required business fields');
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        // User feedback
-        function showError(message) {
-            const existingError = document.querySelector('.error-message');
-            if (existingError) {
-                existingError.remove();
-            }
-
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.textContent = message;
-            errorDiv.style.cssText = `
-                color: #dc3545;
-                background-color: #f8d7da;
-                border: 1px solid #f5c6cb;
-                border-radius: 4px;
-                padding: 10px;
-                margin: 10px 0;
-                text-align: center;
-            `;
-
-            const form = document.getElementById('registerForm');
-            form.insertBefore(errorDiv, form.firstChild);
-
-            setTimeout(() => {
-                if (errorDiv.parentNode) {
-                    errorDiv.remove();
-                }
-            }, 5000);
-        }
-
-        function showSuccess(message) {
-            const existingMessage = document.querySelector('.success-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-
-            const successDiv = document.createElement('div');
-            successDiv.className = 'success-message';
-            successDiv.textContent = message;
-            successDiv.style.cssText = `
-                color: #155724;
-                background-color: #d4edda;
-                border: 1px solid #c3e6cb;
-                border-radius: 4px;
-                padding: 10px;
-                margin: 10px 0;
-                text-align: center;
-            `;
-
-            const form = document.getElementById('registerForm');
-            form.insertBefore(successDiv, form.firstChild);
-        }
-
-        function setLoadingState(loading) {
-            isLoading = loading;
-            const submitBtn = document.querySelector('.register-btn');
-            
-            if (loading) {
-                submitBtn.textContent = 'Creating Account/public.';
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = '0.7';
-            } else {
-                submitBtn.textContent = 'Sign Up';
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
-            }
-        }
-
-        // Registration process
-        async function handleRegistration(formData) {
-            try {
-                setLoadingState(true);
-                
-                const email = formData.get('email');
-                const password = formData.get('password');
-                const selectedRole = document.querySelector('.role-btn.active').dataset.role;
-
-                console.log('Starting registration process/public.');
-                console.log('Email:', email);
-                console.log('Role:', selectedRole);
-
-                // 1. Create Firebase Auth user
-                console.log('Creating Firebase Auth user/public.');
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                
-                console.log('Firebase Auth user created successfully:', user.uid);
-
-                // Update profile with display name
-                const displayName = formData.get('nombre') || formData.get('nombreNegocio');
-                await updateProfile(user, { displayName });
-
-                // 2. Prepare user profile data
-                const userProfile = {
-                    email: email,
-                    role: selectedRole,
-                    createdAt: new Date(),
-                    status: 'active',
-                    userId: user.uid,
-                    points: {
-                        balance: 0,
-                        history: []
-                    },
-                    stats: {
-                        totalSales: 0,
-                        totalPurchases: 0,
-                        rating: 0,
-                        reviewCount: 0,
-                        productsCount: 0
-                    },
-                    createdAt: serverTimestamp(),
-                    updatedAt: serverTimestamp(),
-                    lastLogin: serverTimestamp()
-                };
-
-                // Add role-specific data
-                if (selectedRole === 'personal') {
-                    userProfile.personal = {
-                        nombre: formData.get('nombre'),
-                        telefono: formData.get('telefono'),
-                        direccion: formData.get('direccion')
-                    };
-                } else {
-                    userProfile.business = {
-                        nombreNegocio: formData.get('nombreNegocio'),
-                        ruc: formData.get('ruc'),
-                        direccionNegocio: formData.get('direccionNegocio'),
-                        telefonoNegocio: formData.get('telefonoNegocio'),
-                        tipoNegocio: formData.get('tipoNegocio'),
-                        descripcionNegocio: formData.get('descripcionNegocio')
-                    };
-                }
-
-                console.log('User profile data prepared:', userProfile);
-
-                // 3. Create Firestore user profile
-                console.log('Creating Firestore user profile/public.');
-                const userRef = doc(db, 'users', user.uid);
-                await setDoc(userRef, userProfile);
-                
-                console.log('Firestore user profile created successfully');
-
-                // 4. Success - redirect to dashboard
-                showSuccess('Account created successfully! Redirecting...');
-                
-                setTimeout(() => {
-                    // Usar pathConfig si está disponible, sino usar rutas por defecto
-                    if (window.pathConfig) {
-                        window.pathConfig.redirectToDashboard(selectedRole);
-                    } else {
-                        // Fallback para cuando pathConfig no esté disponible
-                        if (selectedRole === 'personal') {
-                            window.location.href = '/dashboards/student/student-dashboard.html';
-                        } else {
-                            window.location.href = '/dashboards/business/business-dashboard.html';
-                        }
-                    }
-                }, 2000);
-
-            } catch (error) {
-                console.error('Registration error:', error);
-                
-                let errorMessage = error.message;
-                
-                if (error.code === 'permission-denied') {
-                    errorMessage = 'Permission denied: Check Firestore security rules.';
-                } else if (error.code === 'unauthenticated') {
-                    errorMessage = 'User not authenticated: Please ensure user is logged in before creating profile.';
-                } else if (error.code === 'auth/email-already-in-use') {
-                    errorMessage = 'An account with this email already exists. Please use a different email or try logging in.';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMessage = 'Password is too weak. Please choose a stronger password.';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'Please enter a valid email address.';
-                }
-                
-                showError(errorMessage);
-            } finally {
-                setLoadingState(false);
-            }
-        }
-
-        // Form submission
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            if (isLoading) return;
-
-            if (!validateForm()) {
-                return;
-            }
-
-            const formData = new FormData(registerForm);
-            await handleRegistration(formData);
-        }
-
-        // Event listeners
-        roleButtons.forEach(button => {
-            button.addEventListener('click', handleRoleChange);
-        });
-
-        registerForm.addEventListener('submit', handleFormSubmit);
-
-        // Initialize form state
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Registration page loaded with direct Firebase SDK');
-            document.querySelector('.role-btn.active').click();
-        });
-    </script>
+    <script src="../../js/register.js" type="module"></script>
 </body>
 </html>

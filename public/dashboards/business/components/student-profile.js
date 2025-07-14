@@ -6,6 +6,142 @@ class StudentProfile extends HTMLElement {
     }
     connectedCallback() {
         this.render();
+        this.loadUserData();
+    }
+
+    async loadUserData() {
+        try {
+            // Wait a bit for Firebase to initialize
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Get current user from Firebase Auth
+            const { getCurrentUser, onAuthStateChange } = await import('/public/firebase/auth.js');
+            const { getUserProfile } = await import('/public/firebase/firestore.js');
+            
+            // First try to get current user
+            let currentUser = getCurrentUser();
+            
+            // If no current user, wait for auth state change
+            if (!currentUser) {
+                console.log('No current user, waiting for auth state...');
+                await new Promise((resolve, reject) => {
+                    const unsubscribe = onAuthStateChange((user) => {
+                        unsubscribe();
+                        if (user) {
+                            currentUser = user;
+                            resolve();
+                        } else {
+                            reject(new Error('No authenticated user found'));
+                        }
+                    });
+                    
+                    // Timeout after 5 seconds
+                    setTimeout(() => {
+                        unsubscribe();
+                        reject(new Error('Auth state timeout'));
+                    }, 5000);
+                });
+            }
+
+            if (!currentUser) {
+                console.error('No authenticated user found after waiting');
+                return;
+            }
+
+            console.log('Current user found:', currentUser.email);
+
+            // Get user profile from Firestore
+            const profileResult = await getUserProfile(currentUser.uid);
+            if (!profileResult.success) {
+                console.error('Failed to get user profile:', profileResult.error);
+                // Use basic user info if profile not found
+                const userProfile = {
+                    email: currentUser.email,
+                    role: 'business',
+                    business: {
+                        nombreNegocio: currentUser.displayName || currentUser.email.split('@')[0]
+                    }
+                };
+                this.updateProfileInterface(userProfile);
+                return;
+            }
+
+            const userProfile = profileResult.data;
+            this.updateProfileInterface(userProfile);
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+
+    updateProfileInterface(userProfile) {
+        const profileAvatar = this.shadowRoot.getElementById('profileAvatar');
+        const profileName = this.shadowRoot.getElementById('profileName');
+        const profileRole = this.shadowRoot.getElementById('profileRole');
+        const businessNameInput = this.shadowRoot.getElementById('businessName');
+        const emailInput = this.shadowRoot.getElementById('email');
+        const rucInput = this.shadowRoot.getElementById('ruc');
+        const phoneInput = this.shadowRoot.getElementById('phone');
+        const addressInput = this.shadowRoot.getElementById('address');
+        const businessTypeInput = this.shadowRoot.getElementById('businessType');
+        const businessDescriptionInput = this.shadowRoot.getElementById('businessDescription');
+
+        let displayName = 'User';
+        let role = 'Business';
+
+        // Extract name and role based on user profile
+        if (userProfile.role === 'business' && userProfile.business) {
+            displayName = userProfile.business.nombreNegocio || userProfile.email.split('@')[0];
+            role = 'Business';
+        } else if (userProfile.role === 'personal' && userProfile.personal) {
+            displayName = userProfile.personal.nombre || userProfile.email.split('@')[0];
+            role = 'Student';
+        } else {
+            displayName = userProfile.email.split('@')[0];
+            role = userProfile.role === 'business' ? 'Business' : 'Student';
+        }
+
+        // Update profile header
+        if (profileName) profileName.textContent = displayName;
+        if (profileRole) profileRole.textContent = role;
+        
+        // Generate initials for avatar
+        const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase();
+        if (profileAvatar) profileAvatar.textContent = initials;
+
+        // Update form fields
+        if (businessNameInput) {
+            if (userProfile.role === 'business' && userProfile.business) {
+                businessNameInput.value = userProfile.business.nombreNegocio || '';
+            } else {
+                businessNameInput.value = displayName;
+            }
+        }
+
+        if (emailInput) emailInput.value = userProfile.email || '';
+
+        if (rucInput && userProfile.role === 'business' && userProfile.business) {
+            rucInput.value = userProfile.business.ruc || '';
+        }
+
+        if (phoneInput) {
+            if (userProfile.role === 'business' && userProfile.business) {
+                phoneInput.value = userProfile.business.telefonoNegocio || '';
+            }
+        }
+
+        if (addressInput) {
+            if (userProfile.role === 'business' && userProfile.business) {
+                addressInput.value = userProfile.business.direccionNegocio || '';
+            }
+        }
+
+        if (businessTypeInput && userProfile.role === 'business' && userProfile.business) {
+            businessTypeInput.value = userProfile.business.tipoNegocio || '';
+        }
+
+        if (businessDescriptionInput && userProfile.role === 'business' && userProfile.business) {
+            businessDescriptionInput.value = userProfile.business.descripcionNegocio || '';
+        }
     }
     render() {
         this.shadowRoot.innerHTML = `
@@ -28,26 +164,38 @@ class StudentProfile extends HTMLElement {
             </style>
             <div class="profile-container">
                 <div class="profile-header">
-                    <div class="profile-avatar">JD</div>
-                    <div class="profile-name text-primary">John Doe</div>
-                    <div class="profile-role">Student</div>
+                    <div class="profile-avatar" id="profileAvatar">JD</div>
+                    <div class="profile-name text-primary" id="profileName">Loading...</div>
+                    <div class="profile-role" id="profileRole">Business</div>
                 </div>
-                <form class="profile-form">
+                <form class="profile-form" id="profileForm">
                     <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input class="form-input" type="text" value="John Doe" placeholder="Full Name" />
+                        <label class="form-label">Business Name</label>
+                        <input class="form-input" type="text" id="businessName" placeholder="Business Name" />
                     </div>
                     <div class="form-group">
                         <label class="form-label">Email</label>
-                        <input class="form-input" type="email" value="john.doe@email.com" disabled placeholder="Email" />
+                        <input class="form-input" type="email" id="email" disabled placeholder="Email" />
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input class="form-input" type="tel" value="+1 (555) 123-4567" placeholder="Phone" />
+                        <label class="form-label">RUC</label>
+                        <input class="form-input" type="text" id="ruc" placeholder="RUC" />
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Address</label>
-                        <input class="form-input" type="text" value="123 Main St, City, State" placeholder="Address" />
+                        <label class="form-label">Business Phone</label>
+                        <input class="form-input" type="tel" id="phone" placeholder="Business Phone" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Business Address</label>
+                        <input class="form-input" type="text" id="address" placeholder="Business Address" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Business Type</label>
+                        <input class="form-input" type="text" id="businessType" placeholder="Business Type" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Business Description</label>
+                        <textarea class="form-input" id="businessDescription" placeholder="Business Description" rows="3"></textarea>
                     </div>
                     <button class="btn btn-primary" type="submit">Save Changes</button>
                 </form>

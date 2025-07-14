@@ -232,15 +232,90 @@ class BusinessSidebar extends HTMLElement {
 
     async loadUserData() {
         try {
-            // In a real app, this would fetch user data from Firebase
-            const mockUserData = {
-                name: 'John Doe',
-                avatar: null // URL to user avatar if available
+            // Wait a bit for Firebase to initialize
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Get current user from Firebase Auth
+            const { getCurrentUser, onAuthStateChange } = await import('/public/firebase/auth.js');
+            const { getUserProfile } = await import('/public/firebase/firestore.js');
+            
+            // First try to get current user
+            let currentUser = getCurrentUser();
+            
+            // If no current user, wait for auth state change
+            if (!currentUser) {
+                console.log('No current user, waiting for auth state...');
+                await new Promise((resolve, reject) => {
+                    const unsubscribe = onAuthStateChange((user) => {
+                        unsubscribe();
+                        if (user) {
+                            currentUser = user;
+                            resolve();
+                        } else {
+                            reject(new Error('No authenticated user found'));
+                        }
+                    });
+                    
+                    // Timeout after 5 seconds
+                    setTimeout(() => {
+                        unsubscribe();
+                        reject(new Error('Auth state timeout'));
+                    }, 5000);
+                });
+            }
+
+            if (!currentUser) {
+                console.error('No authenticated user found after waiting');
+                this.updateUserInterface({ name: 'Guest', email: '', role: 'Guest', avatar: null });
+                return;
+            }
+
+            console.log('Current user found:', currentUser.email);
+
+            // Get user profile from Firestore
+            const profileResult = await getUserProfile(currentUser.uid);
+            if (!profileResult.success) {
+                console.error('Failed to get user profile:', profileResult.error);
+                // Use basic user info if profile not found
+                const userData = {
+                    name: currentUser.displayName || currentUser.email.split('@')[0],
+                    email: currentUser.email,
+                    role: 'User',
+                    avatar: null
+                };
+                this.updateUserInterface(userData);
+                return;
+            }
+
+            const userProfile = profileResult.data;
+            let displayName = 'User';
+            let role = 'Business';
+
+            // Extract name based on role
+            if (userProfile.role === 'business' && userProfile.business) {
+                displayName = userProfile.business.nombreNegocio || userProfile.email.split('@')[0];
+                role = 'Business';
+            } else if (userProfile.role === 'personal' && userProfile.personal) {
+                displayName = userProfile.personal.nombre || userProfile.email.split('@')[0];
+                role = 'Student';
+            } else {
+                displayName = userProfile.email.split('@')[0];
+                role = userProfile.role === 'business' ? 'Business' : 'Student';
+            }
+
+            const userData = {
+                name: displayName,
+                email: userProfile.email,
+                role: role,
+                avatar: null
             };
 
-            this.updateUserInterface(mockUserData);
+            console.log('User data loaded:', userData);
+            this.updateUserInterface(userData);
         } catch (error) {
             console.error('Error loading user data:', error);
+            // Show guest user if there's an error
+            this.updateUserInterface({ name: 'Guest', email: '', role: 'Guest', avatar: null });
         }
     }
 
