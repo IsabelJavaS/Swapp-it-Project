@@ -15,7 +15,7 @@ class BusinessDashboardOverview extends HTMLElement {
                 :host {
                     display: block;
                     font-family: 'Inter', sans-serif;
-                    padding: 2rem;
+                    padding: 0.5rem 3rem 0.5rem 3rem;
                     background: #fff;
                     border-radius: 12px;
                     box-shadow: 0 2px 16px rgba(52,104,192,0.07);
@@ -24,6 +24,7 @@ class BusinessDashboardOverview extends HTMLElement {
                 }
                 h2 {
                     color: #3468c0;
+                    margin-top: 0;
                     margin-bottom: 2rem;
                     font-size: 2rem;
                 }
@@ -81,6 +82,50 @@ class BusinessDashboardOverview extends HTMLElement {
                 .recent-item .label {
                     font-weight: 600;
                     color: #3468c0;
+                }
+
+                /* Responsive */
+                @media (max-width: 1024px) {
+                    .stats {
+                        gap: 1rem;
+                    }
+                    
+                    .stat-card {
+                        flex: 1 1 180px;
+                        min-width: 150px;
+                        padding: 1rem 1.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .stats {
+                        flex-direction: column;
+                        gap: 1rem;
+                    }
+                    
+                    .stat-card {
+                        flex: none;
+                        min-width: auto;
+                    }
+                    
+                    h2 {
+                        font-size: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    :host {
+                        padding: 0.5rem 1rem 0.5rem 1rem;
+                    }
+                    
+                    .stat-card {
+                        padding: 1rem;
+                    }
+                    
+                    .recent-item {
+                        padding: 0.75rem 1rem;
+                        font-size: 0.875rem;
+                    }
                 }
             </style>
             <h2>Resumen de Negocio</h2>

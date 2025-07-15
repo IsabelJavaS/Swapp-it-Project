@@ -19,7 +19,7 @@ class BusinessDashboard extends HTMLElement {
                     min-height: 100vh; 
                     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); 
                     font-family: var(--font-family, 'Inter', sans-serif); 
-                    padding-top: 80px; /* Espacio para el header fijo */
+                    padding-top: 20px; /* Espacio reducido para el header fijo */
                     box-sizing: border-box;
                 }
                 .dashboard-layout {

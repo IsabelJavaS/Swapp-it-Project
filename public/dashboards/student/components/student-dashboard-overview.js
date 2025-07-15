@@ -22,10 +22,11 @@ class StudentDashboardOverview extends HTMLElement {
                 }
 
                 .dashboard-overview {
-                    padding: 0;
+                    padding: 0.5rem 3rem 0.5rem 3rem;
                 }
 
                 .section-header {
+                    margin-top: 0;
                     margin-bottom: 2rem;
                 }
 
@@ -156,6 +157,7 @@ class StudentDashboardOverview extends HTMLElement {
                     grid-template-columns: 2fr 1fr;
                     gap: 1.5rem;
                     margin-bottom: 2rem;
+                    min-height: 400px;
                 }
 
                 .chart-card {
@@ -164,6 +166,9 @@ class StudentDashboardOverview extends HTMLElement {
                     padding: 1.5rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
                 }
 
                 .chart-header {
@@ -210,7 +215,8 @@ class StudentDashboardOverview extends HTMLElement {
                 }
 
                 .chart-placeholder {
-                    height: 300px;
+                    flex: 1;
+                    min-height: 250px;
                     background: linear-gradient(135deg, #f8fafc, #e2e8f0);
                     border-radius: 12px;
                     display: flex;
@@ -228,6 +234,9 @@ class StudentDashboardOverview extends HTMLElement {
                     padding: 1.5rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
                 }
 
                 .activity-header {
@@ -260,6 +269,7 @@ class StudentDashboardOverview extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     gap: 1rem;
+                    flex: 1;
                 }
 
                 .activity-item {
@@ -335,9 +345,22 @@ class StudentDashboardOverview extends HTMLElement {
                 }
 
                 /* Responsive */
+                @media (max-width: 1200px) {
+                    .charts-section {
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                    }
+                }
+
                 @media (max-width: 1024px) {
                     .charts-section {
                         grid-template-columns: 1fr;
+                        min-height: auto;
+                    }
+                    
+                    .chart-card,
+                    .activity-card {
+                        height: auto;
                     }
                 }
 
@@ -348,6 +371,32 @@ class StudentDashboardOverview extends HTMLElement {
 
                     .section-header h1 {
                         font-size: 1.5rem;
+                    }
+                    
+                    .charts-section {
+                        gap: 1rem;
+                    }
+                    
+                    .chart-placeholder {
+                        min-height: 200px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .chart-placeholder {
+                        min-height: 150px;
+                        font-size: 0.875rem;
+                    }
+                    
+                    .activity-item {
+                        padding: 0.75rem;
+                        gap: 0.75rem;
+                    }
+                    
+                    .activity-icon {
+                        width: 35px;
+                        height: 35px;
+                        font-size: 0.875rem;
                     }
                 }
             </style>

@@ -188,8 +188,8 @@
   
   /* Dashboard Section Header */
   .section-header {
-      margin-top: 0.5rem;
-      padding-top: 1rem;
+      margin-top: 0;
+      padding-top: 0;
   }
   
   /* Main Content Area */

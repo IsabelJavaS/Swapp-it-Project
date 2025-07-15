@@ -23,9 +23,7 @@ class StudentAddProduct extends HTMLElement {
                 }
 
                 .add-product-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                    padding: 0;
+                    padding: 0.5rem 3rem 0.5rem 3rem;
                 }
 
                 .section-header {
