@@ -489,6 +489,7 @@ class StudentDashboardOverview extends HTMLElement {
                         <div style="height: 300px;">
                             <canvas id="trendChart" width="100%" height="100%"></canvas>
                         </div>
+                        <!-- Eliminado: resumen debajo de la gráfica -->
                     </div>
                     <div class="activity-card">
                         <div class="activity-header">
@@ -497,6 +498,9 @@ class StudentDashboardOverview extends HTMLElement {
                         </div>
                         <div class="activity-list" id="activityList">
                             <!-- Activity items will be loaded here -->
+                        </div>
+                        <div class="activity-summary" style="margin-top: 1rem; text-align: center; color: #64748b; font-size: 1rem;">
+                            <span id="activityCount">Showing latest 3 activities</span>
                         </div>
                     </div>
                 </div>
@@ -552,6 +556,10 @@ class StudentDashboardOverview extends HTMLElement {
         this.shadowRoot.getElementById('activeProducts').textContent = data.activeProducts;
         this.shadowRoot.getElementById('swapcoinBalance').textContent = data.swapcoinBalance;
 
+        // Update chart summary
+        // this.shadowRoot.getElementById('summarySales').textContent = `Total Sales: $${data.totalSales.toFixed(2)}`;
+        // this.shadowRoot.getElementById('summaryPurchases').textContent = `Total Purchases: $${data.totalPurchases.toFixed(2)}`;
+
         // Update activity list
         const activityList = this.shadowRoot.getElementById('activityList');
         activityList.innerHTML = data.recentActivity.map(activity => `
@@ -569,6 +577,8 @@ class StudentDashboardOverview extends HTMLElement {
                 </div>
             </div>
         `).join('');
+        // Update activity summary
+        this.shadowRoot.getElementById('activityCount').textContent = `Showing latest ${data.recentActivity.length} activities`;
     }
 
     renderChart(period = '7D') {
