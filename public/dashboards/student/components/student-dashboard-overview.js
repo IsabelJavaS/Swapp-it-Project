@@ -432,17 +432,15 @@ class StudentDashboardOverview extends HTMLElement {
                         <div class="chart-header">
                             <h3 class="chart-title">Sales & Purchases Trend</h3>
                             <div class="chart-period">
-                                <button class="period-btn active">7D</button>
-                                <button class="period-btn">30D</button>
-                                <button class="period-btn">90D</button>
+                                <button class="period-btn active" id="btn7D">7D</button>
+                                <button class="period-btn" id="btn30D">30D</button>
+                                <button class="period-btn" id="btn90D">90D</button>
                             </div>
                         </div>
-                        <div class="chart-placeholder">
-                            <i class="fas fa-chart-line" style="font-size: 2rem; margin-right: 1rem;"></i>
-                            Chart visualization will be implemented here
+                        <div style="height: 300px;">
+                            <canvas id="trendChart" width="100%" height="100%"></canvas>
                         </div>
                     </div>
-
                     <div class="activity-card">
                         <div class="activity-header">
                             <h3 class="activity-title">Recent Activity</h3>
@@ -492,6 +490,7 @@ class StudentDashboardOverview extends HTMLElement {
             };
 
             this.updateDashboardData(mockData);
+            this.renderChart('7D');
         } catch (error) {
             console.error('Error loading dashboard data:', error);
         }
@@ -521,6 +520,143 @@ class StudentDashboardOverview extends HTMLElement {
                 </div>
             </div>
         `).join('');
+    }
+
+    renderChart(period = '7D') {
+        // Cargar Chart.js si no está cargado
+        if (!this.shadowRoot.getElementById('chartjs-script')) {
+            const script = document.createElement('script');
+            script.id = 'chartjs-script';
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = () => this._drawChart(period);
+            this.shadowRoot.appendChild(script);
+        } else {
+            this._drawChart(period);
+        }
+
+        // Botones de periodo
+        const periods = ['7D', '30D', '90D'];
+        periods.forEach(p => {
+            const btn = this.shadowRoot.getElementById('btn' + p);
+            if (btn) {
+                btn.classList.toggle('active', p === period);
+                btn.onclick = () => this.renderChart(p);
+            }
+        });
+    }
+
+    _drawChart(period) {
+        const ctx = this.shadowRoot.getElementById('trendChart').getContext('2d');
+        if (this._chartInstance) {
+            this._chartInstance.destroy();
+        }
+        // Datos de ejemplo para cada periodo
+        const dataMap = {
+            '7D': {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                sales:   [12, 19, 3, 4, 5, 7, 10],
+                purchases: [8, 11, 5, 6, 4, 3, 8]
+            },
+            '30D': {
+                labels: Array.from({length: 30}, (_, i) => `Día ${i+1}`),
+                sales: Array.from({length: 30}, () => Math.floor(Math.random()*20)),
+                purchases: Array.from({length: 30}, () => Math.floor(Math.random()*15))
+            },
+            '90D': {
+                labels: Array.from({length: 90}, (_, i) => `Día ${i+1}`),
+                sales: Array.from({length: 90}, () => Math.floor(Math.random()*20)),
+                purchases: Array.from({length: 90}, () => Math.floor(Math.random()*15))
+            }
+        };
+        const chartData = dataMap[period];
+        this._chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: 'Sales',
+                        data: chartData.sales,
+                        borderColor: '#3468c0',
+                        backgroundColor: 'rgba(52,104,192,0.08)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3468c0',
+                        pointRadius: 5,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Purchases',
+                        data: chartData.purchases,
+                        borderColor: '#ffa424',
+                        backgroundColor: 'rgba(255,164,36,0.08)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#ffa424',
+                        pointRadius: 5,
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#1e293b',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                    axis: 'x'
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#64748b', font: { size: 13 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#64748b', font: { size: 13 } },
+                        grid: { color: '#e2e8f0' }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutElastic'
+                }
+            }
+        });
+
+        // Animación interactiva al hacer click/tap
+        const canvas = this.shadowRoot.getElementById('trendChart');
+        if (canvas) {
+            canvas.onclick = () => {
+                this._chartInstance.options.animation = {
+                    duration: 1200,
+                    easing: 'easeInOutBounce'
+                };
+                this._chartInstance.update();
+            };
+            // Para dispositivos táctiles
+            canvas.ontouchstart = () => {
+                this._chartInstance.options.animation = {
+                    duration: 1200,
+                    easing: 'easeInOutBounce'
+                };
+                this._chartInstance.update();
+            };
+        }
     }
 
     getActivityIcon(type) {
