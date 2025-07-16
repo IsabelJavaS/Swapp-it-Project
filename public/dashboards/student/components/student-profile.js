@@ -4,9 +4,106 @@ class StudentProfile extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
     }
+    
     connectedCallback() {
         this.render();
         this.loadUserData();
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const editButtons = this.shadowRoot.querySelectorAll('.edit-btn');
+        const saveButtons = this.shadowRoot.querySelectorAll('.save-btn');
+        const cancelButtons = this.shadowRoot.querySelectorAll('.cancel-btn');
+
+        editButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = e.target.closest('.profile-section');
+                this.toggleEditMode(section, true);
+            });
+        });
+
+        saveButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = e.target.closest('.profile-section');
+                this.saveChanges(section);
+            });
+        });
+
+        cancelButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = e.target.closest('.profile-section');
+                this.toggleEditMode(section, false);
+            });
+        });
+
+        // Avatar upload
+        const avatarUpload = this.shadowRoot.getElementById('avatarUpload');
+        if (avatarUpload) {
+            avatarUpload.addEventListener('change', (e) => {
+                this.handleAvatarUpload(e);
+            });
+        }
+    }
+
+    toggleEditMode(section, isEditing) {
+        const inputs = section.querySelectorAll('input, textarea');
+        const editBtn = section.querySelector('.edit-btn');
+        const saveBtn = section.querySelector('.save-btn');
+        const cancelBtn = section.querySelector('.cancel-btn');
+
+        inputs.forEach(input => {
+            input.disabled = !isEditing;
+            if (isEditing) {
+                input.classList.add('editing');
+            } else {
+                input.classList.remove('editing');
+            }
+        });
+
+        if (isEditing) {
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-flex';
+            cancelBtn.style.display = 'inline-flex';
+        } else {
+            editBtn.style.display = 'inline-flex';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        }
+    }
+
+    async saveChanges(section) {
+        // Here you would save to Firebase
+        console.log('Saving changes...');
+        this.toggleEditMode(section, false);
+        
+        // Show success message
+        this.showNotification('Changes saved successfully!', 'success');
+    }
+
+    handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const avatar = this.shadowRoot.getElementById('profileAvatar');
+                avatar.style.backgroundImage = `url(${e.target.result})`;
+                avatar.textContent = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        this.shadowRoot.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
     }
 
     async loadUserData() {
@@ -80,7 +177,10 @@ class StudentProfile extends HTMLElement {
         const fullNameInput = this.shadowRoot.getElementById('fullName');
         const emailInput = this.shadowRoot.getElementById('email');
         const phoneInput = this.shadowRoot.getElementById('phone');
-        const addressInput = this.shadowRoot.getElementById('address');
+        const bioInput = this.shadowRoot.getElementById('bio');
+        const schoolInput = this.shadowRoot.getElementById('school');
+        const levelInput = this.shadowRoot.getElementById('level');
+        const majorInput = this.shadowRoot.getElementById('major');
 
         let displayName = 'User';
         let role = 'Student';
@@ -126,60 +226,498 @@ class StudentProfile extends HTMLElement {
             }
         }
 
-        if (addressInput) {
-            if (userProfile.role === 'personal' && userProfile.personal) {
-                addressInput.value = userProfile.personal.direccion || '';
-            } else if (userProfile.role === 'business' && userProfile.business) {
-                addressInput.value = userProfile.business.direccionNegocio || '';
-            }
-        }
+        // Set default values for new fields
+        if (bioInput) bioInput.value = userProfile.personal?.bio || 'Passionate student interested in technology and innovation.';
+        if (schoolInput) schoolInput.value = userProfile.personal?.school || 'University of Technology';
+        if (levelInput) levelInput.value = userProfile.personal?.level || 'Undergraduate';
+        if (majorInput) majorInput.value = userProfile.personal?.major || 'Computer Science';
     }
+
     render() {
         this.shadowRoot.innerHTML = `
             <style>
-                :host { display: block; font-family: var(--font-family, 'Inter', sans-serif); }
-                .profile-container { background: white; border-radius: 20px; box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.1)); padding: 2rem; max-width: 700px; margin: 2rem auto; }
-                .profile-header { text-align: center; margin-bottom: 2rem; }
-                .profile-avatar { width: 100px; height: 100px; border-radius: 50%; background: #3468c0; color: white; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1rem; }
-                .profile-name { font-size: 1.5rem; font-weight: 700; margin: 0; }
-                .profile-role { color: #4a5568; font-size: 1rem; margin-bottom: 1rem; }
-                .profile-form { display: grid; gap: 1.5rem; }
-                .form-group { display: flex; flex-direction: column; }
-                .form-label { font-weight: 500; margin-bottom: 0.5rem; color: #4a5568; }
-                .form-input { padding: 0.75rem 1rem; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; background: #f8fafc; }
-                .form-input:focus { border-color: #667eea; background: white; outline: none; }
-                .btn { padding: 0.75rem 1.5rem; border-radius: 12px; border: none; background: #3468c0; color: white; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-                .btn:hover { background: #2563eb; filter: brightness(0.92); }
-                a { color: #2563eb; text-decoration: none; transition: color 0.2s; }
-                a:hover { color: #2563eb; text-decoration: underline; filter: brightness(0.92); }
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+                :host {
+                    display: block;
+                    font-family: 'Inter', sans-serif;
+                }
+
+                .profile-overview {
+                    padding: 0.5rem 3rem 0.5rem 3rem;
+                }
+
+                .profile-header {
+                    background: linear-gradient(135deg, #3468c0 0%, #1d4ed8 100%);
+                    border-radius: 20px;
+                    padding: 3rem 2rem;
+                    text-align: center;
+                    color: white;
+                    margin-bottom: 2rem;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .profile-header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+                    pointer-events: none;
+                }
+
+                .avatar-container {
+                    position: relative;
+                    display: inline-block;
+                    margin-bottom: 1.5rem;
+                }
+
+                .profile-avatar {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, #ffa424, #ff8c00);
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 3rem;
+                    font-weight: 700;
+                    margin: 0 auto;
+                    border: 4px solid rgba(255, 255, 255, 0.3);
+                    background-size: cover;
+                    background-position: center;
+                    position: relative;
+                }
+
+                .avatar-upload {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: white;
+                    border: 3px solid #3468c0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    color: #3468c0;
+                }
+
+                .avatar-upload:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                }
+
+                .avatar-upload input {
+                    display: none;
+                }
+
+                .profile-name {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    margin: 0 0 0.5rem 0;
+                }
+
+                .profile-role {
+                    font-size: 1.1rem;
+                    opacity: 0.9;
+                    margin: 0 0 1rem 0;
+                }
+
+                .profile-stats {
+                    display: flex;
+                    justify-content: center;
+                    gap: 2rem;
+                    margin-top: 1.5rem;
+                }
+
+                .stat-item {
+                    text-align: center;
+                }
+
+                .stat-number {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    display: block;
+                }
+
+                .stat-label {
+                    font-size: 0.875rem;
+                    opacity: 0.8;
+                }
+
+                .profile-content {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 2rem;
+                }
+
+                .profile-section {
+                    background: white;
+                    border-radius: 16px;
+                    padding: 2rem;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                }
+
+                .section-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 1.5rem;
+                }
+
+                .section-title {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: #1e293b;
+                    margin: 0;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                .section-icon {
+                    width: 24px;
+                    height: 24px;
+                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 0.75rem;
+                }
+
+                .form-group {
+                    margin-bottom: 1.5rem;
+                }
+
+                .form-label {
+                    display: block;
+                    font-weight: 500;
+                    color: #374151;
+                    margin-bottom: 0.5rem;
+                    font-size: 0.875rem;
+                }
+
+                .form-input {
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    border: 2px solid #e5e7eb;
+                    border-radius: 12px;
+                    font-size: 1rem;
+                    background: #f9fafb;
+                    transition: all 0.3s ease;
+                    box-sizing: border-box;
+                }
+
+                .form-input:focus {
+                    outline: none;
+                    border-color: #3468c0;
+                    background: white;
+                    box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+                }
+
+                .form-input:disabled {
+                    background: #f3f4f6;
+                    color: #6b7280;
+                    cursor: not-allowed;
+                }
+
+                .form-input.editing {
+                    background: white;
+                    color: #1f2937;
+                }
+
+                .form-textarea {
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    border: 2px solid #e5e7eb;
+                    border-radius: 12px;
+                    font-size: 1rem;
+                    background: #f9fafb;
+                    transition: all 0.3s ease;
+                    box-sizing: border-box;
+                    resize: vertical;
+                    min-height: 100px;
+                    font-family: inherit;
+                }
+
+                .form-textarea:focus {
+                    outline: none;
+                    border-color: #3468c0;
+                    background: white;
+                    box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+                }
+
+                .form-textarea:disabled {
+                    background: #f3f4f6;
+                    color: #6b7280;
+                    cursor: not-allowed;
+                }
+
+                .form-textarea.editing {
+                    background: white;
+                    color: #1f2937;
+                }
+
+                .btn {
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 12px;
+                    border: none;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.875rem;
+                }
+
+                .btn-primary {
+                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
+                    color: white;
+                }
+
+                .btn-primary:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(52, 104, 192, 0.3);
+                }
+
+                .btn-secondary {
+                    background: #f3f4f6;
+                    color: #374151;
+                    border: 1px solid #d1d5db;
+                }
+
+                .btn-secondary:hover {
+                    background: #e5e7eb;
+                }
+
+                .btn-success {
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    color: white;
+                }
+
+                .btn-success:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+                }
+
+                .edit-btn {
+                    display: inline-flex;
+                }
+
+                .save-btn, .cancel-btn {
+                    display: none;
+                }
+
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1rem 1.5rem;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: 500;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                }
+
+                .notification.success {
+                    background: linear-gradient(135deg, #10b981, #059669);
+                }
+
+                .notification.error {
+                    background: linear-gradient(135deg, #ef4444, #dc2626);
+                }
+
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                /* Responsive */
+                @media (max-width: 1024px) {
+                    .profile-content {
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .profile-overview {
+                        padding: 0.5rem 1rem 0.5rem 1rem;
+                    }
+
+                    .profile-header {
+                        padding: 2rem 1rem;
+                    }
+
+                    .profile-name {
+                        font-size: 1.5rem;
+                    }
+
+                    .profile-stats {
+                        gap: 1rem;
+                    }
+
+                    .profile-section {
+                        padding: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .profile-avatar {
+                        width: 100px;
+                        height: 100px;
+                        font-size: 2.5rem;
+                    }
+
+                    .avatar-upload {
+                        width: 35px;
+                        height: 35px;
+                    }
+
+                    .profile-stats {
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
+                }
             </style>
-            <div class="profile-container">
+
+            <div class="profile-overview">
+                <!-- Profile Header -->
                 <div class="profile-header">
-                    <div class="profile-avatar" id="profileAvatar">JD</div>
-                    <div class="profile-name text-primary" id="profileName">Loading...</div>
-                    <div class="profile-role" id="profileRole">Student</div>
+                    <div class="avatar-container">
+                        <div class="profile-avatar" id="profileAvatar">JD</div>
+                        <label class="avatar-upload">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="avatarUpload" accept="image/*">
+                        </label>
+                    </div>
+                    <h1 class="profile-name" id="profileName">Loading...</h1>
+                    <p class="profile-role" id="profileRole">Student</p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Products</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">8</span>
+                            <span class="stat-label">Sales</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15</span>
+                            <span class="stat-label">Purchases</span>
+                        </div>
+                    </div>
                 </div>
-                <form class="profile-form" id="profileForm">
-                    <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input class="form-input" type="text" id="fullName" placeholder="Full Name" />
+
+                <!-- Profile Content -->
+                <div class="profile-content">
+                    <!-- Personal Information -->
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                Personal Information
+                            </h3>
+                            <button class="btn btn-primary edit-btn">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-success save-btn">
+                                <i class="fas fa-save"></i>
+                                Save
+                            </button>
+                            <button class="btn btn-secondary cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input class="form-input" type="text" id="fullName" placeholder="Enter your full name" disabled />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input class="form-input" type="email" id="email" placeholder="your.email@example.com" disabled />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input class="form-input" type="tel" id="phone" placeholder="+1 (555) 123-4567" disabled />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-textarea" id="bio" placeholder="Tell us about yourself..." disabled></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input class="form-input" type="email" id="email" disabled placeholder="Email" />
+
+                    <!-- Academic Information -->
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                Academic Information
+                            </h3>
+                            <button class="btn btn-primary edit-btn">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-success save-btn">
+                                <i class="fas fa-save"></i>
+                                Save
+                            </button>
+                            <button class="btn btn-secondary cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">School/University</label>
+                            <input class="form-input" type="text" id="school" placeholder="Your school or university" disabled />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Level</label>
+                            <input class="form-input" type="text" id="level" placeholder="Undergraduate, Graduate, etc." disabled />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Major/Field of Study</label>
+                            <input class="form-input" type="text" id="major" placeholder="Your major or field of study" disabled />
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input class="form-input" type="tel" id="phone" placeholder="Phone" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Address</label>
-                        <input class="form-input" type="text" id="address" placeholder="Address" />
-                    </div>
-                    <button class="btn btn-primary" type="submit">Save Changes</button>
-                </form>
+                </div>
             </div>
         `;
     }
 }
+
 customElements.define('student-profile', StudentProfile); 
