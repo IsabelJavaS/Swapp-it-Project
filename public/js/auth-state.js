@@ -1,6 +1,7 @@
 // Global Authentication State Management
 import { onAuthStateChange, getCurrentUser, logoutUser } from '../firebase/auth.js';
 import { getUserProfile } from '../firebase/firestore.js';
+import pathConfig from './config.js';
 
 // Global state
 let currentUser = null;
@@ -19,6 +20,12 @@ export const initializeAuthState = () => {
                 const profileResult = await getUserProfile(user.uid);
                 if (profileResult.success) {
                     userProfile = profileResult.data;
+                    // Guardar el rol en localStorage y sessionStorage
+                    if (userProfile && userProfile.role) {
+                        window.localStorage.setItem('userRole', userProfile.role);
+                        window.sessionStorage.setItem('userRole', userProfile.role);
+                        window.userProfile = userProfile; // Para acceso global
+                    }
                 } else {
                     console.error('Failed to get user profile:', profileResult.error);
                     userProfile = null;
@@ -76,7 +83,7 @@ export const onAuthStateChanged = (callback) => {
 };
 
 // ==================== ROUTE PROTECTION ====================
-export const requireAuth = (redirectTo = '../../pages/auth/login.html') => {
+export const requireAuth = (redirectTo = '/pages/auth/login.html') => {
     if (!isAuthenticated()) {
         window.location.href = redirectTo;
         return false;
@@ -84,32 +91,24 @@ export const requireAuth = (redirectTo = '../../pages/auth/login.html') => {
     return true;
 };
 
-export const requireRole = (requiredRole, redirectTo = '../../pages/auth/login.html') => {
+export const requireRole = (requiredRole, redirectTo = '/pages/auth/login.html') => {
     if (!requireAuth(redirectTo)) {
         return false;
     }
-    
-            if (getUserRole() !== requiredRole) {
-            // Redirect to appropriate dashboard based on user role
-            const userRole = getUserRole();
-            if (userRole === 'personal') {
-                window.location.href = '../../pages/dashboards/student/index-student.html';
-            } else if (userRole === 'business') {
-                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-            } else {
-                window.location.href = redirectTo;
-            }
-            return false;
-        }
-    
+    if (getUserRole() !== requiredRole) {
+        // Redirect to appropriate dashboard based on user role
+        const userRole = getUserRole();
+        pathConfig.redirectToDashboard(userRole);
+        return false;
+    }
     return true;
 };
 
-export const requirePersonalUser = (redirectTo = '../../pages/auth/login.html') => {
+export const requirePersonalUser = (redirectTo = '/pages/auth/login.html') => {
     return requireRole('personal', redirectTo);
 };
 
-export const requireBusinessUser = (redirectTo = '../../pages/auth/login.html') => {
+export const requireBusinessUser = (redirectTo = '/pages/auth/login.html') => {
     return requireRole('business', redirectTo);
 };
 
@@ -123,7 +122,7 @@ export const handleLogout = async () => {
             userProfile = null;
             
             // Redirect to login page
-            window.location.href = '../../pages/auth/login.html';
+            window.location.href = '/pages/auth/login.html';
         } else {
             console.error('Logout failed:', result.error);
         }
@@ -135,18 +134,11 @@ export const handleLogout = async () => {
 // ==================== NAVIGATION HELPERS ====================
 export const navigateToDashboard = () => {
     if (!isAuthenticated()) {
-        window.location.href = '../../pages/auth/login.html';
+        pathConfig.redirectTo(pathConfig.getLoginPath());
         return;
     }
-    
     const role = getUserRole();
-    if (role === 'personal') {
-        window.location.href = '../../pages/dashboards/student/index-student.html';
-    } else if (role === 'business') {
-        window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-    } else {
-        window.location.href = '../../pages/auth/login.html';
-    }
+    pathConfig.redirectToDashboard(role);
 };
 
 // Initialize auth state when module is loaded

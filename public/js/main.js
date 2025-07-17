@@ -1,3 +1,5 @@
+import { AppConfig } from './config.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Test backend and Firebase connections
     testConnections();
@@ -18,8 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                // Get header height for offset
-                const headerHeight = document.querySelector('.navbar-custom').offsetHeight;
+                // Get header height for offset (Web Component compatible)
+                const appHeader = document.querySelector('app-header');
+                const shadowHeader = appHeader?.shadowRoot?.querySelector('.marketplace-header');
+                const headerHeight = shadowHeader ? shadowHeader.offsetHeight : 0;
                 
                 // Calculate scroll position
                 const scrollPosition = targetSection.offsetTop - headerHeight;
@@ -32,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Close mobile menu if open
                 const navbarCollapse = document.querySelector('.navbar-collapse');
-                if (navbarCollapse.classList.contains('show')) {
+                if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                     bootstrap.Collapse.getInstance(navbarCollapse).hide();
                 }
             }
@@ -43,7 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', function() {
         let current = '';
         const sections = document.querySelectorAll('section');
-        const headerHeight = document.querySelector('.navbar-custom').offsetHeight;
+        // Get header height for offset (Web Component compatible)
+        const appHeader = document.querySelector('app-header');
+        const shadowHeader = appHeader?.shadowRoot?.querySelector('.marketplace-header');
+        const headerHeight = shadowHeader ? shadowHeader.offsetHeight : 0;
 
         sections.forEach(section => {
             const sectionTop = section.offsetTop - headerHeight - 100;
@@ -86,17 +93,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Test backend and Firebase connections
 async function testConnections() {
-    console.log('Testing connections...');
+    if (AppConfig.isDebugMode()) {
+        console.log('🔧 Testing connections...');
+        console.log('📍 Environment:', AppConfig.isDevelopment() ? 'Development' : 'Production');
+        console.log('🌐 Base URL:', AppConfig.getBaseUrl());
+    }
     
     // Test backend
     if (window.api) {
-        const backendTest = await window.api.testBackend();
-        console.log('Backend test:', backendTest);
+        try {
+            const backendTest = await window.api.testBackend();
+            if (AppConfig.isDebugMode()) {
+                console.log('✅ Backend test:', backendTest);
+            }
+        } catch (error) {
+            console.warn('⚠️ Backend test failed:', error);
+        }
         
-        const firebaseTest = await window.api.testFirebase();
-        console.log('Firebase test:', firebaseTest);
+        try {
+            const firebaseTest = await window.api.testFirebase();
+            if (AppConfig.isDebugMode()) {
+                console.log('✅ Firebase test:', firebaseTest);
+            }
+        } catch (error) {
+            console.warn('⚠️ Firebase test failed:', error);
+        }
     } else {
-        console.log('API module not loaded');
+        if (AppConfig.isDebugMode()) {
+            console.log('ℹ️ API module not loaded');
+        }
     }
 }
 
@@ -108,9 +133,9 @@ function setupCTAButtons() {
         startSellingBtn.addEventListener('click', function() {
             // Check if user is logged in
             if (isUserLoggedIn()) {
-                window.location.href = '/products';
+                window.location.href = AppConfig.getMarketplacePath();
             } else {
-                window.location.href = '/register';
+                window.location.href = AppConfig.getRegisterPath();
             }
         });
     }
@@ -119,7 +144,7 @@ function setupCTAButtons() {
     const browseItemsBtn = document.querySelector('.btn-secondary-large');
     if (browseItemsBtn) {
         browseItemsBtn.addEventListener('click', function() {
-            window.location.href = '/products';
+            window.location.href = AppConfig.getMarketplacePath();
         });
     }
 
@@ -127,7 +152,15 @@ function setupCTAButtons() {
     const businessBtn = document.querySelector('.cta-buttons .btn-primary-large');
     if (businessBtn) {
         businessBtn.addEventListener('click', function() {
-            window.location.href = '/register';
+            window.location.href = AppConfig.getRegisterPath();
+        });
+    }
+
+    // Log In button
+    const loginBtn = document.querySelector('.btn-secondary-large');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            window.location.href = AppConfig.getLoginPath();
         });
     }
 }
@@ -136,4 +169,27 @@ function setupCTAButtons() {
 function isUserLoggedIn() {
     // For now, return false - you can implement this with your auth system
     return false;
+}
+
+// Función helper para obtener la altura del header (compatible con Web Components)
+export function getHeaderHeight() {
+    const appHeader = document.querySelector('app-header');
+    if (!appHeader) return 0;
+    
+    const shadowHeader = appHeader.shadowRoot?.querySelector('.marketplace-header');
+    return shadowHeader ? shadowHeader.offsetHeight : 0;
+}
+
+// Función helper para scroll suave a una sección
+export function smoothScrollToSection(sectionId, offset = 0) {
+    const targetSection = document.querySelector(sectionId);
+    if (!targetSection) return;
+    
+    const headerHeight = getHeaderHeight();
+    const scrollPosition = targetSection.offsetTop - headerHeight - offset;
+    
+    window.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth'
+    });
 }

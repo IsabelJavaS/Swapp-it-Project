@@ -12,11 +12,47 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    transition: background 0.5s ease;
 }
+
+/* Estilos dinámicos para business */
+body.business-mode {
+    background: linear-gradient(rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7)), url('../assets/logos/businesslogin.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Elimina el efecto visual de fondo en modo business */
+/* body.business-mode::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(rgba(30,30,30,0.75), rgba(30,30,30,0.75)), url('../assets/logos/businesslogin.jpeg') center center / cover no-repeat;
+    filter: blur(6px) brightness(0.7) saturate(1.1);
+}
+
+body.business-mode {
+    position: relative;
+    z-index: 1;
+}
+
+body.business-mode .register-container,
+body.business-mode .register-box {
+    position: relative;
+    z-index: 2;
+} */
 
 .register-container {
     width: 100%;
     max-width: 500px;
+    transition: all 0.5s ease;
 }
 
 .register-box {
@@ -24,19 +60,88 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.35s cubic-bezier(.4,2,.3,1), transform 0.35s cubic-bezier(.4,2,.3,1);
+    will-change: box-shadow, transform;
+}
+.register-box:hover {
+    box-shadow: 0 8px 40px 0 rgba(52,104,192,0.18), 0 0 0 4px #ffa42433;
+    transform: translateY(-6px) scale(1.025) rotate(-1deg);
+}
+
+/* Efecto especial para business */
+body.business-mode .register-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 164, 36, 0.3);
+    box-shadow: 0 0 30px rgba(255, 164, 36, 0.2);
+}
+
+body.business-mode .register-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ffa424, #3468c0, #ffa424);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease-in-out infinite;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .logo {
     display: block;
-    margin: 0 auto 2px;
-    max-width: 150px;
+    margin: 0 auto 10px auto;
+    width: 30vw;
+    max-width: 180px;
+    min-width: 48px;
     height: auto;
+    transition: transform 0.3s cubic-bezier(.4,2,.3,1), filter 0.3s;
+    animation: logo-pulse 1.2s cubic-bezier(.4,2,.3,1);
+}
+.logo:hover {
+    transform: scale(1.18) rotate(-4deg);
+    filter: drop-shadow(0 0 24px #ffa424cc) drop-shadow(0 0 32px #3468c0aa) brightness(1.18);
+    transition: transform 0.45s cubic-bezier(.4,2,.3,1), filter 0.45s;
+}
+@keyframes logo-pulse {
+    0% { transform: scale(0.92); filter: brightness(0.8); }
+    60% { transform: scale(1.08); filter: brightness(1.15); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+@media (max-width: 900px) {
+    .logo {
+        width: 38vw;
+        max-width: 120px;
+    }
+}
+@media (max-width: 600px) {
+    .logo {
+        width: 48vw;
+        max-width: 80px;
+        min-width: 32px;
+    }
 }
 
 h2 {
     text-align: center;
     color: #333;
     margin-bottom: 30px;
+    transition: color 0.3s ease;
+}
+
+body.business-mode h2 {
+    color: #3468c0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .role-selector {
@@ -53,17 +158,65 @@ h2 {
     color: #3468c0;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;s
+    font-size: 16px;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.role-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.role-btn:hover::before {
+    left: 100%;
 }
 
 .role-btn.active {
     background-color: #3468c0;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 104, 192, 0.3);
+}
+
+/* Efecto especial para el botón business cuando está activo */
+.role-btn[data-role="business"].active {
+    background: linear-gradient(45deg, #3468c0, #ffa424);
+    border-color: #ffa424;
+    animation: businessGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes businessGlow {
+    from { box-shadow: 0 4px 8px rgba(52, 104, 192, 0.3); }
+    to { box-shadow: 0 4px 15px rgba(255, 164, 36, 0.5); }
 }
 
 .form-group {
     margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+body.business-mode .form-group {
+    transform: translateX(0);
+    animation: slideInFromRight 0.5s ease-out;
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 input, select, textarea {
@@ -72,12 +225,28 @@ input, select, textarea {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+body.business-mode input,
+body.business-mode select,
+body.business-mode textarea {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(52, 104, 192, 0.3);
 }
 
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #ffa424;
+    box-shadow: 0 0 5px rgba(255, 164, 36, 0.3);
+}
+
+body.business-mode input:focus,
+body.business-mode select:focus,
+body.business-mode textarea:focus {
+    border-color: #3468c0;
+    box-shadow: 0 0 8px rgba(52, 104, 192, 0.4);
 }
 
 textarea {
@@ -102,30 +271,91 @@ select {
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+body.business-mode .register-btn {
+    background: linear-gradient(45deg, #3468c0, #ffa424);
+    background-size: 200% 200%;
+    animation: gradientMove 3s ease infinite;
+}
+
+@keyframes gradientMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .register-btn:hover {
     background-color: #ffa424;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.4);
+}
+
+body.business-mode .register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(52, 104, 192, 0.4);
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    box-shadow: 0 0 8px 2px #ffa42455, 0 0 16px 4px #3468c055;
+    border-color: #ffa424;
+    outline: none;
+    transition: box-shadow 0.25s, border-color 0.25s;
+}
+.register-btn:hover, .register-btn:focus {
+    box-shadow: 0 4px 24px #3468c088, 0 0 0 2px #ffa42488;
+    background: linear-gradient(90deg, #3468c0 0%, #ffa424 100%);
+    transition: box-shadow 0.25s, background 0.25s;
 }
 
 .additional-options {
     margin-top: 20px;
     text-align: center;
+    transition: all 0.3s ease;
+}
+
+body.business-mode .additional-options {
+    color: #3468c0;
 }
 
 .additional-options a {
     color: #3468c0;
     text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+body.business-mode .additional-options a {
+    color: #ffa424;
+    font-weight: bold;
 }
 
 .additional-options a:hover {
     text-decoration: underline;
 }
 
+body.business-mode .additional-options a:hover {
+    color: #3468c0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 .hidden {
     display: none;
+}
+
+/* Animación para mostrar campos de business */
+.business-fields {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.business-fields:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Responsive design */
@@ -141,4 +371,626 @@ select {
     .role-btn {
         width: 100%;
     }
+    
+    body.business-mode {
+        background-attachment: scroll;
+    }
+} 
+
+/* GLASSMORPHISM para business */
+body.business-mode {
+    background: linear-gradient(rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7)), url('../assets/logos/businesslogin.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body.business-mode .register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    max-width: none;
+    padding: 0;
+}
+
+body.business-mode .register-box {
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 8px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 8px 8px 8px 8px;
+    max-width: 320px;
+    width: 100%;
+    margin: 24px 0;
+    position: relative;
+    overflow: visible;
+    transition: all 0.5s cubic-bezier(.4,2,.3,1);
+}
+
+body.business-mode .register-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #ffa424, #3468c0, #ffa424);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease-in-out infinite;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+}
+
+body.business-mode .logo {
+    display: block;
+    margin: 0 auto 10px auto;
+    max-width: 120px;
+    height: auto;
+}
+
+body.business-mode h2 {
+    color: #fff;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    margin-bottom: 22px;
+    margin-top: 0;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+body.business-mode .role-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    margin-top: 0;
+    background: rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 8px 0 4px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    z-index: 2;
+}
+
+body.business-mode .role-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 8px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: none;
+    outline: none;
+    letter-spacing: 0.5px;
+}
+
+body.business-mode .role-btn.active {
+    background: linear-gradient(90deg, #ffa424 60%, #3468c0 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+}
+
+body.business-mode .role-btn:not(.active):hover {
+    background: rgba(255,255,255,0.13);
+    color: #ffa424;
+}
+
+body.business-mode .register-box form {
+    margin-top: 18px;
+}
+
+body.business-mode .form-group {
+    margin-bottom: 8px;
+}
+
+body.business-mode input,
+body.business-mode select,
+body.business-mode textarea {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.97rem;
+    padding: 8px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 0;
+    outline: none;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+body.business-mode input::placeholder,
+body.business-mode textarea::placeholder {
+    color: #e0e0e0;
+    opacity: 1;
+}
+
+body.business-mode input:focus,
+body.business-mode select:focus,
+body.business-mode textarea:focus {
+    background: rgba(255,255,255,0.35);
+    box-shadow: 0 0 0 2px #ffa42444;
+}
+
+body.business-mode .register-btn {
+    width: 100%;
+    padding: 9px 0;
+    background: linear-gradient(90deg, #ffa424 60%, #3468c0 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    margin-top: 6px;
+    box-shadow: 0 4px 16px rgba(52,104,192,0.10);
+    letter-spacing: 1px;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+body.business-mode .register-btn:hover {
+    background: linear-gradient(90deg, #3468c0 0%, #ffa424 100%);
+    box-shadow: 0 8px 24px rgba(52,104,192,0.18);
+    transform: translateY(-2px) scale(1.03);
+}
+
+body.business-mode .additional-options {
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.93rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+body.business-mode .additional-options a {
+    color: #ffa424;
+    font-weight: 500;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+body.business-mode .additional-options a:hover {
+    color: #fff;
+}
+
+body.business-mode .error-message, body.business-mode .success-message {
+    color: #fff;
+    background: rgba(255, 64, 64, 0.18);
+    border: 1px solid rgba(255,255,255,0.25);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+@media (max-width: 600px) {
+    body.business-mode .register-box {
+        padding: 4px 2px 4px 2px;
+        max-width: 96vw;
+    }
+} 
+
+body.business-mode {
+    background: linear-gradient(120deg, rgba(30,30,30,0.7) 0%, rgba(52,104,192,0.18) 100%), url('../assets/logos/businesslogin.jpeg');
+    background-size: 180% 120%, cover;
+    background-position: 0% 50%, center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    animation: animatedGradient 10s ease-in-out infinite alternate;
+}
+
+@keyframes animatedGradient {
+    0% {
+        background-position: 0% 50%, center;
+        background-size: 180% 120%, cover;
+    }
+    50% {
+        background-position: 100% 50%, center;
+        background-size: 120% 180%, cover;
+    }
+    100% {
+        background-position: 0% 50%, center;
+        background-size: 180% 120%, cover;
+    }
+} 
+
+body.business-mode select {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 32px;
+    position: relative;
+}
+
+body.business-mode select:focus {
+    background: rgba(255,255,255,0.35);
+    color: #fff;
+    outline: none;
+}
+
+body.business-mode select option {
+    background: rgba(255,255,255,0.25);
+    color: #222;
+} 
+
+body.business-mode .custom-select-business {
+    position: relative;
+    width: 100%;
+    background: rgba(255,255,255,0.25);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0;
+    z-index: 10;
+}
+body.business-mode .custom-select-business .selected-option {
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.97rem;
+    border-radius: 8px;
+    background: transparent;
+    transition: background 0.2s;
+}
+body.business-mode .custom-select-business.open .selected-option,
+body.business-mode .custom-select-business .selected-option:hover {
+    background: rgba(52,104,192,0.13);
+}
+body.business-mode .custom-select-business .options-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 16px rgba(52,104,192,0.10);
+    margin-top: 2px;
+    overflow: hidden;
+    animation: fadeInDropdown 0.25s;
+}
+body.business-mode .custom-select-business.open .options-list {
+    display: block;
+}
+body.business-mode .custom-select-business .option {
+    padding: 8px 12px;
+    color: #222;
+    font-size: 0.97rem;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+body.business-mode .custom-select-business .option:hover {
+    background: #ffa424;
+    color: #fff;
+}
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+} 
+
+.password-group {
+    position: relative;
+}
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+    z-index: 3;
+    color: #aaa;
+    font-size: 1.15em;
+    outline: none;
+    transition: color 0.2s;
+}
+.toggle-password:hover, .toggle-password:focus {
+    color: #ffa424;
+}
+.eye-icon {
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    user-select: none;
+}
+.icon-eye {
+    display: block;
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    color: #aaa;
+    transition: color 0.2s;
+}
+.toggle-password:hover .icon-eye,
+.toggle-password:focus .icon-eye {
+    color: #ffa424;
+}
+.icon-eye-off {
+    display: block;
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    color: #aaa;
+    transition: color 0.2s;
+} 
+
+.password-group input:focus + .toggle-password .icon-eye,
+.password-group input:focus + .toggle-password .icon-eye-off {
+    color: #ffa424;
+    filter: drop-shadow(0 0 2px #ffa42488);
+} 
+
+.input-icon-group {
+    position: relative;
+}
+.input-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    color: #aaa;
+    z-index: 2;
+    pointer-events: none;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.input-icon-group input,
+.input-icon-group textarea {
+    padding-right: 38px !important;
+    padding-left: 12px !important;
+}
+.input-icon-group input:focus ~ .input-icon,
+.input-icon-group textarea:focus ~ .input-icon,
+.input-icon-group select:focus ~ .input-icon {
+    color: #ffa424;
+    filter: drop-shadow(0 0 6px #ffa424cc) drop-shadow(0 0 12px #3468c0aa);
+    transform: scale(1.45) translateY(-40%);
+    box-shadow: 0 0 24px 4px #ffa42488, 0 0 48px 8px #3468c088;
+    animation: hologram-glow 0.9s infinite alternate cubic-bezier(.4,2,.3,1);
+    transition: transform 0.25s cubic-bezier(.4,2,.3,1), box-shadow 0.25s, color 0.2s, filter 0.2s;
+}
+@keyframes hologram-glow {
+    0% { filter: drop-shadow(0 0 6px #ffa424cc) drop-shadow(0 0 12px #3468c0aa); opacity: 1; }
+    100% { filter: drop-shadow(0 0 16px #ffa424ff) drop-shadow(0 0 32px #3468c0ff); opacity: 0.92; }
+} 
+
+.success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    min-width: 260px;
+    max-width: 90vw;
+    background: linear-gradient(120deg, #f7f7fa 0%, #3468c0 100%);
+    color: #222;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(52,104,192,0.18), 0 0 0 4px #ffa42422;
+    padding: 44px 38px 32px 38px;
+    z-index: 9999;
+    text-align: center;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    border: 2.5px solid #3468c044;
+    font-family: inherit;
+    animation: business-fade-in 0.7s cubic-bezier(.4,2,.3,1);
+}
+.success-message .success-icon {
+    display: block;
+    margin: 0 auto 10px auto;
+    width: 60px;
+    height: 60px;
+    stroke: #3468c0;
+    stroke-width: 3.5;
+    filter: drop-shadow(0 0 12px #3468c088);
+    animation: business-icon-pop 0.7s cubic-bezier(.4,2,.3,1);
+}
+.success-message .success-main {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #222;
+    letter-spacing: 1.2px;
+    text-shadow: 0 2px 8px #3468c022;
+    margin-bottom: 0;
+    animation: business-text-pop 0.8s cubic-bezier(.4,2,.3,1);
+}
+.success-message .success-subtext {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #3468c0;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 4px #ffa42422;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+@keyframes business-fade-in {
+    0% { opacity: 0; transform: translate(-50%, -60%) scale(0.7); }
+    80% { opacity: 1; transform: translate(-50%, -48%) scale(1.08); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes business-icon-pop {
+    0% { transform: scale(0.5) rotate(-12deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes business-text-pop {
+    0% { transform: scale(0.7) translateY(30px); opacity: 0; }
+    60% { transform: scale(1.15) translateY(-8px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+} 
+
+.success-logo-animated {
+    display: block;
+    margin: 0 auto 8px auto;
+    border-radius: 0;
+    background: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    animation: logo-pop 1s cubic-bezier(.4,2,.3,1);
+}
+@keyframes logo-pop {
+    0% { transform: scale(0.7) rotate(-18deg); opacity: 0; }
+    60% { transform: scale(1.18) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.success-message:has(.success-logo-animated) {
+    background: linear-gradient(120deg, rgba(255,164,36,0.98) 0%, rgba(52,104,192,0.98) 100%);
+    box-shadow: 0 8px 40px 0 #ffa42455, 0 0 0 4px #3468c033;
+    border: 2.5px solid #fff6;
+}
+.success-message:has(.success-icon) {
+    background: linear-gradient(120deg, rgba(52,104,192,0.92) 0%, rgba(255,255,255,0.92) 100%);
+    box-shadow: 0 8px 32px 0 #3468c055, 0 0 0 4px #ffa42422;
+    border: 2.5px solid #3468c044;
+} 
+
+.gradient-text {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 0;
+    background: linear-gradient(90deg, #ffa424, #3468c0, #ffa424 80%);
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 18px #ffa42433, 0 2px 4px #3468c033;
+    display: block;
+    animation: gradient-move 2.5s linear infinite alternate, text-pop 0.8s cubic-bezier(.4,2,.3,1);
+}
+@keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+@keyframes text-pop {
+    0% { transform: scale(0.7) rotate(-8deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+} 
+
+.success-message-student {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    text-align: center;
+}
+.success-message-student .success-main,
+.success-message-student .success-subtext {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+} 
+
+.success-message-student .success-subtext {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #3468c0;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    text-shadow: 0 2px 8px #ffa42422;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+} 
+
+/* Estilos para el mensaje de éxito de business */
+.success-message-business {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    text-align: center;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: business-fade-in 0.7s cubic-bezier(.4,2,.3,1);
+}
+
+.gradient-text-business {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, #3468c0, #222, #3468c0 80%);
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 18px #3468c033, 0 2px 4px #2222;
+    display: block;
+    animation: gradient-move-business 2.5s linear infinite alternate, text-pop 0.8s cubic-bezier(.4,2,.3,1);
+}
+
+.business-portfolio-icon {
+    display: block;
+    margin: 0 auto 1rem auto;
+    width: 80px;
+    height: 80px;
+    color: #3468c0;
+    stroke: #3468c0;
+    stroke-width: 2;
+    filter: drop-shadow(0 0 20px #3468c0aa) drop-shadow(0 0 40px #3468c066);
+    animation: portfolio-pop 0.7s cubic-bezier(.4,2,.3,1);
+}
+@keyframes portfolio-pop {
+    0% { transform: scale(0.2) rotate(-30deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes gradient-move-business {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 } 

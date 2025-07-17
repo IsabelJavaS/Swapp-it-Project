@@ -2,6 +2,7 @@
 import { registerUser } from '../firebase/auth.js';
 import { createUserProfile } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
+import pathConfig from './config.js';
 
 // DOM elements
 const roleButtons = document.querySelectorAll('.role-btn');
@@ -19,6 +20,14 @@ function handleRoleChange(event) {
     // Update buttons
     roleButtons.forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
+    
+    // Toggle business mode for visual effects
+    const body = document.body;
+    if (selectedRole === 'business') {
+        body.classList.add('business-mode');
+    } else {
+        body.classList.remove('business-mode');
+    }
     
     // Show/hide fields based on role
     if (selectedRole === 'personal') {
@@ -128,29 +137,33 @@ function showError(message) {
     }, 5000);
 }
 
-function showSuccess(message) {
-    // Remove existing messages
-    const existingMessage = document.querySelector('.success-message');
+function showSuccess(message, subtext = 'Redirecting...', role = '') {
+    const existingMessage = document.querySelector('.success-message, .success-message-student, .success-message-business');
     if (existingMessage) {
         existingMessage.remove();
     }
-
-    // Create and show success message
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.textContent = message;
-    successDiv.style.cssText = `
-        color: #155724;
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        border-radius: 4px;
-        padding: 10px;
-        margin: 10px 0;
-        text-align: center;
-    `;
-
-    const form = document.getElementById('registerForm');
-    form.insertBefore(successDiv, form.firstChild);
+    
+    let successDiv;
+    if (role === 'business') {
+        // Mensaje de éxito para business con ícono de portafolio y texto animado
+        successDiv = document.createElement('div');
+        successDiv.className = 'success-message-business';
+        successDiv.innerHTML = `
+            <svg class="business-portfolio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+            <span class="gradient-text-business">Welcome to Swapp-it Business Suite</span>
+        `;
+        document.body.appendChild(successDiv);
+    } else {
+        // Mensaje de éxito para student - solo texto animado
+        successDiv = document.createElement('div');
+        successDiv.className = 'success-message-student';
+        successDiv.innerHTML = `
+            <span class="gradient-text">Welcome to Swapp-it!</span>
+        `;
+        document.body.appendChild(successDiv);
+    }
 }
 
 function setLoadingState(loading) {
@@ -242,15 +255,11 @@ async function handleRegistration(formData) {
         console.log('Firestore user profile created successfully');
 
         // 4. Success - redirect to dashboard
-        showSuccess('Account created successfully! Redirecting...');
+        showSuccess('Account created successfully! Redirecting...', '', selectedRole);
         
         setTimeout(() => {
             // Redirect based on role
-            if (selectedRole === 'personal') {
-                window.location.href = '../../pages/dashboards/student/index-student.html';
-            } else {
-                window.location.href = '../../pages/dashboards/business/dashboardBusiness.html';
-            }
+            pathConfig.redirectToDashboard(selectedRole);
         }, 2000);
 
     } catch (error) {
@@ -313,6 +322,118 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    // Set initial role
-    document.querySelector('.role-btn.active').click();
+    // Check URL parameters for role selection
+    const urlParams = new URLSearchParams(window.location.search);
+    const roleParam = urlParams.get('role');
+    
+    // Set initial role and visual mode
+    let activeRole = document.querySelector('.role-btn.active');
+    
+    // If role parameter is specified, select that role
+    if (roleParam === 'business') {
+        console.log('Role parameter detected: business');
+        const businessBtn = document.querySelector('.role-btn[data-role="business"]');
+        if (businessBtn) {
+            // Remove active class from current active button
+            if (activeRole) {
+                activeRole.classList.remove('active');
+            }
+            // Add active class to business button
+            businessBtn.classList.add('active');
+            activeRole = businessBtn;
+        }
+    }
+    
+    if (activeRole) {
+        activeRole.click();
+        
+        // Initialize visual mode based on active role
+        const selectedRole = activeRole.dataset.role;
+        const body = document.body;
+        if (selectedRole === 'business') {
+            body.classList.add('business-mode');
+        } else {
+            body.classList.remove('business-mode');
+        }
+    }
+
+    // Custom select para business type SOLO con click
+    const customSelect = document.getElementById('customSelectBusiness');
+    const selectedOption = document.getElementById('selectedBusinessType');
+    const optionsList = document.getElementById('businessTypeOptions');
+    const hiddenInput = document.getElementById('tipoNegocio');
+    if (customSelect && selectedOption && optionsList && hiddenInput) {
+        // Abrir/cerrar solo con click
+        selectedOption.addEventListener('click', () => {
+            customSelect.classList.toggle('open');
+        });
+        // Seleccionar opción con click
+        optionsList.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+            });
+            option.addEventListener('click', (e) => {
+                const value = option.getAttribute('data-value');
+                const text = option.textContent;
+                selectedOption.textContent = text;
+                hiddenInput.value = value;
+                customSelect.classList.remove('open');
+            });
+        });
+        // Cerrar si se hace click fuera
+        document.addEventListener('mousedown', (e) => {
+            if (!customSelect.contains(e.target)) {
+                customSelect.classList.remove('open');
+            }
+        });
+    }
+
+    // Mostrar/ocultar contraseña con SVG profesional
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const eyeIcon = btn.querySelector('.eye-icon');
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    eyeIcon.innerHTML = `<svg class="icon-eye-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.06 10.06 0 0 1 12 19c-7 0-11-7-11-7a18.77 18.77 0 0 1 5.06-5.94M1 1l22 22"/><path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/></svg>`;
+                } else {
+                    input.type = 'password';
+                    eyeIcon.innerHTML = `<svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
+                }
+            }
+        });
+    });
+
+    // Mensaje de validación en inglés para campos required
+    document.querySelectorAll('input[required], textarea[required], select[required]').forEach(field => {
+        field.addEventListener('invalid', function(e) {
+            e.target.setCustomValidity('Please fill out this field');
+        });
+        field.addEventListener('input', function(e) {
+            e.target.setCustomValidity('');
+        });
+    });
+
+    // Efecto tilt 3D en el formulario student
+    const registerBox = document.querySelector('.register-box');
+    if (registerBox) {
+        registerBox.addEventListener('mousemove', (e) => {
+            const rect = registerBox.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * 8; // máximo 8 grados
+            const rotateY = ((x - centerX) / centerX) * 12; // máximo 12 grados
+            registerBox.style.transform = `translateY(-6px) scale(1.025) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        registerBox.addEventListener('mouseleave', () => {
+            registerBox.style.transform = '';
+        });
+        registerBox.addEventListener('mouseenter', () => {
+            registerBox.style.transition = 'transform 0.35s cubic-bezier(.4,2,.3,1)';
+        });
+    }
 }); 

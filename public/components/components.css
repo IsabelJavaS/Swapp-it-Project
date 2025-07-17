@@ -1,4 +1,8 @@
-/* Variables globales */
+/* =========================================
+   GLOBAL CSS VARIABLES & UTILITIES
+   ========================================= */
+
+/* CSS Variables - Available globally */
 :root {
     --swappit-blue: #2563eb;
     --swappit-blue-hover: #1d4ed8;
@@ -9,700 +13,109 @@
     --neutral-light: #f3f4f6;
     --neutral-dark: #111827;
     --font-primary: 'Inter', sans-serif;
-    --header-height: 80px; /* Consistent header height across all pages */
+    --header-height: 80px;
 }
 
-/* Estilos globales */
+/* =========================================
+   GLOBAL BODY STYLES
+   ========================================= */
+
+/* Ensure body has proper padding for fixed header */
 body {
     padding-top: var(--header-height);
     margin: 0;
-}
-
-/* Ensure body padding is correct when header is present */
-body:has(#header-container) {
-    padding-top: var(--header-height);
-}
-
-/* =========================================
-   Marketplace Header Styles
-   ========================================= */
-.marketplace-header {
-    background-color: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    padding: 1rem 0;
-    height: var(--header-height);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center; /* Centrar verticalmente todo el contenido */
-}
-
-/* Ensure header is always on top and properly styled */
-#header-container .marketplace-header {
-    background-color: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    padding: 1rem 0;
-    height: var(--header-height);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-}
-
-.navbar {
-    padding: 0.75rem 0; /* Padding más balanceado para la navbar */
-    width: 100%;
-}
-
-.navbar-brand {
     font-family: var(--font-primary);
-    font-weight: 800;
-    font-size: 1.75rem;
-    margin-right: 2rem;
-    padding: 0.5rem 0; /* Padding vertical para el logo */
-}
-
-/* Logo image styles with higher specificity */
-.marketplace-header .navbar-brand img,
-.navbar-custom .navbar-brand img {
-    width: 140px;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-.brand-swap { color: var(--swappit-blue); }
-.brand-pit { color: var(--swappit-orange); }
-
-/* Search Bar */
-.search-container {
-    flex: 1;
-    max-width: 600px;
-    margin: 0 2rem;
-}
-
-.search-container .form-control {
-    border-radius: 50px;
-    padding: 0.75rem 1.5rem;
-    border: 2px solid var(--border-color);
-    height: 45px; /* Altura específica para el input */
-    line-height: 1.2;
-}
-
-.btn-search {
-    border-radius: 0 50px 50px 0;
-    background: var(--swappit-blue);
-    color: white;
-    padding: 0 1.5rem;
-    height: 45px; /* Misma altura que el input */
-    display: flex;
-    align-items: center;
-}
-
-/* Navigation Right */
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 100%;
-}
-
-.btn-theme-toggle,
-.btn-cart,
-.btn-profile {
-    width: 42px; /* Ligeramente más grandes */
-    height: 42px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--neutral-light);
-    color: var(--text-primary);
-    border: none;
-    position: relative;
-    transition: all 0.3s ease;
-    padding: 0; /* Eliminar padding interno */
-}
-
-.btn-theme-toggle:hover,
-.btn-cart:hover,
-.btn-profile:hover {
-    transform: translateY(-2px);
-    background: var(--swappit-blue);
-    color: white;
-}
-
-.cart-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: var(--swappit-orange);
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* =========================================
-   Footer Styles
-   ========================================= */
-.marketplace-footer {
-    background: var(--neutral-dark);
-    color: white;
-    padding: 2rem 0 0;
-    margin-top: 2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.footer-main {
-    padding: 2rem 0 2rem;
-    position: relative;
-}
-
-.footer-main img {
-    width: 160px;
-    height: auto;
-    display: block;
-}
-
-.footer-brand {
-    font-family: var(--font-primary);
-    font-weight: 800;
-    font-size: 2rem;
-    margin-bottom: 5px;
-}
-
-.footer-description {
-    color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    font-size: 1rem;
-}
-
-.footer-social {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-link {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--swappit-orange);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.social-link:hover {
-    background: var(--swappit-blue);
-    color: white;
-    transform: translateY(-2px);
-}
-
-.footer-title {
-    color: white;
-    font-family: var(--font-primary);
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    font-size: 1.25rem;
-    margin-top: 30px;
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.footer-links a:hover {
-    color: white;
-    padding-left: 5px;
-}
-
-.footer-contact {
-    margin-top: 1rem;
-}
-
-.footer-contact p {
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-}
-
-.footer-newsletter-text {
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
-.footer-newsletter {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.footer-newsletter input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 0.95rem;
-}
-
-.footer-newsletter input:focus {
-    outline: none;
-    border-color: var(--swappit-blue);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.footer-newsletter input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.footer-newsletter button {
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 10px;
-    background: var(--swappit-blue);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.footer-newsletter button:hover {
-    background: var(--swappit-blue-hover);
-    transform: translateY(-2px);
-}
-
-.footer-bottom {
-    margin-top: 1.5rem;
-    padding: 1rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-}
-
-.copyright {
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-    font-size: 0.95rem;
-}
-
-.footer-bottom-links {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.5rem;
-}
-
-.footer-bottom-links a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.footer-bottom-links a:hover {
-    color: white;
-}
-
-/* Modal Styles - Necesarios para los modales del footer */
-.modal-content {
-    border-radius: 20px;
-    border: none;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-    border-bottom: 1px solid var(--border-color);
-    padding: 1.5rem;
-}
-
-.modal-title {
-    font-family: var(--font-primary);
-    font-weight: 600;
     color: var(--text-primary);
 }
 
-.modal-body {
-    padding: 1.5rem;
+/* =========================================
+   GLOBAL UTILITY CLASSES
+   ========================================= */
+
+/* Bootstrap-like utility classes for use outside components */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-flex { display: flex !important; }
+
+@media (min-width: 992px) {
+    .d-lg-flex { display: flex !important; }
 }
 
-.modal-body h6 {
-    color: var(--text-primary);
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.modal-body p {
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-}
-
-/* Media Queries */
 @media (max-width: 991px) {
-    .search-container {
-        margin: 1rem 0;
-        max-width: 100%;
-    }
-
-    .footer-main {
-        padding: 2rem 0 1.5rem;
-    }
-
-    .footer-bottom-links {
-        justify-content: center;
-        margin-top: 1rem;
-    }
+    .d-lg-none { display: none !important; }
 }
 
-@media (max-width: 768px) {
-    .footer-newsletter {
-        flex-direction: column;
-        align-items: center;
-    }
+/* =========================================
+   GLOBAL FONT AWESOME OVERRIDES
+   ========================================= */
 
-    .footer-newsletter button {
-        width: 100%;
-        height: 45px;
-    }
+/* Ensure Font Awesome icons work properly in Web Components */
+.fas, .fab, .far, .fal {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro";
+    font-weight: 900;
+}
 
-    .footer-bottom {
-        text-align: center;
-    }
+.fab {
+    font-weight: 400;
+}
 
-    .footer-bottom-links {
-        justify-content: center;
-        margin-top: 1rem;
-    }
+/* =========================================
+   GLOBAL ANIMATIONS
+   ========================================= */
 
-    /* Center all footer content in mobile */
-    .footer-main .row > div {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    
-    .footer-brand {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 1rem;
-    }
-    
-    .footer-description {
-        text-align: center;
-        margin-bottom: 1.5rem;
+/* Smooth transitions for all interactive elements */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* =========================================
+   GLOBAL FOCUS STYLES
+   ========================================= */
+
+/* Ensure accessibility with proper focus styles */
+*:focus {
+    outline: 2px solid var(--swappit-blue);
+    outline-offset: 2px;
+}
+
+/* =========================================
+   GLOBAL PRINT STYLES
+   ========================================= */
+
+@media print {
+    app-header,
+    app-footer {
+        display: none !important;
     }
     
-    .footer-social {
-        justify-content: center;
-        margin-bottom: 1rem;
-    }
-    
-    .footer-title {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    
-    .footer-links {
-        text-align: center;
-    }
-    
-    .footer-links li {
-        text-align: center;
-    }
-    
-    .footer-contact {
-        text-align: center;
-    }
-    
-    .footer-contact p {
-        text-align: center;
-        margin-bottom: 0.5rem;
+    body {
+        padding-top: 0 !important;
     }
 }
 
-@media (max-width: 576px) {
-    .navbar-brand {
-        font-size: 1.5rem;
-    }
-}
+/* CSS para componentes - Estilos globales */
 
-/* Avatar de usuario mejorado */
-.user-avatar {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  background: #2563eb;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
-  border: 3px solid #fff;
-  transition: box-shadow 0.2s;
-  cursor: pointer;
-}
+/* Font Awesome para Web Components */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
-.user-avatar:hover {
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
-}
-
-.avatar-initials {
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  z-index: 1;
-}
-
-.avatar-arrow {
-  position: absolute;
-  right: -6px;
-  bottom: -6px;
-  background: #2563eb;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.15);
-  border: 2px solid #fff;
-}
-
-.avatar-arrow svg {
-  display: block;
-}
-
-/* Opcional: ocultar la antigua imagen de perfil si queda algún rastro */
-.profile-img { display: none !important; }
-
-/* Avatar profesional solo círculo con iniciales */
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  position: relative;
-}
-
-.avatar-circle {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #2563eb 60%, #1d4ed8 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
-  border: 2px solid #fff;
-  transition: box-shadow 0.2s, background 0.2s;
-  cursor: pointer;
-  padding: 0;
-  border: none;
-}
-
-.avatar-circle:focus, .avatar-circle:hover {
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
-  background: linear-gradient(135deg, #1d4ed8 80%, #2563eb 100%);
-  outline: none;
-}
-
-.avatar-initials {
-  letter-spacing: 1px;
-  pointer-events: none;
-}
-
-.user-name {
-  font-size: 1rem;
-  color: #1e293b;
-  font-weight: 600;
-  margin-right: 0.25rem;
-  white-space: nowrap;
-}
-
-.avatar-dropdown-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  margin-left: 0.25rem;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.avatar-dropdown-btn:focus {
-  outline: none;
-}
-
-.avatar-dropdown-btn svg {
-  display: block;
-  transition: transform 0.2s;
-}
-
-.avatar-dropdown-btn[aria-expanded="true"] svg {
-  transform: rotate(180deg);
-}
-
-/* Responsive header y menú hamburguesa */
-@media (max-width: 991px) {
-  .navbar-custom .container {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .nav-center {
+/* Estilos base para componentes */
+:host {
+    display: block;
     width: 100%;
-    justify-content: center;
-  }
-  .user-profile {
-    margin-left: auto;
-  }
-  .navbar-collapse {
-    background: #fff;
-    padding: 1rem 0;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-  }
-}
-@media (max-width: 576px) {
-  .navbar-brand img {
-    max-width: 120px;
-  }
-  .avatar-circle {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
 }
 
-/* MENÚ MÓVIL FULLSCREEN MEJORADO */
-.mobile-menu {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #fff;
-    z-index: 2000;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-}
-.mobile-menu-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 80px;
-    padding: 0 2rem;
-    border-bottom: 1px solid #eee;
-    width: 100vw;
-    background: #fff;
-    position: relative;
-    z-index: 2100;
-}
-.mobile-menu .navbar-brand {
-    margin: 0;
-    padding: 0;
-    height: 80px;
-    display: flex;
-    align-items: center;
-}
-.mobile-menu .navbar-toggler {
-    margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    height: 80px;
-    display: flex;
-    align-items: center;
-}
-.mobile-menu .nav {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    min-height: 0;
-}
-.mobile-menu .auth-buttons {
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    align-items: center;
-    display: flex;
+/* Estilos para el body cuando hay header fijo */
+body {
+    padding-top: 80px;
 }
 
-/* Header SwapCoin Styles (for use in header component) */
-.swapcoin-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: white;
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    border-radius: 25px;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
-    min-width: 80px;
-    justify-content: center;
-    text-decoration: none;
+/* Estilos para el contenido principal */
+main {
+    min-height: calc(100vh - 80px);
 }
 
-.swapcoin-info:hover {
-    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
-    transform: translateY(-1px);
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-    text-decoration: none;
-}
-
-.swapcoin-info i {
-    font-size: 1.2rem;
+/* Estilos para el footer */
+footer {
+    margin-top: auto;
 }

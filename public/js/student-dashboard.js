@@ -66,7 +66,13 @@ async function loadSection(sectionName) {
             </div>
         `;
         
-        // Load section content
+        // Use web components for specific sections
+        if (sectionName === 'profile') {
+            mainContent.innerHTML = '<dashboard-profile></dashboard-profile>';
+        } else if (sectionName === 'add-product') {
+            mainContent.innerHTML = '<dashboard-add-product></dashboard-add-product>';
+        } else {
+            // Load section content from HTML files for other sections
         const sectionUrl = `${sectionName}.html`;
         console.log('Fetching section from:', sectionUrl);
         const response = await fetch(sectionUrl);
@@ -76,9 +82,8 @@ async function loadSection(sectionName) {
         }
         
         const content = await response.text();
-        
-        // Update main content
         mainContent.innerHTML = content;
+        }
         
         // Re-initialize navigation after content is loaded
         initializeNavigation();
