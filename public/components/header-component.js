@@ -8,7 +8,7 @@ class HeaderComponent extends HTMLElement {
     connectedCallback() {
         this.render();
         this.attachEventListeners();
-        this.setupMarketplaceDropdownHover();
+        this.setupDropdownHover();
     }
 
     // Función para obtener la ruta correcta del logo
@@ -338,19 +338,13 @@ class HeaderComponent extends HTMLElement {
                     background: #fff;
                     box-shadow: 0 8px 32px rgba(37,99,235,0.12), 0 1.5px 6px rgba(0,0,0,0.04);
                     border-radius: 0 0 18px 18px;
-                    padding: 2.5rem max(8vw, 2.5rem) 2.5rem max(8vw, 2.5rem);
+                    padding: 205em max(8 20.5em) 20.5em max(8vw, 2.5rem);
                     z-index: 9999;
                     opacity: 0;
                     pointer-events: none;
                     transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), top 0.35s cubic-bezier(0.4,0,0.2,1);
                 }
-                .dropdown-container:hover .dropdown-menu.wide,
-                .dropdown-container:focus-within .dropdown-menu.wide {
-                    display: block;
-                    opacity: 1;
-                    pointer-events: auto;
-                    top: 80px;
-                }
+                /* Removed CSS hover rule to let JavaScript handle the dropdown */
                 .dropdown-grid {
                     display: flex;
                     flex-direction: row;
@@ -440,10 +434,11 @@ class HeaderComponent extends HTMLElement {
                     justify-content: center;
                 }
                 .dropdown-image-large {
-                    width: 320px;
+                    width: 150px;
+                    max-height: 90;
                     height: auto;
                     border-radius: 14px;
-                    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
+                    box-shadow: 0px 8px rgba(52104,0.10);
                     object-fit: cover;
                 }
                 .dropdown-col.links-col {
@@ -483,10 +478,11 @@ class HeaderComponent extends HTMLElement {
                     background: var(--swappit-blue);
                     color: #fff;
                 }
-                /* Remove pointer-events for hover, now handled by JS */
+                /* Dropdown controlled by JavaScript */
                 .dropdown-menu.wide {
                     pointer-events: none;
-                }
+                    display: none;
+                    opacity: 0                }
             </style>
             
             <header class="header">
@@ -499,28 +495,51 @@ class HeaderComponent extends HTMLElement {
                         
                         <!-- Navigation Menu - Center -->
                         <div class="menu">
-                            <a href="${this.getHomePath()}" class="nav-link">Home</a>
+                            <div class="dropdown-container">
+                                <a href="${this.getHomePath()}" class="nav-link" id="homeLink">Home</a>
+                                <div class="dropdown-menu wide" id="homeDropdown">
+                                    <div class="dropdown-grid prada-style">
+                                        <!-- Column 1: Large Image -->
+                                        <div class="dropdown-col image-col">
+                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="SWAPPIT Home" class="dropdown-image-large">
+                                        </div>
+                                        <!-- Column 2: Title + Links -->
+                                        <div class="dropdown-col links-col">
+                                            <div class="dropdown-title">Home</div>
+                                            <ul class="dropdown-list">
+                                                <li><a href="${this.getHomePath()}#hero">Hero Section</a></li>
+                                                <li><a href="${this.getHomePath()}#features>Features</a></li>
+                                                <li><a href="${this.getHomePath()}#services>Services</a></li>
+                                                <li><a href="${this.getHomePath()}#contact">Contact</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="dropdown-container">
                                 <a href="${this.getMarketplacePath()}" class="nav-link marketplace-link" id="marketplaceLink">Marketplace</a>
                                 <div class="dropdown-menu wide" id="marketplaceDropdown">
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
+                                            <img src="/public/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">Marketplace</div>
                                             <ul class="dropdown-list">
-                                                <li><a href="${this.getMarketplacePath()}">View Products</a></li>
-                                                <li><a href="${this.getMarketplacePath()}?action=add">Post a Product</a></li>
+                                                <li><a href="${this.getMarketplacePath()}>View Products</a></li>
+                                                <li><a href="${this.getMarketplacePath()}?action=add>Post a Product</a></li>
+                                                <li><a href="${this.getMarketplacePath()}#categories>Categories</a></li>
+                                                <li><a href="${this.getMarketplacePath()}#featured">Featured Products</a></li>
+                                                <li><a href="${this.getMarketplacePath()}#bestsellers">Best Sellers</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="#about" class="nav-link">About Us</a>
-                            <a href="#contact" class="nav-link">Contact</a>
+                            <a href="${this.getAboutPath()}" class="nav-link">About Us</a>
+                            <a href="${this.getContactPath()}" class="nav-link">Contact</a>
                         </div>
                         
                         <!-- Right Side - Auth Buttons -->
@@ -626,6 +645,35 @@ class HeaderComponent extends HTMLElement {
         return `${prefix}pages/auth/register.html`;
     }
 
+    getAboutPath() {
+        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
+        if (isLiveServer) {
+            return '/public/pages/about/about.html';
+        }
+        const currentPath = window.location.pathname;
+        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
+        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
+            return 'pages/about/about.html';
+        }
+        const levelsUp = pathSegments.length - 1;
+        const prefix = '../'.repeat(levelsUp);
+        return `${prefix}pages/about/about.html`;
+    }
+    getContactPath() {
+        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
+        if (isLiveServer) {
+            return '/public/pages/contact/contact.html';
+        }
+        const currentPath = window.location.pathname;
+        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
+        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
+            return 'pages/contact/contact.html';
+        }
+        const levelsUp = pathSegments.length - 1;
+        const prefix = '../'.repeat(levelsUp);
+        return `${prefix}pages/contact/contact.html`;
+    }
+
     attachEventListeners() {
         // Mobile menu toggle
         const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
@@ -651,45 +699,78 @@ class HeaderComponent extends HTMLElement {
         this.setActiveLink();
     }
 
-    setupMarketplaceDropdownHover() {
+    setupDropdownHover() {
         const shadow = this.shadowRoot;
-        const container = shadow.querySelector('.dropdown-container');
-        const dropdown = shadow.getElementById('marketplaceDropdown');
-        if (!container || !dropdown) return;
+        
+        // Setup for Home dropdown
+        const homeContainer = shadow.querySelector('.dropdown-container:first-of-type');
+        const homeDropdown = shadow.getElementById('homeDropdown');
+        
+        // Setup for Marketplace dropdown
+        const marketplaceContainer = shadow.querySelector('.dropdown-container:last-of-type');
+        const marketplaceDropdown = shadow.getElementById('marketplaceDropdown');
+        
+        // Function to setup dropdown behavior
+        const setupDropdown = (container, dropdown) => {
+            if (!container || !dropdown) return;
+            
+            let showTimer = null;
+            let hideTimer = null;
+            let isVisible = false;
 
-        let dropdownTimeout;
-        let hoverTimer;
-        let isDropdownOpen = false;
+            const showDropdown = () => {
+                clearTimeout(hideTimer);
+                if (!isVisible) {
+                    dropdown.style.display = 'block';
+                    dropdown.style.opacity = '1';
+                    dropdown.style.pointerEvents = 'auto';
+                    isVisible = true;
+                }
+            };
 
-        const showDropdown = () => {
-            dropdown.style.display = 'block';
-            setTimeout(() => {
-                dropdown.style.opacity = '1';
-                dropdown.style.pointerEvents = 'auto';
-            }, 10);
-            isDropdownOpen = true;
-        };
-        const hideDropdown = () => {
+            const hideDropdown = () => {
+                clearTimeout(showTimer);
+                if (isVisible) {
+                    dropdown.style.opacity = '0';
+                    dropdown.style.pointerEvents = 'none';
+                    hideTimer = setTimeout(() => {
+                        dropdown.style.display = 'none';
+                        isVisible = false;
+                    }, 200);
+                }
+            };
+
+            // Events for container (button)
+            container.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimer);
+                showTimer = setTimeout(showDropdown, 100); // 0.1 seconds
+            });
+
+            container.addEventListener('mouseleave', () => {
+                clearTimeout(showTimer);
+                hideTimer = setTimeout(hideDropdown, 50);
+            });
+
+            // Events for dropdown
+            dropdown.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimer);
+                clearTimeout(showTimer);
+                showDropdown();
+            });
+
+            dropdown.addEventListener('mouseleave', () => {
+                hideTimer = setTimeout(hideDropdown, 50);
+            });
+
+            // Ensure dropdown is hidden initially
+            dropdown.style.display = 'none';
             dropdown.style.opacity = '0';
             dropdown.style.pointerEvents = 'none';
-            dropdownTimeout = setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 250);
-            isDropdownOpen = false;
         };
 
-        container.addEventListener('mouseenter', () => {
-            clearTimeout(dropdownTimeout);
-            if (!isDropdownOpen) {
-                hoverTimer = setTimeout(() => {
-                    showDropdown();
-                }, 2000); // 2 segundos
-            }
-        });
-        container.addEventListener('mouseleave', () => {
-            clearTimeout(hoverTimer);
-            hideDropdown();
-        });
+        // Setup both dropdowns
+        setupDropdown(homeContainer, homeDropdown);
+        setupDropdown(marketplaceContainer, marketplaceDropdown);
     }
     
     setActiveLink() {
