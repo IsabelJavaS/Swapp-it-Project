@@ -44,6 +44,13 @@ class StudentProfile extends HTMLElement {
                 this.handleAvatarUpload(e);
             });
         }
+        // Fondo de perfil personalizado
+        const bgUpload = this.shadowRoot.getElementById('bgUpload');
+        if (bgUpload) {
+            bgUpload.addEventListener('change', (e) => {
+                this.handleBgUpload(e);
+            });
+        }
     }
 
     toggleEditMode(section, isEditing) {
@@ -89,6 +96,21 @@ class StudentProfile extends HTMLElement {
                 const avatar = this.shadowRoot.getElementById('profileAvatar');
                 avatar.style.backgroundImage = `url(${e.target.result})`;
                 avatar.textContent = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    handleBgUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // Guardar en localStorage
+                localStorage.setItem('studentProfileBg', e.target.result);
+                // Forzar re-render
+                this.render();
+                this.setupEventListeners();
             };
             reader.readAsDataURL(file);
         }
@@ -181,6 +203,7 @@ class StudentProfile extends HTMLElement {
         const schoolInput = this.shadowRoot.getElementById('school');
         const levelInput = this.shadowRoot.getElementById('level');
         const majorInput = this.shadowRoot.getElementById('major');
+        const countryInput = this.shadowRoot.getElementById('country');
 
         let displayName = 'User';
         let role = 'Student';
@@ -228,12 +251,40 @@ class StudentProfile extends HTMLElement {
 
         // Set default values for new fields
         if (bioInput) bioInput.value = userProfile.personal?.bio || 'Passionate student interested in technology and innovation.';
-        if (schoolInput) schoolInput.value = userProfile.personal?.school || 'University of Technology';
+        if (schoolInput) {
+            const schoolValue = userProfile.personal?.school || '';
+            schoolInput.value = schoolValue;
+            if (!schoolValue) {
+                schoolInput.classList.add('empty-placeholder');
+                schoolInput.value = '';
+                schoolInput.placeholder = 'No information provided';
+            } else {
+                schoolInput.classList.remove('empty-placeholder');
+                schoolInput.placeholder = 'Your school or university';
+            }
+        }
         if (levelInput) levelInput.value = userProfile.personal?.level || 'Undergraduate';
         if (majorInput) majorInput.value = userProfile.personal?.major || 'Computer Science';
+        if (countryInput) {
+            const countryValue = userProfile.personal?.country || '';
+            countryInput.value = countryValue;
+            if (!countryValue) {
+                countryInput.classList.add('empty-placeholder');
+                countryInput.value = '';
+                countryInput.placeholder = 'No information provided';
+            } else {
+                countryInput.classList.remove('empty-placeholder');
+                countryInput.placeholder = 'Country';
+            }
+        }
     }
 
     render() {
+        // Leer imagen de fondo personalizada de localStorage
+        const customBg = localStorage.getItem('studentProfileBg');
+        const bgStyle = customBg
+            ? `background-image: url('${customBg}');`
+            : `background-image: url('../../assets/utiles-escolares.jpg');`;
         this.shadowRoot.innerHTML = `
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -249,7 +300,11 @@ class StudentProfile extends HTMLElement {
                 }
 
                 .profile-header {
-                    background: linear-gradient(135deg, #3468c0 0%, #1d4ed8 100%);
+                    ${bgStyle}
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                 
                     border-radius: 20px;
                     padding: 3rem 2rem;
                     text-align: center;
@@ -268,6 +323,37 @@ class StudentProfile extends HTMLElement {
                     bottom: 0;
                     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
                     pointer-events: none;
+                }
+                .profile-header .bg-overlay {
+                    position: absolute;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.45); /* Opacidad ajustable */
+                    z-index: 1;
+                    pointer-events: none;
+                }
+                .profile-header-content {
+                    position: relative;
+                    z-index: 2;
+                }
+                .bg-upload {
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 3;
+                    background: rgba(255,255,255,0.8);
+                    border-radius: 8px;
+                    padding: 0.3rem 0.7rem;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                }
+                .bg-upload input {
+                    display: none;
+                }
+                .bg-upload i {
+                    color: #3468c0;
                 }
 
                 .avatar-container {
@@ -438,6 +524,10 @@ class StudentProfile extends HTMLElement {
                     color: #1f2937;
                 }
 
+                .form-input.empty-placeholder {
+                    color: #bdbdbd !important;
+                }
+
                 .form-textarea {
                     width: 100%;
                     padding: 0.75rem 1rem;
@@ -604,32 +694,34 @@ class StudentProfile extends HTMLElement {
             <div class="profile-overview">
                 <!-- Profile Header -->
                 <div class="profile-header">
-                    <div class="avatar-container">
-                        <div class="profile-avatar" id="profileAvatar">JD</div>
-                        <label class="avatar-upload">
-                            <i class="fas fa-camera"></i>
-                            <input type="file" id="avatarUpload" accept="image/*">
-                        </label>
-                    </div>
-                    <h1 class="profile-name" id="profileName">Loading...</h1>
-                    <p class="profile-role" id="profileRole">Student</p>
-                    
-                    <div class="profile-stats">
-                        <div class="stat-item">
-                            <span class="stat-number">12</span>
-                            <span class="stat-label">Products</span>
+                    <div class="bg-overlay"></div>
+                    <!-- Botón de cambio de fondo eliminado -->
+                    <div class="profile-header-content">
+                        <div class="avatar-container">
+                            <div class="profile-avatar" id="profileAvatar">JD</div>
+                            <label class="avatar-upload">
+                                <i class="fas fa-camera"></i>
+                                <input type="file" id="avatarUpload" accept="image/*">
+                            </label>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number">8</span>
-                            <span class="stat-label">Sales</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">15</span>
-                            <span class="stat-label">Purchases</span>
+                        <h1 class="profile-name" id="profileName">Loading...</h1>
+                        <p class="profile-role" id="profileRole">Student</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">12</span>
+                                <span class="stat-label">Products</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">8</span>
+                                <span class="stat-label">Sales</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">15</span>
+                                <span class="stat-label">Purchases</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Profile Content -->
                 <div class="profile-content">
                     <!-- Personal Information -->
@@ -712,6 +804,10 @@ class StudentProfile extends HTMLElement {
                         <div class="form-group">
                             <label class="form-label">Major/Field of Study</label>
                             <input class="form-input" type="text" id="major" placeholder="Your major or field of study" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input class="form-input" type="text" id="country" placeholder="Country" disabled />
                         </div>
                     </div>
                 </div>
