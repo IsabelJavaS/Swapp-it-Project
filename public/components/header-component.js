@@ -538,8 +538,44 @@ class HeaderComponent extends HTMLElement {
                                     </div>
                                 </div>
                             </div>
-                            <a href="${this.getAboutPath()}" class="nav-link">About Us</a>
-                            <a href="${this.getContactPath()}" class="nav-link">Contact</a>
+                            <div class="dropdown-container">
+                                <a href="${this.getAboutPath()}" class="nav-link" id="aboutLink">About Us</a>
+                                <div class="dropdown-menu wide" id="aboutDropdown">
+                                    <div class="dropdown-grid prada-style">
+                                        <div class="dropdown-col image-col">
+                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="About Us" class="dropdown-image-large">
+                                        </div>
+                                        <div class="dropdown-col links-col">
+                                            <div class="dropdown-title">About Us</div>
+                                            <ul class="dropdown-list">
+                                                <li><a href="${this.getAboutPath()}#mission">Mission</a></li>
+                                                <li><a href="${this.getAboutPath()}#values">Values</a></li>
+                                                <li><a href="${this.getAboutPath()}#story">Our Story</a></li>
+                                                <li><a href="${this.getAboutPath()}#team">Team</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-container">
+                                <a href="${this.getContactPath()}" class="nav-link" id="contactLink">Contact</a>
+                                <div class="dropdown-menu wide" id="contactDropdown">
+                                    <div class="dropdown-grid prada-style">
+                                        <div class="dropdown-col image-col">
+                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="Contact" class="dropdown-image-large">
+                                        </div>
+                                        <div class="dropdown-col links-col">
+                                            <div class="dropdown-title">Contact</div>
+                                            <ul class="dropdown-list">
+                                                <li><a href="${this.getContactPath()}#form">Contact Form</a></li>
+                                                <li><a href="${this.getContactPath()}#info">Information</a></li>
+                                                <li><a href="${this.getContactPath()}#hours">Business Hours</a></li>
+                                                <li><a href="${this.getContactPath()}#social">Social Media</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Right Side - Auth Buttons -->
@@ -707,8 +743,16 @@ class HeaderComponent extends HTMLElement {
         const homeDropdown = shadow.getElementById('homeDropdown');
         
         // Setup for Marketplace dropdown
-        const marketplaceContainer = shadow.querySelector('.dropdown-container:last-of-type');
+        const marketplaceContainer = shadow.querySelector('.dropdown-container:nth-of-type(2)'); // Changed to nth-of-type(2)
         const marketplaceDropdown = shadow.getElementById('marketplaceDropdown');
+
+        // Setup for About dropdown
+        const aboutContainer = shadow.querySelector('.dropdown-container:nth-of-type(3)'); // Changed to nth-of-type(3)
+        const aboutDropdown = shadow.getElementById('aboutDropdown');
+
+        // Setup for Contact dropdown
+        const contactContainer = shadow.querySelector('.dropdown-container:last-of-type'); // Changed to last-of-type
+        const contactDropdown = shadow.getElementById('contactDropdown');
         
         // Function to setup dropdown behavior
         const setupDropdown = (container, dropdown) => {
@@ -768,9 +812,11 @@ class HeaderComponent extends HTMLElement {
             dropdown.style.pointerEvents = 'none';
         };
 
-        // Setup both dropdowns
+        // Setup all dropdowns
         setupDropdown(homeContainer, homeDropdown);
         setupDropdown(marketplaceContainer, marketplaceDropdown);
+        setupDropdown(aboutContainer, aboutDropdown);
+        setupDropdown(contactContainer, contactDropdown);
     }
     
     setActiveLink() {
