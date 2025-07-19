@@ -14,17 +14,6 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden;
-    cursor: none; /* Hide default cursor for custom cursor */
-}
-
-/* Ensure cursor works on all elements */
-* {
-    cursor: none !important;
-}
-
-/* Show default cursor on form elements for accessibility */
-input, button, a, select, textarea {
-    cursor: none !important;
 }
 
 /* Spline-style Background */
@@ -254,25 +243,81 @@ input, button, a, select, textarea {
 /* Login Container */
 .login-container {
     width: 100%;
-    max-width: 450px;
+    max-width: 480px;
     position: relative;
     z-index: 1;
 }
 
+.social-login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 14px 0 0 0;
+    align-items: center;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 220px;
+    max-width: 260px;
+    width: 100%;
+    padding: 10px 18px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: #222;
+    cursor: pointer;
+    transition: box-shadow 0.18s, border-color 0.18s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    justify-content: flex-start;
+}
+.social-btn:hover {
+    border-color: #3468c0;
+    box-shadow: 0 4px 16px rgba(52,104,192,0.08);
+}
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.google-btn .social-icon svg {
+    width: 20px;
+    height: 20px;
+}
+.clever-btn .social-icon svg {
+    width: 20px;
+    height: 20px;
+}
+.office-btn .social-icon svg {
+    width: 20px;
+    height: 20px;
+}
+.social-text {
+    flex: 1;
+    text-align: left;
+}
+
 .login-box {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 48px 40px;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.1), 
-        0 0 0 1px rgba(255, 255, 255, 0.2),
-        0 0 100px rgba(255, 164, 36, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    border: 1px solid #ececec;
     animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
+    max-width: 480px;
 }
 
 .login-box::before {
@@ -411,11 +456,11 @@ input, button, a, select, textarea {
 
 /* Titles with 3D effects */
 .login-title {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
     color: #1a202c;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, #ffa424, #3468c0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -456,8 +501,8 @@ input, button, a, select, textarea {
 .login-subtitle {
     text-align: center;
     color: #718096;
-    font-size: 1rem;
-    margin-bottom: 32px;
+    font-size: 0.98rem;
+    margin-bottom: 12px;
     animation: subtitleFade 2s ease-in-out infinite;
 }
 
@@ -468,7 +513,7 @@ input, button, a, select, textarea {
 
 /* Enhanced Form Groups with 3D effects */
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     position: relative;
     perspective: 1000px;
 }
@@ -518,15 +563,16 @@ input, button, a, select, textarea {
 /* Enhanced Input Fields */
 input {
     width: 100%;
-    padding: 16px 20px;
+    padding: 16px 12px;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 1rem;
     background: rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
     font-family: inherit;
     position: relative;
     z-index: 1;
+    height: 52px;
 }
 
 input:focus {
@@ -600,18 +646,19 @@ input:focus {
 /* Enhanced 3D Button */
 .login-btn {
     width: 100%;
-    padding: 16px 24px;
+    padding: 8px 0;
     background: linear-gradient(135deg, #ffa424, #3468c0);
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
+    margin-top: 8px;
+    margin-bottom: 6px;
+    height: 40px;
 }
 
 .btn-3d-wrapper {
@@ -699,7 +746,7 @@ input:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     gap: 16px;
 }
 
@@ -801,33 +848,36 @@ input:focus {
 
 .divider {
     position: relative;
-    margin: 24px 0;
+    margin: 8px 0 8px 0;
     text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-.divider::before {
+.divider::before,
+.divider::after {
     content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
+    flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    background: #e0e0e0;
+    margin: 0 8px;
 }
-
 .divider span {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 0 16px;
-    color: #718096;
-    font-size: 14px;
     position: relative;
     z-index: 1;
+    padding: 0 16px;
+    font-size: 1rem;
+    color: #888;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
 }
 
 .signup-text {
     color: #4a5568;
-    font-size: 14px;
-    margin-bottom: 0;
+    font-size: 0.97rem;
+    margin-top: 8px;
 }
 
 .signup-link {
@@ -1161,4 +1211,43 @@ input.has-content {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+} 
+
+.horizontal-social {
+    flex-direction: row;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 18px;
+}
+
+.social-square {
+    min-width: 60px;
+    min-height: 60px;
+    max-width: 60px;
+    max-height: 60px;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.social-square .social-icon {
+    width: 36px;
+    height: 36px;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+.social-square:hover {
+    border-color: #3468c0;
+    box-shadow: 0 4px 16px rgba(52,104,192,0.12);
+    transform: translateY(-2px) scale(1.04);
+    transition: all 0.18s;
+} 
+
+.form-group.password-group {
+    margin-bottom: 12px;
 } 
