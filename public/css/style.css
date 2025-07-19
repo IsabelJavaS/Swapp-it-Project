@@ -1155,3 +1155,172 @@ section {
 section.visible {
     /* ELIMINADO: opacity, transform, transition, width, max-width, min-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, etc. */
 }
+
+/* Contact Page Custom Styles */
+.contact-svg-anim {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: floatMail 2.5s ease-in-out infinite;
+}
+@keyframes floatMail {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.contact-separator {
+    width: 60px;
+    height: 5px;
+    margin: 0 auto 10px auto;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #3468c0 0%, #ffa424 100%);
+    opacity: 0.8;
+}
+.card.contact-highlight {
+    border: 2.5px solid #3468c0;
+    box-shadow: 0 8px 32px 0 rgba(52,104,192,0.10), 0 1.5px 8px 0 rgba(255,164,36,0.10);
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fff 80%, #f1f5f9 100%);
+    transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+}
+.card.contact-highlight:hover {
+    box-shadow: 0 12px 36px 0 rgba(52,104,192,0.18), 0 3px 12px 0 rgba(255,164,36,0.15);
+    border-color: #ffa424;
+    transform: translateY(-4px) scale(1.02);
+}
+.card.contact-highlight .card-body h4,
+.card.contact-highlight .card-body h5 {
+    color: #3468c0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.card.contact-highlight .card-body i {
+    font-size: 1.2em;
+    color: #ffa424;
+}
+.card.contact-highlight .card-body a.text-primary {
+    color: #3468c0 !important;
+}
+.card.contact-highlight .card-body a.text-primary:hover {
+    color: #ffa424 !important;
+}
+
+/* Contact Information Card with Map */
+.contact-info-card {
+    min-height: 540px;
+    padding-bottom: 0;
+    overflow: visible;
+}
+.contact-map-container {
+    width: 100%;
+    height: 260px;
+    border-radius: 0 0 0 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+.contact-map {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    min-height: 220px;
+    filter: grayscale(0.1) contrast(1.1) brightness(0.98);
+    border-radius: 0 0 0 0;
+}
+.contact-info-box {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px 0 rgba(52,104,192,0.10), 0 1.5px 8px 0 rgba(255,164,36,0.10);
+    margin-top: -48px;
+    max-width: 90%;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+@media (max-width: 991px) {
+    .contact-info-card {
+        min-height: 420px;
+    }
+    .contact-map-container {
+        height: 180px;
+    }
+    .contact-info-box {
+        margin-top: -36px;
+        padding: 1.5rem 1rem;
+    }
+}
+@media (max-width: 575px) {
+    .contact-info-card {
+        min-height: 320px;
+    }
+    .contact-map-container {
+        height: 120px;
+    }
+    .contact-info-box {
+        margin-top: -24px;
+        padding: 1rem 0.5rem;
+    }
+}
+
+/* Cuadro flotante sobre el mapa en Contact Information */
+.contact-map-container {
+    position: relative;
+    height: 340px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px 0 rgba(52,104,192,0.10), 0 1.5px 8px 0 rgba(255,164,36,0.10);
+    overflow: hidden;
+}
+.contact-map {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    border-radius: 18px;
+}
+@media (min-width: 1200px) {
+    .contact-map-container {
+        max-width: 800px;
+    }
+}
+@media (max-width: 991px) {
+    .contact-map-container {
+        height: 220px;
+        max-width: 98vw;
+    }
+    .contact-map {
+        min-height: 180px;
+    }
+}
+@media (max-width: 575px) {
+    .contact-map-container {
+        height: 120px;
+        max-width: 100vw;
+    }
+    .contact-map {
+        min-height: 100px;
+    }
+}
+
+.contact-info-box-overlay.right {
+    left: auto;
+    right: 18px;
+    top: 18px;
+    transform: none;
+    text-align: left;
+    min-width: 180px;
+    max-width: 240px;
+    padding: 0.7rem 1rem;
+    font-size: 0.97rem;
+    opacity: 0.96;
+}
+@media (max-width: 991px) {
+    .contact-info-box-overlay.right {
+        right: 6px;
+        top: 6px;
+        min-width: 120px;
+        max-width: 180px;
+        font-size: 0.93rem;
+        padding: 0.5rem 0.6rem;
+    }
+}
