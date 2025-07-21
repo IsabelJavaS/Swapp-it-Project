@@ -1264,7 +1264,7 @@ section.visible {
 /* Cuadro flotante sobre el mapa en Contact Information */
 .contact-map-container {
     position: relative;
-    height: 340px;
+    height: 400px;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
@@ -1275,7 +1275,7 @@ section.visible {
 .contact-map {
     width: 100%;
     height: 100%;
-    min-height: 320px;
+    min-height: 400px;
     border-radius: 18px;
 }
 @media (min-width: 1200px) {
