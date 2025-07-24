@@ -178,6 +178,10 @@ class HeaderAuthComponent extends HTMLElement {
         return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '../../pages/swapcoin/info.html';
     }
 
+    getSupportPath() {
+        return '../../pages/support/support.html';
+    }
+
     render() {
         const logoPath = this.getLogoPath();
         
@@ -686,7 +690,7 @@ class HeaderAuthComponent extends HTMLElement {
                         <div class="menu">
                             <a href="${this.getDashboardPath()}" class="nav-link">Dashboard</a>
                             <a href="${this.getMarketplacePath()}" class="nav-link">Marketplace</a>
-                            <a href="#support" class="nav-link">Support</a>
+                            <a href="${this.getSupportPath()}" class="nav-link">Support</a>
                             <a href="#faq" class="nav-link">FAQ</a>
                         </div>
                         

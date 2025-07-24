@@ -790,24 +790,21 @@ class StudentProfile extends HTMLElement {
                                 Cancel
                             </button>
                         </div>
-                        
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input class="form-input" type="text" id="country" placeholder="Country" disabled />
+                        </div>
                         <div class="form-group">
                             <label class="form-label">School/University</label>
                             <input class="form-input" type="text" id="school" placeholder="Your school or university" disabled />
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Level</label>
                             <input class="form-input" type="text" id="level" placeholder="Undergraduate, Graduate, etc." disabled />
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Major/Field of Study</label>
                             <input class="form-input" type="text" id="major" placeholder="Your major or field of study" disabled />
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Country</label>
-                            <input class="form-input" type="text" id="country" placeholder="Country" disabled />
                         </div>
                     </div>
                 </div>

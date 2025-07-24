@@ -5,76 +5,11 @@ class SplineAnimations {
     }
 
     init() {
-        this.setupCursorEffects();
+        // this.setupCursorEffects(); // Eliminar llamada a efectos de cursor
         this.setup3DEffects();
         this.setupParticleSystems();
         this.setupInteractiveElements();
         this.setupLogoAnimations();
-    }
-
-    // Interactive Cursor Effects
-    setupCursorEffects() {
-        const cursorFollower = document.getElementById('cursorFollower');
-        const cursorTrail = document.getElementById('cursorTrail');
-        
-        if (!cursorFollower || !cursorTrail) return;
-
-        let mouseX = 0;
-        let mouseY = 0;
-        let followerX = 0;
-        let followerY = 0;
-        let trailX = 0;
-        let trailY = 0;
-
-        // Track mouse position anywhere on the page
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Also track mouse position on window for better coverage
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Smooth cursor following animation
-        const animateCursor = () => {
-            // Follower cursor
-            followerX += (mouseX - followerX) * 0.1;
-            followerY += (mouseY - followerY) * 0.1;
-            
-            // Trail cursor
-            trailX += (mouseX - trailX) * 0.05;
-            trailY += (mouseY - trailY) * 0.05;
-
-            // Use translate3d for better performance and ensure full screen coverage
-            cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
-            cursorTrail.style.transform = `translate3d(${trailX}px, ${trailY}px, 0)`;
-
-            requestAnimationFrame(animateCursor);
-        };
-
-        animateCursor();
-
-        // Cursor effects on interactive elements
-        const interactiveElements = document.querySelectorAll('input, button, a, .logo-container');
-        
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursorFollower.style.transform = cursorFollower.style.transform.replace(' scale(1.5)', '') + ' scale(1.5)';
-                cursorFollower.style.background = 'linear-gradient(45deg, #ffa424, #3468c0)';
-                cursorFollower.style.width = '30px';
-                cursorFollower.style.height = '30px';
-            });
-
-            element.addEventListener('mouseleave', () => {
-                cursorFollower.style.transform = cursorFollower.style.transform.replace(' scale(1.5)', '');
-                cursorFollower.style.background = 'linear-gradient(45deg, #ffa424, #3468c0)';
-                cursorFollower.style.width = '20px';
-                cursorFollower.style.height = '20px';
-            });
-        });
     }
 
     // 3D Effects and Transformations

@@ -157,7 +157,7 @@ class StudentDashboardOverview extends HTMLElement {
                     grid-template-columns: 2fr 1fr;
                     gap: 1.5rem;
                     margin-bottom: 2rem;
-                    min-height: 400px;
+                    align-items: start;
                 }
 
                 .chart-card {
@@ -166,7 +166,6 @@ class StudentDashboardOverview extends HTMLElement {
                     padding: 1.5rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
-                    height: 100%;
                     display: flex;
                     flex-direction: column;
                 }
@@ -227,7 +226,7 @@ class StudentDashboardOverview extends HTMLElement {
                     font-weight: 500;
                 }
 
-                /* Recent Activity */
+                /* Recent Activity Mejorado */
                 .activity-card {
                     background: white;
                     border-radius: 16px;
@@ -271,6 +270,16 @@ class StudentDashboardOverview extends HTMLElement {
                     gap: 1rem;
                     flex: 1;
                 }
+                .activity-list::-webkit-scrollbar {
+                    width: 7px;
+                }
+                .activity-list::-webkit-scrollbar-thumb {
+                    background: #8b5cf6;
+                    border-radius: 6px;
+                }
+                .activity-list::-webkit-scrollbar-track {
+                    background: #f3f4f6;
+                }
 
                 .activity-item {
                     display: flex;
@@ -308,6 +317,10 @@ class StudentDashboardOverview extends HTMLElement {
 
                 .activity-icon.product {
                     background: linear-gradient(135deg, #10b981, #059669);
+                }
+
+                .activity-icon.coin {
+                    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
                 }
 
                 .activity-details {
@@ -399,6 +412,21 @@ class StudentDashboardOverview extends HTMLElement {
                         font-size: 0.875rem;
                     }
                 }
+                .swappit-balance-box {
+                    background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
+                    color: white;
+                    border-radius: 10px;
+                    padding: 0.7rem 1.2rem;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.7rem;
+                    box-shadow: 0 2px 8px rgba(123, 60, 246, 0.08);
+                }
+                .swappit-balance-box i {
+                    font-size: 1.3rem;
+                }
             </style>
 
             <div class="dashboard-overview">
@@ -486,21 +514,22 @@ class StudentDashboardOverview extends HTMLElement {
                                 <button class="period-btn" id="btn90D">90D</button>
                             </div>
                         </div>
-                        <div style="height: 300px;">
+                        <div style="height: 280px;">
                             <canvas id="trendChart" width="100%" height="100%"></canvas>
                         </div>
-                        <!-- Eliminado: resumen debajo de la gráfica -->
                     </div>
-                    <div class="activity-card">
-                        <div class="activity-header">
-                            <h3 class="activity-title">Recent Activity</h3>
-                            <a href="#" class="view-all-btn">View All</a>
-                        </div>
-                        <div class="activity-list" id="activityList">
-                            <!-- Activity items will be loaded here -->
-                        </div>
-                        <div class="activity-summary" style="margin-top: 1rem; text-align: center; color: #64748b; font-size: 1rem;">
-                            <span id="activityCount">Showing latest 3 activities</span>
+                    <div>
+                        <div class="activity-card">
+                            <div class="activity-header">
+                                <h3 class="activity-title">Recent Activity</h3>
+                                <a href="#" class="view-all-btn">View All</a>
+                            </div>
+                            <div class="activity-list" id="activityList">
+                                <!-- Activity items will be loaded here -->
+                            </div>
+                            <div class="activity-summary" style="margin-top: 1rem; text-align: center; color: #64748b; font-size: 1rem;">
+                                <span id="activityCount"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -556,13 +585,21 @@ class StudentDashboardOverview extends HTMLElement {
         this.shadowRoot.getElementById('activeProducts').textContent = data.activeProducts;
         this.shadowRoot.getElementById('swapcoinBalance').textContent = data.swapcoinBalance;
 
-        // Update chart summary
-        // this.shadowRoot.getElementById('summarySales').textContent = `Total Sales: $${data.totalSales.toFixed(2)}`;
-        // this.shadowRoot.getElementById('summaryPurchases').textContent = `Total Purchases: $${data.totalPurchases.toFixed(2)}`;
+        // Add SWAPPIT Coins to the activity list
+        const activityWithCoins = [
+            {
+                type: 'coin',
+                title: 'SWAPPIT Coins Balance',
+                description: 'Your current available balance.',
+                price: data.swapcoinBalance,
+                time: 'Available'
+            },
+            ...data.recentActivity
+        ];
 
         // Update activity list
         const activityList = this.shadowRoot.getElementById('activityList');
-        activityList.innerHTML = data.recentActivity.map(activity => `
+        activityList.innerHTML = activityWithCoins.map(activity => `
             <div class="activity-item">
                 <div class="activity-icon ${activity.type}">
                     <i class="fas fa-${this.getActivityIcon(activity.type)}"></i>
@@ -722,7 +759,8 @@ class StudentDashboardOverview extends HTMLElement {
         const icons = {
             sale: 'dollar-sign',
             purchase: 'shopping-cart',
-            product: 'box'
+            product: 'box',
+            coin: 'coins'
         };
         return icons[type] || 'info-circle';
     }
