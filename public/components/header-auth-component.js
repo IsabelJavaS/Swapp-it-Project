@@ -706,7 +706,7 @@ class HeaderAuthComponent extends HTMLElement {
                             
                             <!-- SWAPPIT Coins -->
                             <a href="${this.getSwapcoinInfoPath()}" class="coins-container">
-                                <i class="fas fa-coins coins-icon"></i>
+                                <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" class="coins-icon" width="30" height="30">
                                 <span>1,250</span>
                             </a>
                             
