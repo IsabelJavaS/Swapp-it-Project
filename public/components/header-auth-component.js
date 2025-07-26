@@ -18,8 +18,8 @@ class HeaderAuthComponent extends HTMLElement {
     async initializeAuth() {
         try {
             // Use existing Firebase configuration
-            const { auth } = await import('/public/firebase/config.js');
-            const { onAuthStateChange } = await import('/public/firebase/auth.js');
+            const { auth } = await import('/firebase/config.js');
+            const { onAuthStateChange } = await import('/firebase/auth.js');
             
             onAuthStateChange((user) => {
                 if (user) {
@@ -32,7 +32,7 @@ class HeaderAuthComponent extends HTMLElement {
                     this.updateUserInterface();
                 } else {
                     // Redirect to landing page if not authenticated
-                    window.location.href = '/public/index.html';
+                    window.location.href = '/index.html';
                 }
             });
             
@@ -51,7 +51,7 @@ class HeaderAuthComponent extends HTMLElement {
         } catch (error) {
             console.error('Error initializing auth:', error);
             // Redirect to landing page on error
-            window.location.href = '/public/index.html';
+            window.location.href = '/index.html';
         }
     }
 
@@ -137,12 +137,12 @@ class HeaderAuthComponent extends HTMLElement {
 
     // Get logo path
     getLogoPath() {
-        return window.pathConfig ? window.pathConfig.getLogoPath() : '../../assets/logos/LogoSinFondo.png';
+        return window.pathConfig ? window.pathConfig.getLogoPath() : '/assets/logos/LogoSinFondo.png';
     }
 
     // Get paths
     getMarketplacePath() {
-        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '../../pages/marketplace/marketplace-page.html';
+        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '/pages/marketplace/marketplace-page.html';
     }
 
     getDashboardPath() {
@@ -164,22 +164,22 @@ class HeaderAuthComponent extends HTMLElement {
         }
         // Fallback
         if (role === 'business') {
-            return '../../dashboards/business/business-dashboard.html';
+            return '/dashboards/business/business-dashboard.html';
         } else {
-            return '../../dashboards/student/student-dashboard.html';
+            return '/dashboards/student/student-dashboard.html';
         }
     }
 
     getLoginPath() {
-        return window.pathConfig ? window.pathConfig.getLoginPath() : '../../pages/auth/login.html';
+        return window.pathConfig ? window.pathConfig.getLoginPath() : '/pages/auth/login.html';
     }
 
     getSwapcoinInfoPath() {
-        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '../../pages/swapcoin/info.html';
+        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '/pages/swapcoin/info.html';
     }
 
     getSupportPath() {
-        return '../../pages/support/support.html';
+        return '/pages/support/support.html';
     }
 
     render() {
@@ -884,7 +884,7 @@ class HeaderAuthComponent extends HTMLElement {
     async handleLogout() {
         try {
             // Use existing Firebase configuration and logout function
-            const { logoutUser } = await import('/public/firebase/auth.js');
+            const { logoutUser } = await import('/firebase/auth.js');
             
             // Close dropdown first
             this.closeDropdown();
@@ -894,7 +894,7 @@ class HeaderAuthComponent extends HTMLElement {
             
             if (result.success) {
                 // Redirect to landing page (index.html) instead of login
-                window.location.href = '/public/index.html';
+                window.location.href = '/index.html';
             } else {
                 throw new Error(result.error);
             }

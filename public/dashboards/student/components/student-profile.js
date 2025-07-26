@@ -134,8 +134,8 @@ class StudentProfile extends HTMLElement {
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             // Get current user from Firebase Auth
-            const { getCurrentUser, onAuthStateChange } = await import('/public/firebase/auth.js');
-            const { getUserProfile } = await import('/public/firebase/firestore.js');
+                    const { getCurrentUser, onAuthStateChange } = await import('/firebase/auth.js');
+        const { getUserProfile } = await import('/firebase/firestore.js');
             
             // First try to get current user
             let currentUser = getCurrentUser();
@@ -284,7 +284,7 @@ class StudentProfile extends HTMLElement {
         const customBg = localStorage.getItem('studentProfileBg');
         const bgStyle = customBg
             ? `background-image: url('${customBg}');`
-            : `background-image: url('../../assets/utiles-escolares.jpg');`;
+                            : `background-image: url('/assets/utiles-escolares.jpg');`;
         this.shadowRoot.innerHTML = `
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');

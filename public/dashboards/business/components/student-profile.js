@@ -15,8 +15,8 @@ class StudentProfile extends HTMLElement {
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             // Get current user from Firebase Auth
-            const { getCurrentUser, onAuthStateChange } = await import('/public/firebase/auth.js');
-            const { getUserProfile } = await import('/public/firebase/firestore.js');
+                    const { getCurrentUser, onAuthStateChange } = await import('/firebase/auth.js');
+        const { getUserProfile } = await import('/firebase/firestore.js');
             
             // First try to get current user
             let currentUser = getCurrentUser();

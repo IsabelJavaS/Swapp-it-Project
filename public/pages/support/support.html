@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support - Swapp-it</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="../../css/style.css" rel="stylesheet">
-    <link href="../../css/support.css" rel="stylesheet">
-    <link href="../../components/components.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/support.css" rel="stylesheet">
+    <link href="/components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
 </head>
 <body>
     <div id="header-placeholder"></div>
@@ -45,7 +45,7 @@
                     <div class="support-card">
                         <h2><i class="fas fa-info-circle"></i> General Help</h2>
                         <p>Learn more about how Swapp-it works and how to use our features.</p>
-                        <a href="../../pages/about/about.html" class="support-btn">About Swapp-it</a>
+                        <a href="/pages/about/about.html" class="support-btn">About Swapp-it</a>
                     </div>
                     <div class="support-card">
                         <h2><i class="fas fa-bug"></i> Report a Problem</h2>
@@ -57,8 +57,14 @@
         </section>
     </main>
     <app-footer></app-footer>
+    
+    <!-- Component Scripts -->
+    <script src="/components/header-component.js"></script>
+    <script src="/components/header-auth-component.js"></script>
+    <script src="/components/footer-component.js"></script>
+    
     <script type="module">
-        import { onAuthStateChange } from '../../firebase/auth.js';
+        import { onAuthStateChange } from '/firebase/auth.js';
         // Header dinámico según autenticación
         const headerPlaceholder = document.getElementById('header-placeholder');
         onAuthStateChange((user) => {

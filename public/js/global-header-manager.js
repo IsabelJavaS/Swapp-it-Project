@@ -13,8 +13,8 @@ class GlobalHeaderManager {
     async init() {
         try {
             // Use existing Firebase configuration
-            const { auth } = await import('/public/firebase/config.js');
-            const { onAuthStateChange } = await import('/public/firebase/auth.js');
+                    const { auth } = await import('/firebase/config.js');
+        const { onAuthStateChange } = await import('/firebase/auth.js');
             
             // Listen for auth state changes
             onAuthStateChange((user) => {

@@ -13,28 +13,8 @@ class HeaderComponent extends HTMLElement {
 
     // Función para obtener la ruta correcta del logo
     getLogoPath() {
-        const currentPath = window.location.pathname;
-        
-        // Detectar si estamos usando Live Server (puerto 5500 o 3000)
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            // Con Live Server, las rutas son desde la raíz del proyecto
-            return '/public/assets/logos/LogoSinFondo.png';
-        }
-        
-        // Con servidor Python normal
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        // Si estamos en la raíz (index.html)
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'assets/logos/LogoSinFondo.png';
-        }
-        
-        // Si estamos en una subcarpeta, necesitamos subir niveles
-        const levelsUp = pathSegments.length - 1; // -1 porque no contamos el archivo
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}assets/logos/LogoSinFondo.png`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/assets/logos/LogoSinFondo.png';
     }
 
     render() {
@@ -501,7 +481,7 @@ class HeaderComponent extends HTMLElement {
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="SWAPPIT Home" class="dropdown-image-large">
+                                            <img src="/assets/logos/LogoSinFondo.png" alt="SWAPPIT Home" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
@@ -522,7 +502,7 @@ class HeaderComponent extends HTMLElement {
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="/public/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
+                                            <img src="/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
@@ -543,7 +523,7 @@ class HeaderComponent extends HTMLElement {
                                 <div class="dropdown-menu wide" id="aboutDropdown">
                                     <div class="dropdown-grid prada-style">
                                         <div class="dropdown-col image-col">
-                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="About Us" class="dropdown-image-large">
+                                            <img src="/assets/logos/LogoSinFondo.png" alt="About Us" class="dropdown-image-large">
                                         </div>
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">About Us</div>
@@ -562,7 +542,7 @@ class HeaderComponent extends HTMLElement {
                                 <div class="dropdown-menu wide" id="contactDropdown">
                                     <div class="dropdown-grid prada-style">
                                         <div class="dropdown-col image-col">
-                                            <img src="/public/assets/logos/LogoSinFondo.png" alt="Contact" class="dropdown-image-large">
+                                            <img src="/assets/logos/LogoSinFondo.png" alt="Contact" class="dropdown-image-large">
                                         </div>
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">Contact</div>
@@ -603,111 +583,35 @@ class HeaderComponent extends HTMLElement {
 
     // Función para obtener la ruta del home
     getHomePath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            return '/public/index.html';
-        }
-        
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'index.html';
-        }
-        
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}index.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/index.html';
     }
 
     // Función para obtener la ruta del marketplace
     getMarketplacePath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            return '/public/pages/marketplace/marketplace-page.html';
-        }
-        
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'pages/marketplace/marketplace-page.html';
-        }
-        
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}pages/marketplace/marketplace-page.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/pages/marketplace/marketplace-page.html';
     }
 
     // Función para obtener la ruta del login
     getLoginPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            return '/public/pages/auth/login.html';
-        }
-        
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'pages/auth/login.html';
-        }
-        
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}pages/auth/login.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/pages/auth/login.html';
     }
 
     // Función para obtener la ruta del register
     getRegisterPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        
-        if (isLiveServer) {
-            return '/public/pages/auth/register.html';
-        }
-        
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'pages/auth/register.html';
-        }
-        
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}pages/auth/register.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/pages/auth/register.html';
     }
 
     getAboutPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        if (isLiveServer) {
-            return '/public/pages/about/about.html';
-        }
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'pages/about/about.html';
-        }
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}pages/about/about.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/pages/about/about.html';
     }
     getContactPath() {
-        const isLiveServer = window.location.port === '5500' || window.location.port === '3000' || window.location.port === '8080';
-        if (isLiveServer) {
-            return '/public/pages/contact/contact.html';
-        }
-        const currentPath = window.location.pathname;
-        const pathSegments = currentPath.split('/').filter(segment => segment !== '');
-        if (pathSegments.length === 0 || pathSegments[pathSegments.length - 1] === 'index.html') {
-            return 'pages/contact/contact.html';
-        }
-        const levelsUp = pathSegments.length - 1;
-        const prefix = '../'.repeat(levelsUp);
-        return `${prefix}pages/contact/contact.html`;
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '/pages/contact/contact.html';
     }
 
     attachEventListeners() {
