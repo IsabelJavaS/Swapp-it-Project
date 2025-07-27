@@ -21,7 +21,7 @@ class HeaderComponent extends HTMLElement {
     getLogoDestination() {
         // Verificar si el usuario está autenticado
         if (window.currentUser || window.localStorage.getItem('userRole') || window.sessionStorage.getItem('userRole')) {
-            return '/pages/marketplace/marketplace-logged.html';
+            return '/pages/marketplace/marketplace.html';
         } else {
             return this.getHomePath();
         }
@@ -603,7 +603,7 @@ class HeaderComponent extends HTMLElement {
     // Función para obtener la ruta del marketplace
     getMarketplacePath() {
         // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/marketplace/marketplace-logged.html';
+        return '/pages/marketplace/marketplace.html';
     }
 
     // Función para obtener la ruta del login

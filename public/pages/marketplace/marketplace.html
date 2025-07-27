@@ -12,6 +12,28 @@
     
     <!-- Custom Styles -->
     <link href="/css/marketplace-logged.css" rel="stylesheet">
+    <style>
+        /* Ensure products grid is visible */
+        .products-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+    </style>
     <link href="/components/components.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
 </head>
@@ -46,7 +68,7 @@
                 <div class="section-container">
                     <div class="section-header">
                         <h2><i class="fas fa-fire"></i> Best Sellers</h2>
-                        <a href="/pages/marketplace/all-products.html?sort=popular" class="btn btn-outline">
+                        <a href="/pages/marketplace/sections/best-sellers.html" class="btn btn-outline">
                             View More <i class="fas fa-arrow-right ms-2"></i>
                         </a>
                     </div>
@@ -59,7 +81,7 @@
                 <div class="section-container">
                     <div class="section-header">
                         <h2><i class="fas fa-star"></i> New Arrivals</h2>
-                        <a href="/pages/marketplace/all-products.html?sort=newest" class="btn btn-outline">
+                        <a href="/pages/marketplace/sections/new-arrivals.html" class="btn btn-outline">
                             View More <i class="fas fa-arrow-right ms-2"></i>
                         </a>
                     </div>
@@ -72,7 +94,7 @@
                 <div class="section-container">
                     <div class="section-header">
                         <h2><i class="fas fa-crown"></i> Featured Products</h2>
-                        <a href="/pages/marketplace/all-products.html?featured=true" class="btn btn-outline">
+                        <a href="/pages/marketplace/sections/featured-products.html" class="btn btn-outline">
                             View More <i class="fas fa-arrow-right ms-2"></i>
                         </a>
                     </div>
@@ -103,7 +125,7 @@
     <!-- JavaScript Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script src="/js/marketplace-logged.js"></script>
+    <script src="/js/marketplace.js"></script>
 
     <!-- Web Components -->
     <script src="/components/cart-component.js"></script>

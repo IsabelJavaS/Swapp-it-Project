@@ -156,12 +156,26 @@ class HeaderAuthComponent extends HTMLElement {
 
     // Get paths
     getMarketplacePath() {
-        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '/pages/marketplace/marketplace-logged.html';
+        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '/pages/marketplace/marketplace.html';
     }
 
     getDashboardPath() {
-        // Redirigir al marketplace logueado en lugar de los dashboards
-        return '/pages/marketplace/marketplace-logged.html';
+        // Intentar obtener el rol del usuario desde el perfil global
+        let role = null;
+        if (window.userProfile && window.userProfile.role) {
+            role = window.userProfile.role;
+        } else if (window.localStorage.getItem('userRole')) {
+            role = window.localStorage.getItem('userRole');
+        } else if (window.sessionStorage.getItem('userRole')) {
+            role = window.sessionStorage.getItem('userRole');
+        }
+        
+        // Por defecto, redirigir al dashboard del estudiante
+        if (role === 'business') {
+            return '/dashboards/business/business-dashboard.html';
+        } else {
+            return '/dashboards/student/student-dashboard.html';
+        }
     }
 
     getLoginPath() {
@@ -659,6 +673,19 @@ class HeaderAuthComponent extends HTMLElement {
                     color: #dc2626;
                 }
                 
+                /* Dropdown Section Title */
+                .dropdown-section-title {
+                    padding: 0.5rem 1rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: var(--swappit-orange);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid var(--swappit-orange);
+                    margin: 0.5rem 0;
+                }
+                
                 /* Mobile menu toggle */
                 .mobile-toggle {
                     display: none;
@@ -793,7 +820,7 @@ class HeaderAuthComponent extends HTMLElement {
                     <div class="container">
                         <!-- Column 1: Logo -->
                         <div class="column-1">
-                            <a href="${this.getDashboardPath()}" class="logo">
+                            <a href="${this.getMarketplacePath()}" class="logo">
                                 <img src="${logoPath}" alt="SWAPPIT Logo">
                             </a>
                         </div>
@@ -852,6 +879,17 @@ class HeaderAuthComponent extends HTMLElement {
                                         <a href="${this.getSettingsPath()}" class="dropdown-item" id="settingsLink">
                                             <i class="fas fa-cog"></i>
                                             Settings
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <!-- SWAPPIT Coins Section -->
+                                        <div class="dropdown-section-title">SWAPPIT Coins</div>
+                                        <a href="${this.getSwapcoinInfoPath()}" class="dropdown-item" id="swapcoinInfoLink">
+                                            <i class="fas fa-coins"></i>
+                                            My Coins
+                                        </a>
+                                        <a href="${this.getSwapcoinInfoPath()}?action=buy" class="dropdown-item" id="buyCoinsLink">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            Buy Coins
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <a href="${this.getSupportPath()}" class="dropdown-item" id="helpLink">
@@ -960,6 +998,8 @@ class HeaderAuthComponent extends HTMLElement {
         const dashboardLink = this.shadowRoot.getElementById('dashboardLink');
         const profileLink = this.shadowRoot.getElementById('profileLink');
         const settingsLink = this.shadowRoot.getElementById('settingsLink');
+        const swapcoinInfoLink = this.shadowRoot.getElementById('swapcoinInfoLink');
+        const buyCoinsLink = this.shadowRoot.getElementById('buyCoinsLink');
         const helpLink = this.shadowRoot.getElementById('helpLink');
         const logoutBtn = this.shadowRoot.getElementById('logoutBtn');
         
@@ -983,6 +1023,22 @@ class HeaderAuthComponent extends HTMLElement {
                 this.navigateToSettings();
             });
         }
+        
+        if (swapcoinInfoLink) {
+            swapcoinInfoLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToSwapcoinInfo();
+            });
+        }
+        
+        if (buyCoinsLink) {
+            buyCoinsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToBuyCoins();
+            });
+        }
+        
+
         
         if (helpLink) {
             helpLink.addEventListener('click', (e) => {
@@ -1063,6 +1119,18 @@ class HeaderAuthComponent extends HTMLElement {
         window.location.href = this.getSettingsPath();
     }
 
+    navigateToSwapcoinInfo() {
+        this.closeDropdown();
+        window.location.href = this.getSwapcoinInfoPath();
+    }
+
+    navigateToBuyCoins() {
+        this.closeDropdown();
+        window.location.href = `${this.getSwapcoinInfoPath()}?action=buy`;
+    }
+
+
+
     navigateToSupport() {
         this.closeDropdown();
         window.location.href = this.getSupportPath();
@@ -1094,8 +1162,8 @@ class HeaderAuthComponent extends HTMLElement {
     
     performSearch(query) {
         if (query.trim()) {
-            // Navigate to marketplace with search query
-            window.location.href = `${this.getMarketplacePath()}?search=${encodeURIComponent(query)}`;
+            // Navigate to all products page with search query
+            window.location.href = `/pages/marketplace/all-products.html?search=${encodeURIComponent(query)}`;
         }
     }
     

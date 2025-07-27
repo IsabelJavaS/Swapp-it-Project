@@ -9,7 +9,8 @@ class FiltersSidebarComponent extends HTMLElement {
             priceRange: { min: 0, max: 200 },
             condition: [],
             sellerType: [],
-            rating: []
+            rating: [],
+            saleType: [] // Nuevo filtro para tipo de venta
         };
     }
 
@@ -57,6 +58,7 @@ class FiltersSidebarComponent extends HTMLElement {
                     z-index: 2000;
                     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                     overflow-y: auto;
+                    overflow-x: hidden; /* Eliminar scroll horizontal */
                     padding: 0;
                     border-right: 1px solid rgba(52, 104, 192, 0.1);
                 }
@@ -113,19 +115,11 @@ class FiltersSidebarComponent extends HTMLElement {
                     color: var(--swappit-orange);
                     font-size: 1.6rem;
                 }
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-
-                .sidebar-header h3 i {
-                    color: var(--swappit-blue);
-                }
 
                 .close-sidebar {
                     background: none;
                     border: none;
-                    color: var(--neutral-medium);
+                    color: white;
                     font-size: 1.2rem;
                     cursor: pointer;
                     padding: 0.5rem;
@@ -134,13 +128,15 @@ class FiltersSidebarComponent extends HTMLElement {
                 }
 
                 .close-sidebar:hover {
-                    background: var(--neutral-light);
-                    color: var(--neutral-dark);
+                    background: rgba(255, 255, 255, 0.2);
+                    color: white;
                 }
 
                 /* Search Section */
                 .search-section {
                     margin-bottom: 2rem;
+                    padding: 0 2rem;
+                    margin-top: 1rem; /* Añadir espacio arriba del search */
                 }
 
                 .search-container {
@@ -414,6 +410,42 @@ class FiltersSidebarComponent extends HTMLElement {
                         width: 100%;
                         left: -100%;
                     }
+                    
+                    .search-section {
+                        padding: 0 1.5rem;
+                    }
+                    
+                    .filter-section {
+                        padding: 1.5rem 1.5rem;
+                    }
+                    
+                    .filter-actions {
+                        padding: 1.5rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .filters-sidebar {
+                        width: 100%;
+                        left: -100%;
+                    }
+                    
+                    .search-section {
+                        padding: 0 1rem;
+                    }
+                    
+                    .filter-section {
+                        padding: 1rem;
+                    }
+                    
+                    .filter-actions {
+                        padding: 1rem;
+                        flex-direction: column;
+                    }
+                    
+                    .filter-actions .btn {
+                        width: 100%;
+                    }
                 }
             </style>
 
@@ -436,6 +468,29 @@ class FiltersSidebarComponent extends HTMLElement {
                         <button class="search-btn" id="searchBtn">
                             <i class="fas fa-search"></i>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Sale Type Filter -->
+                <div class="filter-section">
+                    <h4>Sale Type</h4>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" value="sale">
+                            <span class="checkmark"></span>
+                            <span class="option-text">
+                                <i class="fas fa-dollar-sign"></i>
+                                For Sale
+                            </span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" value="swap">
+                            <span class="checkmark"></span>
+                            <span class="option-text">
+                                <i class="fas fa-exchange-alt"></i>
+                                For Swap
+                            </span>
+                        </label>
                     </div>
                 </div>
 
@@ -708,8 +763,8 @@ class FiltersSidebarComponent extends HTMLElement {
 
     performSearch(query) {
         if (query.trim()) {
-            // Navigate to marketplace with search query
-            window.location.href = `/pages/marketplace/marketplace-logged.html?search=${encodeURIComponent(query)}`;
+            // Navigate to all products page with search query
+            window.location.href = `/pages/marketplace/all-products.html?search=${encodeURIComponent(query)}`;
         }
     }
 
@@ -729,8 +784,8 @@ class FiltersSidebarComponent extends HTMLElement {
         
         this.close();
         
-        // Navigate to marketplace with cleared filters
-        window.location.href = '/pages/marketplace/marketplace-logged.html';
+        // Navigate to marketplace main page (not all products)
+        window.location.href = '/pages/marketplace/marketplace.html';
     }
 
     applyFilters() {
@@ -739,6 +794,7 @@ class FiltersSidebarComponent extends HTMLElement {
         const selectedConditions = [];
         const selectedSellerTypes = [];
         const selectedRatings = [];
+        const selectedSaleTypes = []; // Nuevo filtro
         
         const checkboxes = this.shadowRoot.querySelectorAll('.filter-option input[type="checkbox"]:checked');
         checkboxes.forEach(checkbox => {
@@ -749,6 +805,8 @@ class FiltersSidebarComponent extends HTMLElement {
                 selectedSellerTypes.push(value);
             } else if (['3', '4', '5'].includes(value)) {
                 selectedRatings.push(value);
+            } else if (['sale', 'swap'].includes(value)) {
+                selectedSaleTypes.push(value);
             } else {
                 selectedCategories.push(value);
             }
@@ -758,20 +816,51 @@ class FiltersSidebarComponent extends HTMLElement {
         const minPrice = this.shadowRoot.getElementById('minPrice')?.value || '';
         const maxPrice = this.shadowRoot.getElementById('maxPrice')?.value || '';
         
-        // Build query string
+        this.close();
+        
+        // Check if only one category is selected and no other filters
+        if (selectedCategories.length === 1 && 
+            selectedConditions.length === 0 && 
+            selectedSellerTypes.length === 0 && 
+            selectedRatings.length === 0 && 
+            selectedSaleTypes.length === 0 && 
+            !minPrice && !maxPrice) {
+            
+            // Navigate to specific category page
+            const category = selectedCategories[0];
+            const categoryUrls = {
+                'notebooks': '/pages/marketplace/categories/notebooks.html',
+                'bags': '/pages/marketplace/categories/school-bags.html',
+                'shoes': '/pages/marketplace/categories/shoes.html',
+                'uniforms': '/pages/marketplace/categories/uniforms.html',
+                'books': '/pages/marketplace/categories/books.html',
+                'stationery': '/pages/marketplace/categories/stationery.html',
+                'electronics': '/pages/marketplace/categories/electronics.html',
+                'sports': '/pages/marketplace/categories/sports.html',
+                'art': '/pages/marketplace/categories/art.html',
+                'accessories': '/pages/marketplace/categories/accessories.html'
+            };
+            
+            const categoryUrl = categoryUrls[category];
+            if (categoryUrl) {
+                window.location.href = categoryUrl;
+                return;
+            }
+        }
+        
+        // Build query string for all products page with filters
         const params = new URLSearchParams();
         if (selectedCategories.length > 0) params.append('categories', selectedCategories.join(','));
         if (selectedConditions.length > 0) params.append('conditions', selectedConditions.join(','));
         if (selectedSellerTypes.length > 0) params.append('sellerTypes', selectedSellerTypes.join(','));
         if (selectedRatings.length > 0) params.append('ratings', selectedRatings.join(','));
+        if (selectedSaleTypes.length > 0) params.append('saleTypes', selectedSaleTypes.join(','));
         if (minPrice) params.append('minPrice', minPrice);
         if (maxPrice) params.append('maxPrice', maxPrice);
         
-        this.close();
-        
-        // Navigate to marketplace with filters
+        // Navigate to all products page with filters
         const queryString = params.toString();
-        const url = queryString ? `/pages/marketplace/marketplace-logged.html?${queryString}` : '/pages/marketplace/marketplace-logged.html';
+        const url = queryString ? `/pages/marketplace/all-products.html?${queryString}` : '/pages/marketplace/all-products.html';
         window.location.href = url;
     }
 }

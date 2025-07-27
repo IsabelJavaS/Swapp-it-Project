@@ -24,6 +24,9 @@ class AllProducts {
         this.attachEventListeners();
         this.loadFiltersFromURL();
         this.showLoadingState();
+        
+        // Check if we're on a category or section page
+        this.checkPageType();
     }
 
     // Load products from Firebase or mock data
@@ -40,6 +43,9 @@ class AllProducts {
             this.renderProducts();
             this.updateProductCount();
             this.hideLoadingState();
+            
+            // Check page type after products are loaded
+            this.checkPageType();
             
         } catch (error) {
             console.error('Error loading products:', error);
@@ -179,10 +185,12 @@ class AllProducts {
     // Load filters from URL parameters
     loadFiltersFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
+        console.log('Loading filters from URL:', window.location.search);
         
         // Load search query
         const search = urlParams.get('search');
         if (search) {
+            console.log('Search filter:', search);
             this.filters.search = search;
             const searchInput = document.querySelector('input[type="text"]');
             if (searchInput) {
@@ -193,7 +201,14 @@ class AllProducts {
         // Load categories
         const categories = urlParams.get('categories');
         if (categories) {
+            console.log('Categories filter:', categories);
             this.filters.categories = categories.split(',');
+        }
+
+        // Load sale types
+        const saleTypes = urlParams.get('saleTypes');
+        if (saleTypes) {
+            this.filters.saleTypes = saleTypes.split(',');
         }
 
         // Load price range
@@ -204,26 +219,89 @@ class AllProducts {
         }
 
         // Load condition
-        const condition = urlParams.get('condition');
-        if (condition) {
-            this.filters.condition = condition.split(',');
+        const conditions = urlParams.get('conditions');
+        if (conditions) {
+            this.filters.condition = conditions.split(',');
         }
 
         // Load seller type
-        const sellerType = urlParams.get('sellerType');
-        if (sellerType) {
-            this.filters.sellerType = sellerType.split(',');
+        const sellerTypes = urlParams.get('sellerTypes');
+        if (sellerTypes) {
+            this.filters.sellerType = sellerTypes.split(',');
         }
 
         // Load rating
-        const rating = urlParams.get('rating');
-        if (rating) {
-            this.filters.rating = rating.split(',').map(r => parseInt(r));
+        const ratings = urlParams.get('ratings');
+        if (ratings) {
+            this.filters.rating = ratings.split(',').map(r => parseInt(r));
         }
+    }
+
+    // Check page type and apply appropriate filters
+    checkPageType() {
+        console.log('Checking page type...');
+        console.log('Current category:', window.currentCategory);
+        console.log('Current section:', window.currentSection);
+        
+        // Check for category page
+        if (window.currentCategory) {
+            console.log(`Applying category filter: ${window.currentCategory}`);
+            this.filters.categories = [window.currentCategory];
+            this.applyFilters();
+            this.renderProducts();
+            return;
+        }
+
+        // Check for section page
+        if (window.currentSection) {
+            console.log(`Applying section filter: ${window.currentSection}`);
+            this.filterBySection(window.currentSection);
+            this.applyFilters();
+            this.renderProducts();
+            return;
+        }
+        
+        console.log('No specific page type detected, using default filters');
+    }
+
+    // Filter products by section
+    filterBySection(section) {
+        console.log(`Filtering by section: ${section}`);
+        
+        switch (section) {
+            case 'best-sellers':
+                // Sort by popularity (review count)
+                console.log('Applying best-sellers filter');
+                this.sortBy = 'popular';
+                break;
+            case 'new-arrivals':
+                // Filter by recent products (last 7 days)
+                console.log('Applying new-arrivals filter');
+                this.filteredProducts = this.products.filter(product => {
+                    const daysSinceCreated = (Date.now() - new Date(product.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+                    return daysSinceCreated <= 7;
+                });
+                this.sortBy = 'newest';
+                break;
+            case 'featured':
+                // Filter by featured products
+                console.log('Applying featured filter');
+                this.filteredProducts = this.products.filter(product => product.isFeatured);
+                this.sortBy = 'featured';
+                break;
+            default:
+                console.log(`Unknown section: ${section}`);
+                break;
+        }
+        
+        console.log(`Products after section filter: ${this.filteredProducts.length}`);
     }
 
     // Apply filters
     applyFilters() {
+        console.log('Applying filters:', this.filters);
+        console.log('Total products before filtering:', this.products.length);
+        
         this.filteredProducts = this.products.filter(product => {
             // Search filter
             if (this.filters.search && !product.title.toLowerCase().includes(this.filters.search.toLowerCase())) {
@@ -233,6 +311,12 @@ class AllProducts {
             // Category filter
             if (this.filters.categories.length > 0 && !this.filters.categories.includes(product.category)) {
                 return false;
+            }
+
+            // Sale type filter (if implemented)
+            if (this.filters.saleTypes && this.filters.saleTypes.length > 0) {
+                // This would need to be implemented based on your product data structure
+                // For now, we'll skip this filter
             }
 
             // Price range filter
@@ -260,6 +344,8 @@ class AllProducts {
 
         this.sortProducts();
         this.currentPage = 1;
+        
+        console.log('Filtered products:', this.filteredProducts.length);
     }
 
     // Sort products
@@ -279,6 +365,13 @@ class AllProducts {
                 break;
             case 'popular':
                 this.filteredProducts.sort((a, b) => b.reviewCount - a.reviewCount);
+                break;
+            case 'featured':
+                this.filteredProducts.sort((a, b) => {
+                    if (a.isFeatured && !b.isFeatured) return -1;
+                    if (!a.isFeatured && b.isFeatured) return 1;
+                    return (b.rating * b.reviewCount) - (a.rating * a.reviewCount);
+                });
                 break;
             default: // relevance
                 this.filteredProducts.sort((a, b) => (b.rating * b.reviewCount) - (a.rating * a.reviewCount));
@@ -310,15 +403,38 @@ class AllProducts {
     // Render products
     renderProducts() {
         const productsGrid = document.getElementById('productsGrid');
+        const noResults = document.getElementById('noResults');
         if (!productsGrid) return;
 
         const startIndex = (this.currentPage - 1) * this.productsPerPage;
         const endIndex = startIndex + this.productsPerPage;
         const productsToShow = this.filteredProducts.slice(startIndex, endIndex);
 
-        if (productsToShow.length === 0) {
+        // Only show no results if there are no filtered products at all
+        if (this.filteredProducts.length === 0) {
+            console.log('No filtered products found, showing no results');
             this.showNoResults();
             return;
+        }
+
+        console.log(`Found ${this.filteredProducts.length} filtered products, showing them`);
+
+        // If we have products but none on current page, show first page
+        if (productsToShow.length === 0 && this.filteredProducts.length > 0) {
+            this.currentPage = 1;
+            this.renderProducts();
+            return;
+        }
+
+        // Hide no results and show products
+        if (noResults) {
+            noResults.style.display = 'none';
+            console.log('Hiding no results message');
+        }
+        
+        if (productsGrid) {
+            productsGrid.style.display = 'grid';
+            console.log('Showing products grid');
         }
 
         productsGrid.innerHTML = productsToShow.map(product => this.createProductCard(product)).join('');
@@ -464,6 +580,8 @@ class AllProducts {
         if (productsCount) {
             productsCount.style.display = this.filteredProducts.length > 0 ? 'block' : 'none';
         }
+        
+        console.log(`Product count updated: ${this.filteredProducts.length} products`);
     }
 
     // Update load more button
@@ -510,6 +628,7 @@ class AllProducts {
     showLoadingState() {
         const loadingState = document.getElementById('loadingState');
         const productsGrid = document.getElementById('productsGrid');
+        const noResults = document.getElementById('noResults');
         
         if (loadingState) {
             loadingState.style.display = 'block';
@@ -518,19 +637,30 @@ class AllProducts {
         if (productsGrid) {
             productsGrid.style.display = 'none';
         }
+        
+        if (noResults) {
+            noResults.style.display = 'none';
+        }
     }
 
     // Hide loading state
     hideLoadingState() {
         const loadingState = document.getElementById('loadingState');
         const productsGrid = document.getElementById('productsGrid');
+        const noResults = document.getElementById('noResults');
         
         if (loadingState) {
             loadingState.style.display = 'none';
         }
         
-        if (productsGrid) {
+        // Only show products grid if we have products, otherwise let renderProducts handle it
+        if (productsGrid && this.filteredProducts.length > 0) {
             productsGrid.style.display = 'grid';
+        }
+        
+        // Hide no results during loading
+        if (noResults) {
+            noResults.style.display = 'none';
         }
     }
 
@@ -540,11 +670,42 @@ class AllProducts {
         const productsGrid = document.getElementById('productsGrid');
         
         if (noResults) {
+            // Customize message based on page type
+            let message = 'No products found';
+            let suggestion = 'Try adjusting your filters or search terms';
+            
+            if (window.currentCategory) {
+                const categoryName = window.currentCategory.charAt(0).toUpperCase() + window.currentCategory.slice(1);
+                message = `No ${categoryName} found`;
+                suggestion = `No ${categoryName} available at the moment. Try checking back later or browse other categories.`;
+            } else if (window.currentSection) {
+                const sectionName = window.currentSection.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                message = `No ${sectionName} found`;
+                suggestion = `No ${sectionName} available at the moment. Try checking back later.`;
+            } else if (this.filters.search) {
+                message = `No results found for "${this.filters.search}"`;
+                suggestion = 'Try different keywords or check your spelling.';
+            }
+            
+            // Update the message in the HTML
+            const messageElement = noResults.querySelector('h3');
+            const suggestionElement = noResults.querySelector('p');
+            
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+            if (suggestionElement) {
+                suggestionElement.textContent = suggestion;
+            }
+            
+            // Show no results and hide products grid
             noResults.style.display = 'block';
+            console.log('Showing no results message');
         }
         
         if (productsGrid) {
             productsGrid.style.display = 'none';
+            console.log('Hiding products grid');
         }
     }
 }

@@ -17,7 +17,7 @@
 
 /* Main Layout */
 .all-products-main {
-    padding-top: 80px;
+    padding-top: 0; /* Eliminar el padding-top para que el banner inicie desde el header */
     min-height: 100vh;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }

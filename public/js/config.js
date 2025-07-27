@@ -191,7 +191,7 @@ class PathConfig {
     // Función helper para redirección basada en rol
     redirectToDashboard(role) {
         // Redirigir al marketplace logueado en lugar de los dashboards
-        this.redirectTo('/pages/marketplace/marketplace-logged.html');
+        this.redirectTo('/pages/marketplace/marketplace.html');
     }
 }
 
