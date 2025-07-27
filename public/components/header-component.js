@@ -17,6 +17,16 @@ class HeaderComponent extends HTMLElement {
         return '/assets/logos/LogoSinFondo.png';
     }
 
+    // Función para obtener la ruta correcta según autenticación
+    getLogoDestination() {
+        // Verificar si el usuario está autenticado
+        if (window.currentUser || window.localStorage.getItem('userRole') || window.sessionStorage.getItem('userRole')) {
+            return '/pages/marketplace/marketplace-logged.html';
+        } else {
+            return this.getHomePath();
+        }
+    }
+
     render() {
         const logoPath = this.getLogoPath();
         
@@ -469,9 +479,9 @@ class HeaderComponent extends HTMLElement {
                 <nav class="nav">
                     <div class="container">
                         <!-- Logo - Left -->
-                        <a href="${this.getHomePath()}" class="logo">
-                            <img src="${logoPath}" alt="SWAPPIT Logo">
-                        </a>
+                                        <a href="${this.getLogoDestination()}" class="logo">
+                    <img src="${logoPath}" alt="SWAPPIT Logo">
+                </a>
                         
                         <!-- Navigation Menu - Center -->
                         <div class="menu">
@@ -574,6 +584,9 @@ class HeaderComponent extends HTMLElement {
                                     Sign Up
                                 </a>
                             </div>
+                            
+                            <!-- Cart Component -->
+                            <cart-component></cart-component>
                         </div>
                     </div>
                 </nav>
@@ -590,7 +603,7 @@ class HeaderComponent extends HTMLElement {
     // Función para obtener la ruta del marketplace
     getMarketplacePath() {
         // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/marketplace/marketplace-page.html';
+        return '/pages/marketplace/marketplace-logged.html';
     }
 
     // Función para obtener la ruta del login

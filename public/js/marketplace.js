@@ -240,14 +240,21 @@ const viewProduct = async (productId) => {
 
 // Add to cart
 const addToCart = async (productId) => {
-  if (!window.SwappitApp?.isAuthenticated) {
-    showNotification('Please login to add items to cart', 'warning');
-    return;
-  }
-  
   try {
-    // Add to cart logic here
-    showNotification('Product added to cart', 'success');
+    // Get product details
+    const result = await getProduct(productId);
+    if (result.success) {
+      const product = result.product;
+      
+      // Add to global cart
+      if (window.SwappitCart) {
+        window.SwappitCart.addToCart(product);
+      }
+      
+      showNotification('Producto agregado al carrito', 'success');
+    } else {
+      showNotification('Error loading product', 'danger');
+    }
   } catch (error) {
     console.error('Error adding to cart:', error);
     showNotification('Error adding to cart', 'danger');
