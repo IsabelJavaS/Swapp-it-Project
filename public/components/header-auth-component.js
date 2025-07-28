@@ -830,7 +830,7 @@ class HeaderAuthComponent extends HTMLElement {
                             <!-- Explore Navigation -->
                             <a href="#" class="explore-nav" id="exploreNav">
                                 <i class="fas fa-compass"></i>
-                                <span>Explorar</span>
+                                <span>Explorer</span>
                             </a>
                             
                             <!-- Search Bar -->

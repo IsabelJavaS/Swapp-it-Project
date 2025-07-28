@@ -9,27 +9,94 @@ import {
 import { storage } from './config.js';
 
 // Upload product image
-export const uploadProductImage = async (file, productId, imageIndex = 0) => {
+export const uploadProductImage = async (file, productId, imageIndex = 0, transactionType = 'sale', category = 'other') => {
   try {
-    const fileExtension = file.name.split('.').pop();
-    const fileName = `products/${productId}/image_${imageIndex}.${fileExtension}`;
+    // Validate file
+    if (!file || !(file instanceof File)) {
+      throw new Error('Invalid file provided');
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      throw new Error('File must be an image');
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('File size must be less than 5MB');
+    }
+
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    
+    // Organize by transaction type and category
+    let baseFolder = '';
+    if (transactionType === 'sale') {
+      baseFolder = 'ProductsCatalog';
+    } else if (transactionType === 'swapp') {
+      baseFolder = 'ProductsSwapp';
+    } else {
+      baseFolder = 'ProductsCatalog'; // Default fallback
+    }
+    
+    // Create folder structure: baseFolder/category/productId/image
+    const fileName = `${baseFolder}/${category}/${productId}/image_${imageIndex}.${fileExtension}`;
     const storageRef = ref(storage, fileName);
+    
+    console.log('Uploading file:', {
+      fileName,
+      fileSize: file.size,
+      fileType: file.type,
+      productId,
+      transactionType,
+      category,
+      baseFolder
+    });
     
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
     
+    console.log('Upload successful:', {
+      fileName,
+      downloadURL,
+      bytesTransferred: snapshot.bytesTransferred,
+      folderStructure: `${baseFolder}/${category}/${productId}`
+    });
+    
     return { success: true, url: downloadURL, path: fileName };
   } catch (error) {
     console.error('Error uploading product image:', error);
-    return { success: false, error: error.message };
+    console.error('Error details:', {
+      errorCode: error.code,
+      errorMessage: error.message,
+      fileName: file?.name,
+      fileSize: file?.size,
+      productId,
+      transactionType,
+      category
+    });
+    
+    // Provide more specific error messages
+    let errorMessage = error.message;
+    
+    if (error.code === 'storage/unauthorized') {
+      errorMessage = 'Unauthorized: Check Firebase Storage rules and authentication.';
+    } else if (error.code === 'storage/quota-exceeded') {
+      errorMessage = 'Storage quota exceeded. Please try with a smaller image.';
+    } else if (error.code === 'storage/retry-limit-exceeded') {
+      errorMessage = 'Upload failed due to network issues. Please try again.';
+    } else if (error.code === 'storage/invalid-checksum') {
+      errorMessage = 'File corruption detected. Please try uploading again.';
+    }
+    
+    return { success: false, error: errorMessage, errorCode: error.code };
   }
 };
 
 // Upload multiple product images
-export const uploadProductImages = async (files, productId) => {
+export const uploadProductImages = async (files, productId, transactionType = 'sale', category = 'other') => {
   try {
     const uploadPromises = files.map((file, index) => 
-      uploadProductImage(file, productId, index)
+      uploadProductImage(file, productId, index, transactionType, category)
     );
     
     const results = await Promise.all(uploadPromises);
@@ -84,7 +151,7 @@ export const deleteFile = async (filePath) => {
 // Delete all product images
 export const deleteProductImages = async (productId) => {
   try {
-    const productImagesRef = ref(storage, `products/${productId}`);
+    const productImagesRef = ref(storage, `ProductsCatalog/${productId}`);
     const result = await listAll(productImagesRef);
     
     const deletePromises = result.items.map(itemRef => deleteObject(itemRef));

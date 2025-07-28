@@ -29,102 +29,84 @@ class AllProducts {
         this.checkPageType();
     }
 
-    // Load products from Firebase or mock data
+    // Load products from Firebase
     async loadProducts() {
         try {
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            this.showLoadingState();
             
-            // Mock products data
-            this.products = this.generateMockProducts();
-            this.filteredProducts = [...this.products];
+            // Import Firebase functions
+            const { getProducts } = await import('/firebase/firestore.js');
             
-            this.applyFilters();
-            this.renderProducts();
-            this.updateProductCount();
-            this.hideLoadingState();
+            // Get products from Firebase with filters
+            const result = await getProducts({
+                orderBy: 'createdAt',
+                orderDirection: 'desc'
+            });
             
-            // Check page type after products are loaded
-            this.checkPageType();
-            
+            if (result.success) {
+                this.products = result.products.map(product => this.formatProductForDisplay(product));
+                console.log(`Loaded ${this.products.length} products from Firebase`);
+                this.filteredProducts = [...this.products];
+                
+                this.applyFilters();
+                this.renderProducts();
+                this.updateProductCount();
+                this.hideLoadingState();
+                
+                // Check page type after products are loaded
+                this.checkPageType();
+            } else {
+                console.error('Error loading products from Firebase:', result.error);
+                this.showNoResults();
+            }
         } catch (error) {
             console.error('Error loading products:', error);
             this.showNoResults();
         }
     }
 
-    // Generate mock products for demonstration
-    generateMockProducts() {
-        const categories = ['notebooks', 'bags', 'shoes', 'uniforms', 'books', 'stationery', 'electronics', 'sports', 'art', 'accessories'];
-        const conditions = ['new', 'like-new', 'good', 'fair'];
-        const sellerTypes = ['student', 'business'];
-        const ratings = [3, 4, 5];
-        
-        const products = [];
-        
-        for (let i = 1; i <= 100; i++) {
-            const category = categories[Math.floor(Math.random() * categories.length)];
-            const condition = conditions[Math.floor(Math.random() * conditions.length)];
-            const sellerType = sellerTypes[Math.floor(Math.random() * sellerTypes.length)];
-            const rating = ratings[Math.floor(Math.random() * ratings.length)];
-            const price = Math.floor(Math.random() * 150) + 10;
-            
-            products.push({
-                id: `product-${i}`,
-                title: this.generateProductTitle(category, i),
-                description: `High-quality ${category} perfect for students. This item is in ${condition} condition and comes from a verified ${sellerType}.`,
-                price: price,
-                originalPrice: Math.random() > 0.7 ? price + Math.floor(Math.random() * 20) + 5 : null,
-                category: category,
-                condition: condition,
-                sellerType: sellerType,
-                sellerName: this.generateSellerName(sellerType),
-                rating: rating,
-                reviewCount: Math.floor(Math.random() * 100) + 5,
-                images: [
-                    `https://picsum.photos/400/300?random=${i}`,
-                    `https://picsum.photos/400/300?random=${i + 100}`,
-                    `https://picsum.photos/400/300?random=${i + 200}`
-                ],
-                location: this.generateLocation(),
-                createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
-                isFeatured: Math.random() > 0.8,
-                isNew: Math.random() > 0.9,
-                stock: Math.floor(Math.random() * 10) + 1
-            });
-        }
-        
-        return products;
-    }
-
-    generateProductTitle(category, index) {
-        const titles = {
-            notebooks: ['Premium Notebook Set', 'Spiral Bound Notebook', 'College Ruled Notebook', 'Hardcover Journal', 'Planner Notebook'],
-            bags: ['School Backpack', 'Laptop Bag', 'Messenger Bag', 'Duffel Bag', 'Tote Bag'],
-            shoes: ['School Shoes', 'Athletic Shoes', 'Dress Shoes', 'Casual Shoes', 'Boots'],
-            uniforms: ['School Uniform', 'PE Uniform', 'Lab Coat', 'Chef Uniform', 'Work Uniform'],
-            books: ['Textbook', 'Reference Book', 'Novel', 'Study Guide', 'Workbook'],
-            stationery: ['Pen Set', 'Pencil Case', 'Stapler', 'Calculator', 'Ruler Set'],
-            electronics: ['Laptop', 'Tablet', 'Smartphone', 'Headphones', 'Charger'],
-            sports: ['Basketball', 'Soccer Ball', 'Tennis Racket', 'Gym Bag', 'Water Bottle'],
-            art: ['Paint Set', 'Sketchbook', 'Brushes', 'Canvas', 'Easel'],
-            accessories: ['Watch', 'Jewelry', 'Wallet', 'Belt', 'Scarf']
+    // Format Firebase product data for display
+    formatProductForDisplay(firebaseProduct) {
+        return {
+            id: firebaseProduct.id,
+            title: firebaseProduct.productName,
+            description: firebaseProduct.description,
+            price: firebaseProduct.price || 0,
+            originalPrice: firebaseProduct.originalPrice || null,
+            category: firebaseProduct.category,
+            condition: firebaseProduct.condition,
+            sellerType: this.getSellerType(firebaseProduct.sellerEmail),
+            sellerName: firebaseProduct.sellerDisplayName || firebaseProduct.sellerEmail,
+            rating: firebaseProduct.rating || 0,
+            reviewCount: firebaseProduct.reviewCount || 0,
+            images: firebaseProduct.images || [],
+            location: firebaseProduct.location || 'Campus',
+            createdAt: firebaseProduct.createdAt ? new Date(firebaseProduct.createdAt) : new Date(),
+            isFeatured: firebaseProduct.isFeatured || false,
+            isNew: this.isNewProduct(firebaseProduct.createdAt),
+            stock: 1, // Default stock for now
+            transactionType: firebaseProduct.transactionType,
+            brand: firebaseProduct.brand,
+            swappPreferences: firebaseProduct.swappPreferences,
+            phone: firebaseProduct.phone,
+            views: firebaseProduct.views || 0,
+            favorites: firebaseProduct.favorites || 0
         };
-        
-        const categoryTitles = titles[category] || ['Product'];
-        return `${categoryTitles[Math.floor(Math.random() * categoryTitles.length)]} ${index}`;
     }
 
-    generateSellerName(sellerType) {
-        const names = sellerType === 'business' 
-            ? ['School Essentials', 'Tech Solutions', 'Creative Arts', 'Urban Gear', 'Luxury Stationary']
-            : ['John Smith', 'Maria Garcia', 'David Johnson', 'Sarah Wilson', 'Michael Brown'];
-        return names[Math.floor(Math.random() * names.length)];
+    // Determine seller type based on email domain
+    getSellerType(email) {
+        if (!email) return 'student';
+        // You can add logic here to determine if it's a business email
+        // For now, we'll assume all are students
+        return 'student';
     }
 
-    generateLocation() {
-        const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego'];
-        return cities[Math.floor(Math.random() * cities.length)];
+    // Check if product is new (less than 7 days old)
+    isNewProduct(createdAt) {
+        if (!createdAt) return false;
+        const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        return new Date(createdAt) > oneWeekAgo;
     }
 
     attachEventListeners() {
@@ -304,8 +286,12 @@ class AllProducts {
         
         this.filteredProducts = this.products.filter(product => {
             // Search filter
-            if (this.filters.search && !product.title.toLowerCase().includes(this.filters.search.toLowerCase())) {
-                return false;
+            if (this.filters.search) {
+                const searchTerm = this.filters.search.toLowerCase();
+                const searchableText = `${product.title} ${product.description} ${product.brand} ${product.category}`.toLowerCase();
+                if (!searchableText.includes(searchTerm)) {
+                    return false;
+                }
             }
 
             // Category filter
@@ -319,9 +305,11 @@ class AllProducts {
                 // For now, we'll skip this filter
             }
 
-            // Price range filter
-            if (product.price < this.filters.priceRange.min || product.price > this.filters.priceRange.max) {
-                return false;
+            // Price range filter (only for sale products)
+            if (product.transactionType === 'sale' && product.price) {
+                if (product.price < this.filters.priceRange.min || product.price > this.filters.priceRange.max) {
+                    return false;
+                }
             }
 
             // Condition filter
@@ -446,11 +434,18 @@ class AllProducts {
         const stars = this.generateStars(product.rating);
         const badges = this.generateBadges(product);
         const originalPrice = product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : '';
+        const priceDisplay = product.transactionType === 'sale' ? 
+            `<div class="product-price">$${product.price} ${originalPrice}</div>` : 
+            `<div class="product-price swapp-price">For Swapp</div>`;
+        
+        const defaultImage = product.images && product.images.length > 0 ? 
+            product.images[0].url || product.images[0] : 
+            '/assets/logos/utiles-escolares.jpg';
 
         return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image">
-                    <img src="${product.images[0]}" alt="${product.title}" loading="lazy">
+                    <img src="${defaultImage}" alt="${product.title}" loading="lazy">
                     ${badges}
                     <div class="product-overlay">
                         <button class="btn-quick-view" onclick="allProducts.showProductDetails('${product.id}')">
@@ -468,14 +463,16 @@ class AllProducts {
                         <div class="stars">${stars}</div>
                         <span class="rating-text">(${product.reviewCount} reviews)</span>
                     </div>
-                    <div class="product-price">
-                        $${product.price}
-                        ${originalPrice}
-                    </div>
+                    ${priceDisplay}
                     <div class="product-actions">
-                        <button class="btn btn-add-cart" onclick="allProducts.addToCart('${product.id}')">
-                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                        </button>
+                        ${product.transactionType === 'sale' ? 
+                            `<button class="btn btn-add-cart" onclick="allProducts.addToCart('${product.id}')">
+                                <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                            </button>` : 
+                            `<button class="btn btn-swapp" onclick="allProducts.initiateSwapp('${product.id}')">
+                                <i class="fas fa-exchange-alt me-2"></i>Initiate Swapp
+                            </button>`
+                        }
                         <a href="/pages/marketplace/productDetail.html?id=${product.id}" class="btn btn-details">
                             <i class="fas fa-info-circle me-2"></i>Details
                         </a>
@@ -516,15 +513,131 @@ class AllProducts {
 
     // Add to cart
     addToCart(productId) {
+        console.log('AllProducts.addToCart called with productId:', productId);
         const product = this.products.find(p => p.id === productId);
+        console.log('Found product:', product);
+        
         if (product) {
-            // Add to global cart
-            if (window.SwappitCart) {
-                window.SwappitCart.addToCart(product);
-            }
-            
-            this.showNotification(`"${product.title}" added to cart!`);
+            // Wait for cart component to be available
+            this.waitForCartComponent().then(() => {
+                // Add to global cart
+                if (window.SwappitCart) {
+                    console.log('SwappitCart found, adding product to cart');
+                    window.SwappitCart.addToCart(product);
+                    
+                    // Show success notification
+                    this.showNotification(`"${product.title}" added to cart successfully!`, 'success');
+                    
+                    // Update cart counter in header
+                    this.updateCartCounter();
+                    
+                    // Open cart sidebar automatically
+                    setTimeout(() => {
+                        this.openCartSidebar();
+                    }, 500);
+                } else {
+                    console.error('SwappitCart not found');
+                    this.showNotification('Error: Cart not available', 'error');
+                }
+            });
+        } else {
+            console.error('Product not found with ID:', productId);
         }
+    }
+
+    // Wait for cart component to be available
+    waitForCartComponent() {
+        return new Promise((resolve) => {
+            const checkCart = () => {
+                // First try to find cart component in main DOM
+                let cartComponent = document.querySelector('cart-component');
+                
+                // If not found in main DOM, try to find it in header shadow DOM
+                if (!cartComponent) {
+                    const headerComponent = document.querySelector('header-component, header-auth-component');
+                    if (headerComponent && headerComponent.shadowRoot) {
+                        cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+                        console.log('Searching in header shadow DOM...');
+                    }
+                }
+                
+                if (cartComponent) {
+                    console.log('Cart component found, proceeding...');
+                    resolve();
+                } else {
+                    console.log('Cart component not found, waiting...');
+                    setTimeout(checkCart, 100);
+                }
+            };
+            checkCart();
+        });
+    }
+
+    // Update cart counter
+    updateCartCounter() {
+        console.log('AllProducts.updateCartCounter called');
+        
+        // Try to find cart counter in main DOM first
+        let cartCounter = document.querySelector('.cart-counter');
+        
+        // If not found, try to find it in header shadow DOM
+        if (!cartCounter) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartCounter = headerComponent.shadowRoot.querySelector('.cart-counter');
+                console.log('Found cart counter in header shadow DOM');
+            }
+        }
+        
+        console.log('Found cart counter element:', cartCounter);
+        
+        if (cartCounter && window.SwappitCart) {
+            const itemCount = window.SwappitCart.getItemCount();
+            console.log('Cart item count:', itemCount);
+            cartCounter.textContent = itemCount;
+            cartCounter.style.display = itemCount > 0 ? 'block' : 'none';
+        } else {
+            console.error('Cart counter element or SwappitCart not found');
+        }
+    }
+
+    // Open cart sidebar
+    openCartSidebar() {
+        console.log('AllProducts.openCartSidebar called');
+        
+        // First try to find cart component in main DOM
+        let cartComponent = document.querySelector('cart-component');
+        
+        // If not found, try to find it in header shadow DOM
+        if (!cartComponent) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+                console.log('Found cart component in header shadow DOM');
+            }
+        }
+        
+        console.log('Found cart component:', cartComponent);
+        
+        if (cartComponent) {
+            console.log('Opening cart sidebar...');
+            cartComponent.openCart();
+        } else {
+            console.error('Cart component not found');
+        }
+    }
+
+    // Initiate swapp
+    initiateSwapp(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+
+        // For now, just show a notification
+        this.showNotification('Swapp feature coming soon!', 'info');
+        
+        // TODO: Implement swapp functionality
+        // This could open a modal or navigate to a swapp page
+        console.log('Initiating swapp for product:', product);
     }
 
     // Show product details
@@ -542,17 +655,33 @@ class AllProducts {
     showNotification(message, type = 'success') {
         const toast = document.getElementById('notificationToast');
         const messageEl = toast.querySelector('.toast-message');
+        const toastIcon = toast.querySelector('.toast-content i');
         
         if (messageEl) {
             messageEl.textContent = message;
         }
         
+        // Set icon based on type
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            info: 'fas fa-info-circle',
+            warning: 'fas fa-exclamation-triangle'
+        };
+        
+        if (toastIcon) {
+            toastIcon.className = icons[type] || icons.success;
+        }
+        
+        // Set notification type class
+        toast.className = `notification-toast ${type}`;
+        
         toast.classList.add('show');
         
-        // Auto hide after 3 seconds
+        // Auto hide after 4 seconds
         setTimeout(() => {
             toast.classList.remove('show');
-        }, 3000);
+        }, 4000);
         
         // Close button functionality
         const closeBtn = toast.querySelector('.toast-close');
@@ -671,32 +800,48 @@ class AllProducts {
         
         if (noResults) {
             // Customize message based on page type
-            let message = 'No products found';
-            let suggestion = 'Try adjusting your filters or search terms';
+            let message = 'No products available';
+            let suggestion = 'There are no products in the marketplace yet. Be the first to add a product!';
+            let actionText = 'Add Your First Product';
+            let actionUrl = '/dashboards/student/student-dashboard.html';
             
             if (window.currentCategory) {
                 const categoryName = window.currentCategory.charAt(0).toUpperCase() + window.currentCategory.slice(1);
-                message = `No ${categoryName} found`;
-                suggestion = `No ${categoryName} available at the moment. Try checking back later or browse other categories.`;
+                message = `No ${categoryName} available`;
+                suggestion = `No ${categoryName} in the marketplace yet. Be the first to add ${categoryName}!`;
+                actionText = `Add ${categoryName}`;
             } else if (window.currentSection) {
                 const sectionName = window.currentSection.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-                message = `No ${sectionName} found`;
-                suggestion = `No ${sectionName} available at the moment. Try checking back later.`;
+                message = `No ${sectionName} available`;
+                suggestion = `No ${sectionName} in the marketplace yet. Be the first to add products!`;
+                actionText = 'Add Products';
             } else if (this.filters.search) {
                 message = `No results found for "${this.filters.search}"`;
                 suggestion = 'Try different keywords or check your spelling.';
+                actionText = 'Clear Search';
+                actionUrl = '#';
             }
             
-            // Update the message in the HTML
-            const messageElement = noResults.querySelector('h3');
-            const suggestionElement = noResults.querySelector('p');
-            
-            if (messageElement) {
-                messageElement.textContent = message;
-            }
-            if (suggestionElement) {
-                suggestionElement.textContent = suggestion;
-            }
+            noResults.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-box-open"></i>
+                    <h3>${message}</h3>
+                    <p>${suggestion}</p>
+                    <div class="no-results-actions">
+                        ${actionUrl !== '#' ? 
+                            `<a href="${actionUrl}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>${actionText}
+                            </a>` : 
+                            `<button class="btn btn-primary" onclick="allProducts.clearAllFilters()">
+                                <i class="fas fa-refresh me-2"></i>${actionText}
+                            </button>`
+                        }
+                        <button class="btn btn-outline" onclick="allProducts.clearAllFilters()">
+                            <i class="fas fa-refresh me-2"></i>Clear Filters
+                        </button>
+                    </div>
+                </div>
+            `;
             
             // Show no results and hide products grid
             noResults.style.display = 'block';

@@ -3,7 +3,7 @@ class StudentAddProduct extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.formData = new FormData();
+        this.imageFiles = []; // Store image files for upload
     }
 
     connectedCallback() {
@@ -379,7 +379,7 @@ class StudentAddProduct extends HTMLElement {
                 <!-- Section Header -->
                 <div class="section-header">
                     <h1>Add New Product</h1>
-                    <p>List your product for sale or trade with other students.</p>
+                                                <p>List your product for sale or swapp with other students.</p>
                 </div>
 
                 <!-- Form Card -->
@@ -403,12 +403,12 @@ class StudentAddProduct extends HTMLElement {
                                     </div>
                                 </label>
                                 <label class="type-option">
-                                    <input type="radio" name="transactionType" value="trade">
+                                    <input type="radio" name="transactionType" value="swapp">
                                     <div class="type-card">
                                         <div class="type-icon trade">
                                             <i class="fas fa-exchange-alt"></i>
                                         </div>
-                                        <div class="type-title">For Trade</div>
+                                        <div class="type-title">For Swapp</div>
                                         <div class="type-description">Exchange for another product</div>
                                     </div>
                                 </label>
@@ -482,13 +482,13 @@ class StudentAddProduct extends HTMLElement {
 
                         <!-- Trade Preferences -->
                         <div class="form-section" id="tradeSection" style="display: none;">
-                            <h3 class="section-title">
-                                <i class="fas fa-handshake"></i>
-                                Trade Preferences
-                            </h3>
+                                                            <h3 class="section-title">
+                                    <i class="fas fa-handshake"></i>
+                                    Swapp Preferences
+                                </h3>
                             <div class="form-group full-width">
-                                <label class="form-label">What would you like to trade for?</label>
-                                <textarea class="form-textarea" name="tradePreferences" placeholder="Describe what you're looking for in exchange..."></textarea>
+                                <label class="form-label">What would you like to swapp for?</label>
+                                <textarea class="form-textarea" name="swappPreferences" placeholder="Describe what you're looking for in exchange..."></textarea>
                             </div>
                         </div>
 
@@ -558,12 +558,24 @@ class StudentAddProduct extends HTMLElement {
         // Transaction type change
         transactionTypeInputs.forEach(input => {
             input.addEventListener('change', (e) => {
+                const priceInput = this.shadowRoot.querySelector('input[name="price"]');
+                const originalPriceInput = this.shadowRoot.querySelector('input[name="originalPrice"]');
+                
                 if (e.target.value === 'sale') {
                     pricingSection.style.display = 'block';
                     tradeSection.style.display = 'none';
+                    // Make price required for sale
+                    priceInput.required = true;
+                    originalPriceInput.required = false;
                 } else {
                     pricingSection.style.display = 'none';
                     tradeSection.style.display = 'block';
+                    // Remove required from price for swapp
+                    priceInput.required = false;
+                    originalPriceInput.required = false;
+                    // Clear price values when switching to swapp
+                    priceInput.value = '';
+                    originalPriceInput.value = '';
                 }
             });
         });
@@ -604,8 +616,26 @@ class StudentAddProduct extends HTMLElement {
             if (confirm('Are you sure you want to cancel? All data will be lost.')) {
                 form.reset();
                 imagePreview.innerHTML = '';
+                this.imageFiles = [];
+                this.initializeFormState();
             }
         });
+        
+        // Initialize form state
+        this.initializeFormState();
+    }
+
+    initializeFormState() {
+        const priceInput = this.shadowRoot.querySelector('input[name="price"]');
+        const originalPriceInput = this.shadowRoot.querySelector('input[name="originalPrice"]');
+        const pricingSection = this.shadowRoot.getElementById('pricingSection');
+        const tradeSection = this.shadowRoot.getElementById('tradeSection');
+        
+        // Set initial state (price not required by default)
+        priceInput.required = false;
+        originalPriceInput.required = false;
+        pricingSection.style.display = 'none';
+        tradeSection.style.display = 'none';
     }
 
     handleImageFiles(files) {
@@ -619,7 +649,7 @@ class StudentAddProduct extends HTMLElement {
                     previewItem.className = 'preview-item';
                     previewItem.innerHTML = `
                         <img src="${e.target.result}" alt="Preview">
-                        <button type="button" class="remove-image" data-index="${index}">
+                        <button type="button" class="remove-image" data-index="${this.imageFiles.length}">
                             <i class="fas fa-times"></i>
                         </button>
                     `;
@@ -627,10 +657,19 @@ class StudentAddProduct extends HTMLElement {
 
                     // Remove image functionality
                     previewItem.querySelector('.remove-image').addEventListener('click', () => {
+                        const fileIndex = parseInt(previewItem.querySelector('.remove-image').dataset.index);
+                        this.imageFiles.splice(fileIndex, 1);
                         previewItem.remove();
+                        
+                        // Update remaining indices
+                        const remainingButtons = imagePreview.querySelectorAll('.remove-image');
+                        remainingButtons.forEach((btn, idx) => {
+                            btn.dataset.index = idx;
+                        });
                     });
                 };
                 reader.readAsDataURL(file);
+                this.imageFiles.push(file); // Store the file
             }
         });
     }
@@ -639,46 +678,347 @@ class StudentAddProduct extends HTMLElement {
         const submitBtn = this.shadowRoot.getElementById('submitBtn');
         const loadingIcon = this.shadowRoot.getElementById('loadingIcon');
         const form = this.shadowRoot.getElementById('addProductForm');
+        const imagePreview = this.shadowRoot.getElementById('imagePreview');
 
         try {
             // Show loading state
             submitBtn.disabled = true;
             loadingIcon.classList.add('show');
 
+            // Get current user
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            const currentUser = getCurrentUser();
+            
+            if (!currentUser) {
+                throw new Error('User not authenticated. Please log in.');
+            }
+
             // Collect form data
             const formData = new FormData(form);
+            const transactionType = formData.get('transactionType');
+            
+            if (!transactionType) {
+                throw new Error('Please select a transaction type (Sale or Swapp).');
+            }
+
+            // Validate required fields
+            const requiredFields = ['productName', 'category', 'condition', 'brand', 'description'];
+            for (const field of requiredFields) {
+                if (!formData.get(field)?.trim()) {
+                    throw new Error(`Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                }
+            }
+
+            // Get image files from preview
+            const imageFiles = this.imageFiles; // Use the stored imageFiles
+            
+            if (imageFiles.length === 0) {
+                throw new Error('Please upload at least one product image.');
+            }
+
+            // Prepare product data
             const productData = {
-                transactionType: formData.get('transactionType'),
-                productName: formData.get('productName'),
+                // User information (ID is primary, others for display)
+                sellerId: currentUser.uid,
+                sellerEmail: currentUser.email,
+                sellerDisplayName: currentUser.displayName || currentUser.email,
+                
+                // Product information
+                transactionType: transactionType,
+                productName: formData.get('productName').trim(),
                 category: formData.get('category'),
                 condition: formData.get('condition'),
-                brand: formData.get('brand'),
-                description: formData.get('description'),
-                price: formData.get('transactionType') === 'sale' ? parseFloat(formData.get('price')) : null,
+                brand: formData.get('brand').trim(),
+                description: formData.get('description').trim(),
+                price: transactionType === 'sale' ? parseFloat(formData.get('price')) : null,
                 originalPrice: formData.get('originalPrice') ? parseFloat(formData.get('originalPrice')) : null,
-                tradePreferences: formData.get('transactionType') === 'trade' ? formData.get('tradePreferences') : null,
-                phone: formData.get('phone'),
-                location: formData.get('location'),
+                swappPreferences: transactionType === 'swapp' ? formData.get('swappPreferences') : null,
+                phone: formData.get('phone')?.trim() || null,
+                location: formData.get('location')?.trim() || null,
+                
+                // Media and metadata
+                images: [], // Will be populated after image upload
+                imageCount: 0, // Number of images uploaded
+                
+                // Status and tracking
+                status: 'active',
+                views: 0,
+                favorites: 0,
+                rating: 0,
+                reviewCount: 0,
+                
+                // Timestamps
                 createdAt: new Date().toISOString(),
-                status: 'active'
+                updatedAt: new Date().toISOString()
             };
 
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Import Firebase functions
+            const { addProduct } = await import('/firebase/firestore.js');
+            const { uploadProductImages } = await import('/firebase/storage.js');
 
-            // Success
-            alert('Product added successfully!');
+            // First, create the product document to get the product ID
+            const productResult = await addProduct(productData);
+            
+            if (!productResult.success) {
+                throw new Error(`Error creating product: ${productResult.error}`);
+            }
+
+            const productId = productResult.productId;
+            console.log('Product created successfully with ID:', productId);
+
+            // Upload images if we have them
+            if (imageFiles.length > 0) {
+                console.log('Starting image upload for product:', productId);
+                console.log('Number of images to upload:', imageFiles.length);
+                console.log('Transaction type:', transactionType);
+                console.log('Category:', formData.get('category'));
+                
+                const imageUploadResult = await uploadProductImages(
+                    imageFiles, 
+                    productId, 
+                    transactionType, 
+                    formData.get('category')
+                );
+                
+                if (imageUploadResult.success) {
+                    console.log('Image upload successful:', imageUploadResult.images);
+                    
+                    // Update product with image URLs
+                    const { updateProduct } = await import('/firebase/firestore.js');
+                    const updateResult = await updateProduct(productId, {
+                        images: imageUploadResult.images,
+                        imageCount: imageUploadResult.images.length,
+                        updatedAt: new Date().toISOString()
+                    });
+                    
+                    if (!updateResult.success) {
+                        console.warn('Warning: Product created but image URLs could not be updated:', updateResult.error);
+                    }
+                } else {
+                    console.error('Image upload failed:', imageUploadResult.error);
+                    // Product was created but images failed to upload
+                    // We could either delete the product or continue without images
+                    throw new Error(`Product created but image upload failed: ${imageUploadResult.error}`);
+                }
+            }
+
+            // Show success notification
+            this.showSuccessNotification('Product added successfully!', 'Your product has been uploaded and is now available in the marketplace.');
             form.reset();
-            this.shadowRoot.getElementById('imagePreview').innerHTML = '';
+            imagePreview.innerHTML = '';
+            this.imageFiles = []; // Clear image files after successful upload
+
+            // Optionally redirect to products page
+            // window.location.href = '/dashboards/business/business-dashboard.html';
 
         } catch (error) {
             console.error('Error adding product:', error);
-            alert('Error adding product. Please try again.');
+            this.showErrorNotification('Error adding product', error.message);
         } finally {
             // Hide loading state
             submitBtn.disabled = false;
             loadingIcon.classList.remove('show');
         }
+    }
+
+    showSuccessNotification(title, message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast success';
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+            <button class="toast-close">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+
+        // Add styles consistent with marketplace
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid #10b981;
+            min-width: 300px;
+            max-width: 400px;
+        `;
+
+        // Add content styles
+        const toastContent = notification.querySelector('.toast-content');
+        toastContent.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        `;
+
+        const icon = notification.querySelector('.toast-content i');
+        icon.style.cssText = `
+            font-size: 1.25rem;
+            color: #10b981;
+        `;
+
+        const message = notification.querySelector('.toast-message');
+        message.style.cssText = `
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        `;
+
+        const closeBtn = notification.querySelector('.toast-close');
+        closeBtn.style.cssText = `
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        `;
+
+        // Add to shadow root
+        this.shadowRoot.appendChild(notification);
+
+        // Show notification with animation
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Add close functionality
+        closeBtn.addEventListener('click', () => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 400);
+        });
+
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 400);
+            }
+        }, 4000);
+    }
+
+    showErrorNotification(title, message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast error';
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+            <button class="toast-close">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+
+        // Add styles consistent with marketplace
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid #ef4444;
+            min-width: 300px;
+            max-width: 400px;
+        `;
+
+        // Add content styles
+        const toastContent = notification.querySelector('.toast-content');
+        toastContent.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        `;
+
+        const icon = notification.querySelector('.toast-content i');
+        icon.style.cssText = `
+            font-size: 1.25rem;
+            color: #ef4444;
+        `;
+
+        const message = notification.querySelector('.toast-message');
+        message.style.cssText = `
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        `;
+
+        const closeBtn = notification.querySelector('.toast-close');
+        closeBtn.style.cssText = `
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        `;
+
+        // Add to shadow root
+        this.shadowRoot.appendChild(notification);
+
+        // Show notification with animation
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Add close functionality
+        closeBtn.addEventListener('click', () => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 400);
+        });
+
+        // Auto remove after 6 seconds for errors
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 400);
+            }
+        }, 6000);
     }
 }
 

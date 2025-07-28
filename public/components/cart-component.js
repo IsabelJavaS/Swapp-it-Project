@@ -1,3 +1,63 @@
+// Global cart instance - Define immediately
+window.SwappitCart = {
+    addToCart: (product) => {
+        console.log('SwappitCart.addToCart called with:', product);
+        
+        // First try to find cart component in main DOM
+        let cartComponent = document.querySelector('cart-component');
+        
+        // If not found in main DOM, try to find it in header shadow DOM
+        if (!cartComponent) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+                console.log('Found cart component in header shadow DOM');
+            }
+        }
+        
+        console.log('Found cart component:', cartComponent);
+        if (cartComponent) {
+            cartComponent.addItem(product);
+            console.log('Product added to cart successfully');
+        } else {
+            console.error('Cart component not found!');
+        }
+    },
+    
+    getCartCount: () => {
+        let cartComponent = document.querySelector('cart-component');
+        if (!cartComponent) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+            }
+        }
+        return cartComponent ? cartComponent.getCartCount() : 0;
+    },
+    
+    getItemCount: () => {
+        let cartComponent = document.querySelector('cart-component');
+        if (!cartComponent) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+            }
+        }
+        return cartComponent ? cartComponent.getCartCount() : 0;
+    },
+    
+    getCartTotal: () => {
+        let cartComponent = document.querySelector('cart-component');
+        if (!cartComponent) {
+            const headerComponent = document.querySelector('header-component, header-auth-component');
+            if (headerComponent && headerComponent.shadowRoot) {
+                cartComponent = headerComponent.shadowRoot.querySelector('cart-component');
+            }
+        }
+        return cartComponent ? cartComponent.getCartTotal() : 0;
+    }
+};
+
 // Cart Component for SWAPPIT
 class CartComponent extends HTMLElement {
     constructor() {
@@ -40,22 +100,42 @@ class CartComponent extends HTMLElement {
 
     // Add item to cart
     addToCart(product) {
-        const existingItem = this.cartItems.find(item => item.id === product.id);
+        console.log('CartComponent.addToCart called with:', product);
+        
+        // Ensure product has required fields
+        const productToAdd = {
+            id: product.id,
+            title: product.title || 'Product',
+            price: product.price || 0,
+            images: product.images || [],
+            sellerName: product.sellerDisplayName || product.sellerName || 'Seller',
+            description: product.description || ''
+        };
+        
+        console.log('Processed product:', productToAdd);
+        
+        const existingItem = this.cartItems.find(item => item.id === productToAdd.id);
         
         if (existingItem) {
             existingItem.quantity += 1;
+            console.log('Updated existing item quantity to:', existingItem.quantity);
         } else {
             this.cartItems.push({
-                ...product,
+                ...productToAdd,
                 quantity: 1
             });
+            console.log('Added new item to cart. Total items:', this.cartItems.length);
         }
+        
+        console.log('Current cart items:', this.cartItems);
         
         this.calculateTotal();
         this.saveCartToStorage();
         this.updateCartDisplay();
         this.updateCartCount();
-        this.showNotification('Producto agregado al carrito');
+        this.showNotification('Product added to cart');
+        
+        console.log('Cart updated. Items:', this.cartItems.length, 'Total:', this.total);
     }
 
     // Remove item from cart
@@ -65,7 +145,7 @@ class CartComponent extends HTMLElement {
         this.saveCartToStorage();
         this.updateCartDisplay();
         this.updateCartCount();
-        this.showNotification('Producto removido del carrito');
+        this.showNotification('Product removed from cart');
     }
 
     // Update item quantity
@@ -94,65 +174,116 @@ class CartComponent extends HTMLElement {
     // Update cart count badge
     updateCartCount() {
         const count = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        console.log('Updating cart count to:', count);
+        
         const cartCount = this.shadowRoot.querySelector('.cart-count');
         if (cartCount) {
             cartCount.textContent = count;
             cartCount.style.display = count > 0 ? 'block' : 'none';
+            console.log('Updated internal cart count badge');
+        } else {
+            console.error('Cart count badge not found in shadow root');
         }
+        
+        // Also update any external cart counters
+        const externalCartCounters = document.querySelectorAll('.cart-counter');
+        console.log('Found external cart counters:', externalCartCounters.length);
+        externalCartCounters.forEach(counter => {
+            counter.textContent = count;
+            counter.style.display = count > 0 ? 'block' : 'none';
+            console.log('Updated external cart counter');
+        });
     }
 
     // Update cart display
     updateCartDisplay() {
+        console.log('CartComponent.updateCartDisplay called');
+        console.log('Cart items count:', this.cartItems.length);
+        console.log('Cart items:', this.cartItems);
+        
         const cartItemsContainer = this.shadowRoot.querySelector('.cart-items');
         const cartTotal = this.shadowRoot.querySelector('.cart-total');
         const emptyCart = this.shadowRoot.querySelector('.empty-cart');
         const cartActions = this.shadowRoot.querySelector('.cart-actions');
         
+        console.log('Found elements:', {
+            cartItemsContainer: !!cartItemsContainer,
+            cartTotal: !!cartTotal,
+            emptyCart: !!emptyCart,
+            cartActions: !!cartActions
+        });
+        
         if (cartItemsContainer) {
             if (this.cartItems.length === 0) {
+                console.log('Cart is empty, showing empty state');
                 cartItemsContainer.innerHTML = '';
                 if (emptyCart) emptyCart.style.display = 'block';
                 if (cartActions) cartActions.style.display = 'none';
             } else {
+                console.log('Cart has items, rendering cart items');
                 if (emptyCart) emptyCart.style.display = 'none';
                 if (cartActions) cartActions.style.display = 'block';
                 this.renderCartItems(cartItemsContainer);
             }
+        } else {
+            console.error('Cart items container not found!');
         }
         
         if (cartTotal) {
-            cartTotal.textContent = `$${this.total.toFixed(2)}`;
+            cartTotal.textContent = `${this.total} Swapcoin`;
+            console.log('Updated cart total to:', this.total, 'Swapcoin');
+        } else {
+            console.error('Cart total element not found!');
         }
     }
 
     // Render cart items
     renderCartItems(container) {
-        container.innerHTML = this.cartItems.map(item => `
-            <div class="cart-item" data-product-id="${item.id}">
-                <div class="cart-item-image">
-                    <img src="${item.images?.[0] || 'https://via.placeholder.com/60x60'}" alt="${item.title}">
-                </div>
-                <div class="cart-item-details">
-                    <h4 class="cart-item-title">${item.title}</h4>
-                    <p class="cart-item-seller">por ${item.sellerName || 'Vendedor'}</p>
-                    <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                </div>
-                <div class="cart-item-controls">
-                    <div class="quantity-controls">
-                        <button class="quantity-btn minus" data-product-id="${item.id}">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <span class="quantity">${item.quantity}</span>
-                        <button class="quantity-btn plus" data-product-id="${item.id}">
-                            <i class="fas fa-plus"></i>
+        console.log('CartComponent.renderCartItems called with container:', container);
+        console.log('Rendering items:', this.cartItems);
+        
+        const itemsHTML = this.cartItems.map(item => {
+            console.log('Processing item:', item);
+            
+            // Use product image or default image
+            const imageUrl = item.images && item.images.length > 0 
+                ? item.images[0] 
+                : '/assets/logos/utiles-escolares.jpg';
+            
+            const sellerName = item.sellerName || item.sellerDisplayName || 'Seller';
+            const price = item.price || 0;
+            
+            return `
+                <div class="cart-item" data-product-id="${item.id}">
+                    <div class="cart-item-image">
+                        <img src="${imageUrl}" alt="${item.title}" onerror="this.src='/assets/logos/utiles-escolares.jpg'" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    <div class="cart-item-details">
+                        <h4 class="cart-item-title">${item.title}</h4>
+                        <p class="cart-item-seller">by ${sellerName}</p>
+                        <div class="cart-item-price">${price} Swapcoin</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-product-id="${item.id}">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" data-product-id="${item.id}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <button class="remove-btn" data-product-id="${item.id}">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                    <button class="remove-btn" data-product-id="${item.id}">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+        
+        console.log('Generated HTML:', itemsHTML);
+        container.innerHTML = itemsHTML;
+        console.log('Cart items rendered successfully');
     }
 
     // Show notification
@@ -608,7 +739,7 @@ class CartComponent extends HTMLElement {
             <!-- Cart Sidebar -->
             <div class="cart-sidebar" id="cartSidebar">
                 <div class="cart-header">
-                    <h2 class="cart-title">Carrito de Compras</h2>
+                    <h2 class="cart-title">Shopping Cart</h2>
                     <button class="cart-close" id="cartClose">
                         <i class="fas fa-times"></i>
                     </button>
@@ -617,10 +748,10 @@ class CartComponent extends HTMLElement {
                 <div class="cart-content">
                     <div class="empty-cart" id="emptyCart">
                         <i class="fas fa-shopping-cart"></i>
-                        <h3>Tu carrito está vacío</h3>
-                        <p>Agrega algunos productos para comenzar a comprar</p>
-                        <a href="/pages/marketplace/marketplace-page.html" class="btn-shop-now">
-                            Ir al Marketplace
+                        <h3>Your cart is empty</h3>
+                        <p>Add some products to start shopping</p>
+                        <a href="/pages/marketplace/marketplace.html" class="btn-shop-now">
+                            Go to Marketplace
                         </a>
                     </div>
                     
@@ -632,16 +763,16 @@ class CartComponent extends HTMLElement {
                 <div class="cart-footer">
                     <div class="cart-total">
                         <span class="total-label">Total:</span>
-                        <span class="total-amount cart-total">$0.00</span>
+                        <span class="total-amount cart-total">0 Swapcoin</span>
                     </div>
                     
                     <div class="cart-actions" id="cartActions">
                         <button class="btn-checkout" id="btnCheckout">
                             <i class="fas fa-credit-card"></i>
-                            Proceder al Pago
+                            Proceed to Payment
                         </button>
                         <button class="btn-continue-shopping" id="btnContinueShopping">
-                            Continuar Comprando
+                            Continue Shopping
                         </button>
                     </div>
                 </div>
@@ -718,11 +849,19 @@ class CartComponent extends HTMLElement {
         const cartSidebar = this.shadowRoot.getElementById('cartSidebar');
         const cartOverlay = this.shadowRoot.getElementById('cartOverlay');
         
-        if (cartSidebar) cartSidebar.classList.add('open');
-        if (cartOverlay) cartOverlay.classList.add('open');
+        if (cartSidebar) {
+            cartSidebar.classList.add('open');
+            cartSidebar.style.right = '0';
+        }
+        if (cartOverlay) {
+            cartOverlay.classList.add('open');
+            cartOverlay.style.display = 'block';
+        }
         
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
+        
+        console.log('Cart opened successfully');
     }
 
     closeCart() {
@@ -730,16 +869,24 @@ class CartComponent extends HTMLElement {
         const cartSidebar = this.shadowRoot.getElementById('cartSidebar');
         const cartOverlay = this.shadowRoot.getElementById('cartOverlay');
         
-        if (cartSidebar) cartSidebar.classList.remove('open');
-        if (cartOverlay) cartOverlay.classList.remove('open');
+        if (cartSidebar) {
+            cartSidebar.classList.remove('open');
+            cartSidebar.style.right = '-400px';
+        }
+        if (cartOverlay) {
+            cartOverlay.classList.remove('open');
+            cartOverlay.style.display = 'none';
+        }
         
         // Restore body scroll
         document.body.style.overflow = '';
+        
+        console.log('Cart closed successfully');
     }
 
     proceedToCheckout() {
         if (this.cartItems.length === 0) {
-            this.showNotification('Tu carrito está vacío');
+            this.showNotification('Your cart is empty');
             return;
         }
         
@@ -760,6 +907,7 @@ class CartComponent extends HTMLElement {
 
     // Public method to add item to cart
     addItem(product) {
+        console.log('CartComponent.addItem called with:', product);
         this.addToCart(product);
     }
 
@@ -775,24 +923,4 @@ class CartComponent extends HTMLElement {
 }
 
 // Register the component
-customElements.define('cart-component', CartComponent);
-
-// Global cart instance
-window.SwappitCart = {
-    addToCart: (product) => {
-        const cartComponent = document.querySelector('cart-component');
-        if (cartComponent) {
-            cartComponent.addItem(product);
-        }
-    },
-    
-    getCartCount: () => {
-        const cartComponent = document.querySelector('cart-component');
-        return cartComponent ? cartComponent.getCartCount() : 0;
-    },
-    
-    getCartTotal: () => {
-        const cartComponent = document.querySelector('cart-component');
-        return cartComponent ? cartComponent.getCartTotal() : 0;
-    }
-}; 
+customElements.define('cart-component', CartComponent); 

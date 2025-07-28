@@ -6,8 +6,24 @@ service firebase.storage {
       allow read, write: if true;
     }
     
-    // Product images
+    // Product images - Original products folder
     match /products/{productId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.resource.size < 5 * 1024 * 1024 && // 5MB max
+        request.resource.contentType.matches('image/.*');
+    }
+    
+    // Product images - ProductsCatalog folder (for sale)
+    match /ProductsCatalog/{category}/{productId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.resource.size < 5 * 1024 * 1024 && // 5MB max
+        request.resource.contentType.matches('image/.*');
+    }
+    
+    // Product images - ProductsSwapp folder (for swapp)
+    match /ProductsSwapp/{category}/{productId}/{allPaths=**} {
       allow read: if true;
       allow write: if request.auth != null && 
         request.resource.size < 5 * 1024 * 1024 && // 5MB max
@@ -23,9 +39,9 @@ service firebase.storage {
         request.resource.contentType.matches('image/.*');
     }
     
-    // Default rule - for development, allow all
+    // Default rule - deny all other access
     match /{allPaths=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 } 

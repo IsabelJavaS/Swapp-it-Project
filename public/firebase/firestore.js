@@ -364,9 +364,12 @@ export const addProduct = async (productData) => {
 export const getProducts = async (filters = {}) => {
   try {
     const productsRef = collection(db, COLLECTIONS.PRODUCTS);
-    let q = query(productsRef, where('status', '==', 'active'));
+    let q = query(productsRef);
     
     // Apply filters
+    if (filters.status) {
+      q = query(q, where('status', '==', filters.status));
+    }
     if (filters.category) {
       q = query(q, where('category', '==', filters.category));
     }
@@ -386,7 +389,7 @@ export const getProducts = async (filters = {}) => {
       // Consider using Algolia or similar for better search
     }
     
-    // Order by
+    // Order by (only if no complex filters)
     const orderByField = filters.orderBy || 'createdAt';
     const orderDirection = filters.orderDirection || 'desc';
     q = query(q, orderBy(orderByField, orderDirection));
@@ -400,10 +403,14 @@ export const getProducts = async (filters = {}) => {
     const products = [];
     
     querySnapshot.forEach((doc) => {
-      products.push({
-        id: doc.id,
-        ...doc.data()
-      });
+      const productData = doc.data();
+      // Filter by status in memory if needed
+      if (!filters.status || productData.status === filters.status) {
+        products.push({
+          id: doc.id,
+          ...productData
+        });
+      }
     });
     
     return { success: true, products };
