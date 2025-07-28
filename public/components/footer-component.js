@@ -13,12 +13,31 @@ class FooterComponent extends HTMLElement {
 
     // Sistema mejorado de rutas dinámicas
     getBaseUrl() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '';
+        // Detectar si estamos en Firebase Hosting o local
+        const isFirebase = window.location.hostname.includes('firebaseapp.com') || 
+                          window.location.hostname.includes('web.app') ||
+                          window.location.hostname === 'localhost' && window.location.port === '5000';
+        
+        if (isFirebase) {
+            return ''; // Firebase Hosting sirve desde la raíz
+        } else {
+            // Local development - detectar profundidad
+            const path = window.location.pathname;
+            const segments = path.split('/').filter(s => s);
+            
+            // Si estamos en la raíz o en /public
+            if (segments.length === 0 || segments[0] === 'public') {
+                return '/public';
+            }
+            
+            // Si estamos en subdirectorios
+            return '/public';
+        }
     }
 
     getLogoPath() {
-        return '/assets/logos/LogoSinFondo.png';
+        const base = this.getBaseUrl();
+        return `${base}/assets/logos/LogoSinFondo.png`;
     }
 
     // Método para cargar CSS de forma más robusta
@@ -50,24 +69,20 @@ class FooterComponent extends HTMLElement {
         // Primero renderizar el HTML con estilos críticos inline
         this.shadowRoot.innerHTML = `
             <style>
-                /* Import Google Fonts */
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
-
-                /* CSS Variables - Consistent with main site */
+                /* CSS Variables */
                 :host {
-                    --swappit-blue: #3468c0;
-                    --swappit-orange: #ffa424;
+                    --swappit-blue: #2563eb;
                     --swappit-blue-hover: #1d4ed8;
-                    --swappit-orange-hover: #ff5722;
-                    --neutral-dark: #1e293b;
-                    --neutral-medium: #64748b;
-                    --neutral-light: #f1f5f9;
+                    --swappit-orange: #f97316;
+                    --swappit-orange-hover: #ea580c;
                     --bg-primary: #ffffff;
-                    --text-primary: #1e293b;
-                    --border-color: #e2e8f0;
-                    --font-primary: 'Poppins', sans-serif;
-                    --font-secondary: 'Inter', sans-serif;
-                    --shadow-color: rgba(37, 99, 235, 0.1);
+                    --text-primary: #1f2937;
+                    --border-color: #e5e7eb;
+                    --neutral-light: #f3f4f6;
+                    --neutral-dark: #111827;
+                    --neutral-darker: #0f172a;
+                    --font-primary: 'Inter', sans-serif;
+                    --success-green: #10b981;
                 }
 
                 /* Host styles */
@@ -78,30 +93,81 @@ class FooterComponent extends HTMLElement {
 
                 /* Footer Container */
                 .marketplace-footer {
-                    background: linear-gradient(135deg, var(--neutral-dark) 0%, #0f172a 100%);
+                    background: var(--neutral-dark);
                     color: white;
-                    padding: 0;
-                    margin-top: 4rem;
                     position: relative;
                     overflow: hidden;
                 }
 
-                /* Decorative background elements */
-                .marketplace-footer::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-                    opacity: 0.3;
+                /* Newsletter Section */
+                .newsletter-section {
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
+                    padding: 3rem 0;
+                    text-align: center;
                 }
 
+                .newsletter-content {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 0 1rem;
+                }
+
+                .newsletter-title {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    margin-bottom: 0.75rem;
+                    color: white;
+                }
+
+                .newsletter-subtitle {
+                    color: rgba(255, 255, 255, 0.9);
+                    margin-bottom: 2rem;
+                    font-size: 1.1rem;
+                }
+
+                .newsletter-form {
+                    display: flex;
+                    gap: 1rem;
+                    max-width: 500px;
+                    margin: 0 auto;
+                }
+
+                .newsletter-input {
+                    flex: 1;
+                    padding: 0.875rem 1rem;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    background: rgba(255, 255, 255, 0.95);
+                    color: var(--text-primary);
+                }
+
+                .newsletter-input:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+                }
+
+                .newsletter-button {
+                    padding: 0.875rem 1.5rem;
+                    background: var(--swappit-orange);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                }
+
+                .newsletter-button:hover {
+                    background: var(--swappit-orange-hover);
+                    transform: translateY(-1px);
+                }
+
+                /* Main Footer Content */
                 .footer-main {
-                    padding: 4rem 0 2rem;
+                    padding: 3rem 0 2rem;
                     position: relative;
-                    z-index: 2;
                 }
 
                 /* Container */
@@ -111,11 +177,11 @@ class FooterComponent extends HTMLElement {
                     padding: 0 1rem;
                 }
 
-                /* Footer Grid - Modern 4 Column Layout */
+                /* Footer Grid - 5 Columns */
                 .footer-grid {
                     display: grid;
-                    grid-template-columns: 2fr 1fr 1fr 1fr;
-                    gap: 3rem;
+                    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+                    gap: 2rem;
                     width: 100%;
                 }
 
@@ -127,125 +193,58 @@ class FooterComponent extends HTMLElement {
 
                 /* Footer Brand */
                 .footer-brand {
+                    display: flex;
+                    align-items: center;
                     margin-bottom: 1.5rem;
                 }
 
                 .footer-brand img {
-                    width: 180px;
+                    width: 120px;
                     height: auto;
                     display: block;
-                    transition: transform 0.3s ease;
-                }
-
-                .footer-brand img:hover {
-                    transform: scale(1.05);
                 }
 
                 .footer-description {
-                    color: rgba(255, 255, 255, 0.8);
-                    line-height: 1.7;
-                    margin-bottom: 2rem;
-                    font-size: 1rem;
-                    font-family: var(--font-secondary);
+                    color: rgba(255, 255, 255, 0.7);
+                    line-height: 1.6;
+                    margin-bottom: 1.5rem;
+                    font-size: 0.95rem;
                 }
 
                 /* Social Links */
                 .footer-social {
                     display: flex;
-                    gap: 1rem;
+                    gap: 0.75rem;
                     margin-top: auto;
                 }
 
                 .social-link {
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 12px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
                     background: rgba(255, 255, 255, 0.1);
-                    color: white;
+                    color: var(--swappit-orange);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     text-decoration: none;
                     transition: all 0.3s ease;
-                    font-size: 1.1rem;
-                    position: relative;
-                    overflow: hidden;
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    z-index: 1;
-                }
-
-                .social-link i {
-                    position: relative;
-                    z-index: 2;
-                }
-
-                /* SWAPPIT tricolor effect for all social links - same as newsletter button */
-                .social-link {
-                    background: linear-gradient(135deg, var(--swappit-orange) 0%, var(--swappit-orange-hover) 100%);
-                    position: relative;
-                }
-
-                .social-link::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: linear-gradient(135deg, var(--swappit-orange) 0%, var(--swappit-orange-hover) 100%);
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                    border-radius: 12px;
-                }
-
-
-
-                .social-link:hover::before {
-                    opacity: 0.3;
-                }
-
-                .social-link::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: -100%;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                    transition: left 0.5s ease;
+                    font-size: 1rem;
                 }
 
                 .social-link:hover {
-                    transform: translateY(-3px) scale(1.1);
-                    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-                    filter: brightness(1.1);
-                }
-
-                .social-link:hover::before {
-                    left: 100%;
+                    background: var(--swappit-orange);
+                    transform: translateY(-2px);
+                    color: white;
                 }
 
                 /* Footer Titles */
                 .footer-title {
                     color: white;
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                     font-weight: 600;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
-                    position: relative;
-                    padding-bottom: 0.75rem;
-                }
-
-                .footer-title::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 40px;
-                    height: 3px;
-                    background: linear-gradient(90deg, var(--swappit-orange), var(--swappit-blue));
-                    border-radius: 2px;
                 }
 
                 /* Footer Links */
@@ -256,38 +255,18 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .footer-links li {
-                    margin-bottom: 1rem;
+                    margin-bottom: 0.75rem;
                 }
 
                 .footer-links a {
-                    color: rgba(255, 255, 255, 0.8);
+                    color: rgba(255, 255, 255, 0.7);
                     text-decoration: none;
-                    transition: all 0.3s ease;
-                    font-size: 0.95rem;
-                    font-family: var(--font-secondary);
-                    display: flex;
-                    align-items: center;
-                    position: relative;
-                    padding-left: 0;
-                }
-
-                .footer-links a::before {
-                    content: '→';
-                    margin-right: 0.5rem;
-                    opacity: 0;
-                    transform: translateX(-10px);
-                    transition: all 0.3s ease;
-                    color: var(--swappit-orange);
+                    transition: color 0.3s ease;
+                    font-size: 0.9rem;
                 }
 
                 .footer-links a:hover {
                     color: var(--swappit-orange);
-                    padding-left: 0.5rem;
-                }
-
-                .footer-links a:hover::before {
-                    opacity: 1;
-                    transform: translateX(0);
                 }
 
                 /* Footer Contact */
@@ -296,82 +275,25 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .footer-contact p {
-                    color: rgba(255, 255, 255, 0.8);
-                    margin-bottom: 1rem;
-                    font-size: 0.95rem;
-                    font-family: var(--font-secondary);
+                    color: rgba(255, 255, 255, 0.7);
+                    margin-bottom: 0.75rem;
+                    font-size: 0.9rem;
                     display: flex;
                     align-items: center;
-                    transition: color 0.3s ease;
                 }
 
-                .footer-contact p:hover {
-                    color: var(--swappit-orange);
-                }
-
-                .footer-contact i {
+                .footer-contact p i {
                     margin-right: 0.75rem;
                     width: 16px;
+                    text-align: center;
                     color: var(--swappit-orange);
-                }
-
-                /* Newsletter Section */
-                .footer-newsletter {
-                    margin-top: 1.5rem;
-                }
-
-                .newsletter-input {
-                    display: flex;
-                    gap: 0.5rem;
-                    margin-bottom: 1rem;
-                }
-
-                .newsletter-input input {
-                    flex: 1;
-                    padding: 0.75rem 1rem;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.05);
-                    color: white;
-                    font-family: var(--font-secondary);
-                    transition: all 0.3s ease;
-                }
-
-                .newsletter-input input:focus {
-                    outline: none;
-                    border-color: var(--swappit-orange);
-                    background: rgba(255, 255, 255, 0.1);
-                }
-
-                .newsletter-input input::placeholder {
-                    color: rgba(255, 255, 255, 0.5);
-                }
-
-                .newsletter-btn {
-                    padding: 0.75rem 1.5rem;
-                    background: linear-gradient(135deg, var(--swappit-orange) 0%, var(--swappit-orange-hover) 100%);
-                    border: none;
-                    border-radius: 8px;
-                    color: white;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    font-family: var(--font-secondary);
-                }
-
-                .newsletter-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(255, 164, 36, 0.3);
                 }
 
                 /* Footer Bottom */
                 .footer-bottom {
-                    background: rgba(0, 0, 0, 0.3);
-                    padding: 2rem 0;
+                    background: var(--neutral-darker);
+                    padding: 1.5rem 0;
                     border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    margin-top: 3rem;
-                    position: relative;
-                    z-index: 2;
                 }
 
                 .footer-bottom-content {
@@ -383,35 +305,44 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .copyright {
-                    color: rgba(255, 255, 255, 0.7);
+                    color: rgba(255, 255, 255, 0.6);
                     margin: 0;
                     font-size: 0.9rem;
-                    font-family: var(--font-secondary);
                 }
 
-                .footer-bottom-links {
+                .footer-legal {
                     display: flex;
-                    gap: 2rem;
-                    flex-wrap: wrap;
+                    gap: 1.5rem;
+                    align-items: center;
                 }
 
-                .footer-bottom-links a {
-                    color: rgba(255, 255, 255, 0.7);
+                .footer-legal a {
+                    color: rgba(255, 255, 255, 0.6);
                     text-decoration: none;
                     font-size: 0.9rem;
-                    font-family: var(--font-secondary);
                     transition: color 0.3s ease;
                 }
 
-                .footer-bottom-links a:hover {
+                .footer-legal a:hover {
                     color: var(--swappit-orange);
                 }
 
-                /* Responsive Design */
-                @media (max-width: 991px) {
+                /* Responsive */
+                @media (max-width: 1024px) {
+                    .footer-grid {
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
                     .footer-grid {
                         grid-template-columns: repeat(2, 1fr);
-                        gap: 2rem;
+                        gap: 1.5rem;
+                    }
+
+                    .newsletter-form {
+                        flex-direction: column;
                     }
 
                     .footer-bottom-content {
@@ -419,7 +350,7 @@ class FooterComponent extends HTMLElement {
                         text-align: center;
                     }
 
-                    .footer-bottom-links {
+                    .footer-legal {
                         justify-content: center;
                     }
                 }
@@ -427,40 +358,43 @@ class FooterComponent extends HTMLElement {
                 @media (max-width: 576px) {
                     .footer-grid {
                         grid-template-columns: 1fr;
-                        gap: 2rem;
+                        gap: 1.5rem;
                     }
 
                     .footer-main {
-                        padding: 2rem 0 1rem;
+                        padding: 2rem 0 1.5rem;
+                    }
+
+                    .newsletter-section {
+                        padding: 2rem 0;
+                    }
+
+                    .newsletter-title {
+                        font-size: 1.5rem;
                     }
 
                     .footer-bottom {
-                        padding: 1.5rem 0;
+                        padding: 1rem 0;
                     }
-
-                    .newsletter-input {
-                        flex-direction: column;
-                    }
-
-                    .social-link {
-                        width: 40px;
-                        height: 40px;
-                        font-size: 1rem;
-                    }
-                }
-
-                /* Animation for newsletter input */
-                @keyframes newsletterGlow {
-                    0%, 100% { box-shadow: 0 0 5px rgba(255, 164, 36, 0.3); }
-                    50% { box-shadow: 0 0 20px rgba(255, 164, 36, 0.6); }
-                }
-
-                .newsletter-input input:focus {
-                    animation: newsletterGlow 2s ease-in-out infinite;
                 }
             </style>
             
             <footer class="marketplace-footer">
+                <!-- Newsletter Section -->
+                <div class="newsletter-section">
+                    <div class="container">
+                        <div class="newsletter-content">
+                            <h2 class="newsletter-title">Stay Updated with SWAPPIT</h2>
+                            <p class="newsletter-subtitle">Get the latest updates on new features, student deals, and sustainability tips delivered to your inbox.</p>
+                            <form class="newsletter-form" id="newsletterForm">
+                                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+                                <button type="submit" class="newsletter-button">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Footer Content -->
                 <div class="footer-main">
                     <div class="container">
                         <div class="footer-grid">
@@ -470,7 +404,7 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
-                                    Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment while building lasting connections!
+                                    Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment while building lasting connections.
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -485,9 +419,6 @@ class FooterComponent extends HTMLElement {
                                     <a href="#" class="social-link" title="Instagram">
                                         <i class="fab fa-instagram"></i>
                                     </a>
-                                    <a href="#" class="social-link" title="YouTube">
-                                        <i class="fab fa-youtube"></i>
-                                    </a>
                                 </div>
                             </div>
 
@@ -496,10 +427,9 @@ class FooterComponent extends HTMLElement {
                                 <h3 class="footer-title">Quick Links</h3>
                                 <ul class="footer-links">
                                     <li><a href="${this.getBaseUrl()}/index.html">Home</a></li>
-                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace-page.html">Marketplace</a></li>
-                                    <li><a href="${this.getBaseUrl()}/index.html#about">About Us</a></li>
-                                    <li><a href="${this.getBaseUrl()}/index.html#contact">Contact</a></li>
-                                    <li><a href="${this.getBaseUrl()}/pages/about/about.html">Our Story</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace.html">Marketplace</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/about/about.html">About Us</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/support/support.html">Support</a></li>
                                 </ul>
                             </div>
 
@@ -511,29 +441,28 @@ class FooterComponent extends HTMLElement {
                                     <li><a href="#">Business Portal</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/swapcoin/info.html">SwapCoin Info</a></li>
                                     <li><a href="#">Help Center</a></li>
-                                    <li><a href="#">Safety Guidelines</a></li>
                                 </ul>
                             </div>
 
-                            <!-- Contact & Newsletter -->
+                            <!-- Categories -->
                             <div class="footer-column">
-                                <h3 class="footer-title">Stay Connected</h3>
+                                <h3 class="footer-title">Categories</h3>
+                                <ul class="footer-links">
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/books.html">Books</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/electronics.html">Electronics</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/stationery.html">Stationery</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/uniforms.html">Uniforms</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Contact Info -->
+                            <div class="footer-column">
+                                <h3 class="footer-title">Contact Us</h3>
                                 <div class="footer-contact">
                                     <p><i class="fas fa-envelope"></i>support@swappit.com</p>
                                     <p><i class="fas fa-phone"></i>+1 (555) 123-4567</p>
                                     <p><i class="fas fa-location-dot"></i>123 Education Street, ST 12345</p>
-                                </div>
-                                
-                                <div class="footer-newsletter">
-                                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem; font-size: 0.9rem;">
-                                        Subscribe to our newsletter for updates and exclusive offers!
-                                    </p>
-                                    <div class="newsletter-input">
-                                        <input type="email" placeholder="Enter your email" id="newsletter-email">
-                                        <button class="newsletter-btn" id="newsletter-submit">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </button>
-                                    </div>
+                                    <p><i class="fas fa-clock"></i>Mon-Fri: 9AM-6PM</p>
                                 </div>
                             </div>
                         </div>
@@ -545,13 +474,13 @@ class FooterComponent extends HTMLElement {
                     <div class="container">
                         <div class="footer-bottom-content">
                             <p class="copyright">
-                                © 2024 SWAPPIT. All rights reserved. | Made in 
+                                © 2024 SWAPPIT. All rights reserved.
                             </p>
-                            <div class="footer-bottom-links">
+                            <div class="footer-legal">
                                 <a href="#">Privacy Policy</a>
                                 <a href="#">Terms of Service</a>
                                 <a href="#">Cookie Policy</a>
-                                <a href="#">Accessibility</a>
+                                <a href="#">Data Protection</a>
                             </div>
                         </div>
                     </div>
@@ -564,7 +493,17 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Event listeners específicos del footer
+        // Newsletter form submission
+        const newsletterForm = this.shadowRoot.getElementById('newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = newsletterForm.querySelector('input[type="email"]').value;
+                this.handleNewsletterSubscription(email);
+            });
+        }
+
+        // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -574,65 +513,42 @@ class FooterComponent extends HTMLElement {
             });
         });
 
-        // Newsletter subscription
-        const newsletterSubmit = this.shadowRoot.querySelector('#newsletter-submit');
-        const newsletterEmail = this.shadowRoot.querySelector('#newsletter-email');
-        
-        if (newsletterSubmit && newsletterEmail) {
-            newsletterSubmit.addEventListener('click', (e) => {
-                e.preventDefault();
-                const email = newsletterEmail.value.trim();
-                if (email && this.isValidEmail(email)) {
-                    console.log('Newsletter subscription:', email);
-                    // Implementar lógica de suscripción
-                    newsletterEmail.value = '';
-                    this.showNotification('Thank you for subscribing!', 'success');
-                } else {
-                    this.showNotification('Please enter a valid email address.', 'error');
+        // Footer links
+        const footerLinks = this.shadowRoot.querySelectorAll('.footer-links a');
+        footerLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Permitir navegación normal para enlaces internos
+                if (link.href && !link.href.includes('#')) {
+                    return; // Permitir navegación normal
                 }
+                e.preventDefault();
+                console.log('Footer link clicked:', link.textContent.trim());
             });
-        }
+        });
     }
 
-    isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    showNotification(message, type) {
-        // Crear notificación temporal
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-family: var(--font-secondary);
-            font-weight: 500;
-            z-index: 10000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            background: ${type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ef4444, #dc2626)'};
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        `;
-        notification.textContent = message;
+    handleNewsletterSubscription(email) {
+        // Simular envío de newsletter
+        const button = this.shadowRoot.querySelector('.newsletter-button');
+        const originalText = button.textContent;
         
-        document.body.appendChild(notification);
+        button.textContent = 'Subscribing...';
+        button.disabled = true;
         
-        // Animar entrada
         setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-        
-        // Remover después de 3 segundos
-        setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
+            button.textContent = 'Subscribed!';
+            button.style.background = 'var(--success-green)';
+            
             setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
+                button.textContent = originalText;
+                button.disabled = false;
+                button.style.background = '';
+                this.shadowRoot.querySelector('.newsletter-input').value = '';
+            }, 2000);
+        }, 1000);
+
+        console.log('Newsletter subscription:', email);
+        // Aquí se implementaría la lógica real de suscripción
     }
 }
 
