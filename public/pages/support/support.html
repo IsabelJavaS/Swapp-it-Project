@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Swapp-it</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/support.css" rel="stylesheet">
+    <link href="/components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main>
+        <section class="support-hero">
+            <div class="container">
+                <h1>How can we help you?</h1>
+                <p class="lead">Find answers, contact us, or report a problem with Swapp-it.</p>
+            </div>
+        </section>
+        <section class="support-main-section">
+            <div class="support-main-content">
+                <!-- Columna izquierda: Formulario de ayuda -->
+                <div class="support-left">
+                    <div class="support-form-card">
+                        <h2><i class="fas fa-paper-plane"></i> Need Help?</h2>
+                        <form id="helpForm">
+                            <div id="userStatus"></div>
+                            <div class="form-group">
+                                <label for="helpEmail">Email</label>
+                                <input type="email" id="helpEmail" name="email" required placeholder="Your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="helpMessage">How can we help you?</label>
+                                <textarea id="helpMessage" name="message" rows="4" required placeholder="Describe your issue or question..."></textarea>
+                            </div>
+                            <button type="submit" class="support-btn">Send</button>
+                        </form>
+                        <div id="formResponse"></div>
+                    </div>
+                </div>
+                <!-- Columna derecha: General Help y Report a Problem -->
+                <div class="support-right">
+                    <div class="support-card">
+                        <h2><i class="fas fa-info-circle"></i> General Help</h2>
+                        <p>Learn more about how Swapp-it works and how to use our features.</p>
+                        <a href="/pages/about/about.html" class="support-btn">About Swapp-it</a>
+                    </div>
+                    <div class="support-card">
+                        <h2><i class="fas fa-bug"></i> Report a Problem</h2>
+                        <p>Let us know if you find a bug or something isn't working as expected.</p>
+                        <a href="mailto:bugs@swappit.com" class="support-btn">Report a Problem</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <app-footer></app-footer>
+    
+    <!-- Component Scripts -->
+    <script src="/components/header-component.js"></script>
+    <script src="/components/header-auth-component.js"></script>
+    <script src="/components/footer-component.js"></script>
+    
+    <script type="module">
+        import { onAuthStateChange } from '/firebase/auth.js';
+        // Header dinámico según autenticación
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        onAuthStateChange((user) => {
+            if (user) {
+                headerPlaceholder.innerHTML = '<header-auth-component></header-auth-component>';
+            } else {
+                headerPlaceholder.innerHTML = '<header-component></header-component>';
+            }
+        });
+        // Mostrar email si está loggeado, si no, dejar campo editable
+        const emailInput = document.getElementById('helpEmail');
+        const userStatus = document.getElementById('userStatus');
+        onAuthStateChange((user) => {
+            if (user) {
+                emailInput.value = user.email;
+                emailInput.readOnly = true;
+                userStatus.innerHTML = `<span style="color:green;font-weight:600;">Logged in as ${user.email}</span>`;
+            } else {
+                emailInput.value = '';
+                emailInput.readOnly = false;
+                userStatus.innerHTML = `<span style="color:#ffa424;font-weight:600;">You are not logged in</span>`;
+            }
+        });
+        // Formulario de ayuda (solo ejemplo, no envía realmente)
+        document.getElementById('helpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('formResponse').innerHTML = '<span style="color:var(--swappit-blue);font-weight:600;">Thank you! We have received your message.</span>';
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -18,8 +18,8 @@ class HeaderAuthComponent extends HTMLElement {
     async initializeAuth() {
         try {
             // Use existing Firebase configuration
-            const { auth } = await import('/public/firebase/config.js');
-            const { onAuthStateChange } = await import('/public/firebase/auth.js');
+            const { auth } = await import('/firebase/config.js');
+            const { onAuthStateChange } = await import('/firebase/auth.js');
             
             onAuthStateChange((user) => {
                 if (user) {
@@ -32,7 +32,7 @@ class HeaderAuthComponent extends HTMLElement {
                     this.updateUserInterface();
                 } else {
                     // Redirect to landing page if not authenticated
-                    window.location.href = '/public/index.html';
+                    window.location.href = '/index.html';
                 }
             });
             
@@ -51,7 +51,7 @@ class HeaderAuthComponent extends HTMLElement {
         } catch (error) {
             console.error('Error initializing auth:', error);
             // Redirect to landing page on error
-            window.location.href = '/public/index.html';
+            window.location.href = '/index.html';
         }
     }
 
@@ -59,7 +59,7 @@ class HeaderAuthComponent extends HTMLElement {
     updateUserInterface() {
         const userAvatar = this.shadowRoot.querySelector('.user-avatar img');
         const userName = this.shadowRoot.querySelector('.user-name');
-        const userEmail = this.shadowRoot.querySelector('.user-email');
+        const userRole = this.shadowRoot.querySelector('.user-role');
         const dropdownUserName = this.shadowRoot.querySelector('.dropdown-header .user-name');
         const dropdownUserEmail = this.shadowRoot.querySelector('.dropdown-header .user-email');
         
@@ -77,8 +77,22 @@ class HeaderAuthComponent extends HTMLElement {
             userName.textContent = this.userData.displayName;
         }
         
-        if (userEmail && this.userData) {
-            userEmail.textContent = this.userData.email;
+        // Update user role
+        if (userRole) {
+            // Try to get role from various sources
+            let role = 'Student'; // Default
+            
+            if (window.userProfile && window.userProfile.role) {
+                role = window.userProfile.role;
+            } else if (window.localStorage.getItem('userRole')) {
+                role = window.localStorage.getItem('userRole');
+            } else if (window.sessionStorage.getItem('userRole')) {
+                role = window.sessionStorage.getItem('userRole');
+            }
+            
+            // Capitalize first letter
+            role = role.charAt(0).toUpperCase() + role.slice(1);
+            userRole.textContent = role;
         }
         
         // Update dropdown header as well
@@ -137,12 +151,12 @@ class HeaderAuthComponent extends HTMLElement {
 
     // Get logo path
     getLogoPath() {
-        return window.pathConfig ? window.pathConfig.getLogoPath() : '../../assets/logos/LogoSinFondo.png';
+        return window.pathConfig ? window.pathConfig.getLogoPath() : '/assets/logos/LogoSinFondo.png';
     }
 
     // Get paths
     getMarketplacePath() {
-        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '../../pages/marketplace/marketplace-page.html';
+        return window.pathConfig ? window.pathConfig.getMarketplacePath() : '/pages/marketplace/marketplace.html';
     }
 
     getDashboardPath() {
@@ -155,27 +169,63 @@ class HeaderAuthComponent extends HTMLElement {
         } else if (window.sessionStorage.getItem('userRole')) {
             role = window.sessionStorage.getItem('userRole');
         }
-        if (window.pathConfig) {
-            if (role === 'business') {
-                return window.pathConfig.getBusinessDashboardPath();
-            } else {
-                return window.pathConfig.getStudentDashboardPath();
-            }
-        }
-        // Fallback
+        
+        // Por defecto, redirigir al dashboard del estudiante
         if (role === 'business') {
-            return '../../dashboards/business/business-dashboard.html';
+            return '/dashboards/business/business-dashboard.html';
         } else {
-            return '../../dashboards/student/student-dashboard.html';
+            return '/dashboards/student/student-dashboard.html';
         }
     }
 
     getLoginPath() {
-        return window.pathConfig ? window.pathConfig.getLoginPath() : '../../pages/auth/login.html';
+        return window.pathConfig ? window.pathConfig.getLoginPath() : '/pages/auth/login.html';
     }
 
     getSwapcoinInfoPath() {
-        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '../../pages/swapcoin/info.html';
+        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '/pages/swapcoin/info.html';
+    }
+
+    getSupportPath() {
+        return '/pages/support/support.html';
+    }
+
+    getProfilePath() {
+        // Intentar obtener el rol del usuario desde el perfil global
+        let role = null;
+        if (window.userProfile && window.userProfile.role) {
+            role = window.userProfile.role;
+        } else if (window.localStorage.getItem('userRole')) {
+            role = window.localStorage.getItem('userRole');
+        } else if (window.sessionStorage.getItem('userRole')) {
+            role = window.sessionStorage.getItem('userRole');
+        }
+        
+        // Por defecto, redirigir al perfil del estudiante
+        if (role === 'business') {
+            return '/dashboards/business/business-dashboard.html#profile';
+        } else {
+            return '/dashboards/student/student-dashboard.html#profile';
+        }
+    }
+
+    getSettingsPath() {
+        // Intentar obtener el rol del usuario desde el perfil global
+        let role = null;
+        if (window.userProfile && window.userProfile.role) {
+            role = window.userProfile.role;
+        } else if (window.localStorage.getItem('userRole')) {
+            role = window.localStorage.getItem('userRole');
+        } else if (window.sessionStorage.getItem('userRole')) {
+            role = window.sessionStorage.getItem('userRole');
+        }
+        
+        // Por defecto, redirigir a la configuración del estudiante
+        if (role === 'business') {
+            return '/dashboards/business/business-dashboard.html#settings';
+        } else {
+            return '/dashboards/student/student-dashboard.html#settings';
+        }
     }
 
     render() {
@@ -228,13 +278,14 @@ class HeaderAuthComponent extends HTMLElement {
                 }
                 
                 .container {
-                    max-width: 1200px;
+                    max-width: 1400px;
                     margin: 0 auto;
-                    padding: 0 1rem;
+                    padding: 0 2rem;
                     width: 100%;
-                    display: flex;
+                    display: grid;
+                    grid-template-columns: 0.8fr 2.2fr 1fr;
                     align-items: center;
-                    justify-content: space-between;
+                    gap: 2rem;
                 }
                 
                 /* Logo - Left */
@@ -258,6 +309,57 @@ class HeaderAuthComponent extends HTMLElement {
                     height: auto;
                     display: block;
                     object-fit: contain;
+                }
+
+                /* Column 1: Logo */
+                .column-1 {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                }
+
+                /* Column 2: Filters + Explore + Search */
+                .column-2 {
+                    display: flex;
+                    align-items: center;
+                    gap: 1.5rem;
+                    justify-content: center;
+                }
+
+
+
+                /* Explore Navigation */
+                .explore-nav {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color: var(--neutral-dark);
+                    text-decoration: none;
+                    font-family: var(--font-primary);
+                    font-weight: 500;
+                    font-size: 0.95rem;
+                    padding: 0.5rem 1rem;
+                    border-radius: 6px;
+                    transition: var(--transition);
+                }
+
+                .explore-nav:hover {
+                    background: var(--neutral-light);
+                    color: var(--swappit-blue);
+                    text-decoration: none;
+                }
+
+                .explore-nav i {
+                    font-size: 1rem;
+                    color: var(--swappit-orange);
+                }
+
+                /* Column 3: SWAPPIT Coins + Avatar + Cart */
+                .column-3 {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    justify-content: flex-end;
                 }
                 
                 /* Menu - Center */
@@ -350,57 +452,43 @@ class HeaderAuthComponent extends HTMLElement {
                     position: relative;
                     display: flex;
                     align-items: center;
-                }
-                
-                .search-btn {
-                    background: none;
-                    border: none;
-                    color: var(--neutral-dark);
-                    font-size: 1.2rem;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 50%;
-                    transition: var(--transition);
-                    position: relative;
-                    z-index: 2;
-                }
-                
-                .search-btn:hover {
-                    background: var(--neutral-light);
-                    color: var(--swappit-blue);
-                    transform: scale(1.05);
+                    width: 100%;
+                    max-width: 500px;
                 }
                 
                 .search-input {
-                    position: absolute;
-                    right: 0;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 0;
-                    opacity: 0;
-                    border: 2px solid var(--swappit-blue);
+                    width: 100%;
+                    border: 2px solid var(--neutral-light);
                     border-radius: 25px;
-                    padding: 0.75rem 1rem;
+                    padding: 0.75rem 1rem 0.75rem 3rem;
                     font-size: 0.95rem;
                     background: var(--background-white);
                     transition: var(--transition);
-                    z-index: 1;
                     font-family: var(--font-secondary);
-                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.15);
-                }
-                
-                .search-container.active .search-input {
-                    width: 280px;
-                    opacity: 1;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                 }
                 
                 .search-input:focus {
                     outline: none;
+                    border-color: var(--swappit-blue);
                     box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+                }
+                
+                .search-btn {
+                    position: absolute;
+                    left: 0.75rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    color: var(--neutral-medium);
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: var(--transition);
+                }
+                
+                .search-btn:hover {
+                    color: var(--swappit-blue);
                 }
                 
                 /* SWAPPIT Coins */
@@ -409,7 +497,7 @@ class HeaderAuthComponent extends HTMLElement {
                     align-items: center;
                     gap: 0.5rem;
                     padding: 0.5rem 1rem;
-                    background: linear-gradient(135deg, var(--swappit-orange), #ff8c00);
+                    background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-blue));
                     border-radius: 25px;
                     color: white;
                     font-family: var(--font-primary);
@@ -475,11 +563,12 @@ class HeaderAuthComponent extends HTMLElement {
                     line-height: 1.2;
                 }
                 
-                .user-email {
+                .user-role {
                     font-family: var(--font-secondary);
                     font-size: 0.75rem;
-                    color: var(--neutral-medium);
+                    color: var(--swappit-blue);
                     line-height: 1.2;
+                    font-weight: 500;
                 }
                 
                 .dropdown-arrow {
@@ -584,6 +673,19 @@ class HeaderAuthComponent extends HTMLElement {
                     color: #dc2626;
                 }
                 
+                /* Dropdown Section Title */
+                .dropdown-section-title {
+                    padding: 0.5rem 1rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: var(--swappit-orange);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid var(--swappit-orange);
+                    margin: 0.5rem 0;
+                }
+                
                 /* Mobile menu toggle */
                 .mobile-toggle {
                     display: none;
@@ -636,26 +738,65 @@ class HeaderAuthComponent extends HTMLElement {
                     }
                 }
                 
+
+                
                 @media (max-width: 768px) {
                     .container {
                         padding: 0 1rem;
+                        grid-template-columns: 1fr 2fr 1fr;
+                        gap: 1rem;
+                    }
+                    
+                    .column-2 {
+                        gap: 1rem;
+                    }
+                    
+                    .explore-nav span {
+                        display: none;
+                    }
+                    
+                    .explore-nav {
+                        padding: 0.5rem;
+                    }
+                    
+                    .search-container {
+                        max-width: 200px;
                     }
                     
                     .logo img {
                         width: 120px;
                     }
                     
-                    .right {
-                        gap: 1rem;
+                    .column-3 {
+                        gap: 0.5rem;
                     }
                     
                     .coins-container {
                         padding: 0.4rem 0.8rem;
                         font-size: 0.8rem;
                     }
+                }
+
+                @media (max-width: 480px) {
+                    .container {
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 0.5rem;
+                    }
                     
-                    .search-container.active .search-input {
-                        width: 160px;
+                    .column-2 {
+                        gap: 0.5rem;
+                    }
+                    
+                    .search-container {
+                        max-width: 150px;
+                    }
+                    
+                    .logo img {
+                        width: 100px;
+                    }
+                    
+                    .coins-container {
+                        display: none;
                     }
                 }
                 
@@ -674,42 +815,40 @@ class HeaderAuthComponent extends HTMLElement {
                 }
             </style>
             
-            <header class="header">
+                        <header class="header">
                 <nav class="nav">
                     <div class="container">
-                        <!-- Logo - Left -->
-                        <a href="${this.getDashboardPath()}" class="logo">
-                            <img src="${logoPath}" alt="SWAPPIT Logo">
-                        </a>
-                        
-                        <!-- Navigation Menu - Center -->
-                        <div class="menu">
-                            <a href="${this.getDashboardPath()}" class="nav-link">Dashboard</a>
-                            <a href="${this.getMarketplacePath()}" class="nav-link">Marketplace</a>
-                            <a href="#support" class="nav-link">Support</a>
-                            <a href="#faq" class="nav-link">FAQ</a>
+                        <!-- Column 1: Logo -->
+                        <div class="column-1">
+                            <a href="${this.getMarketplacePath()}" class="logo">
+                                <img src="${logoPath}" alt="SWAPPIT Logo">
+                            </a>
                         </div>
-                        
-                        <!-- Right Side -->
-                        <div class="right">
-                            <!-- Search -->
+
+                        <!-- Column 2: Explore + Search -->
+                        <div class="column-2">
+                            <!-- Explore Navigation -->
+                            <a href="#" class="explore-nav" id="exploreNav">
+                                <i class="fas fa-compass"></i>
+                                <span>Explorer</span>
+                            </a>
+                            
+                            <!-- Search Bar -->
                             <div class="search-container">
+                                <input type="text" class="search-input" placeholder="Search products, categories, sellers..." id="searchInput">
                                 <button class="search-btn" id="searchBtn">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                <input type="text" class="search-input" placeholder="Search products, users..." id="searchInput">
                             </div>
-                            
+                        </div>
+
+                        <!-- Column 3: SWAPPIT Coins + Avatar + Cart -->
+                        <div class="column-3">
                             <!-- SWAPPIT Coins -->
                             <a href="${this.getSwapcoinInfoPath()}" class="coins-container">
-                                <i class="fas fa-coins coins-icon"></i>
+                                <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" class="coins-icon" width="30" height="30">
                                 <span>1,250</span>
                             </a>
-                            
-                            <!-- Mobile Menu Toggle -->
-                            <button class="mobile-toggle" id="mobileToggle">
-                                <i class="fas fa-bars"></i>
-                            </button>
                             
                             <!-- User Avatar & Dropdown -->
                             <div class="user-container" id="userContainer">
@@ -717,7 +856,7 @@ class HeaderAuthComponent extends HTMLElement {
                                     <img src="" alt="User Avatar" id="userAvatarImg">
                                     <div class="user-info">
                                         <div class="user-name">Loading...</div>
-                                        <div class="user-email">user@example.com</div>
+                                        <div class="user-role">Student</div>
                                     </div>
                                     <i class="fas fa-chevron-down dropdown-arrow"></i>
                                 </div>
@@ -729,20 +868,31 @@ class HeaderAuthComponent extends HTMLElement {
                                         <div class="user-email">user@example.com</div>
                                     </div>
                                     <div class="dropdown-list">
-                                        <a href="${this.getDashboardPath()}" class="dropdown-item">
+                                        <a href="${this.getDashboardPath()}" class="dropdown-item" id="dashboardLink">
                                             <i class="fas fa-tachometer-alt"></i>
                                             Dashboard
                                         </a>
-                                        <a href="#profile" class="dropdown-item">
+                                        <a href="${this.getProfilePath()}" class="dropdown-item" id="profileLink">
                                             <i class="fas fa-user"></i>
                                             Profile
                                         </a>
-                                        <a href="#settings" class="dropdown-item">
+                                        <a href="${this.getSettingsPath()}" class="dropdown-item" id="settingsLink">
                                             <i class="fas fa-cog"></i>
                                             Settings
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a href="#help" class="dropdown-item">
+                                        <!-- SWAPPIT Coins Section -->
+                                        <div class="dropdown-section-title">SWAPPIT Coins</div>
+                                        <a href="${this.getSwapcoinInfoPath()}" class="dropdown-item" id="swapcoinInfoLink">
+                                            <i class="fas fa-coins"></i>
+                                            My Coins
+                                        </a>
+                                        <a href="${this.getSwapcoinInfoPath()}?action=buy" class="dropdown-item" id="buyCoinsLink">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            Buy Coins
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="${this.getSupportPath()}" class="dropdown-item" id="helpLink">
                                             <i class="fas fa-question-circle"></i>
                                             Help & Support
                                         </a>
@@ -753,42 +903,75 @@ class HeaderAuthComponent extends HTMLElement {
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Cart Component -->
+                            <cart-component></cart-component>
                         </div>
                     </div>
                 </nav>
             </header>
+
+            <!-- Filters Sidebar Component -->
+            <filters-sidebar-component></filters-sidebar-component>
         `;
     }
 
     attachEventListeners() {
+        // Explore navigation for sidebar
+        const exploreNav = this.shadowRoot.getElementById('exploreNav');
+        
+        if (exploreNav) {
+            exploreNav.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Explore nav clicked');
+                // Get the filters sidebar component - try multiple selectors
+                let filtersSidebar = document.querySelector('filters-sidebar-component');
+                
+                // If not found, try to find it in the document body
+                if (!filtersSidebar) {
+                    filtersSidebar = document.body.querySelector('filters-sidebar-component');
+                }
+                
+                // If still not found, try to find it by tag name
+                if (!filtersSidebar) {
+                    const allComponents = document.getElementsByTagName('*');
+                    for (let element of allComponents) {
+                        if (element.tagName === 'FILTERS-SIDEBAR-COMPONENT') {
+                            filtersSidebar = element;
+                            break;
+                        }
+                    }
+                }
+                
+                console.log('Filters sidebar component:', filtersSidebar);
+                if (filtersSidebar) {
+                    console.log('Opening filters sidebar');
+                    filtersSidebar.open();
+                } else {
+                    console.log('Filters sidebar component not found - creating one dynamically');
+                    // Create the component dynamically if not found
+                    const newFiltersSidebar = document.createElement('filters-sidebar-component');
+                    document.body.appendChild(newFiltersSidebar);
+                    setTimeout(() => {
+                        newFiltersSidebar.open();
+                    }, 100);
+                }
+            });
+        }
+        
         // Search functionality
-        const searchContainer = this.shadowRoot.querySelector('.search-container');
         const searchBtn = this.shadowRoot.getElementById('searchBtn');
         const searchInput = this.shadowRoot.getElementById('searchInput');
         
-        if (searchBtn && searchContainer && searchInput) {
-            searchBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggleSearch();
+        if (searchBtn && searchInput) {
+            searchBtn.addEventListener('click', () => {
+                this.performSearch(searchInput.value);
             });
             
-            // Close search on outside click
-            document.addEventListener('click', (e) => {
-                if (!this.shadowRoot.contains(e.target)) {
-                    this.closeSearch();
-                }
-            });
-            
-            // Handle search input
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     this.performSearch(searchInput.value);
                 }
-            });
-            
-            searchInput.addEventListener('input', (e) => {
-                // Real-time search suggestions could be implemented here
-                this.handleSearchInput(e.target.value);
             });
         }
         
@@ -811,20 +994,63 @@ class HeaderAuthComponent extends HTMLElement {
             });
         }
         
-        // Logout functionality
+        // Dropdown menu items functionality
+        const dashboardLink = this.shadowRoot.getElementById('dashboardLink');
+        const profileLink = this.shadowRoot.getElementById('profileLink');
+        const settingsLink = this.shadowRoot.getElementById('settingsLink');
+        const swapcoinInfoLink = this.shadowRoot.getElementById('swapcoinInfoLink');
+        const buyCoinsLink = this.shadowRoot.getElementById('buyCoinsLink');
+        const helpLink = this.shadowRoot.getElementById('helpLink');
         const logoutBtn = this.shadowRoot.getElementById('logoutBtn');
+        
+        if (dashboardLink) {
+            dashboardLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToDashboard();
+            });
+        }
+        
+        if (profileLink) {
+            profileLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToProfile();
+            });
+        }
+        
+        if (settingsLink) {
+            settingsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToSettings();
+            });
+        }
+        
+        if (swapcoinInfoLink) {
+            swapcoinInfoLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToSwapcoinInfo();
+            });
+        }
+        
+        if (buyCoinsLink) {
+            buyCoinsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToBuyCoins();
+            });
+        }
+        
+
+        
+        if (helpLink) {
+            helpLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToSupport();
+            });
+        }
+        
         if (logoutBtn) {
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.handleLogout();
-            });
-        }
-        
-        // Mobile menu toggle
-        const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
-        if (mobileToggle) {
-            mobileToggle.addEventListener('click', () => {
-                this.toggleMobileMenu();
             });
         }
         
@@ -877,10 +1103,43 @@ class HeaderAuthComponent extends HTMLElement {
         }
     }
     
+    // Navigation methods for dropdown items
+    navigateToDashboard() {
+        this.closeDropdown();
+        window.location.href = this.getDashboardPath();
+    }
+
+    navigateToProfile() {
+        this.closeDropdown();
+        window.location.href = this.getProfilePath();
+    }
+
+    navigateToSettings() {
+        this.closeDropdown();
+        window.location.href = this.getSettingsPath();
+    }
+
+    navigateToSwapcoinInfo() {
+        this.closeDropdown();
+        window.location.href = this.getSwapcoinInfoPath();
+    }
+
+    navigateToBuyCoins() {
+        this.closeDropdown();
+        window.location.href = `${this.getSwapcoinInfoPath()}?action=buy`;
+    }
+
+
+
+    navigateToSupport() {
+        this.closeDropdown();
+        window.location.href = this.getSupportPath();
+    }
+    
     async handleLogout() {
         try {
             // Use existing Firebase configuration and logout function
-            const { logoutUser } = await import('/public/firebase/auth.js');
+            const { logoutUser } = await import('/firebase/auth.js');
             
             // Close dropdown first
             this.closeDropdown();
@@ -890,7 +1149,7 @@ class HeaderAuthComponent extends HTMLElement {
             
             if (result.success) {
                 // Redirect to landing page (index.html) instead of login
-                window.location.href = '/public/index.html';
+                window.location.href = '/index.html';
             } else {
                 throw new Error(result.error);
             }
@@ -903,32 +1162,255 @@ class HeaderAuthComponent extends HTMLElement {
     
     performSearch(query) {
         if (query.trim()) {
-            // Implement search functionality
-            console.log('Searching for:', query);
-            this.closeSearch();
-            // Redirect to search results or perform search
+            // Navigate to all products page with search query
+            window.location.href = `/pages/marketplace/all-products.html?search=${encodeURIComponent(query)}`;
         }
     }
     
     handleSearchInput(value) {
-        // Implement real-time search suggestions
+        // Real-time search suggestions could be implemented here
         console.log('Search input:', value);
     }
+
+
     
     toggleMobileMenu() {
-        // Implement mobile menu functionality
-        alert('Mobile menu - Coming soon!');
+        // Create mobile menu if it doesn't exist
+        let mobileMenu = document.getElementById('mobileMenu');
+        
+        if (!mobileMenu) {
+            mobileMenu = document.createElement('div');
+            mobileMenu.id = 'mobileMenu';
+            mobileMenu.className = 'mobile-menu';
+            mobileMenu.innerHTML = `
+                <div class="mobile-menu-content">
+                    <div class="mobile-menu-header">
+                        <h3>Menú</h3>
+                        <button class="mobile-menu-close" id="mobileMenuClose">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mobile-menu-items">
+                        <a href="${this.getMarketplacePath()}" class="mobile-menu-item">
+                            <i class="fas fa-store"></i>
+                            Marketplace
+                        </a>
+                        <a href="${this.getSupportPath()}" class="mobile-menu-item">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                        <a href="${this.getSwapcoinInfoPath()}" class="mobile-menu-item">
+                            <i class="fas fa-coins"></i>
+                            SWAPPIT Coins
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <a href="${this.getDashboardPath()}" class="mobile-menu-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a href="${this.getProfilePath()}" class="mobile-menu-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="${this.getSettingsPath()}" class="mobile-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <a href="#" class="mobile-menu-item logout" id="mobileLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-menu.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .mobile-menu-content {
+                    width: 300px;
+                    height: 100vh;
+                    background: white;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                }
+                
+                .mobile-menu.show .mobile-menu-content {
+                    transform: translateX(0);
+                }
+                
+                .mobile-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem;
+                    border-bottom: 1px solid #e2e8f0;
+                    background: #3468c0;
+                    color: white;
+                }
+                
+                .mobile-menu-header h3 {
+                    margin: 0;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                }
+                
+                .mobile-menu-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .mobile-menu-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .mobile-menu-items {
+                    flex: 1;
+                    padding: 1rem 0;
+                    overflow-y: auto;
+                }
+                
+                .mobile-menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem;
+                    color: #1e293b;
+                    text-decoration: none;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 500;
+                    transition: background 0.3s ease;
+                    border-left: 3px solid transparent;
+                }
+                
+                .mobile-menu-item:hover {
+                    background: #f1f5f9;
+                    border-left-color: #3468c0;
+                    color: #3468c0;
+                }
+                
+                .mobile-menu-item i {
+                    width: 20px;
+                    text-align: center;
+                    color: #64748b;
+                }
+                
+                .mobile-menu-item:hover i {
+                    color: #3468c0;
+                }
+                
+                .mobile-menu-divider {
+                    height: 1px;
+                    background: #e2e8f0;
+                    margin: 0.5rem 0;
+                }
+                
+                .mobile-menu-item.logout {
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout:hover {
+                    background: #fef2f2;
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout i {
+                    color: #dc2626;
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(mobileMenu);
+            
+            // Add event listeners
+            const closeBtn = mobileMenu.querySelector('#mobileMenuClose');
+            const logoutBtn = mobileMenu.querySelector('#mobileLogoutBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => this.closeMobileMenu());
+            }
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.closeMobileMenu();
+                    this.handleLogout();
+                });
+            }
+            
+            // Close on overlay click
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+        
+        // Show mobile menu
+        mobileMenu.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            mobileMenu.classList.remove('show');
+            document.body.style.overflow = '';
+        }
     }
     
     setActiveLink() {
         const currentPath = window.location.pathname;
+        const currentHash = window.location.hash;
         const navLinks = this.shadowRoot.querySelectorAll('.nav-link');
         
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
-            if (href === currentPath || 
-                (currentPath.includes('marketplace') && href.includes('marketplace')) ||
-                (currentPath.includes('dashboard') && href.includes('dashboard'))) {
+            link.classList.remove('active');
+            
+            // Check for exact path match
+            if (href === currentPath) {
+                link.classList.add('active');
+            }
+            // Check for marketplace pages
+            else if (currentPath.includes('marketplace') && href.includes('marketplace')) {
+                link.classList.add('active');
+            }
+            // Check for support pages
+            else if (currentPath.includes('support') && href.includes('support')) {
+                link.classList.add('active');
+            }
+            // Check for swapcoin pages
+            else if (currentPath.includes('swapcoin') && href.includes('swapcoin')) {
                 link.classList.add('active');
             }
         });

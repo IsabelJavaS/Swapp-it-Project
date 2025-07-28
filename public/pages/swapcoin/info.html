@@ -10,8 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="../../css/swapcoin-info.css">
-    <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
+    <link rel="stylesheet" href="/css/swapcoin-info.css">
+    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
 </head>
 <body>
     <!-- Dynamic Header Container -->
@@ -41,17 +41,25 @@
             <h2 class="purchase-title">Buy More SwapCoins</h2>
             <div class="purchase-grid">
                 <div class="purchase-card">
-                    <div class="coin-amount">100</div>
+                    <div class="coin-amount">
+                        <img src="/assets/signoS_N.svg" alt="" class="coins_icons">100
+                    </div>
                     <div class="price">$1.99</div>
                     <button class="buy-button">Buy Now</button>
                 </div>
                 <div class="purchase-card featured">
-                    <div class="coin-amount">500</div>
+                    <div class="coin-amount">
+                        <!-- Hay dos propuestas: signoS_B o signoS_NB -->
+                        <!-- <img src="signoS_NB.svg" alt="" class="coinsM_icons">250 -->
+                        <img src="/assets/signoS_B.svg" alt="" class="coinsM_icons">500
+                    </div>
                     <div class="price">$7.99</div>
                     <button class="buy-button">Buy Now</button>
                 </div>
                 <div class="purchase-card">
-                    <div class="coin-amount">1000</div>
+                    <div class="coin-amount">
+                        <img src="/assets/signoS_N.svg" alt="" class="coins_icons">1000
+                    </div>
                     <div class="price">$14.99</div>
                     <button class="buy-button">Buy Now</button>
                 </div>
@@ -89,14 +97,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Web Components -->
-    <script src="../../components/header-component.js"></script>
-    <script src="../../components/header-auth-component.js"></script>
-    <script src="../../components/footer-component.js"></script>
+    <script src="/components/cart-component.js"></script>
+    <script src="/components/header-component.js"></script>
+    <script src="/components/header-auth-component.js"></script>
+    <script src="/components/footer-component.js"></script>
 
     <!-- Global Header Manager -->
-    <script src="../../js/global-header-manager.js"></script>
+    <script src="/js/global-header-manager.js"></script>
     
     <!-- Custom JavaScript -->
-    <script src="../../js/swapcoin-info.js"></script>
+    <script src="/js/swapcoin-info.js"></script>
 </body>
 </html> 

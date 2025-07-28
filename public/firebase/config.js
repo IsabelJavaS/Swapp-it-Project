@@ -10,7 +10,7 @@ const firebaseConfig = {
   authDomain: "proyect-swapp-it.firebaseapp.com",
   databaseURL: "https://proyect-swapp-it-default-rtdb.firebaseio.com",
   projectId: "proyect-swapp-it",
-  storageBucket: "proyect-swapp-it.appspot.com",
+  storageBucket: "proyect-swapp-it.firebasestorage.app",
   messagingSenderId: "909327451855",
   appId: "1:909327451855:web:985769bf1a3eb9877e59ba",
   measurementId: "G-ES8F41DRD0"

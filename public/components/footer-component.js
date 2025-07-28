@@ -13,31 +13,12 @@ class FooterComponent extends HTMLElement {
 
     // Sistema mejorado de rutas dinámicas
     getBaseUrl() {
-        // Detectar si estamos en Firebase Hosting o local
-        const isFirebase = window.location.hostname.includes('firebaseapp.com') || 
-                          window.location.hostname.includes('web.app') ||
-                          window.location.hostname === 'localhost' && window.location.port === '5000';
-        
-        if (isFirebase) {
-            return ''; // Firebase Hosting sirve desde la raíz
-        } else {
-            // Local development - detectar profundidad
-            const path = window.location.pathname;
-            const segments = path.split('/').filter(s => s);
-            
-            // Si estamos en la raíz o en /public
-            if (segments.length === 0 || segments[0] === 'public') {
-                return '/public';
-            }
-            
-            // Si estamos en subdirectorios
-            return '/public';
-        }
+        // Para Firebase Hosting, siempre usar rutas absolutas
+        return '';
     }
 
     getLogoPath() {
-        const base = this.getBaseUrl();
-        return `${base}/assets/logos/LogoSinFondo.png`;
+        return '/assets/logos/LogoSinFondo.png';
     }
 
     // Método para cargar CSS de forma más robusta

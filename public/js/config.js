@@ -190,13 +190,8 @@ class PathConfig {
 
     // Función helper para redirección basada en rol
     redirectToDashboard(role) {
-        if (role === 'personal') {
-            this.redirectTo(this.getStudentDashboardPath());
-        } else if (role === 'business') {
-            this.redirectTo(this.getBusinessDashboardPath());
-        } else {
-            this.redirectTo(this.getLoginPath());
-        }
+        // Redirigir al marketplace logueado en lugar de los dashboards
+        this.redirectTo('/pages/marketplace/marketplace.html');
     }
 }
 

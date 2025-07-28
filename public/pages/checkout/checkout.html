@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAPPIT - Checkout</title>
+    
+    <!-- External CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link href="/css/checkout.css" rel="stylesheet">
+    <link href="/components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+</head>
+<body>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
+
+    <!-- Main Content -->
+    <main class="checkout-main">
+        <div class="container">
+            <div class="row">
+                <!-- Checkout Form -->
+                <div class="col-lg-8">
+                    <div class="checkout-form">
+                        <div class="checkout-header">
+                            <h1>Finalizar Compra</h1>
+                            <p>Completa tu información para procesar el pedido</p>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="order-summary-mobile d-lg-none">
+                            <h3>Resumen del Pedido</h3>
+                            <div id="mobileOrderSummary">
+                                <!-- Order summary will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Shipping Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-shipping-fast"></i> Información de Envío</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="firstName">Nombre *</label>
+                                        <input type="text" id="firstName" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastName">Apellido *</label>
+                                        <input type="text" id="lastName" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono *</label>
+                                <input type="tel" id="phone" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Dirección *</label>
+                                <input type="text" id="address" class="form-control" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="city">Ciudad *</label>
+                                        <input type="text" id="city" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="state">Estado *</label>
+                                        <input type="text" id="state" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="zipCode">Código Postal *</label>
+                                        <input type="text" id="zipCode" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-credit-card"></i> Método de Pago</h3>
+                            <div class="payment-methods">
+                                <div class="payment-method">
+                                    <input type="radio" id="points" name="paymentMethod" value="points" checked>
+                                    <label for="points">
+                                        <i class="fas fa-coins"></i>
+                                        <span>Pagar con SWAPPIT Points</span>
+                                    </label>
+                                </div>
+                                <div class="payment-method">
+                                    <input type="radio" id="card" name="paymentMethod" value="card">
+                                    <label for="card">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span>Tarjeta de Crédito/Débito</span>
+                                    </label>
+                                </div>
+                                <div class="payment-method">
+                                    <input type="radio" id="paypal" name="paymentMethod" value="paypal">
+                                    <label for="paypal">
+                                        <i class="fab fa-paypal"></i>
+                                        <span>PayPal</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Credit Card Form (hidden by default) -->
+                            <div id="creditCardForm" class="credit-card-form" style="display: none;">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="cardNumber">Número de Tarjeta *</label>
+                                            <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="expiryDate">Fecha de Vencimiento *</label>
+                                            <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cvv">CVV *</label>
+                                            <input type="text" id="cvv" class="form-control" placeholder="123">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cardName">Nombre en la Tarjeta *</label>
+                                    <input type="text" id="cardName" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Notes -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-sticky-note"></i> Notas del Pedido</h3>
+                            <div class="form-group">
+                                <label for="orderNotes">Notas adicionales (opcional)</label>
+                                <textarea id="orderNotes" class="form-control" rows="3" placeholder="Instrucciones especiales, comentarios, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary Sidebar -->
+                <div class="col-lg-4">
+                    <div class="order-summary">
+                        <h3>Resumen del Pedido</h3>
+                        <div id="orderSummary">
+                            <!-- Order summary will be loaded here -->
+                        </div>
+                        
+                        <div class="checkout-actions">
+                            <button class="btn btn-primary btn-checkout" id="btnPlaceOrder">
+                                <i class="fas fa-lock"></i>
+                                Confirmar Pedido
+                            </button>
+                            <a href="/pages/marketplace/marketplace-page.html" class="btn btn-outline-secondary btn-continue-shopping">
+                                <i class="fas fa-arrow-left"></i>
+                                Continuar Comprando
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+
+    <!-- JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/checkout.js"></script>
+
+    <!-- Web Components -->
+    <script src="/components/header-component.js"></script>
+    <script src="/components/header-auth-component.js"></script>
+    <script src="/components/footer-component.js"></script>
+    <script src="/components/cart-component.js"></script>
+
+    <!-- Global Header Manager -->
+    <script src="/js/global-header-manager.js"></script>
+
+</body>
+</html> 

@@ -13,8 +13,8 @@ class GlobalHeaderManager {
     async init() {
         try {
             // Use existing Firebase configuration
-            const { auth } = await import('/public/firebase/config.js');
-            const { onAuthStateChange } = await import('/public/firebase/auth.js');
+            const { auth } = await import('/firebase/config.js');
+            const { onAuthStateChange } = await import('/firebase/auth.js');
             
             // Listen for auth state changes
             onAuthStateChange((user) => {
@@ -36,6 +36,14 @@ class GlobalHeaderManager {
         if (user) {
             // User is authenticated - show auth header
             this.showAuthHeader();
+            
+            // If we're on the index page and user is logged in, redirect to marketplace
+            if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
+                console.log('User is logged in on index page, redirecting to marketplace...');
+                                   setTimeout(() => {
+                       window.location.href = '/pages/marketplace/marketplace.html';
+                   }, 100); // Small delay to ensure header is loaded
+            }
         } else {
             // User is not authenticated - show normal header
             this.showNonAuthHeader();
