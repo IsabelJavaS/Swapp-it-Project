@@ -11,20 +11,78 @@ class HeaderComponent extends HTMLElement {
         this.setupDropdownHover();
     }
 
+    // Sistema mejorado de rutas dinámicas
+    getBaseUrl() {
+        // Detectar si estamos en Firebase Hosting o local
+        const isFirebase = window.location.hostname.includes('firebaseapp.com') || 
+                          window.location.hostname.includes('web.app') ||
+                          window.location.hostname === 'localhost' && window.location.port === '5000';
+        
+        if (isFirebase) {
+            return ''; // Firebase Hosting sirve desde la raíz
+        } else {
+            // Local development - detectar profundidad
+            const path = window.location.pathname;
+            const segments = path.split('/').filter(s => s);
+            
+            // Si estamos en la raíz o en /public
+            if (segments.length === 0 || segments[0] === 'public') {
+                return '/public';
+            }
+            
+            // Si estamos en subdirectorios
+            return '/public';
+        }
+    }
+
     // Función para obtener la ruta correcta del logo
     getLogoPath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/assets/logos/LogoSinFondo.png';
+        const base = this.getBaseUrl();
+        return `${base}/assets/logos/LogoSinFondo.png`;
     }
 
     // Función para obtener la ruta correcta según autenticación
     getLogoDestination() {
         // Verificar si el usuario está autenticado
         if (window.currentUser || window.localStorage.getItem('userRole') || window.sessionStorage.getItem('userRole')) {
-            return '/pages/marketplace/marketplace.html';
+            return this.getMarketplacePath();
         } else {
             return this.getHomePath();
         }
+    }
+
+    // Función para obtener la ruta del home
+    getHomePath() {
+        const base = this.getBaseUrl();
+        return `${base}/index.html`;
+    }
+
+    // Función para obtener la ruta del marketplace
+    getMarketplacePath() {
+        const base = this.getBaseUrl();
+        return `${base}/pages/marketplace/marketplace.html`;
+    }
+
+    // Función para obtener la ruta del login
+    getLoginPath() {
+        const base = this.getBaseUrl();
+        return `${base}/pages/auth/login.html`;
+    }
+
+    // Función para obtener la ruta del register
+    getRegisterPath() {
+        const base = this.getBaseUrl();
+        return `${base}/pages/auth/register.html`;
+    }
+
+    getAboutPath() {
+        const base = this.getBaseUrl();
+        return `${base}/pages/about/about.html`;
+    }
+
+    getContactPath() {
+        const base = this.getBaseUrl();
+        return `${base}/pages/contact/contact.html`;
     }
 
     render() {
@@ -479,9 +537,9 @@ class HeaderComponent extends HTMLElement {
                 <nav class="nav">
                     <div class="container">
                         <!-- Logo - Left -->
-                                        <a href="${this.getLogoDestination()}" class="logo">
-                    <img src="${logoPath}" alt="SWAPPIT Logo">
-                </a>
+                        <a href="${this.getLogoDestination()}" class="logo">
+                            <img src="${logoPath}" alt="SWAPPIT Logo">
+                        </a>
                         
                         <!-- Navigation Menu - Center -->
                         <div class="menu">
@@ -491,15 +549,15 @@ class HeaderComponent extends HTMLElement {
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="/assets/logos/LogoSinFondo.png" alt="SWAPPIT Home" class="dropdown-image-large">
+                                            <img src="${this.getLogoPath()}" alt="SWAPPIT Home" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">Home</div>
                                             <ul class="dropdown-list">
                                                 <li><a href="${this.getHomePath()}#hero">Hero Section</a></li>
-                                                <li><a href="${this.getHomePath()}#features>Features</a></li>
-                                                <li><a href="${this.getHomePath()}#services>Services</a></li>
+                                                <li><a href="${this.getHomePath()}#features">Features</a></li>
+                                                <li><a href="${this.getHomePath()}#services">Services</a></li>
                                                 <li><a href="${this.getHomePath()}#contact">Contact</a></li>
                                             </ul>
                                         </div>
@@ -512,15 +570,15 @@ class HeaderComponent extends HTMLElement {
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
+                                            <img src="${this.getBaseUrl()}/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">Marketplace</div>
                                             <ul class="dropdown-list">
-                                                <li><a href="${this.getMarketplacePath()}>View Products</a></li>
-                                                <li><a href="${this.getMarketplacePath()}?action=add>Post a Product</a></li>
-                                                <li><a href="${this.getMarketplacePath()}#categories>Categories</a></li>
+                                                <li><a href="${this.getMarketplacePath()}">View Products</a></li>
+                                                <li><a href="${this.getMarketplacePath()}?action=add">Post a Product</a></li>
+                                                <li><a href="${this.getMarketplacePath()}#categories">Categories</a></li>
                                                 <li><a href="${this.getMarketplacePath()}#featured">Featured Products</a></li>
                                                 <li><a href="${this.getMarketplacePath()}#bestsellers">Best Sellers</a></li>
                                             </ul>
@@ -533,7 +591,7 @@ class HeaderComponent extends HTMLElement {
                                 <div class="dropdown-menu wide" id="aboutDropdown">
                                     <div class="dropdown-grid prada-style">
                                         <div class="dropdown-col image-col">
-                                            <img src="/assets/logos/LogoSinFondo.png" alt="About Us" class="dropdown-image-large">
+                                            <img src="${this.getLogoPath()}" alt="About Us" class="dropdown-image-large">
                                         </div>
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">About Us</div>
@@ -552,7 +610,7 @@ class HeaderComponent extends HTMLElement {
                                 <div class="dropdown-menu wide" id="contactDropdown">
                                     <div class="dropdown-grid prada-style">
                                         <div class="dropdown-col image-col">
-                                            <img src="/assets/logos/LogoSinFondo.png" alt="Contact" class="dropdown-image-large">
+                                            <img src="${this.getLogoPath()}" alt="Contact" class="dropdown-image-large">
                                         </div>
                                         <div class="dropdown-col links-col">
                                             <div class="dropdown-title">Contact</div>
@@ -592,39 +650,6 @@ class HeaderComponent extends HTMLElement {
                 </nav>
             </header>
         `;
-    }
-
-    // Función para obtener la ruta del home
-    getHomePath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/index.html';
-    }
-
-    // Función para obtener la ruta del marketplace
-    getMarketplacePath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/marketplace/marketplace.html';
-    }
-
-    // Función para obtener la ruta del login
-    getLoginPath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/auth/login.html';
-    }
-
-    // Función para obtener la ruta del register
-    getRegisterPath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/auth/register.html';
-    }
-
-    getAboutPath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/about/about.html';
-    }
-    getContactPath() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '/pages/contact/contact.html';
     }
 
     attachEventListeners() {

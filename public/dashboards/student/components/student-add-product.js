@@ -1,17 +1,26 @@
 // Student Add Product Component
+console.log('=== STUDENT ADD PRODUCT SCRIPT LOADED ===');
+console.log('Loading Loading StudentAddProduct component...');
+console.log('File File: student-add-product.js loaded');
+
 class StudentAddProduct extends HTMLElement {
     constructor() {
         super();
+        console.log('Constructor  StudentAddProduct constructor called');
         this.attachShadow({ mode: 'open' });
         this.imageFiles = []; // Store image files for upload
+        console.log('Success StudentAddProduct constructor completed');
     }
 
     connectedCallback() {
+        console.log('Connected StudentAddProduct connectedCallback called');
         this.render();
         this.attachEventListeners();
+        console.log('Success StudentAddProduct component loaded successfully');
     }
 
     render() {
+        console.log('Render StudentAddProduct render called');
         this.shadowRoot.innerHTML = `
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -544,6 +553,7 @@ class StudentAddProduct extends HTMLElement {
     }
 
     attachEventListeners() {
+        console.log('Connected StudentAddProduct attachEventListeners called');
         const form = this.shadowRoot.getElementById('addProductForm');
         const transactionTypeInputs = this.shadowRoot.querySelectorAll('input[name="transactionType"]');
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
@@ -684,8 +694,15 @@ class StudentAddProduct extends HTMLElement {
             loadingIcon.classList.add('show');
 
             // Get current user
-            const { getCurrentUser } = await import('/firebase/auth.js');
-            const currentUser = getCurrentUser();
+            try {
+                const { getCurrentUser } = await import('/firebase/auth.js');
+                const currentUser = getCurrentUser();
+            } catch (error) {
+                console.error('Error Error importing Firebase auth:', error);
+                // Temporarily skip Firebase auth for testing
+                console.log('Warning  Skipping Firebase auth for testing');
+                return;
+            }
             
             if (!currentUser) {
                 throw new Error('User not authenticated. Please log in.');
@@ -751,8 +768,15 @@ class StudentAddProduct extends HTMLElement {
             };
 
             // Import Firebase functions
-            const { addProduct } = await import('/firebase/firestore.js');
-            const { uploadProductImages } = await import('/firebase/storage.js');
+            try {
+                const { addProduct } = await import('/firebase/firestore.js');
+                const { uploadProductImages } = await import('/firebase/storage.js');
+            } catch (error) {
+                console.error('Error Error importing Firebase functions:', error);
+                // Temporarily skip Firebase functions for testing
+                console.log('Warning  Skipping Firebase functions for testing');
+                return;
+            }
 
             // First, create the product document to get the product ID
             const productResult = await addProduct(productData);
@@ -782,7 +806,14 @@ class StudentAddProduct extends HTMLElement {
                     console.log('Image upload successful:', imageUploadResult.images);
                     
                     // Update product with image URLs
-                    const { updateProduct } = await import('/firebase/firestore.js');
+                    try {
+                        const { updateProduct } = await import('/firebase/firestore.js');
+                    } catch (error) {
+                        console.error('Error Error importing updateProduct:', error);
+                        // Temporarily skip updateProduct for testing
+                        console.log('Warning  Skipping updateProduct for testing');
+                        return;
+                    }
                     const updateResult = await updateProduct(productId, {
                         images: imageUploadResult.images,
                         imageCount: imageUploadResult.images.length,
@@ -868,8 +899,8 @@ class StudentAddProduct extends HTMLElement {
             color: #10b981;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -968,8 +999,8 @@ class StudentAddProduct extends HTMLElement {
             color: #ef4444;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -1020,4 +1051,9 @@ class StudentAddProduct extends HTMLElement {
     }
 }
 
-customElements.define('student-add-product', StudentAddProduct); 
+try {
+    customElements.define('student-add-product', StudentAddProduct);
+    console.log('Registered StudentAddProduct component registered successfully');
+} catch (error) {
+    console.error('Error Error registering StudentAddProduct component:', error);
+} 

@@ -183,19 +183,41 @@ class FooterComponent extends HTMLElement {
                     grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
                     gap: 2rem;
                     width: 100%;
+                    align-items: start;
                 }
 
                 /* Footer Column */
                 .footer-column {
                     display: flex;
                     flex-direction: column;
+                    height: 100%;
+                    justify-content: flex-start;
+                }
+
+                /* Ajuste específico para la primera columna */
+                .footer-column:first-child {
+                    align-items: flex-start;
+                }
+
+                /* Ajuste para que el logo esté al mismo nivel que los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
+                    margin-bottom: 0.5rem;
+                }
+
+                .footer-column:first-child .footer-description {
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Footer Brand */
                 .footer-brand {
                     display: flex;
-                    align-items: center;
-                    margin-bottom: 1.5rem;
+                    align-items: flex-start;
+                    margin-bottom: 0.75rem;
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 .footer-brand img {
@@ -204,11 +226,19 @@ class FooterComponent extends HTMLElement {
                     display: block;
                 }
 
+                /* Ajuste para alinear el logo con los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
+
                 .footer-description {
                     color: rgba(255, 255, 255, 0.7);
                     line-height: 1.6;
                     margin-bottom: 1.5rem;
                     font-size: 0.95rem;
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Social Links */
@@ -245,6 +275,8 @@ class FooterComponent extends HTMLElement {
                     font-weight: 600;
                     margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Footer Links */
@@ -256,6 +288,10 @@ class FooterComponent extends HTMLElement {
 
                 .footer-links li {
                     margin-bottom: 0.75rem;
+                }
+
+                .footer-links li:first-child {
+                    margin-top: 0;
                 }
 
                 .footer-links a {
@@ -271,7 +307,7 @@ class FooterComponent extends HTMLElement {
 
                 /* Footer Contact */
                 .footer-contact {
-                    margin-top: 1rem;
+                    margin-top: 0;
                 }
 
                 .footer-contact p {
@@ -280,6 +316,10 @@ class FooterComponent extends HTMLElement {
                     font-size: 0.9rem;
                     display: flex;
                     align-items: center;
+                }
+
+                .footer-contact p:first-child {
+                    margin-top: 0;
                 }
 
                 .footer-contact p i {
@@ -404,7 +444,7 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
-                                    Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment while building lasting connections.
+                                    Join the sustainable student community where you can buy, sell, or exchange school supplies.
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
