@@ -497,7 +497,7 @@ class HeaderAuthComponent extends HTMLElement {
                     align-items: center;
                     gap: 0.5rem;
                     padding: 0.5rem 1rem;
-                    background: linear-gradient(135deg, var(--swappit-orange), #ff8c00);
+                    background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-blue));
                     border-radius: 25px;
                     color: white;
                     font-family: var(--font-primary);

@@ -153,6 +153,28 @@ body {
     color: var(--swappit-gold-dark);
 }
 
+img.coins-img {
+    width: 1em;
+}
+
+img.coins_icons {
+    width: 1.3em;
+    vertical-align: middle;
+    border: .05em solid var(--swappit-gold);
+    border-radius: 100%;
+    padding: 0.2em;
+    margin-right: 0.3em;
+}
+
+img.coinsM_icons {
+    width: 1.3em;
+    vertical-align: middle;
+    border: .05em solid #fff;
+    border-radius: 100%;
+    padding: 0.2em;
+    margin-right: 0.3em;
+}
+
 .purchase-card.featured .coin-amount {
     color: white;
 }
