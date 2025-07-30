@@ -276,18 +276,18 @@ class StudentProducts extends HTMLElement {
                         </div>
                         <div class="form-group">
                             <label for="editCategory">Categoría</label>
-                                                         <select id="editCategory">
-                                 <option value="accessories" ${(product.category === 'accessories') ? 'selected' : ''}>Accesorios</option>
-                                 <option value="books" ${(product.category === 'books') ? 'selected' : ''}>Libros</option>
-                                 <option value="category-art" ${(product.category === 'category-art') ? 'selected' : ''}>Arte</option>
-                                 <option value="electronics" ${(product.category === 'electronics') ? 'selected' : ''}>Electrónicos</option>
-                                 <option value="notebooks" ${(product.category === 'notebooks') ? 'selected' : ''}>Cuadernos</option>
-                                 <option value="school-bags" ${(product.category === 'school-bags') ? 'selected' : ''}>Mochilas</option>
-                                 <option value="shoes" ${(product.category === 'shoes') ? 'selected' : ''}>Zapatos</option>
-                                 <option value="sports" ${(product.category === 'sports') ? 'selected' : ''}>Deportes</option>
-                                 <option value="stationery" ${(product.category === 'stationery') ? 'selected' : ''}>Útiles Escolares</option>
-                                 <option value="uniforms" ${(product.category === 'uniforms') ? 'selected' : ''}>Uniformes</option>
-                             </select>
+                                                                     <select id="editCategory">
+                <option value="accessories" ${(product.category === 'accessories') ? 'selected' : ''}>Accessories</option>
+                <option value="books" ${(product.category === 'books') ? 'selected' : ''}>Books</option>
+                <option value="category-art" ${(product.category === 'category-art') ? 'selected' : ''}>Art</option>
+                <option value="electronics" ${(product.category === 'electronics') ? 'selected' : ''}>Electronics</option>
+                <option value="notebooks" ${(product.category === 'notebooks') ? 'selected' : ''}>Notebooks</option>
+                <option value="school-bags" ${(product.category === 'school-bags') ? 'selected' : ''}>School Bags</option>
+                <option value="shoes" ${(product.category === 'shoes') ? 'selected' : ''}>Shoes</option>
+                <option value="sports" ${(product.category === 'sports') ? 'selected' : ''}>Sports</option>
+                <option value="stationery" ${(product.category === 'stationery') ? 'selected' : ''}>Stationery</option>
+                <option value="uniforms" ${(product.category === 'uniforms') ? 'selected' : ''}>Uniforms</option>
+            </select>
                         </div>
                     </div>
                     <div class="form-group">

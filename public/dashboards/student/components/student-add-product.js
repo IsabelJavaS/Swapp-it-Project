@@ -435,19 +435,19 @@ class StudentAddProduct extends HTMLElement {
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Category</label>
-                                    <select class="form-select" name="category" required>
-                                        <option value="">Select Category</option>
-                                        <option value="accessories">Accesorios</option>
-                                        <option value="books">Libros</option>
-                                        <option value="category-art">Arte</option>
-                                        <option value="electronics">Electrónicos</option>
-                                        <option value="notebooks">Cuadernos</option>
-                                        <option value="school-bags">Mochilas</option>
-                                        <option value="shoes">Zapatos</option>
-                                        <option value="sports">Deportes</option>
-                                        <option value="stationery">Útiles Escolares</option>
-                                        <option value="uniforms">Uniformes</option>
-                                    </select>
+                                            <select class="form-select" name="category" required>
+            <option value="">Select Category</option>
+            <option value="accessories">Accessories</option>
+            <option value="books">Books</option>
+            <option value="category-art">Art</option>
+            <option value="electronics">Electronics</option>
+            <option value="notebooks">Notebooks</option>
+            <option value="school-bags">School Bags</option>
+            <option value="shoes">Shoes</option>
+            <option value="sports">Sports</option>
+            <option value="stationery">Stationery</option>
+            <option value="uniforms">Uniforms</option>
+        </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Condition</label>
