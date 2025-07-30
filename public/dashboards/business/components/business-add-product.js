@@ -400,14 +400,16 @@ class BusinessAddProduct extends HTMLElement {
                                 <label class="form-label required">Category</label>
                                 <select class="form-select" name="category" required>
                                     <option value="">Select Category</option>
-                                    <option value="electronics">Electronics</option>
-                                    <option value="clothing">Clothing</option>
-                                    <option value="books">Books</option>
-                                    <option value="home">Home & Garden</option>
-                                    <option value="sports">Sports</option>
-                                    <option value="beauty">Beauty</option>
-                                    <option value="automotive">Automotive</option>
-                                    <option value="other">Other</option>
+                                    <option value="accessories">Accesorios</option>
+                                    <option value="books">Libros</option>
+                                    <option value="category-art">Arte</option>
+                                    <option value="electronics">Electrónicos</option>
+                                    <option value="notebooks">Cuadernos</option>
+                                    <option value="school-bags">Mochilas</option>
+                                    <option value="shoes">Zapatos</option>
+                                    <option value="sports">Deportes</option>
+                                    <option value="stationery">Útiles Escolares</option>
+                                    <option value="uniforms">Uniformes</option>
                                 </select>
                             </div>
                             <div class="form-group">

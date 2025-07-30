@@ -437,13 +437,16 @@ class StudentAddProduct extends HTMLElement {
                                     <label class="form-label required">Category</label>
                                     <select class="form-select" name="category" required>
                                         <option value="">Select Category</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="books">Books</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="furniture">Furniture</option>
-                                        <option value="sports">Sports & Fitness</option>
-                                        <option value="beauty">Beauty & Health</option>
-                                        <option value="other">Other</option>
+                                        <option value="accessories">Accesorios</option>
+                                        <option value="books">Libros</option>
+                                        <option value="category-art">Arte</option>
+                                        <option value="electronics">Electrónicos</option>
+                                        <option value="notebooks">Cuadernos</option>
+                                        <option value="school-bags">Mochilas</option>
+                                        <option value="shoes">Zapatos</option>
+                                        <option value="sports">Deportes</option>
+                                        <option value="stationery">Útiles Escolares</option>
+                                        <option value="uniforms">Uniformes</option>
                                     </select>
                                 </div>
                                 <div class="form-group">

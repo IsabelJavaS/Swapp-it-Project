@@ -97,8 +97,14 @@ class StudentDashboard extends HTMLElement {
         });
     }
     loadSection(section) {
+        console.log('StudentDashboard: loadSection called with section:', section);
         this.currentSection = section;
         const content = this.shadowRoot.getElementById('section-content');
+        
+        if (!content) {
+            console.error('StudentDashboard: section-content element not found');
+            return;
+        }
         
         // Update sidebar active state
         const sidebar = this.shadowRoot.querySelector('student-sidebar');
@@ -111,34 +117,46 @@ class StudentDashboard extends HTMLElement {
             detail: { section: section }
         }));
 
+        console.log('StudentDashboard: Loading section:', section);
         switch (section) {
             case 'dashboard':
+                console.log('StudentDashboard: Loading dashboard overview');
                 content.innerHTML = '<student-dashboard-overview></student-dashboard-overview>';
                 break;
             case 'profile':
+                console.log('StudentDashboard: Loading profile');
                 content.innerHTML = '<student-profile></student-profile>';
                 break;
             case 'add-product':
+                console.log('StudentDashboard: Loading add product');
                 content.innerHTML = '<student-add-product></student-add-product>';
                 break;
             case 'my-products':
+                console.log('StudentDashboard: Loading my products');
                 content.innerHTML = '<student-products></student-products>';
                 break;
             case 'purchases':
+                console.log('StudentDashboard: Loading purchases');
                 content.innerHTML = '<student-purchases></student-purchases>';
                 break;
             case 'sales':
+                console.log('StudentDashboard: Loading sales');
                 content.innerHTML = '<student-sales></student-sales>';
                 break;
             case 'notifications':
+                console.log('StudentDashboard: Loading notifications');
                 content.innerHTML = '<student-notifications></student-notifications>';
                 break;
             case 'settings':
+                console.log('StudentDashboard: Loading settings');
                 content.innerHTML = '<student-settings></student-settings>';
                 break;
             default:
+                console.log('StudentDashboard: Loading default dashboard overview');
                 content.innerHTML = '<student-dashboard-overview></student-dashboard-overview>';
         }
+        
+        console.log('StudentDashboard: Section loaded successfully');
     }
 }
 customElements.define('student-dashboard', StudentDashboard); 
