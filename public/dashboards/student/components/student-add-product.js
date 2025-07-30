@@ -639,10 +639,10 @@ class StudentAddProduct extends HTMLElement {
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
         const tradeSection = this.shadowRoot.getElementById('tradeSection');
         
-        // Set initial state (price not required by default)
-        priceInput.required = false;
+        // Set initial state based on default selection (sale is checked by default)
+        priceInput.required = true; // Price is required for sale
         originalPriceInput.required = false;
-        pricingSection.style.display = 'none';
+        pricingSection.style.display = 'block'; // Show pricing for sale
         tradeSection.style.display = 'none';
     }
 
@@ -694,9 +694,10 @@ class StudentAddProduct extends HTMLElement {
             loadingIcon.classList.add('show');
 
             // Get current user
+            let currentUser;
             try {
                 const { getCurrentUser } = await import('/firebase/auth.js');
-                const currentUser = getCurrentUser();
+                currentUser = getCurrentUser();
             } catch (error) {
                 console.error('Error Error importing Firebase auth:', error);
                 // Temporarily skip Firebase auth for testing
@@ -768,9 +769,12 @@ class StudentAddProduct extends HTMLElement {
             };
 
             // Import Firebase functions
+            let addProduct, uploadProductImages;
             try {
-                const { addProduct } = await import('/firebase/firestore.js');
-                const { uploadProductImages } = await import('/firebase/storage.js');
+                const firestoreModule = await import('/firebase/firestore.js');
+                const storageModule = await import('/firebase/storage.js');
+                addProduct = firestoreModule.addProduct;
+                uploadProductImages = storageModule.uploadProductImages;
             } catch (error) {
                 console.error('Error Error importing Firebase functions:', error);
                 // Temporarily skip Firebase functions for testing
@@ -806,8 +810,10 @@ class StudentAddProduct extends HTMLElement {
                     console.log('Image upload successful:', imageUploadResult.images);
                     
                     // Update product with image URLs
+                    let updateProduct;
                     try {
-                        const { updateProduct } = await import('/firebase/firestore.js');
+                        const firestoreModule = await import('/firebase/firestore.js');
+                        updateProduct = firestoreModule.updateProduct;
                     } catch (error) {
                         console.error('Error Error importing updateProduct:', error);
                         // Temporarily skip updateProduct for testing
