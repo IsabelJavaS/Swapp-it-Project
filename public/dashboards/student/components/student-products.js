@@ -61,8 +61,8 @@ class StudentProducts extends HTMLElement {
                     <img src="${product.image}" alt="${product.name}" />
                     <div class="product-status ${product.status}">
                         ${product.status === 'sold' ? '<i class="fas fa-check"></i>' : 
-                          product.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
-                          '<i class="fas fa-eye"></i>'}
+                            product.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
+                            '<i class="fas fa-eye"></i>'}
                     </div>
                 </div>
                 <div class="product-info">

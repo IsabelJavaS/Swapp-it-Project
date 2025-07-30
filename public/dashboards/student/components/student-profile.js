@@ -304,7 +304,6 @@ class StudentProfile extends HTMLElement {
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
-                 
                     border-radius: 20px;
                     padding: 3rem 2rem;
                     text-align: center;
