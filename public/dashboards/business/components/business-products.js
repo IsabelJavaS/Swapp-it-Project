@@ -1,4 +1,4 @@
-// Componente web para productos del negocio
+// Web component for business products
 class BusinessProducts extends HTMLElement {
     constructor() {
         super();
@@ -6,108 +6,120 @@ class BusinessProducts extends HTMLElement {
     }
     
     connectedCallback() {
+        console.log('BusinessProducts: Component connected');
         this.render();
         this.loadProducts();
     }
 
-    loadProducts() {
-        // Simulate loading products from Firebase
-        const mockProducts = [
-            {
-                id: 1,
-                name: 'iPhone 13 Pro',
-                category: 'Electronics',
-                condition: 'Excellent',
-                price: 899.00,
-                status: 'active',
-                image: 'https://via.placeholder.com/120x120/3468c0/ffffff?text=I',
-                views: 156,
-                stock: 5,
-                createdAt: '2024-01-15'
-            },
-            {
-                id: 2,
-                name: 'MacBook Pro 2021',
-                category: 'Electronics',
-                condition: 'Like new',
-                price: 1299.00,
-                status: 'active',
-                image: 'https://via.placeholder.com/120x120/ffa424/ffffff?text=M',
-                views: 89,
-                stock: 3,
-                createdAt: '2024-01-10'
-            },
-            {
-                id: 3,
-                name: 'Nike Air Max 270',
-                category: 'Sports',
-                condition: 'Good',
-                price: 120.00,
-                status: 'sold',
-                image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=N',
-                views: 234,
-                stock: 0,
-                createdAt: '2024-01-05'
+    async loadProducts() {
+        try {
+            console.log('BusinessProducts: Loading products...');
+            
+            // Get current user
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            const currentUser = getCurrentUser();
+            
+            if (!currentUser) {
+                console.log('BusinessProducts: No current user found');
+                this.showNoProductsMessage();
+                return;
             }
-        ];
 
-        this.updateProductsList(mockProducts);
+            console.log('BusinessProducts: Current user found:', currentUser.email);
+
+            // Get business products from Firebase
+            const { getProducts } = await import('/firebase/firestore.js');
+            const result = await getProducts({ sellerId: currentUser.uid });
+            
+            console.log('BusinessProducts: Firebase result:', result);
+            
+            if (result.success && result.products && result.products.length > 0) {
+                console.log('BusinessProducts: Found', result.products.length, 'products');
+                this.updateProductsList(result.products);
+                this.updateStats(result.products);
+            } else {
+                console.log('BusinessProducts: No products found or error:', result.error);
+                this.showNoProductsMessage();
+                this.updateStats([]); // Update stats with empty array
+            }
+        } catch (error) {
+            console.error('BusinessProducts: Error loading products:', error);
+            this.showNoProductsMessage();
+            this.updateStats([]); // Update stats with empty array
+        }
     }
 
     updateProductsList(products) {
+        console.log('BusinessProducts: updateProductsList called with', products ? products.length : 0, 'products');
         const productsList = this.shadowRoot.getElementById('productsList');
-        if (!productsList) return;
+        if (!productsList) {
+            console.log('BusinessProducts: Products list container not found');
+            console.log('BusinessProducts: Available elements in shadowRoot:', this.shadowRoot.querySelectorAll('*'));
+            return;
+        }
 
-        productsList.innerHTML = products.map(product => `
-            <div class="product-card ${product.status}">
-                <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}" />
-                    <div class="product-status ${product.status}">
-                        ${product.status === 'sold' ? '<i class="fas fa-check"></i>' : 
-                          product.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
-                          '<i class="fas fa-eye"></i>'}
+        if (!products || products.length === 0) {
+            console.log('BusinessProducts: No products to display');
+            this.showNoProductsMessage();
+            return;
+        }
+
+        console.log('BusinessProducts: Updating products list with', products.length, 'products');
+        
+        productsList.innerHTML = products.map(product => {
+            const validatedProduct = this.validateProduct(product);
+            return `
+                <div class="product-card ${validatedProduct.status}">
+                    <div class="product-image">
+                        <img src="${validatedProduct.image}" alt="${validatedProduct.productName}" 
+                             onerror="this.src='/assets/logos/utiles-escolares.jpg'" />
+                        <div class="product-status ${validatedProduct.status}">
+                            ${validatedProduct.status === 'sold' ? '<i class="fas fa-check"></i>' : 
+                              validatedProduct.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
+                              '<i class="fas fa-eye"></i>'}
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">${validatedProduct.productName}</h3>
+                            <div class="product-price">$${validatedProduct.price.toFixed(2)}</div>
+                        </div>
+                        <div class="product-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                ${validatedProduct.category}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-star"></i>
+                                ${validatedProduct.condition}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-eye"></i>
+                                ${validatedProduct.views} views
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                ${this.formatDate(validatedProduct.createdAt)}
+                            </span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary edit-btn" data-id="${validatedProduct.id}">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-secondary view-btn" data-id="${validatedProduct.id}">
+                                <i class="fas fa-eye"></i>
+                                View
+                            </button>
+                            <button class="btn btn-danger delete-btn" data-id="${validatedProduct.id}">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="product-info">
-                    <div class="product-header">
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
-                    </div>
-                    <div class="product-meta">
-                        <span class="meta-item">
-                            <i class="fas fa-tag"></i>
-                            ${product.category}
-                        </span>
-                        <span class="meta-item">
-                            <i class="fas fa-star"></i>
-                            ${product.condition}
-                        </span>
-                        <span class="meta-item">
-                            <i class="fas fa-eye"></i>
-                            ${product.views} views
-                        </span>
-                        <span class="meta-item">
-                            <i class="fas fa-box"></i>
-                            ${product.stock} in stock
-                        </span>
-                    </div>
-                    <div class="product-actions">
-                        <button class="btn btn-primary edit-btn" data-id="${product.id}">
-                            <i class="fas fa-edit"></i>
-                            Edit
-                        </button>
-                        <button class="btn btn-secondary view-btn" data-id="${product.id}">
-                            <i class="fas fa-eye"></i>
-                            View
-                        </button>
-                        <button class="btn btn-danger delete-btn" data-id="${product.id}">
-                            <i class="fas fa-trash"></i>
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         // Add event listeners
         this.shadowRoot.querySelectorAll('.edit-btn').forEach(btn => {
@@ -121,6 +133,8 @@ class BusinessProducts extends HTMLElement {
         this.shadowRoot.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => this.deleteProduct(e.target.dataset.id));
         });
+        
+        console.log('BusinessProducts: Products list updated successfully');
     }
 
     editProduct(productId) {
@@ -141,6 +155,7 @@ class BusinessProducts extends HTMLElement {
     }
 
     render() {
+        console.log('BusinessProducts: Rendering component');
         this.shadowRoot.innerHTML = `
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -519,6 +534,91 @@ class BusinessProducts extends HTMLElement {
                 </div>
             </div>
         `;
+    }
+
+    validateProduct(product) {
+        // Ensure the product has all necessary fields
+        let imageUrl = '/assets/logos/utiles-escolares.jpg'; // Default image
+        
+        // Try to get the real product image
+        if (product.images && product.images.length > 0) {
+            // If there are images, use the first one
+            if (typeof product.images[0] === 'string') {
+                imageUrl = product.images[0];
+            } else if (product.images[0].url) {
+                imageUrl = product.images[0].url;
+            }
+        } else if (product.image) {
+            // If there's a direct image
+            imageUrl = product.image;
+        }
+        
+        return {
+            id: product.id || 'unknown',
+            productName: product.productName || product.name || 'Unnamed Product',
+            price: product.price !== null && product.price !== undefined ? product.price : 0,
+            category: product.category || 'No Category',
+            condition: product.condition || 'New',
+            description: product.description || 'No description',
+            status: product.status || 'active',
+            views: product.views !== null && product.views !== undefined ? product.views : 0,
+            createdAt: product.createdAt || new Date().toISOString(),
+            image: imageUrl,
+            images: product.images || []
+        };
+    }
+
+    updateStats(products) {
+        const activeProducts = products.filter(p => p.status === 'active').length;
+        const soldProducts = products.filter(p => p.status === 'sold').length;
+        const pendingProducts = products.filter(p => p.status === 'pending').length;
+        const totalRevenue = products.filter(p => p.status === 'sold').reduce((sum, p) => sum + (p.price || 0), 0);
+
+        // Update stats in the DOM
+        const activeElement = this.shadowRoot.querySelector('.stat-card:nth-child(1) .stat-number');
+        const soldElement = this.shadowRoot.querySelector('.stat-card:nth-child(2) .stat-number');
+        const pendingElement = this.shadowRoot.querySelector('.stat-card:nth-child(3) .stat-number');
+        const revenueElement = this.shadowRoot.querySelector('.stat-card:nth-child(4) .stat-number');
+
+        if (activeElement) activeElement.textContent = activeProducts;
+        if (soldElement) soldElement.textContent = soldProducts;
+        if (pendingElement) pendingElement.textContent = pendingProducts;
+        if (revenueElement) revenueElement.textContent = `$${totalRevenue.toFixed(2)}`;
+    }
+
+    showNoProductsMessage() {
+        console.log('BusinessProducts: Showing no products message');
+        const productsList = this.shadowRoot.getElementById('productsList');
+        if (productsList) {
+            productsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <h3>No products yet</h3>
+                    <p>Start by adding your first product to sell in the marketplace</p>
+                    <button class="add-product-btn" onclick="this.dispatchEvent(new CustomEvent('navigateToAddProduct'))">
+                        <i class="fas fa-plus"></i>
+                        Add Product
+                    </button>
+                </div>
+            `;
+            console.log('BusinessProducts: No products message displayed successfully');
+        } else {
+            console.log('BusinessProducts: Products list container not found for no products message');
+            console.log('BusinessProducts: Available elements in shadowRoot:', this.shadowRoot.querySelectorAll('*'));
+        }
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return 'Date not available';
+        
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Date not available';
+        
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
     }
 }
 

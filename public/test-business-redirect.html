@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Business Redirect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #28a745;
+        }
+        .info {
+            color: #17a2b8;
+        }
+        .warning {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Business Redirect</h1>
+    
+    <div class="test-section">
+        <h2>1. Test Configuration</h2>
+        <button class="test-button" onclick="testConfig()">Test Path Configuration</button>
+        <div id="configLog" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Redirect Logic</h2>
+        <button class="test-button" onclick="testRedirectLogic()">Test Redirect Logic</button>
+        <div id="redirectLog" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Dashboard URLs</h2>
+        <button class="test-button" onclick="testDashboardURLs()">Test Dashboard URLs</button>
+        <div id="urlLog" class="log"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Simulate Business Registration</h2>
+        <button class="test-button" onclick="simulateBusinessRegistration()">Simulate Business Registration</button>
+        <div id="simulationLog" class="log"></div>
+    </div>
+
+    <script type="module">
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            element.innerHTML += `[${timestamp}] <span class="${className}">${message}</span>\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        async function testConfig() {
+            const logElement = 'configLog';
+            log(logElement, '🔍 Testing path configuration...');
+            
+            try {
+                const pathConfig = await import('/js/config.js');
+                log(logElement, `✅ PathConfig loaded successfully`, 'success');
+                
+                // Test base path detection
+                const isLiveServer = pathConfig.default.detectLiveServer();
+                log(logElement, `🌐 Live Server detected: ${isLiveServer}`, 'info');
+                
+                // Test base path
+                const basePath = pathConfig.default.getBasePath();
+                log(logElement, `📁 Base path: ${basePath}`, 'info');
+                
+                // Test dashboard paths
+                const studentPath = pathConfig.default.getStudentDashboardPath();
+                const businessPath = pathConfig.default.getBusinessDashboardPath();
+                
+                log(logElement, `📚 Student dashboard path: ${studentPath}`, 'info');
+                log(logElement, `🏢 Business dashboard path: ${businessPath}`, 'info');
+                
+            } catch (error) {
+                log(logElement, `❌ Error testing config: ${error.message}`, 'error');
+            }
+        }
+
+        async function testRedirectLogic() {
+            const logElement = 'redirectLog';
+            log(logElement, '🔍 Testing redirect logic...');
+            
+            try {
+                const pathConfig = await import('/js/config.js');
+                
+                // Test business redirect
+                log(logElement, `🧪 Testing business redirect...`, 'info');
+                const businessRedirect = pathConfig.default.redirectToDashboard('business');
+                log(logElement, `✅ Business redirect function exists`, 'success');
+                
+                // Test personal redirect
+                log(logElement, `🧪 Testing personal redirect...`, 'info');
+                const personalRedirect = pathConfig.default.redirectToDashboard('personal');
+                log(logElement, `✅ Personal redirect function exists`, 'success');
+                
+                // Test invalid role
+                log(logElement, `🧪 Testing invalid role redirect...`, 'info');
+                const invalidRedirect = pathConfig.default.redirectToDashboard('invalid');
+                log(logElement, `✅ Invalid role redirect function exists`, 'success');
+                
+                log(logElement, `✅ All redirect functions are available`, 'success');
+                
+            } catch (error) {
+                log(logElement, `❌ Error testing redirect logic: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDashboardURLs() {
+            const logElement = 'urlLog';
+            log(logElement, '🔍 Testing dashboard URLs...');
+            
+            try {
+                const pathConfig = await import('/js/config.js');
+                
+                // Test URL construction
+                const studentURL = pathConfig.default.getStudentDashboardPath();
+                const businessURL = pathConfig.default.getBusinessDashboardPath();
+                
+                log(logElement, `📚 Student URL: ${studentURL}`, 'info');
+                log(logElement, `🏢 Business URL: ${businessURL}`, 'info');
+                
+                // Test if URLs are different
+                if (studentURL !== businessURL) {
+                    log(logElement, `✅ URLs are correctly different`, 'success');
+                } else {
+                    log(logElement, `❌ URLs are the same - this is wrong!`, 'error');
+                }
+                
+                // Test if business URL contains 'business'
+                if (businessURL.includes('business')) {
+                    log(logElement, `✅ Business URL contains 'business'`, 'success');
+                } else {
+                    log(logElement, `❌ Business URL does not contain 'business'`, 'error');
+                }
+                
+                // Test if student URL contains 'student'
+                if (studentURL.includes('student')) {
+                    log(logElement, `✅ Student URL contains 'student'`, 'success');
+                } else {
+                    log(logElement, `❌ Student URL does not contain 'student'`, 'error');
+                }
+                
+            } catch (error) {
+                log(logElement, `❌ Error testing dashboard URLs: ${error.message}`, 'error');
+            }
+        }
+
+        async function simulateBusinessRegistration() {
+            const logElement = 'simulationLog';
+            log(logElement, '🔍 Simulating business registration...');
+            
+            try {
+                const pathConfig = await import('/js/config.js');
+                
+                // Simulate the registration process
+                log(logElement, `📝 Step 1: User selects 'business' role`, 'info');
+                const selectedRole = 'business';
+                log(logElement, `✅ Role selected: ${selectedRole}`, 'success');
+                
+                // Simulate successful registration
+                log(logElement, `📝 Step 2: Registration successful`, 'info');
+                log(logElement, `✅ User account created`, 'success');
+                log(logElement, `✅ Business profile created`, 'success');
+                
+                // Simulate redirect
+                log(logElement, `📝 Step 3: Redirecting to dashboard...`, 'info');
+                
+                // Get the expected redirect URL
+                const expectedURL = pathConfig.default.getBusinessDashboardPath();
+                log(logElement, `🎯 Expected redirect URL: ${expectedURL}`, 'info');
+                
+                // Check if the URL is correct
+                if (expectedURL.includes('business')) {
+                    log(logElement, `✅ Redirect URL is correct for business`, 'success');
+                } else {
+                    log(logElement, `❌ Redirect URL is incorrect for business`, 'error');
+                }
+                
+                // Simulate the actual redirect (but don't actually redirect)
+                log(logElement, `📝 Step 4: Would redirect to: ${expectedURL}`, 'info');
+                log(logElement, `✅ Business registration simulation complete`, 'success');
+                
+            } catch (error) {
+                log(logElement, `❌ Error in business registration simulation: ${error.message}`, 'error');
+            }
+        }
+
+        // Make functions globally available
+        window.testConfig = testConfig;
+        window.testRedirectLogic = testRedirectLogic;
+        window.testDashboardURLs = testDashboardURLs;
+        window.simulateBusinessRegistration = simulateBusinessRegistration;
+    </script>
+</body>
+</html> 

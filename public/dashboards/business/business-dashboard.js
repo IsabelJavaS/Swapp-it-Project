@@ -1,4 +1,4 @@
-// Componente principal del dashboard de negocio
+// Main business dashboard component
 class BusinessDashboard extends HTMLElement {
     constructor() {
         super();

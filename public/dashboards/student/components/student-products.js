@@ -1,4 +1,4 @@
-// Componente web para productos del estudiante
+// Web component for student products
 class StudentProducts extends HTMLElement {
     constructor() {
         super();
@@ -27,17 +27,17 @@ class StudentProducts extends HTMLElement {
             console.log('StudentProducts: Current user:', this.currentUser);
         } catch (error) {
             console.error('StudentProducts: Error loading auth:', error);
-            this.showErrorNotification('Error de autenticación', 'No se pudo obtener el usuario actual.');
+            this.showErrorNotification('Authentication Error', 'Could not get current user.');
             return;
         }
         
         if (!this.currentUser) {
             console.log('StudentProducts: No current user found');
-            this.showErrorNotification('No autenticado', 'Debes iniciar sesión para ver tus productos.');
+            this.showErrorNotification('Not Authenticated', 'You must log in to view your products.');
             return;
         }
 
-        // Cargar productos del usuario
+        // Load user products
         try {
             console.log('StudentProducts: Loading products for user:', this.currentUser.uid);
             const { getProducts } = await import('/firebase/firestore.js');
@@ -57,7 +57,7 @@ class StudentProducts extends HTMLElement {
             }
         } catch (error) {
             console.error('StudentProducts: Error loading products:', error);
-            this.showErrorNotification('Error al cargar productos', error.message);
+            this.showErrorNotification('Error loading products', error.message);
             this.products = [];
             this.updateProductsList([]);
             this.updateStats([]);
@@ -100,11 +100,11 @@ class StudentProducts extends HTMLElement {
             productsList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-box-open"></i>
-                    <h3>No tienes productos aún</h3>
-                    <p>Comienza añadiendo tu primer producto para vender en el marketplace</p>
+                    <h3>You don't have products yet</h3>
+                    <p>Start by adding your first product to sell in the marketplace</p>
                     <button class="add-product-btn" onclick="this.dispatchEvent(new CustomEvent('navigateToAddProduct'))">
                         <i class="fas fa-plus"></i>
-                        Añadir Producto
+                        Add Product
                     </button>
                 </div>
             `;
@@ -126,7 +126,7 @@ class StudentProducts extends HTMLElement {
                             validatedProduct.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
                             '<i class="fas fa-eye"></i>'}
                     </div>
-                    ${validatedProduct.status === 'sold' ? '<div class="sold-badge">VENDIDO</div>' : ''}
+                    ${validatedProduct.status === 'sold' ? '<div class="sold-badge">SOLD</div>' : ''}
                 </div>
                 <div class="product-info">
                     <div class="product-header">
@@ -144,7 +144,7 @@ class StudentProducts extends HTMLElement {
                         </span>
                         <span class="meta-item">
                             <i class="fas fa-eye"></i>
-                            ${validatedProduct.views} vistas
+                            ${validatedProduct.views} views
                         </span>
                         <span class="meta-item">
                             <i class="fas fa-calendar"></i>
@@ -157,15 +157,15 @@ class StudentProducts extends HTMLElement {
                     <div class="product-actions">
                         <button class="btn btn-primary edit-btn" data-id="${validatedProduct.id}">
                             <i class="fas fa-edit"></i>
-                            Editar
+                            Edit
                         </button>
                         <button class="btn btn-secondary preview-btn" data-id="${validatedProduct.id}">
                             <i class="fas fa-eye"></i>
-                            Vista Previa
+                            Preview
                         </button>
                         <button class="btn btn-danger delete-btn" data-id="${validatedProduct.id}">
                             <i class="fas fa-trash"></i>
-                            Eliminar
+                            Delete
                         </button>
                     </div>
                 </div>
@@ -188,12 +188,12 @@ class StudentProducts extends HTMLElement {
     }
 
     formatDate(dateString) {
-        if (!dateString) return 'Fecha no disponible';
+        if (!dateString) return 'Date not available';
         
         const date = new Date(dateString);
-        if (isNaN(date.getTime())) return 'Fecha no disponible';
+        if (isNaN(date.getTime())) return 'Date not available';
         
-        return date.toLocaleDateString('es-ES', {
+        return date.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
@@ -201,43 +201,59 @@ class StudentProducts extends HTMLElement {
     }
 
     validateProduct(product) {
-        // Asegurar que el producto tenga todos los campos necesarios
+        // Ensure the product has all necessary fields
+        let imageUrl = '/assets/logos/utiles-escolares.jpg'; // Default image
+        
+        // Try to get the real product image
+        if (product.images && product.images.length > 0) {
+            // If there are images, use the first one
+            if (typeof product.images[0] === 'string') {
+                imageUrl = product.images[0];
+            } else if (product.images[0].url) {
+                imageUrl = product.images[0].url;
+            }
+        } else if (product.image) {
+            // If there's a direct image
+            imageUrl = product.image;
+        }
+        
         return {
             id: product.id || 'unknown',
-            productName: product.productName || product.name || 'Producto sin nombre',
+            productName: product.productName || product.name || 'Unnamed Product',
             price: product.price !== null && product.price !== undefined ? product.price : 0,
-            category: product.category || 'Sin categoría',
-            condition: product.condition || 'Nuevo',
-            description: product.description || 'Sin descripción',
+            category: product.category || 'No Category',
+            condition: product.condition || 'New',
+            description: product.description || 'No description',
             status: product.status || 'active',
             views: product.views !== null && product.views !== undefined ? product.views : 0,
             createdAt: product.createdAt || new Date().toISOString(),
-            image: product.image || product.images?.[0] || '/assets/logos/utiles-escolares.jpg'
+            image: imageUrl,
+            images: product.images || []
         };
     }
 
     async deleteProduct(productId) {
-        if (!confirm('¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.')) return;
+        if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
         
         try {
             const { deleteProduct } = await import('/firebase/firestore.js');
             const result = await deleteProduct(productId);
             
             if (result.success) {
-                this.showSuccessNotification('Eliminado', 'Producto eliminado exitosamente.');
-                this.loadProducts(); // Recargar productos
+                this.showSuccessNotification('Deleted', 'Product deleted successfully.');
+                this.loadProducts(); // Reload products
             } else {
-                this.showErrorNotification('Error al eliminar', result.error);
+                this.showErrorNotification('Error deleting', result.error);
             }
         } catch (error) {
-            this.showErrorNotification('Error al eliminar', error.message);
+            this.showErrorNotification('Error deleting', error.message);
         }
     }
 
     editProduct(productId) {
         const product = this.products.find(p => p.id === productId);
         if (!product) {
-            this.showErrorNotification('Error', 'No se encontró el producto para editar.');
+            this.showErrorNotification('Error', 'Product not found for editing.');
             return;
         }
         this.showEditModal(product);
@@ -246,7 +262,7 @@ class StudentProducts extends HTMLElement {
     previewProduct(productId) {
         const product = this.products.find(p => p.id === productId);
         if (!product) {
-            this.showErrorNotification('Error', 'No se encontró el producto para previsualizar.');
+            this.showErrorNotification('Error', 'Product not found for preview.');
             return;
         }
         this.showPreviewModal(product);
@@ -259,23 +275,23 @@ class StudentProducts extends HTMLElement {
             <div class="modal-overlay"></div>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Editar Producto</h2>
+                    <h2>Edit Product</h2>
                     <button class="close-btn" id="closeEditModal">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="editName">Nombre del Producto *</label>
+                        <label for="editName">Product Name *</label>
                         <input type="text" id="editName" value="${product.productName || product.name || ''}" required />
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="editPrice">Precio *</label>
+                            <label for="editPrice">Price *</label>
                             <input type="number" id="editPrice" value="${product.price || 0}" min="0" step="0.01" required />
                         </div>
                         <div class="form-group">
-                            <label for="editCategory">Categoría</label>
+                            <label for="editCategory">Category</label>
                                                                      <select id="editCategory">
                 <option value="accessories" ${(product.category === 'accessories') ? 'selected' : ''}>Accessories</option>
                 <option value="books" ${(product.category === 'books') ? 'selected' : ''}>Books</option>
@@ -291,30 +307,30 @@ class StudentProducts extends HTMLElement {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="editCondition">Condición</label>
+                        <label for="editCondition">Condition</label>
                         <select id="editCondition">
-                            <option value="new" ${(product.condition === 'new') ? 'selected' : ''}>Nuevo</option>
-                            <option value="like-new" ${(product.condition === 'like-new') ? 'selected' : ''}>Como nuevo</option>
-                            <option value="good" ${(product.condition === 'good') ? 'selected' : ''}>Bueno</option>
-                            <option value="fair" ${(product.condition === 'fair') ? 'selected' : ''}>Aceptable</option>
+                            <option value="new" ${(product.condition === 'new') ? 'selected' : ''}>New</option>
+                            <option value="like-new" ${(product.condition === 'like-new') ? 'selected' : ''}>Like New</option>
+                            <option value="good" ${(product.condition === 'good') ? 'selected' : ''}>Good</option>
+                            <option value="fair" ${(product.condition === 'fair') ? 'selected' : ''}>Fair</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="editDescription">Descripción</label>
+                        <label for="editDescription">Description</label>
                         <textarea id="editDescription" rows="4">${product.description || ''}</textarea>
                     </div>
                     <div class="form-group">
-                        <label for="editStatus">Estado</label>
+                        <label for="editStatus">Status</label>
                         <select id="editStatus">
-                            <option value="active" ${(product.status === 'active') ? 'selected' : ''}>Activo</option>
-                            <option value="pending" ${(product.status === 'pending') ? 'selected' : ''}>Pendiente</option>
-                            <option value="sold" ${(product.status === 'sold') ? 'selected' : ''}>Vendido</option>
+                            <option value="active" ${(product.status === 'active') ? 'selected' : ''}>Active</option>
+                                                    <option value="pending" ${(product.status === 'pending') ? 'selected' : ''}>Pending</option>
+                        <option value="sold" ${(product.status === 'sold') ? 'selected' : ''}>Sold</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" id="cancelEditBtn">Cancelar</button>
-                    <button class="btn btn-primary" id="saveEditBtn">Guardar Cambios</button>
+                    <button class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveEditBtn">Save Changes</button>
                 </div>
             </div>
             <style>
@@ -460,7 +476,7 @@ class StudentProducts extends HTMLElement {
             const newStatus = modal.querySelector('#editStatus').value;
 
             if (!newName || isNaN(newPrice) || newPrice < 0) {
-                this.showErrorNotification('Error', 'El nombre y precio son obligatorios y el precio debe ser válido.');
+                this.showErrorNotification('Error', 'Name and price are required and price must be valid.');
                 return;
             }
 
@@ -477,14 +493,14 @@ class StudentProducts extends HTMLElement {
                 });
 
                 if (result.success) {
-                    this.showSuccessNotification('Actualizado', 'Producto actualizado exitosamente.');
+                    this.showSuccessNotification('Updated', 'Product updated successfully.');
                     modal.remove();
-                    this.loadProducts(); // Recargar productos
+                    this.loadProducts(); // Reload products
                 } else {
-                    this.showErrorNotification('Error al actualizar', result.error);
+                    this.showErrorNotification('Error updating', result.error);
                 }
             } catch (error) {
-                this.showErrorNotification('Error al actualizar', error.message);
+                this.showErrorNotification('Error updating', error.message);
             }
         };
     }
@@ -506,13 +522,30 @@ class StudentProducts extends HTMLElement {
                     <div class="marketplace-preview">
                         <div class="product-preview-card">
                             <div class="preview-image">
-                                <img src="${validatedProduct.image}" 
-                                     alt="${validatedProduct.productName}"
-                                     onerror="this.src='/assets/logos/utiles-escolares.jpg'" />
-                                <div class="preview-status ${validatedProduct.status}">
-                                    ${validatedProduct.status === 'sold' ? 'VENDIDO' : 
-                                        validatedProduct.status === 'pending' ? 'PENDIENTE' : 'DISPONIBLE'}
-                                </div>
+                                ${validatedProduct.images && validatedProduct.images.length > 0 ? 
+                                    `<div class="image-gallery">
+                                        ${validatedProduct.images.map((img, index) => {
+                                            const imgUrl = typeof img === 'string' ? img : img.url;
+                                            return `<img src="${imgUrl}" 
+                                                         alt="${validatedProduct.productName} - Imagen ${index + 1}"
+                                                         onerror="this.src='/assets/logos/utiles-escolares.jpg'"
+                                                         class="${index === 0 ? 'active' : ''}" />`;
+                                        }).join('')}
+                                        ${validatedProduct.images.length > 1 ? 
+                                            `<div class="image-nav">
+                                                <button class="nav-btn prev" onclick="this.parentElement.parentElement.querySelector('.active').previousElementSibling?.classList.add('active') || this.parentElement.parentElement.querySelector('img:last-child').classList.add('active'); this.parentElement.parentElement.querySelector('.active').classList.remove('active');">‹</button>
+                                                <button class="nav-btn next" onclick="this.parentElement.parentElement.querySelector('.active').nextElementSibling?.classList.add('active') || this.parentElement.parentElement.querySelector('img:first-child').classList.add('active'); this.parentElement.parentElement.querySelector('.active').classList.remove('active');">›</button>
+                                            </div>` : ''
+                                        }
+                                    </div>` :
+                                    `<img src="${validatedProduct.image}" 
+                                          alt="${validatedProduct.productName}"
+                                          onerror="this.src='/assets/logos/utiles-escolares.jpg'" />`
+                                }
+                                            <div class="preview-status ${validatedProduct.status}">
+                ${validatedProduct.status === 'sold' ? 'SOLD' : 
+                    validatedProduct.status === 'pending' ? 'PENDING' : 'AVAILABLE'}
+            </div>
                             </div>
                             <div class="preview-info">
                                 <h3 class="preview-title">${validatedProduct.productName}</h3>
@@ -614,6 +647,49 @@ class StudentProducts extends HTMLElement {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                }
+                .image-gallery {
+                    position: relative;
+                    height: 100%;
+                }
+                .image-gallery img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                .image-gallery img.active {
+                    opacity: 1;
+                }
+                .image-nav {
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    gap: 0.5rem;
+                    z-index: 10;
+                }
+                .nav-btn {
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    border: none;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1rem;
+                    transition: all 0.2s ease;
+                }
+                .nav-btn:hover {
+                    background: rgba(0, 0, 0, 0.9);
                 }
                 .preview-status {
                     position: absolute;
@@ -772,7 +848,7 @@ class StudentProducts extends HTMLElement {
     }
 
     showErrorNotification(title, message) {
-        // Crear notificación de error
+        // Create error notification
         const notification = document.createElement('div');
         notification.className = 'error-notification';
         notification.innerHTML = `
@@ -945,7 +1021,7 @@ class StudentProducts extends HTMLElement {
                 }
 
                 .product-card.sold::after {
-                    content: 'VENDIDO';
+                    content: 'SOLD';
                     position: absolute;
                     top: 1rem;
                     right: 1rem;
@@ -1185,8 +1261,8 @@ class StudentProducts extends HTMLElement {
             <div class="products-overview">
                 <!-- Section Header -->
                 <div class="section-header">
-                    <h1>Mis Productos</h1>
-                    <p>Gestiona tus productos y rastrea su rendimiento</p>
+                    <h1>My Products</h1>
+                    <p>Manage your products and track their performance</p>
                 </div>
 
                 <!-- Stats Cards -->
@@ -1196,28 +1272,28 @@ class StudentProducts extends HTMLElement {
                             <i class="fas fa-box"></i>
                         </div>
                         <div class="stat-number">0</div>
-                        <div class="stat-label">Productos Activos</div>
+                        <div class="stat-label">Active Products</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon sold">
                             <i class="fas fa-check"></i>
                         </div>
                         <div class="stat-number">0</div>
-                        <div class="stat-label">Productos Vendidos</div>
+                        <div class="stat-label">Sold Products</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon pending">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="stat-number">0</div>
-                        <div class="stat-label">Pendientes</div>
+                        <div class="stat-label">Pending</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon active">
                             <i class="fas fa-eye"></i>
                         </div>
                         <div class="stat-number">0</div>
-                        <div class="stat-label">Total de Vistas</div>
+                        <div class="stat-label">Total Views</div>
                     </div>
                 </div>
 

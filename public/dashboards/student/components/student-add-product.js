@@ -700,7 +700,7 @@ class StudentAddProduct extends HTMLElement {
         const loadingIcon = this.shadowRoot.getElementById('loadingIcon');
         const form = this.shadowRoot.getElementById('addProductForm');
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-        let currentUser; // Declarar aquí para que esté disponible en toda la función
+                    let currentUser; // Declare here so it's available throughout the function
         try {
             // Show loading state
             submitBtn.disabled = true;

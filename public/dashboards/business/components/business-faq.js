@@ -1,4 +1,4 @@
-// FAQ para negocios
+// Business FAQ Component
 class BusinessFAQ extends HTMLElement {
     constructor() {
         super();
@@ -47,27 +47,27 @@ class BusinessFAQ extends HTMLElement {
                     line-height: 1.6;
                 }
             </style>
-            <h2>Preguntas Frecuentes (FAQ) para Negocios</h2>
+            <h2>Frequently Asked Questions (FAQ) for Businesses</h2>
             <ul class="faq-list">
                 <li class="faq-item">
-                    <div class="faq-question">¿Cómo puedo agregar un nuevo producto?</div>
-                    <div class="faq-answer">Desde la sección "Add Product" en el menú lateral, completa el formulario con la información de tu producto y haz clic en "Guardar".</div>
+                    <div class="faq-question">How can I add a new product?</div>
+                    <div class="faq-answer">From the "Add Product" section in the sidebar, complete the form with your product information and click "Save".</div>
                 </li>
                 <li class="faq-item">
-                    <div class="faq-question">¿Cómo gestiono mis ventas?</div>
-                    <div class="faq-answer">En la sección "Sales" puedes ver todas tus ventas, su estado y detalles de cada transacción.</div>
+                    <div class="faq-question">How do I manage my sales?</div>
+                    <div class="faq-answer">In the "Sales" section you can view all your sales, their status and details of each transaction.</div>
                 </li>
                 <li class="faq-item">
-                    <div class="faq-question">¿Puedo editar la información de mi negocio?</div>
-                    <div class="faq-answer">Sí, en la sección "Profile" puedes actualizar los datos de tu empresa, dirección, contacto y más.</div>
+                    <div class="faq-question">Can I edit my business information?</div>
+                    <div class="faq-answer">Yes, in the "Profile" section you can update your company data, address, contact information and more.</div>
                 </li>
                 <li class="faq-item">
-                    <div class="faq-question">¿Cómo recibo notificaciones de nuevas compras?</div>
-                    <div class="faq-answer">Las notificaciones aparecen en la sección "Notifications" y también recibirás alertas en tiempo real si tienes la app abierta.</div>
+                    <div class="faq-question">How do I receive notifications for new purchases?</div>
+                    <div class="faq-answer">Notifications appear in the "Notifications" section and you'll also receive real-time alerts if you have the app open.</div>
                 </li>
                 <li class="faq-item">
-                    <div class="faq-question">¿A quién contacto si tengo un problema?</div>
-                    <div class="faq-answer">Puedes escribirnos a soporte@swappit.com o usar el formulario de contacto en la sección "Settings".</div>
+                    <div class="faq-question">Who do I contact if I have a problem?</div>
+                    <div class="faq-answer">You can write to us at support@swappit.com or use the contact form in the "Settings" section.</div>
                 </li>
             </ul>
         `;
