@@ -1,4 +1,4 @@
-// Footer Web Component - Improved Design
+// Footer Web Component - Professional Design
 // La ruta del logo se ajusta automáticamente según el entorno (local o Firebase Hosting)
 class FooterComponent extends HTMLElement {
     constructor() {
@@ -37,7 +37,7 @@ class FooterComponent extends HTMLElement {
 
     getLogoPath() {
         const base = this.getBaseUrl();
-        return `${base}/assets/logos/LogoSinFondo.png`;
+        return `${base}/assets/logos/logolargo.png`;
     }
 
     // Método para cargar CSS de forma más robusta
@@ -101,10 +101,10 @@ class FooterComponent extends HTMLElement {
                     overflow: hidden;
                 }
 
-                /* Newsletter Section - Improved */
+                /* Newsletter Section - Professional */
                 .newsletter-section {
                     background: var(--gradient-primary);
-                    padding: 4rem 0;
+                    padding: 3rem 0;
                     text-align: center;
                     position: relative;
                 }
@@ -122,7 +122,7 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .newsletter-content {
-                    max-width: 700px;
+                    max-width: 600px;
                     margin: 0 auto;
                     padding: 0 1rem;
                     position: relative;
@@ -131,38 +131,38 @@ class FooterComponent extends HTMLElement {
 
                 .newsletter-title {
                     font-family: var(--font-primary);
-                    font-size: 2.25rem;
+                    font-size: 1.75rem;
                     font-weight: 700;
-                    margin-bottom: 1rem;
+                    margin-bottom: 0.75rem;
                     color: white;
                     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 }
 
                 .newsletter-subtitle {
                     color: rgba(255, 255, 255, 0.95);
-                    margin-bottom: 2.5rem;
-                    font-size: 1.2rem;
+                    margin-bottom: 2rem;
+                    font-size: 1rem;
                     font-family: var(--font-secondary);
                     line-height: 1.6;
                 }
 
                 .newsletter-form {
                     display: flex;
-                    gap: 1rem;
-                    max-width: 550px;
+                    gap: 0.75rem;
+                    max-width: 450px;
                     margin: 0 auto;
                     background: rgba(255, 255, 255, 0.1);
                     padding: 0.5rem;
-                    border-radius: 12px;
+                    border-radius: 10px;
                     backdrop-filter: blur(10px);
                 }
 
                 .newsletter-input {
                     flex: 1;
-                    padding: 1rem 1.25rem;
+                    padding: 0.75rem 1rem;
                     border: none;
-                    border-radius: 8px;
-                    font-size: 1rem;
+                    border-radius: 6px;
+                    font-size: 0.9rem;
                     background: rgba(255, 255, 255, 0.95);
                     color: var(--neutral-dark);
                     font-family: var(--font-secondary);
@@ -176,17 +176,17 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .newsletter-button {
-                    padding: 1rem 2rem;
+                    padding: 0.75rem 1.5rem;
                     background: var(--gradient-secondary);
                     color: white;
                     border: none;
-                    border-radius: 8px;
+                    border-radius: 6px;
                     font-weight: 600;
                     cursor: pointer;
                     transition: all 0.3s ease;
                     white-space: nowrap;
                     font-family: var(--font-primary);
-                    font-size: 1rem;
+                    font-size: 0.9rem;
                     box-shadow: 0 4px 12px rgba(255, 164, 36, 0.3);
                 }
 
@@ -197,7 +197,7 @@ class FooterComponent extends HTMLElement {
 
                 /* Main Footer Content */
                 .footer-main {
-                    padding: 4rem 0 2rem;
+                    padding: 3rem 0 1.5rem;
                     position: relative;
                 }
 
@@ -208,12 +208,13 @@ class FooterComponent extends HTMLElement {
                     padding: 0 1rem;
                 }
 
-                /* Footer Grid - Improved Layout */
+                /* Footer Grid - Professional Layout */
                 .footer-grid {
                     display: grid;
-                    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-                    gap: 3rem;
+                    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+                    gap: 2rem;
                     width: 100%;
+                    align-items: start;
                 }
 
                 /* Footer Column */
@@ -222,22 +223,21 @@ class FooterComponent extends HTMLElement {
                     flex-direction: column;
                 }
 
-                /* Footer Brand - Enhanced */
+                /* Footer Brand - Professional */
                 .footer-brand {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
                     text-align: left;
-                    margin-bottom: 2rem;
+                    margin-bottom: 1.5rem;
                 }
 
                 .footer-brand img {
-                    width: 160px;
+                    width: 120px;
                     height: auto;
                     display: block;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1rem;
                     transition: transform 0.3s ease;
-                    filter: brightness(0) invert(1);
                 }
 
                 .footer-brand:hover img {
@@ -246,26 +246,26 @@ class FooterComponent extends HTMLElement {
 
                 .footer-description {
                     color: rgba(255, 255, 255, 0.85);
-                    line-height: 1.7;
-                    margin-bottom: 2rem;
-                    font-size: 1rem;
+                    line-height: 1.6;
+                    margin-bottom: 1.5rem;
+                    font-size: 0.9rem;
                     font-family: var(--font-secondary);
                     text-align: left;
-                    max-width: 320px;
+                    max-width: 280px;
                 }
 
-                /* Social Links - Enhanced */
+                /* Social Links - Professional */
                 .footer-social {
                     display: flex;
-                    gap: 1rem;
+                    gap: 0.75rem;
                     margin-top: auto;
                     justify-content: flex-start;
                 }
 
                 .social-link {
-                    width: 45px;
-                    height: 45px;
-                    border-radius: 12px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
                     background: rgba(255, 255, 255, 0.1);
                     color: var(--swappit-orange);
                     display: flex;
@@ -273,7 +273,7 @@ class FooterComponent extends HTMLElement {
                     justify-content: center;
                     text-decoration: none;
                     transition: all 0.3s ease;
-                    font-size: 1.1rem;
+                    font-size: 1rem;
                     backdrop-filter: blur(10px);
                     border: 1px solid rgba(255, 255, 255, 0.1);
                 }
@@ -285,14 +285,15 @@ class FooterComponent extends HTMLElement {
                     box-shadow: 0 8px 25px rgba(255, 164, 36, 0.4);
                 }
 
-                /* Footer Titles - Enhanced */
+                /* Footer Titles - Professional */
                 .footer-title {
                     color: white;
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                     font-weight: 600;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
                     position: relative;
+                    margin-top: 0;
                 }
 
                 .footer-title::after {
@@ -300,158 +301,129 @@ class FooterComponent extends HTMLElement {
                     position: absolute;
                     bottom: -0.5rem;
                     left: 0;
-                    width: 30px;
-                    height: 3px;
+                    width: 25px;
+                    height: 2px;
                     background: var(--gradient-secondary);
-                    border-radius: 2px;
+                    border-radius: 1px;
                 }
 
-                /* Footer Links - Enhanced */
+                /* Footer Links - Professional */
                 .footer-links {
                     list-style: none;
                     padding: 0;
                     margin: 0;
+                    margin-top: 0;
                 }
 
                 .footer-links li {
-                    margin-bottom: 1rem;
+                    margin-bottom: 0.4rem;
+                    line-height: 1.4;
+                    min-height: 1.4em;
                 }
 
                 .footer-links a {
                     color: rgba(255, 255, 255, 0.8);
                     text-decoration: none;
                     transition: all 0.3s ease;
-                    font-size: 0.95rem;
+                    font-size: 0.9rem;
                     font-family: var(--font-secondary);
                     display: flex;
                     align-items: center;
-                    padding: 0.5rem 0;
-                    border-radius: 6px;
+                    padding: 0.4rem 0;
+                    border-radius: 4px;
                     transition: all 0.3s ease;
+                    line-height: 1.4;
+                    min-height: 1.4em;
                 }
 
                 .footer-links a:hover {
                     color: var(--swappit-orange);
-                    transform: translateX(5px);
+                    transform: translateX(3px);
                     background: rgba(255, 255, 255, 0.05);
-                    padding-left: 0.75rem;
+                    padding-left: 0.5rem;
                 }
 
-                /* Footer Contact - Enhanced */
+                /* Footer Contact - Professional */
                 .footer-contact {
-                    margin-top: 1rem;
+                    margin-top: 0;
+                    padding-top: 0;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
                 }
 
                 .footer-contact p {
                     color: rgba(255, 255, 255, 0.8);
-                    margin-bottom: 1rem;
-                    font-size: 0.95rem;
+                    margin-bottom: 0.4rem;
+                    font-size: 0.9rem;
                     display: flex;
                     align-items: center;
                     font-family: var(--font-secondary);
-                    padding: 0.5rem 0;
+                    padding: 0.4rem 0;
                     transition: all 0.3s ease;
+                    line-height: 1.4;
+                    min-height: 1.4em;
+                    margin-top: 0;
                 }
 
                 .footer-contact p:hover {
                     color: var(--swappit-orange);
-                    transform: translateX(5px);
+                    transform: translateX(3px);
                 }
 
                 .footer-contact p i {
-                    margin-right: 1rem;
-                    width: 20px;
+                    margin-right: 0.75rem;
+                    width: 16px;
                     text-align: center;
                     color: var(--swappit-orange);
-                    font-size: 1rem;
+                    font-size: 0.9rem;
                 }
 
-                /* Stats Section - New with Social Media Animation */
-                .footer-stats {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 1rem;
-                    margin-top: 1.5rem;
-                }
 
-                .stat-item {
-                    background: rgba(255, 255, 255, 0.05);
-                    padding: 1rem;
-                    border-radius: 12px;
-                    text-align: center;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    backdrop-filter: blur(10px);
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                }
 
-                .stat-item:hover {
-                    background: var(--gradient-secondary);
-                    transform: translateY(-3px);
-                    box-shadow: 0 8px 25px rgba(255, 164, 36, 0.4);
-                    border-color: rgba(255, 164, 36, 0.3);
-                }
-
-                .stat-item:hover .stat-number {
-                    color: white;
-                }
-
-                .stat-item:hover .stat-label {
-                    color: rgba(255, 255, 255, 0.9);
-                }
-
-                .stat-number {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    color: var(--swappit-orange);
-                    font-family: var(--font-primary);
-                    transition: all 0.3s ease;
-                }
-
-                .stat-label {
-                    font-size: 0.8rem;
-                    color: rgba(255, 255, 255, 0.7);
-                    margin-top: 0.25rem;
-                    transition: all 0.3s ease;
-                    font-family: var(--font-secondary);
-                }
-
-                /* Footer Bottom - Enhanced */
+                /* Footer Bottom - Professional */
                 .footer-bottom {
-                    background: rgba(0, 0, 0, 0.2);
-                    padding: 2rem 0;
+                    background: rgba(0, 0, 0, 0.3);
+                    padding: 1.5rem 0;
                     border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    margin-top: 3rem;
+                    margin-top: 2rem;
                 }
 
                 .footer-bottom-content {
                     display: flex;
-                    justify-content: space-between;
+                    flex-direction: column;
                     align-items: center;
-                    flex-wrap: wrap;
-                    gap: 1.5rem;
+                    gap: 1rem;
+                }
+
+                .footer-bottom-left {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
                 }
 
                 .copyright {
                     color: rgba(255, 255, 255, 0.7);
                     margin: 0;
-                    font-size: 0.9rem;
+                    font-size: 0.85rem;
                     font-family: var(--font-secondary);
                 }
 
                 .footer-legal {
                     display: flex;
-                    gap: 2rem;
+                    gap: 1.5rem;
                     align-items: center;
+                    justify-content: center;
+                    flex-wrap: wrap;
                 }
 
                 .footer-legal a {
                     color: rgba(255, 255, 255, 0.7);
                     text-decoration: none;
-                    font-size: 0.9rem;
+                    font-size: 0.85rem;
                     transition: all 0.3s ease;
                     font-family: var(--font-secondary);
-                    padding: 0.5rem 0;
+                    padding: 0.25rem 0;
                 }
 
                 .footer-legal a:hover {
@@ -459,28 +431,29 @@ class FooterComponent extends HTMLElement {
                     transform: translateY(-1px);
                 }
 
-                /* Responsive - Enhanced */
+                /* Responsive - Professional */
                 @media (max-width: 1200px) {
                     .footer-grid {
-                        grid-template-columns: repeat(3, 1fr);
-                        gap: 2rem;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1.5rem;
                     }
                 }
 
                 @media (max-width: 768px) {
                     .footer-grid {
                         grid-template-columns: repeat(2, 1fr);
-                        gap: 2rem;
+                        gap: 1.5rem;
                     }
 
                     .newsletter-form {
                         flex-direction: column;
-                        padding: 1rem;
+                        padding: 0.75rem;
                     }
 
                     .footer-bottom-content {
                         flex-direction: column;
                         text-align: center;
+                        gap: 1rem;
                     }
 
                     .footer-legal {
@@ -489,34 +462,32 @@ class FooterComponent extends HTMLElement {
                     }
 
                     .newsletter-title {
-                        font-size: 1.75rem;
+                        font-size: 1.5rem;
                     }
 
-                    .footer-stats {
-                        grid-template-columns: 1fr;
-                    }
+
                 }
 
                 @media (max-width: 576px) {
                     .footer-grid {
                         grid-template-columns: 1fr;
-                        gap: 2rem;
+                        gap: 1.5rem;
                     }
 
                     .footer-main {
-                        padding: 3rem 0 1.5rem;
+                        padding: 2rem 0 1rem;
                     }
 
                     .newsletter-section {
-                        padding: 3rem 0;
+                        padding: 2rem 0;
                     }
 
                     .newsletter-title {
-                        font-size: 1.5rem;
+                        font-size: 1.25rem;
                     }
 
                     .footer-bottom {
-                        padding: 1.5rem 0;
+                        padding: 1rem 0;
                     }
 
                     .footer-legal {
@@ -531,7 +502,7 @@ class FooterComponent extends HTMLElement {
                     <div class="container">
                         <div class="newsletter-content">
                             <h2 class="newsletter-title">Join the SWAPPIT Community</h2>
-                            <p class="newsletter-subtitle">Get exclusive access to student deals, sustainability tips, and community updates. Be the first to know about new features and opportunities!</p>
+                            <p class="newsletter-subtitle">Get exclusive access to student deals, sustainability tips, and community updates.</p>
                             <form class="newsletter-form" id="newsletterForm">
                                 <input type="email" class="newsletter-input" placeholder="Enter your student email" required>
                                 <button type="submit" class="newsletter-button">
@@ -552,7 +523,7 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
-                                    SWAPPIT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes, making education more accessible and environmentally friendly.
+                                    SWAPPIT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -586,18 +557,7 @@ class FooterComponent extends HTMLElement {
                                 </ul>
                             </div>
 
-                            <!-- Services -->
-                            <div class="footer-column">
-                                <h3 class="footer-title">Our Services</h3>
-                                <ul class="footer-links">
-                                    <li><a href="${this.getBaseUrl()}/pages/auth/register.html">Student Registration</a></li>
-                                    <li><a href="#">Business Partnership</a></li>
-                                    <li><a href="#">Supply Exchange</a></li>
-                                    <li><a href="#">Community Events</a></li>
-                                    <li><a href="#">Educational Resources</a></li>
-                                    <li><a href="#">Sustainability Programs</a></li>
-                                </ul>
-                            </div>
+
 
                             <!-- Categories -->
                             <div class="footer-column">
@@ -609,46 +569,29 @@ class FooterComponent extends HTMLElement {
                                 </ul>
                             </div>
 
-                            <!-- Contact Info & Stats -->
+                            <!-- Contact Info -->
                             <div class="footer-column">
-                                <h3 class="footer-title">Contact & Stats</h3>
+                                <h3 class="footer-title">Contact Us</h3>
                                 <div class="footer-contact">
                                     <p><i class="fas fa-envelope"></i>hello@swappit.com</p>
                                     <p><i class="fas fa-phone"></i>+1 (555) 123-4567</p>
                                     <p><i class="fas fa-location-dot"></i>123 Education Street, ST 12345</p>
                                     <p><i class="fas fa-clock"></i>Mon-Fri: 9AM-6PM EST</p>
                                 </div>
-                                
-                                <div class="footer-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">10K+</div>
-                                        <div class="stat-label">Active Students</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">50K+</div>
-                                        <div class="stat-label">Exchanges</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">95%</div>
-                                        <div class="stat-label">Satisfaction</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">$2M+</div>
-                                        <div class="stat-label">Saved</div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Footer Bottom -->
+                <!-- Footer Bottom - Professional -->
                 <div class="footer-bottom">
                     <div class="container">
                         <div class="footer-bottom-content">
-                            <p class="copyright">
-                                © 2024 SWAPPIT. All rights reserved. | Making education sustainable, one exchange at a time.
-                            </p>
+                            <div class="footer-bottom-left">
+                                <p class="copyright">
+                                    © 2024 SWAPPIT. All rights reserved. | Making education sustainable, one exchange at a time.
+                                </p>
+                            </div>
                             <div class="footer-legal">
                                 <a href="#">Privacy Policy</a>
                                 <a href="#">Terms of Service</a>
@@ -677,6 +620,8 @@ class FooterComponent extends HTMLElement {
             });
         }
 
+
+
         // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
@@ -703,8 +648,9 @@ class FooterComponent extends HTMLElement {
 
     handleNewsletterSubscription(email) {
         // Simular envío de newsletter con mejor UX
-        const button = this.shadowRoot.querySelector('.newsletter-button');
-        const input = this.shadowRoot.querySelector('.newsletter-input');
+        const form = this.shadowRoot.getElementById('newsletterForm');
+        const button = form.querySelector('button');
+        const input = form.querySelector('input[type="email"]');
         const originalText = button.innerHTML;
         
         button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
