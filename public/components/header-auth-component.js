@@ -182,8 +182,8 @@ class HeaderAuthComponent extends HTMLElement {
         return window.pathConfig ? window.pathConfig.getLoginPath() : '/pages/auth/login.html';
     }
 
-    getSwapcoinInfoPath() {
-        return window.pathConfig ? window.pathConfig.getSwapcoinInfoPath() : '/pages/swapcoin/info.html';
+    getSwappitCoinsInfoPath() {
+        return window.pathConfig ? window.pathConfig.getSwappitCoinsInfoPath() : '/pages/swapcoin/info.html';
     }
 
     getSupportPath() {
@@ -845,7 +845,7 @@ class HeaderAuthComponent extends HTMLElement {
                         <!-- Column 3: SWAPPIT Coins + Avatar + Cart -->
                         <div class="column-3">
                             <!-- SWAPPIT Coins -->
-                            <a href="${this.getSwapcoinInfoPath()}" class="coins-container">
+                            <a href="${this.getSwappitCoinsInfoPath()}" class="coins-container">
                                 <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" class="coins-icon" width="30" height="30">
                                 <span>1,250</span>
                             </a>
@@ -883,11 +883,11 @@ class HeaderAuthComponent extends HTMLElement {
                                         <div class="dropdown-divider"></div>
                                         <!-- SWAPPIT Coins Section -->
                                         <div class="dropdown-section-title">SWAPPIT Coins</div>
-                                        <a href="${this.getSwapcoinInfoPath()}" class="dropdown-item" id="swapcoinInfoLink">
+                                        <a href="${this.getSwappitCoinsInfoPath()}" class="dropdown-item" id="swapcoinInfoLink">
                                             <i class="fas fa-coins"></i>
                                             My Coins
                                         </a>
-                                        <a href="${this.getSwapcoinInfoPath()}?action=buy" class="dropdown-item" id="buyCoinsLink">
+                                        <a href="${this.getSwappitCoinsInfoPath()}?action=buy" class="dropdown-item" id="buyCoinsLink">
                                             <i class="fas fa-shopping-cart"></i>
                                             Buy Coins
                                         </a>
@@ -1027,7 +1027,7 @@ class HeaderAuthComponent extends HTMLElement {
         if (swapcoinInfoLink) {
             swapcoinInfoLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.navigateToSwapcoinInfo();
+                this.navigateToSwappitCoinsInfo();
             });
         }
         
@@ -1119,14 +1119,14 @@ class HeaderAuthComponent extends HTMLElement {
         window.location.href = this.getSettingsPath();
     }
 
-    navigateToSwapcoinInfo() {
+    navigateToSwappitCoinsInfo() {
         this.closeDropdown();
-        window.location.href = this.getSwapcoinInfoPath();
+        window.location.href = this.getSwappitCoinsInfoPath();
     }
 
     navigateToBuyCoins() {
         this.closeDropdown();
-        window.location.href = `${this.getSwapcoinInfoPath()}?action=buy`;
+        window.location.href = `${this.getSwappitCoinsInfoPath()}?action=buy`;
     }
 
 
@@ -1199,7 +1199,7 @@ class HeaderAuthComponent extends HTMLElement {
                             <i class="fas fa-headset"></i>
                             Support
                         </a>
-                        <a href="${this.getSwapcoinInfoPath()}" class="mobile-menu-item">
+                        <a href="${this.getSwappitCoinsInfoPath()}" class="mobile-menu-item">
                             <i class="fas fa-coins"></i>
                             SWAPPIT Coins
                         </a>

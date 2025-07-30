@@ -10,7 +10,7 @@ class ProductPurchasePage {
         this.userBalance = 0;
         this.selectedDeliveryMethod = 'delivery';
         this.deliveryFees = {
-            delivery: 5, // 5 Swappcoins for home delivery
+            delivery: 5, // 5 Swappit Coins for home delivery
             pickup: 0    // Free pickup
         };
     }
@@ -174,17 +174,17 @@ class ProductPurchasePage {
         // Update summary display
         const summaryPrice = document.getElementById('summary-price');
         if (summaryPrice) {
-            summaryPrice.textContent = `${productPrice} Swappcoins`;
+            summaryPrice.textContent = `${productPrice} Swappit Coins`;
         }
 
         const summaryDelivery = document.getElementById('summary-delivery');
         if (summaryDelivery) {
-            summaryDelivery.textContent = `${deliveryFee} Swappcoins`;
+            summaryDelivery.textContent = `${deliveryFee} Swappit Coins`;
         }
 
         const summaryTotal = document.getElementById('summary-total');
         if (summaryTotal) {
-            summaryTotal.textContent = `${total} Swappcoins`;
+            summaryTotal.textContent = `${total} Swappit Coins`;
         }
 
         // Check if user has sufficient funds
@@ -210,7 +210,7 @@ class ProductPurchasePage {
             // Disable purchase button
             if (purchaseBtn) {
                 purchaseBtn.disabled = true;
-                purchaseBtn.textContent = 'Insufficient Swappcoins';
+                purchaseBtn.textContent = 'Insufficient Swappit Coins';
             }
         } else {
             // Hide insufficient funds warning
@@ -271,13 +271,13 @@ window.processPurchase = async function() {
 
         // Check if user has sufficient funds
         if (purchasePage.userBalance < total) {
-            throw new Error('Insufficient Swappcoins');
+            throw new Error('Insufficient Swappit Coins');
         }
 
         // TODO: Implement actual purchase logic
         // This would involve:
         // 1. Creating a transaction record
-        // 2. Deducting Swappcoins from user
+                    // 2. Deducting Swappit Coins from user
         // 3. Updating product status
         // 4. Sending notifications
 
@@ -296,7 +296,7 @@ window.processPurchase = async function() {
     }
 };
 
-window.buyMoreSwappcoins = function() {
+        window.buyMoreSwappitCoins = function() {
     // Redirect to Swappcoin purchase page
     window.location.href = '../../pages/swapcoin/info.html';
 };

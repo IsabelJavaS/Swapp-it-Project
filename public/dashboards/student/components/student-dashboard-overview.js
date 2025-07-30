@@ -496,7 +496,7 @@ class StudentDashboardOverview extends HTMLElement {
                                 <i class="fas fa-wallet"></i>
                             </div>
                             <div class="stat-value">
-                                <div class="stat-number" id="swapcoinBalance">
+                                <div class="stat-number" id="swappitCoinsBalance">
                                     <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
                                     0
                                 </div>
@@ -617,9 +617,9 @@ class StudentDashboardOverview extends HTMLElement {
             const totalSales = soldProducts.reduce((sum, p) => sum + (p.price || 0), 0);
             const totalPurchases = 0; // For now 0, can be implemented later
             const activeProducts = userProducts.filter(p => p.status === 'active').length;
-            const swapcoinBalance = userProfile?.points?.balance || 0;
+            const swappitCoinsBalance = userProfile?.points?.balance || 0;
             
-            console.log('StudentDashboardOverview: Calculated stats - Sales:', totalSales, 'Active:', activeProducts, 'Balance:', swapcoinBalance);
+            console.log('StudentDashboardOverview: Calculated stats - Sales:', totalSales, 'Active:', activeProducts, 'Balance:', swappitCoinsBalance);
 
             // Generate recent activity based on real products
             const recentActivity = [];
@@ -656,7 +656,7 @@ class StudentDashboardOverview extends HTMLElement {
                 totalSales,
                 totalPurchases,
                 activeProducts,
-                swapcoinBalance,
+                swappitCoinsBalance,
                 recentActivity
             };
 
@@ -697,11 +697,11 @@ class StudentDashboardOverview extends HTMLElement {
                 totalSales: 0,
                 totalPurchases: 0,
                 activeProducts: 0,
-                swapcoinBalance: 0,
+                swappitCoinsBalance: 0,
                 recentActivity: [
                     {
                         type: 'coin',
-                        title: 'SWAPPIT Coins Balance',
+                        title: 'Swappit Coins Balance',
                         description: 'Your current available balance.',
                         price: 0,
                         time: 'Available'
@@ -752,20 +752,20 @@ class StudentDashboardOverview extends HTMLElement {
             const totalSalesElement = this.shadowRoot.getElementById('totalSales');
             const totalPurchasesElement = this.shadowRoot.getElementById('totalPurchases');
             const activeProductsElement = this.shadowRoot.getElementById('activeProducts');
-            const swapcoinBalanceElement = this.shadowRoot.getElementById('swapcoinBalance');
+            const swappitCoinsBalanceElement = this.shadowRoot.getElementById('swappitCoinsBalance');
             
             if (totalSalesElement) totalSalesElement.textContent = `$${data.totalSales.toFixed(2)}`;
             if (totalPurchasesElement) totalPurchasesElement.textContent = `$${data.totalPurchases.toFixed(2)}`;
             if (activeProductsElement) activeProductsElement.textContent = data.activeProducts;
-            if (swapcoinBalanceElement) swapcoinBalanceElement.textContent = data.swapcoinBalance;
+            if (swappitCoinsBalanceElement) swappitCoinsBalanceElement.textContent = data.swappitCoinsBalance;
 
             // Add SWAPPIT Coins to the activity list
             const activityWithCoins = [
                 {
                     type: 'coin',
-                    title: 'SWAPPIT Coins Balance',
+                    title: 'Swappit Coins Balance',
                     description: 'Your current available balance.',
-                    price: data.swapcoinBalance,
+                    price: data.swappitCoinsBalance,
                     time: 'Available'
                 },
                 ...data.recentActivity

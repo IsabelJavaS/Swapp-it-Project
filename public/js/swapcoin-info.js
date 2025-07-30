@@ -1,4 +1,4 @@
-// SwapCoin Info Page JavaScript
+// Swappit Coins Info Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize SwapCoin functionality
     initializeSwapCoin();
@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     updateHeaderBalance();
 });
 
-// Function to get user SwapCoins (local fallback)
-function getUserSwapCoins() {
-    return parseInt(localStorage.getItem('swapcoin-balance') || 120);
-}
+    // Function to get user Swappit Coins (local fallback)
+    function getUserSwappitCoins() {
+        return parseInt(localStorage.getItem('swapcoin-balance') || 120);
+    }
 
 // Update header balance display
 function updateHeaderBalance() {
@@ -26,18 +26,19 @@ function updateHeaderBalance() {
     } else {
         const headerBalance = document.getElementById('swapcoin-amount');
         if (headerBalance) {
-            headerBalance.textContent = getUserSwapCoins();
+            headerBalance.textContent = getUserSwappitCoins();
         }
     }
 }
 
-// Initialize SwapCoin page
-function initializeSwapCoin() {
-    console.log('SwapCoin page initialized');
+    // Initialize Swappit Coins page
+    function initializeSwappitCoins() {
+        console.log('Swappit Coins page initialized');
     
     // Add loading animation to balance
     const balanceElement = document.getElementById('swapcoin-balance');
     if (balanceElement) {
+        balanceElement.textContent = getUserSwappitCoins();
         balanceElement.style.opacity = '0.7';
         setTimeout(() => {
             balanceElement.style.opacity = '1';
@@ -79,7 +80,7 @@ function showPurchaseModal(coinAmount, price) {
                     </div>
                     <div class="modal-body">
                         <div class="text-center mb-4">
-                            <div class="h3 text-warning mb-2">${coinAmount} SwapCoins</div>
+                            <div class="h3 text-warning mb-2">${coinAmount} Swappit Coins</div>
                             <div class="h4 text-muted">for ${price}</div>
                         </div>
                         <div class="alert alert-info">
@@ -124,7 +125,7 @@ function processPurchase(coinAmount, price) {
     modal.hide();
     
     // Show success message
-    showNotification(`Successfully purchased ${coinAmount} SwapCoins!`, 'success');
+    showNotification(`Successfully purchased ${coinAmount} Swappit Coins!`, 'success');
     
     // Update balance (demo)
     updateBalance(parseInt(coinAmount));
@@ -133,7 +134,7 @@ function processPurchase(coinAmount, price) {
 // Load user balance from storage/backend
 function loadUserBalance() {
     // In a real app, this would fetch from backend
-    const currentBalance = getUserSwapCoins();
+    const currentBalance = getUserSwappitCoins();
     updateBalanceDisplay(currentBalance);
 }
 
@@ -176,7 +177,7 @@ function updateBalance(coinsToAdd) {
         const newBalance = addSwapCoins(coinsToAdd);
         updateBalanceDisplay(newBalance);
     } else {
-        const currentBalance = getUserSwapCoins();
+        const currentBalance = getUserSwappitCoins();
         const newBalance = currentBalance + coinsToAdd;
         localStorage.setItem('swapcoin-balance', newBalance);
         updateBalanceDisplay(newBalance);

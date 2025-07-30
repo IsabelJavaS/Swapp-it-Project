@@ -63,7 +63,7 @@ export class AppConfig {
         return this.getPagePath('/pages/auth/register.html');
     }
 
-    static getSwapcoinInfoPath() {
+    static getSwappitCoinsInfoPath() {
         return this.getPagePath('/pages/swapcoin/info.html');
     }
 
@@ -191,8 +191,8 @@ class PathConfig {
         return `${this.basePath}/pages/marketplace/marketplace.html`;
     }
 
-    // Rutas para swapcoin
-    getSwapcoinInfoPath() {
+    // Rutas para Swappit Coins
+    getSwappitCoinsInfoPath() {
         return `${this.basePath}/pages/swapcoin/info.html`;
     }
 
