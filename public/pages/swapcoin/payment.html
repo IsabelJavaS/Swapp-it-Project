@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pago - SwappIt</title>
+  <link rel="stylesheet" href="/public/css/payment.css">
+</head>
+<body>
+  <div class="header-bg"></div>
+  <div class="container">
+    <form class="payment-form" autocomplete="off">
+      <h2>Payment Information</h2>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-icon">
+          <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          <path d="M4 4h16v16H4z" stroke="none"/><path d="M4 4l8 8 8-8"/></svg>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="card">Card number</label>
+        <div class="input-icon" style="position:relative;">
+          <input type="text" id="card" name="card" placeholder="1234 1234 1234 1234" maxlength="19" required pattern="[0-9 ]{19}">
+          <div class="card-icons">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Mastercard-logo.png" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo_%282018%29.svg" alt="Amex">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Discover_Card_logo.svg" alt="Discover">
+          </div>
+        </div>
+      </div>
+      <div class="card-row">
+        <div class="form-group">
+          <label for="exp">Expiration</label>
+          <input type="month" id="fecha" name="fecha" placeholder="MM / YY" required>
+        </div>
+        <div class="form-group">
+          <label for="cvc">CVC</label>
+          <div class="input-icon">
+            <input type="text" id="cvc" name="cvc" placeholder="CVC" maxlength="4" required pattern="[0-9]{3,4}">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="card-row">
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="">Select</option>
+            <option value="US">United States</option>
+            <option value="MX">Mexico</option>
+            <option value="ES">Spain</option>
+            <option value="AR">Argentina</option>
+            <option value="CO">Colombia</option>
+            <option value="CL">Chile</option>
+            <option value="PE">Peru</option>
+            <option value="BR">Brazil</option>
+            <option value="VE">Venezuela</option>
+            <option value="EC">Ecuador</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="zip">ZIP</label>
+          <input type="text" id="zip" name="zip" placeholder="12345" maxlength="10" required pattern="[0-9A-Za-z\- ]{3,10}">
+        </div>
+      </div>
+      <button class="pay-btn" type="submit">Pay $150</button>
+    </form>
+    <div class="summary-box">
+      <h3>Consultation Fee</h3>
+      <p>Make your experience more unique with Swapp-it Coins, enjoying the best prices.</p>
+      <div class="summary-row">
+        <span>$150.00</span>
+      </div>
+      <div class="summary-row summary-total">
+        <span>Total</span>
+        <span>$150.00</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
