@@ -99,70 +99,7 @@ class FooterComponent extends HTMLElement {
                     overflow: hidden;
                 }
 
-                /* Newsletter Section */
-                .newsletter-section {
-                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
-                    padding: 3rem 0;
-                    text-align: center;
-                }
 
-                .newsletter-content {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 0 1rem;
-                }
-
-                .newsletter-title {
-                    font-size: 1.75rem;
-                    font-weight: 700;
-                    margin-bottom: 0.75rem;
-                    color: white;
-                }
-
-                .newsletter-subtitle {
-                    color: rgba(255, 255, 255, 0.9);
-                    margin-bottom: 2rem;
-                    font-size: 1.1rem;
-                }
-
-                .newsletter-form {
-                    display: flex;
-                    gap: 1rem;
-                    max-width: 500px;
-                    margin: 0 auto;
-                }
-
-                .newsletter-input {
-                    flex: 1;
-                    padding: 0.875rem 1rem;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 1rem;
-                    background: rgba(255, 255, 255, 0.95);
-                    color: var(--text-primary);
-                }
-
-                .newsletter-input:focus {
-                    outline: none;
-                    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-                }
-
-                .newsletter-button {
-                    padding: 0.875rem 1.5rem;
-                    background: var(--swappit-orange);
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    white-space: nowrap;
-                }
-
-                .newsletter-button:hover {
-                    background: var(--swappit-orange-hover);
-                    transform: translateY(-1px);
-                }
 
                 /* Main Footer Content */
                 .footer-main {
@@ -381,10 +318,6 @@ class FooterComponent extends HTMLElement {
                         gap: 1.5rem;
                     }
 
-                    .newsletter-form {
-                        flex-direction: column;
-                    }
-
                     .footer-bottom-content {
                         flex-direction: column;
                         text-align: center;
@@ -405,14 +338,6 @@ class FooterComponent extends HTMLElement {
                         padding: 2rem 0 1.5rem;
                     }
 
-                    .newsletter-section {
-                        padding: 2rem 0;
-                    }
-
-                    .newsletter-title {
-                        font-size: 1.5rem;
-                    }
-
                     .footer-bottom {
                         padding: 1rem 0;
                     }
@@ -420,20 +345,6 @@ class FooterComponent extends HTMLElement {
             </style>
             
             <footer class="marketplace-footer">
-                <!-- Newsletter Section -->
-                <div class="newsletter-section">
-                    <div class="container">
-                        <div class="newsletter-content">
-                            <h2 class="newsletter-title">Stay Updated with SWAPPIT</h2>
-                            <p class="newsletter-subtitle">Get the latest updates on new features, student deals, and sustainability tips delivered to your inbox.</p>
-                            <form class="newsletter-form" id="newsletterForm">
-                                <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
-                                <button type="submit" class="newsletter-button">Subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Main Footer Content -->
                 <div class="footer-main">
                     <div class="container">
@@ -533,16 +444,6 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Newsletter form submission
-        const newsletterForm = this.shadowRoot.getElementById('newsletterForm');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = newsletterForm.querySelector('input[type="email"]').value;
-                this.handleNewsletterSubscription(email);
-            });
-        }
-
         // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
@@ -567,29 +468,7 @@ class FooterComponent extends HTMLElement {
         });
     }
 
-    handleNewsletterSubscription(email) {
-        // Simular envío de newsletter
-        const button = this.shadowRoot.querySelector('.newsletter-button');
-        const originalText = button.textContent;
-        
-        button.textContent = 'Subscribing...';
-        button.disabled = true;
-        
-        setTimeout(() => {
-            button.textContent = 'Subscribed!';
-            button.style.background = 'var(--success-green)';
-            
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.disabled = false;
-                button.style.background = '';
-                this.shadowRoot.querySelector('.newsletter-input').value = '';
-            }, 2000);
-        }, 1000);
 
-        console.log('Newsletter subscription:', email);
-        // Aquí se implementaría la lógica real de suscripción
-    }
 }
 
 // Registrar el componente

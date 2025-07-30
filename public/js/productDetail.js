@@ -64,9 +64,12 @@ class ProductDetailPage {
                 this.product = result.product;
                 console.log('Product loaded successfully:', this.product);
                 
-                this.updatePageContent();
-                this.loadRelatedProducts();
-                this.hideLoadingState();
+                // Add a small delay to ensure DOM is ready
+                setTimeout(() => {
+                    this.updatePageContent();
+                    this.loadRelatedProducts();
+                    this.hideLoadingState();
+                }, 100);
             } else {
                 console.error('Error loading product:', result.error);
                 this.showError(`Product not found: ${result.error}`);
@@ -79,16 +82,23 @@ class ProductDetailPage {
 
     // Update page content with product data
     updatePageContent() {
-        this.updateBreadcrumb();
-        this.updateProductGallery();
-        this.updateProductInfo();
-        this.updateProductTabs();
-        this.updateSellerInfo();
-        this.updatePageTitle();
+        console.log('Updating page content...');
+        try {
+            this.updateBreadcrumb();
+            this.updateProductGallery();
+            this.updateProductInfo();
+            this.updateProductTabs();
+            this.updateSellerInfo();
+            this.updatePageTitle();
+            console.log('Page content updated successfully');
+        } catch (error) {
+            console.error('Error updating page content:', error);
+        }
     }
 
     // Update breadcrumb
     updateBreadcrumb() {
+        console.log('Updating breadcrumb...');
         const breadcrumbItems = document.querySelectorAll('.breadcrumb-item');
         if (breadcrumbItems.length >= 3) {
             // Update category link
@@ -101,53 +111,88 @@ class ProductDetailPage {
             // Update product name
             breadcrumbItems[2].textContent = this.product.productName || 'Product';
         }
+        console.log('Breadcrumb updated');
     }
 
     // Update product gallery
     updateProductGallery() {
+        console.log('Updating product gallery...');
+        console.log('Full product data:', this.product);
+        
         const mainSwiper = document.querySelector('.gallery-main .swiper-wrapper');
         const thumbsSwiper = document.querySelector('.gallery-thumbs .swiper-wrapper');
         
-        if (!mainSwiper || !thumbsSwiper) return;
+        if (!mainSwiper || !thumbsSwiper) {
+            console.warn('Gallery elements not found');
+            return;
+        }
         
         // Clear existing slides
         mainSwiper.innerHTML = '';
         thumbsSwiper.innerHTML = '';
         
-        const images = this.product.images || [];
+        // Check different possible image field names
+        const images = this.product.images || this.product.imageUrls || this.product.productImages || [];
+        console.log('Product images array:', images);
+        console.log('Images type:', typeof images);
+        console.log('Images length:', images.length);
         
         if (images.length === 0) {
             // Use placeholder image if no images
             const placeholderImage = 'https://via.placeholder.com/600x400/f3f4f6/6b7280?text=No+Image';
+            console.log('No images found, using placeholder:', placeholderImage);
             this.addImageSlide(mainSwiper, thumbsSwiper, placeholderImage, 'Product Image');
         } else {
             // Add all product images
-            images.forEach((imageUrl, index) => {
+            images.forEach((imageData, index) => {
+                console.log(`Adding image ${index + 1}:`, imageData);
+                console.log(`Image data type:`, typeof imageData);
+                
+                // Handle both string URLs and object with url property
+                let imageUrl;
+                if (typeof imageData === 'string') {
+                    imageUrl = imageData;
+                } else if (imageData && typeof imageData === 'object' && imageData.url) {
+                    imageUrl = imageData.url;
+                } else {
+                    console.warn(`Invalid image data at index ${index}:`, imageData);
+                    return; // Skip this image
+                }
+                
+                console.log(`Extracted image URL:`, imageUrl);
+                console.log(`Image URL valid:`, imageUrl && imageUrl.startsWith('http'));
                 this.addImageSlide(mainSwiper, thumbsSwiper, imageUrl, `Product Image ${index + 1}`);
             });
         }
         
         // Reinitialize Swiper
         this.initializeSwiper();
+        console.log('Product gallery updated successfully');
     }
 
     // Add image slide to gallery
     addImageSlide(mainSwiper, thumbsSwiper, imageUrl, altText) {
+        console.log(`Adding image slide: ${imageUrl}`);
+        
         // Main slide
         const mainSlide = document.createElement('div');
         mainSlide.className = 'swiper-slide';
-        mainSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}">`;
+        mainSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}" onerror="console.error('Failed to load image:', this.src);">`;
         mainSwiper.appendChild(mainSlide);
         
         // Thumbnail slide
         const thumbSlide = document.createElement('div');
         thumbSlide.className = 'swiper-slide';
-        thumbSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}">`;
+        thumbSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}" onerror="console.error('Failed to load thumbnail:', this.src);">`;
         thumbsSwiper.appendChild(thumbSlide);
+        
+        console.log(`Image slide added successfully: ${altText}`);
     }
 
     // Initialize Swiper gallery
     initializeSwiper() {
+        console.log('Initializing Swiper gallery...');
+        
         // Destroy existing Swiper instances if they exist
         if (window.galleryThumbs) {
             window.galleryThumbs.destroy();
@@ -175,15 +220,21 @@ class ProductDetailPage {
                 swiper: window.galleryThumbs
             }
         });
+        
+        console.log('Swiper gallery initialized successfully');
     }
 
     // Update product information
     updateProductInfo() {
+        console.log('Updating product info...');
         try {
             // Update title
             const titleElement = document.querySelector('.product-title');
             if (titleElement) {
                 titleElement.textContent = this.product.productName || 'Product Name';
+                console.log('Title updated:', this.product.productName);
+            } else {
+                console.warn('Title element not found');
             }
             
             // Update price
@@ -193,6 +244,9 @@ class ProductDetailPage {
             const descriptionElement = document.querySelector('.product-short-description p');
             if (descriptionElement) {
                 descriptionElement.textContent = this.product.description || 'No description available.';
+                console.log('Description updated');
+            } else {
+                console.warn('Description element not found');
             }
             
             // Update status badges
@@ -206,6 +260,8 @@ class ProductDetailPage {
             
             // Update action buttons
             this.updateActionButtons();
+            
+            console.log('Product info updated successfully');
         } catch (error) {
             console.error('Error updating product info:', error);
         }
@@ -600,8 +656,8 @@ class ProductDetailPage {
 
     // Buy now functionality
     buyNow() {
-        // Redirect to checkout page
-        window.location.href = `../../pages/checkout/checkout.html?productId=${this.productId}&quantity=${this.quantity}`;
+        // Redirect to product purchase page
+        window.location.href = `../../pages/marketplace/product-purchase.html?productId=${this.productId}&quantity=${this.quantity}`;
     }
 
     // Wait for cart component to be available
@@ -708,7 +764,11 @@ class ProductDetailPage {
     showLoadingState() {
         const main = document.querySelector('main');
         if (main) {
-            main.innerHTML = `
+            // Add loading overlay instead of replacing content
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'loading-overlay';
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
                 <div class="container text-center py-5">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
@@ -716,12 +776,16 @@ class ProductDetailPage {
                     <p class="mt-3">Loading product details...</p>
                 </div>
             `;
+            main.appendChild(loadingOverlay);
         }
     }
 
     // Hide loading state
     hideLoadingState() {
-        // Loading state is handled by updating content
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.remove();
+        }
     }
 
     // Show error

@@ -230,8 +230,8 @@ class CartComponent extends HTMLElement {
         }
         
         if (cartTotal) {
-            cartTotal.textContent = `${this.total} Swapcoin`;
-            console.log('Updated cart total to:', this.total, 'Swapcoin');
+            cartTotal.textContent = `${this.total} Swappcoin`;
+            console.log('Updated cart total to:', this.total, 'Swappcoin');
         } else {
             console.error('Cart total element not found!');
         }
@@ -263,8 +263,8 @@ class CartComponent extends HTMLElement {
                         <h4 class="cart-item-title">${item.title}</h4>
                         <p class="cart-item-seller">by ${sellerName}</p>
                         <div class="cart-item-price-info">
-                            <span class="cart-item-price">${price} Swapcoin</span>
-                            <span class="cart-item-total">Total: ${totalPrice} Swapcoin</span>
+                            <span class="cart-item-price">${price} Swappcoin</span>
+                            <span class="cart-item-total">Total: ${totalPrice} Swappcoin</span>
                         </div>
                     </div>
                     <div class="cart-item-controls">
@@ -906,13 +906,13 @@ class CartComponent extends HTMLElement {
                 <div class="cart-footer">
                     <div class="cart-total">
                         <span class="total-label">Total:</span>
-                        <span class="total-amount cart-total">0 Swapcoin</span>
+                        <span class="total-amount cart-total">0 Swappcoin</span>
                     </div>
                     
                     <div class="cart-actions" id="cartActions">
                         <button class="btn-checkout" id="btnCheckout">
-                            <i class="fas fa-credit-card"></i>
-                            Proceed to Payment
+                            <i class="fas fa-coins"></i>
+                            Purchase with Swappcoin
                         </button>
                         <button class="btn-continue-shopping" id="btnContinueShopping">
                             <i class="fas fa-arrow-left me-2"></i>
@@ -1034,14 +1034,15 @@ class CartComponent extends HTMLElement {
             return;
         }
         
-        // Save cart data for checkout
-        localStorage.setItem('swappit-checkout-cart', JSON.stringify({
-            items: this.cartItems,
-            total: this.total
-        }));
+        // For SWAPPIT, we'll redirect to the product purchase page of the first item
+        // Since we're using Swappcoin, we typically purchase one product at a time
+        const firstItem = this.cartItems[0];
         
-        // Redirect to checkout page
-        window.location.href = '/pages/checkout/checkout.html';
+        // Save product data for purchase page
+        localStorage.setItem('swappit-purchase-product', JSON.stringify(firstItem));
+        
+        // Redirect to product purchase page
+        window.location.href = `/pages/marketplace/product-purchase.html?productId=${firstItem.id}`;
     }
 
     continueShopping() {

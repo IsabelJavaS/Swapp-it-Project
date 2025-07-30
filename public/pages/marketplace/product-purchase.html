@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Product - SWAPPIT Marketplace</title>
+    
+    <!-- External CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link href="../../css/productDetail.css" rel="stylesheet">
+    <link href="../../css/marketplace.css" rel="stylesheet">
+    <link href="../../components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
+    
+    <style>
+        .purchase-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .purchase-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .product-summary {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .product-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid #f3f4f6;
+        }
+        
+        .product-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3468c0;
+            margin: 0.5rem 0;
+        }
+        
+        .swappcoin-balance {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .balance-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .purchase-form {
+            padding: 2rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .delivery-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .delivery-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .delivery-option:hover {
+            border-color: #3468c0;
+            background: rgba(52, 104, 192, 0.05);
+        }
+        
+        .delivery-option.selected {
+            border-color: #3468c0;
+            background: linear-gradient(135deg, rgba(52, 104, 192, 0.05), rgba(52, 104, 192, 0.1));
+        }
+        
+        .delivery-icon {
+            font-size: 2rem;
+            color: #3468c0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .delivery-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .delivery-description {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .purchase-summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-row.total {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .btn-purchase {
+            width: 100%;
+            background: linear-gradient(135deg, #3468c0, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .btn-purchase:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 104, 192, 0.3);
+        }
+        
+        .btn-purchase:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .insufficient-funds {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .btn-buy-swappcoins {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1e293b;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-buy-swappcoins:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        @media (max-width: 768px) {
+            .product-summary {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .delivery-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamic Header Container -->
+    <div id="header-container">
+        <!-- Header will be dynamically inserted here -->
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Processing your purchase...</p>
+        </div>
+    </div>
+    
+    <main class="purchase-container">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="../marketplace/marketplace.html">Marketplace</a></li>
+                    <li class="breadcrumb-item"><a href="productDetail.html">Product Details</a></li>
+                    <li class="breadcrumb-item active">Purchase</li>
+                </ol>
+            </nav>
+            
+            <div class="purchase-card">
+                <!-- Product Summary -->
+                <div class="product-summary">
+                    <img id="product-image" src="" alt="Product" class="product-image">
+                    <div class="product-info">
+                        <h3 id="product-name">Product Name</h3>
+                        <p id="product-description" class="text-muted">Product description</p>
+                        <div class="product-price">
+                            <i class="fas fa-coins text-warning"></i>
+                            <span id="product-price">0</span> Swappcoins
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Swappcoin Balance -->
+                <div class="swappcoin-balance">
+                    <div class="balance-amount" id="user-balance">0</div>
+                    <div class="balance-label">Your Swappcoin Balance</div>
+                </div>
+                
+                <!-- Purchase Form -->
+                <div class="purchase-form">
+                    <!-- Delivery Method -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-truck"></i>
+                            Delivery Method
+                        </h3>
+                        <div class="delivery-options">
+                            <div class="delivery-option" data-method="delivery">
+                                <div class="delivery-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="delivery-title">Home Delivery</div>
+                                <div class="delivery-description">Delivered to your address</div>
+                            </div>
+                            <div class="delivery-option" data-method="pickup">
+                                <div class="delivery-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="delivery-title">Self Pickup</div>
+                                <div class="delivery-description">Pick up at educational center</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Purchase Summary -->
+                    <div class="purchase-summary">
+                        <h4 class="mb-3">Purchase Summary</h4>
+                        <div class="summary-row">
+                            <span>Product Price:</span>
+                            <span id="summary-price">0 Swappcoins</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee:</span>
+                            <span id="summary-delivery">0 Swappcoins</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="summary-total">0 Swappcoins</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Insufficient Funds Warning -->
+                    <div id="insufficient-funds" class="insufficient-funds" style="display: none;">
+                        <h5><i class="fas fa-exclamation-triangle text-warning"></i> Insufficient Swappcoins</h5>
+                        <p>You don't have enough Swappcoins to complete this purchase.</p>
+                        <button class="btn-buy-swappcoins" onclick="buyMoreSwappcoins()">
+                            <i class="fas fa-plus"></i>
+                            Buy More Swappcoins
+                        </button>
+                    </div>
+                    
+                    <!-- Purchase Button -->
+                    <button id="purchase-btn" class="btn-purchase" onclick="processPurchase()">
+                        <i class="fas fa-shopping-cart"></i>
+                        Complete Purchase
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+    
+    <!-- JavaScript Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Web Components -->
+    <script src="../../components/header-component.js"></script>
+    <script src="../../components/header-auth-component.js"></script>
+    <script src="../../components/footer-component.js"></script>
+    
+    <!-- Global Header Manager -->
+    <script src="../../js/global-header-manager.js"></script>
+    
+    <!-- Scripts -->
+    <script type="module" src="../../js/product-purchase.js"></script>
+</body>
+</html> 
