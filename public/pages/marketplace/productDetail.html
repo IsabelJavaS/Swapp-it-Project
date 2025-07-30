@@ -11,11 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
     <!-- Custom Styles -->
-    <link href="/css/productPages.css" rel="stylesheet">
-    <link href="/css/productDetail.css" rel="stylesheet">
-    <link href="/components/components.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+    <link href="../../css/productDetail.css" rel="stylesheet">
+    <link href="../../css/marketplace.css" rel="stylesheet">
+    <link href="../../components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     
+    <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
+    <script src="../../js/css-path-fixer.js"></script>
 </head>
 <body>
     <!-- Dynamic Header Container -->
@@ -28,9 +30,9 @@
         <div class="container">
             <nav aria-label="breadcrumb" class="product-breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="productsPage.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Notebooks</a></li>
-                    <li class="breadcrumb-item active">Premium Notebook Set</li>
+                    <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="../marketplace/marketplace.html">Marketplace</a></li>
+                    <li class="breadcrumb-item active">Product Details</li>
                 </ol>
             </nav>
         </div>
@@ -99,14 +101,7 @@
                             <div class="product-short-description">
                                 <p>High-quality notebook set perfect for students and professionals. Includes 3 notebooks with different paper types and a premium pen.</p>
                             </div>
-                            <div class="product-variants">
-                                <h6>Color</h6>
-                                <div class="color-options">
-                                    <button class="color-option active" style="background-color: #1e293b;"></button>
-                                    <button class="color-option" style="background-color: #2563eb;"></button>
-                                    <button class="color-option" style="background-color: #dc2626;"></button>
-                                </div>
-                            </div>
+                            <!-- Color options removed as requested -->
                             <div class="product-quantity">
                                 <h6>Quantity</h6>
                                 <div class="quantity-selector">
@@ -476,79 +471,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <!-- Web Components -->
-    <script src="/components/cart-component.js"></script>
-    <script src="/components/header-component.js"></script>
-    <script src="/components/header-auth-component.js"></script>
-    <script src="/components/footer-component.js"></script>
+    <script src="../../components/cart-component.js"></script>
+    <script src="../../components/header-component.js"></script>
+    <script src="../../components/header-auth-component.js"></script>
+    <script src="../../components/footer-component.js"></script>
 
     <!-- Global Header Manager -->
-    <script src="/js/global-header-manager.js"></script>
+    <script src="../../js/global-header-manager.js"></script>
+    
+    <!-- Product Detail JavaScript -->
+    <script src="../../js/productDetail.js"></script>
 
-    <script>
-        // Initialize Swiper
-        const galleryThumbs = new Swiper('.gallery-thumbs', {
-            spaceBetween: 10,
-            slidesPerView: 4,
-            freeMode: true,
-            watchSlidesProgress: true,
-        });
-
-        const galleryMain = new Swiper('.gallery-main', {
-            spaceBetween: 10,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            thumbs: {
-                swiper: galleryThumbs
-            }
-        });
-
-        const relatedSwiper = new Swiper('.related-swiper', {
-            spaceBetween: 30,
-            slidesPerView: 4,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                320: {
-                    slidesPerView: 1,
-                    spaceBetween: 20
-                },
-                480: {
-                    slidesPerView: 2,
-                    spaceBetween: 20
-                },
-                768: {
-                    slidesPerView: 3,
-                    spaceBetween: 30
-                },
-                1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 30
-                }
-            }
-        });
-
-        // Quantity Selector
-        const minusBtn = document.querySelector('.qty-btn.minus');
-        const plusBtn = document.querySelector('.qty-btn.plus');
-        const qtyInput = document.querySelector('.quantity-selector input');
-
-        minusBtn.addEventListener('click', () => {
-            const currentValue = parseInt(qtyInput.value);
-            if (currentValue > 1) {
-                qtyInput.value = currentValue - 1;
-            }
-        });
-
-        plusBtn.addEventListener('click', () => {
-            const currentValue = parseInt(qtyInput.value);
-            if (currentValue < 10) {
-                qtyInput.value = currentValue + 1;
-            }
-        });
-    </script>
+    <!-- Product Detail JavaScript handles all dynamic functionality -->
 </body>
 </html> 

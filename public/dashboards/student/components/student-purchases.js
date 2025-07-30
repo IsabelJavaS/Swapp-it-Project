@@ -61,15 +61,17 @@ class StudentPurchases extends HTMLElement {
                     <img src="${purchase.image}" alt="${purchase.productName}" />
                     <div class="purchase-status ${purchase.status}">
                         ${purchase.status === 'completed' ? '<i class="fas fa-check"></i>' : 
-                          purchase.status === 'in_progress' ? '<i class="fas fa-clock"></i>' : 
-                          purchase.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
-                          '<i class="fas fa-shipping-fast"></i>'}
+                            purchase.status === 'in_progress' ? '<i class="fas fa-clock"></i>' : 
+                            purchase.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
+                            '<i class="fas fa-shipping-fast"></i>'}
                     </div>
                 </div>
                 <div class="purchase-info">
                     <div class="purchase-header">
                         <h3 class="purchase-title">${purchase.productName}</h3>
-                        <div class="purchase-price">$${purchase.price.toFixed(2)}</div>
+                        <div class="purchase-price">
+                            <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>${purchase.price.toFixed(2)}
+                        </div>
                     </div>
                     <div class="purchase-meta">
                         <span class="meta-item">
@@ -148,6 +150,7 @@ class StudentPurchases extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
+            link rel="stylesheet" href="../../css/icon_S/icon_S.css">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');

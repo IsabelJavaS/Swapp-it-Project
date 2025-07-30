@@ -12,6 +12,7 @@ class StudentDashboardOverview extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
+            <link rel="stylesheet" href="../../css/icon_S/icon_S.css">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
@@ -492,7 +493,10 @@ class StudentDashboardOverview extends HTMLElement {
                                 <i class="fas fa-wallet"></i>
                             </div>
                             <div class="stat-value">
-                                <div class="stat-number" id="swapcoinBalance">0</div>
+                                <div class="stat-number" id="swapcoinBalance">
+                                    <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
+                                    0
+                                </div>
                                 <div class="stat-label">SWAPPIT Coins</div>
                             </div>
                         </div>

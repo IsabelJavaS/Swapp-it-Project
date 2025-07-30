@@ -994,3 +994,200 @@ body.business-mode .custom-select-business .option:hover {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 } 
+
+/* Botón de regreso dinámico */
+.back-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a5568;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #3468c0;
+    transform: translateX(-3px) scale(1.05);
+    box-shadow: 0 4px 16px rgba(52, 104, 192, 0.2);
+}
+
+.back-btn:active {
+    transform: translateX(-1px) scale(0.95);
+}
+
+.back-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover svg {
+    transform: translateX(-2px);
+}
+
+/* Responsive para el botón de regreso */
+@media (max-width: 480px) {
+    .back-button-container {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .back-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Reducir el tamaño del formulario de registro */
+.register-box {
+    background-color: white;
+    padding: 20px 30px; /* Reducido el padding */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.35s cubic-bezier(.4,2,.3,1), transform 0.35s cubic-bezier(.4,2,.3,1);
+    will-change: box-shadow, transform;
+    max-height: 90vh; /* Limitar altura máxima */
+    overflow-y: auto; /* Scroll solo si es necesario */
+}
+
+.form-group {
+    margin-bottom: 12px; /* Reducido el margen */
+    transition: all 0.3s ease;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px 12px; /* Reducido el padding */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px; /* Reducido el tamaño de fuente */
+    transition: all 0.3s ease;
+    background-color: white;
+    height: 36px; /* Altura fija para inputs */
+}
+
+textarea {
+    height: 60px; /* Reducido el alto del textarea */
+    resize: vertical;
+    min-height: 60px;
+}
+
+.register-btn {
+    width: 100%;
+    padding: 8px; /* Reducido el padding */
+    background-color: #ffa424;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px; /* Reducido el tamaño de fuente */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px; /* Reducido el margen */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    height: 36px; /* Altura fija */
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 8px auto; /* Reducido el margen */
+    width: 25vw; /* Reducido el tamaño */
+    max-width: 120px;
+    min-width: 40px;
+    height: auto;
+    transition: transform 0.3s cubic-bezier(.4,2,.3,1), filter 0.3s;
+    animation: logo-pulse 1.2s cubic-bezier(.4,2,.3,1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px; /* Reducido el margen */
+    transition: color 0.3s ease;
+    font-size: 1.5rem; /* Reducido el tamaño */
+}
+
+.role-selector {
+    display: flex;
+    gap: 8px; /* Reducido el gap */
+    margin-bottom: 20px; /* Reducido el margen */
+    justify-content: center;
+}
+
+.role-btn {
+    padding: 8px 16px; /* Reducido el padding */
+    border: 2px solid #3468c0;
+    background: none;
+    color: #3468c0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px; /* Reducido el tamaño de fuente */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Responsive design mejorado */
+@media (max-width: 480px) {
+    .register-box {
+        padding: 15px 20px; /* Más compacto en móvil */
+        margin: 0 10px;
+    }
+
+    .role-selector {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .role-btn {
+        width: 100%;
+        padding: 6px 12px;
+    }
+    
+    .logo {
+        width: 30vw;
+        max-width: 80px;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 10px;
+    }
+    
+    input, select, textarea {
+        font-size: 13px;
+        padding: 6px 10px;
+        height: 32px;
+    }
+    
+    textarea {
+        height: 50px;
+        min-height: 50px;
+    }
+    
+    .register-btn {
+        padding: 6px;
+        font-size: 13px;
+        height: 32px;
+        margin-top: 10px;
+    }
+} 

@@ -13,12 +13,31 @@ class FooterComponent extends HTMLElement {
 
     // Sistema mejorado de rutas dinámicas
     getBaseUrl() {
-        // Para Firebase Hosting, siempre usar rutas absolutas
-        return '';
+        // Detectar si estamos en Firebase Hosting o local
+        const isFirebase = window.location.hostname.includes('firebaseapp.com') || 
+                          window.location.hostname.includes('web.app') ||
+                          window.location.hostname === 'localhost' && window.location.port === '5000';
+        
+        if (isFirebase) {
+            return ''; // Firebase Hosting sirve desde la raíz
+        } else {
+            // Local development - detectar profundidad
+            const path = window.location.pathname;
+            const segments = path.split('/').filter(s => s);
+            
+            // Si estamos en la raíz o en /public
+            if (segments.length === 0 || segments[0] === 'public') {
+                return '/public';
+            }
+            
+            // Si estamos en subdirectorios
+            return '/public';
+        }
     }
 
     getLogoPath() {
-        return '/assets/logos/LogoSinFondo.png';
+        const base = this.getBaseUrl();
+        return `${base}/assets/logos/LogoSinFondo.png`;
     }
 
     // Método para cargar CSS de forma más robusta
@@ -55,12 +74,15 @@ class FooterComponent extends HTMLElement {
                     --swappit-blue: #2563eb;
                     --swappit-blue-hover: #1d4ed8;
                     --swappit-orange: #f97316;
+                    --swappit-orange-hover: #ea580c;
                     --bg-primary: #ffffff;
                     --text-primary: #1f2937;
                     --border-color: #e5e7eb;
                     --neutral-light: #f3f4f6;
                     --neutral-dark: #111827;
+                    --neutral-darker: #0f172a;
                     --font-primary: 'Inter', sans-serif;
+                    --success-green: #10b981;
                 }
 
                 /* Host styles */
@@ -73,14 +95,15 @@ class FooterComponent extends HTMLElement {
                 .marketplace-footer {
                     background: var(--neutral-dark);
                     color: white;
-                    padding: 2rem 0 0;
-                    margin-top: 2rem;
                     position: relative;
                     overflow: hidden;
                 }
 
+
+
+                /* Main Footer Content */
                 .footer-main {
-                    padding: 2rem 0 2rem;
+                    padding: 3rem 0 2rem;
                     position: relative;
                 }
 
@@ -91,26 +114,59 @@ class FooterComponent extends HTMLElement {
                     padding: 0 1rem;
                 }
 
-                /* Footer Grid - Single Row with 4 Columns */
+                /* Footer Grid - 5 Columns */
                 .footer-grid {
                     display: grid;
-                    grid-template-columns: repeat(4, 1fr);
+                    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
                     gap: 2rem;
                     width: 100%;
+                    align-items: start;
                 }
 
                 /* Footer Column */
                 .footer-column {
                     display: flex;
                     flex-direction: column;
+                    height: 100%;
+                    justify-content: flex-start;
+                }
+
+                /* Ajuste específico para la primera columna */
+                .footer-column:first-child {
+                    align-items: flex-start;
+                }
+
+                /* Ajuste para que el logo esté al mismo nivel que los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
+                    margin-bottom: 0.5rem;
+                }
+
+                .footer-column:first-child .footer-description {
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Footer Brand */
+                .footer-brand {
+                    display: flex;
+                    align-items: flex-start;
+                    margin-bottom: 0.75rem;
+                    margin-top: 0;
+                    padding-top: 0;
+                }
+
                 .footer-brand img {
-                    width: 180px;
+                    width: 120px;
                     height: auto;
                     display: block;
-                    margin-bottom: 1rem;
+                }
+
+                /* Ajuste para alinear el logo con los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 .footer-description {
@@ -118,6 +174,8 @@ class FooterComponent extends HTMLElement {
                     line-height: 1.6;
                     margin-bottom: 1.5rem;
                     font-size: 0.95rem;
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Social Links */
@@ -128,11 +186,11 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .social-link {
-                    width: 36px;
-                    height: 36px;
+                    width: 40px;
+                    height: 40px;
                     border-radius: 50%;
                     background: rgba(255, 255, 255, 0.1);
-                    color: white;
+                    color: var(--swappit-orange);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -142,7 +200,7 @@ class FooterComponent extends HTMLElement {
                 }
 
                 .social-link:hover {
-                    background: var(--swappit-blue);
+                    background: var(--swappit-orange);
                     transform: translateY(-2px);
                     color: white;
                 }
@@ -154,6 +212,8 @@ class FooterComponent extends HTMLElement {
                     font-weight: 600;
                     margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Footer Links */
@@ -165,6 +225,10 @@ class FooterComponent extends HTMLElement {
 
                 .footer-links li {
                     margin-bottom: 0.75rem;
+                }
+
+                .footer-links li:first-child {
+                    margin-top: 0;
                 }
 
                 .footer-links a {
@@ -180,35 +244,87 @@ class FooterComponent extends HTMLElement {
 
                 /* Footer Contact */
                 .footer-contact {
-                    margin-top: 1rem;
+                    margin-top: 0;
                 }
 
                 .footer-contact p {
                     color: rgba(255, 255, 255, 0.7);
-                    margin-bottom: 0.5rem;
+                    margin-bottom: 0.75rem;
                     font-size: 0.9rem;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .footer-contact p:first-child {
+                    margin-top: 0;
+                }
+
+                .footer-contact p i {
+                    margin-right: 0.75rem;
+                    width: 16px;
+                    text-align: center;
+                    color: var(--swappit-orange);
                 }
 
                 /* Footer Bottom */
                 .footer-bottom {
-                    background: rgba(0, 0, 0, 0.2);
+                    background: var(--neutral-darker);
                     padding: 1.5rem 0;
                     border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    margin-top: 2rem;
+                }
+
+                .footer-bottom-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 1rem;
                 }
 
                 .copyright {
                     color: rgba(255, 255, 255, 0.6);
-                    text-align: center;
                     margin: 0;
                     font-size: 0.9rem;
                 }
 
+                .footer-legal {
+                    display: flex;
+                    gap: 1.5rem;
+                    align-items: center;
+                }
+
+                .footer-legal a {
+                    color: rgba(255, 255, 255, 0.6);
+                    text-decoration: none;
+                    font-size: 0.9rem;
+                    transition: color 0.3s ease;
+                }
+
+                .footer-legal a:hover {
+                    color: var(--swappit-orange);
+                }
+
                 /* Responsive */
-                @media (max-width: 991px) {
+                @media (max-width: 1024px) {
+                    .footer-grid {
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
                     .footer-grid {
                         grid-template-columns: repeat(2, 1fr);
                         gap: 1.5rem;
+                    }
+
+                    .footer-bottom-content {
+                        flex-direction: column;
+                        text-align: center;
+                    }
+
+                    .footer-legal {
+                        justify-content: center;
                     }
                 }
 
@@ -219,7 +335,7 @@ class FooterComponent extends HTMLElement {
                     }
 
                     .footer-main {
-                        padding: 1.5rem 0;
+                        padding: 2rem 0 1.5rem;
                     }
 
                     .footer-bottom {
@@ -229,6 +345,7 @@ class FooterComponent extends HTMLElement {
             </style>
             
             <footer class="marketplace-footer">
+                <!-- Main Footer Content -->
                 <div class="footer-main">
                     <div class="container">
                         <div class="footer-grid">
@@ -238,7 +355,7 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
-                                    Join the sustainable student community where you can buy, sell, or exchange school supplies. Save money and help the environment!
+                                    Join the sustainable student community where you can buy, sell, or exchange school supplies.
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -261,9 +378,9 @@ class FooterComponent extends HTMLElement {
                                 <h3 class="footer-title">Quick Links</h3>
                                 <ul class="footer-links">
                                     <li><a href="${this.getBaseUrl()}/index.html">Home</a></li>
-                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace-page.html">Marketplace</a></li>
-                                    <li><a href="${this.getBaseUrl()}/index.html#about">About Us</a></li>
-                                    <li><a href="${this.getBaseUrl()}/index.html#contact">Contact</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace.html">Marketplace</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/about/about.html">About Us</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/support/support.html">Support</a></li>
                                 </ul>
                             </div>
 
@@ -278,13 +395,25 @@ class FooterComponent extends HTMLElement {
                                 </ul>
                             </div>
 
+                            <!-- Categories -->
+                            <div class="footer-column">
+                                <h3 class="footer-title">Categories</h3>
+                                <ul class="footer-links">
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/books.html">Books</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/electronics.html">Electronics</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/stationery.html">Stationery</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/uniforms.html">Uniforms</a></li>
+                                </ul>
+                            </div>
+
                             <!-- Contact Info -->
                             <div class="footer-column">
                                 <h3 class="footer-title">Contact Us</h3>
                                 <div class="footer-contact">
-                                    <p><i class="fas fa-envelope me-2"></i>support@swappit.com</p>
-                                    <p><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</p>
-                                    <p><i class="fas fa-location-dot me-2"></i>123 Education Street, ST 12345</p>
+                                    <p><i class="fas fa-envelope"></i>support@swappit.com</p>
+                                    <p><i class="fas fa-phone"></i>+1 (555) 123-4567</p>
+                                    <p><i class="fas fa-location-dot"></i>123 Education Street, ST 12345</p>
+                                    <p><i class="fas fa-clock"></i>Mon-Fri: 9AM-6PM</p>
                                 </div>
                             </div>
                         </div>
@@ -294,11 +423,17 @@ class FooterComponent extends HTMLElement {
                 <!-- Footer Bottom -->
                 <div class="footer-bottom">
                     <div class="container">
-                        <p class="copyright">
-                            © 2024 SWAPPIT. All rights reserved. | 
-                            <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none;">Privacy Policy</a> | 
-                            <a href="#" style="color: rgba(255, 255, 255, 0.6); text-decoration: none;">Terms of Service</a>
-                        </p>
+                        <div class="footer-bottom-content">
+                            <p class="copyright">
+                                © 2024 SWAPPIT. All rights reserved.
+                            </p>
+                            <div class="footer-legal">
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Terms of Service</a>
+                                <a href="#">Cookie Policy</a>
+                                <a href="#">Data Protection</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </footer>
@@ -309,7 +444,7 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Event listeners específicos del footer
+        // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -318,7 +453,22 @@ class FooterComponent extends HTMLElement {
                 // Implementar lógica para redes sociales
             });
         });
+
+        // Footer links
+        const footerLinks = this.shadowRoot.querySelectorAll('.footer-links a');
+        footerLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Permitir navegación normal para enlaces internos
+                if (link.href && !link.href.includes('#')) {
+                    return; // Permitir navegación normal
+                }
+                e.preventDefault();
+                console.log('Footer link clicked:', link.textContent.trim());
+            });
+        });
     }
+
+
 }
 
 // Registrar el componente

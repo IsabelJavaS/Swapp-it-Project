@@ -230,8 +230,8 @@ class CartComponent extends HTMLElement {
         }
         
         if (cartTotal) {
-            cartTotal.textContent = `${this.total} Swapcoin`;
-            console.log('Updated cart total to:', this.total, 'Swapcoin');
+            cartTotal.textContent = `${this.total} Swappcoin`;
+            console.log('Updated cart total to:', this.total, 'Swappcoin');
         } else {
             console.error('Cart total element not found!');
         }
@@ -252,16 +252,20 @@ class CartComponent extends HTMLElement {
             
             const sellerName = item.sellerName || item.sellerDisplayName || 'Seller';
             const price = item.price || 0;
+            const totalPrice = price * item.quantity;
             
             return `
                 <div class="cart-item" data-product-id="${item.id}">
                     <div class="cart-item-image">
-                        <img src="${imageUrl}" alt="${item.title}" onerror="this.src='/assets/logos/utiles-escolares.jpg'" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                        <img src="${imageUrl}" alt="${item.title}" onerror="this.src='/assets/logos/utiles-escolares.jpg'">
                     </div>
                     <div class="cart-item-details">
                         <h4 class="cart-item-title">${item.title}</h4>
                         <p class="cart-item-seller">by ${sellerName}</p>
-                        <div class="cart-item-price">${price} Swapcoin</div>
+                        <div class="cart-item-price-info">
+                            <span class="cart-item-price">${price} Swappcoin</span>
+                            <span class="cart-item-total">Total: ${totalPrice} Swappcoin</span>
+                        </div>
                     </div>
                     <div class="cart-item-controls">
                         <div class="quantity-controls">
@@ -352,68 +356,76 @@ class CartComponent extends HTMLElement {
                     --shadow-color: rgba(37, 99, 235, 0.1);
                     --font-primary: 'Poppins', sans-serif;
                     --font-secondary: 'Inter', sans-serif;
-                    --border-radius: 8px;
+                    --border-radius: 12px;
                     --transition: all 0.3s ease;
                 }
                 
                 /* Cart Button */
                 .cart-button {
                     position: relative;
-                    background: none;
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
                     border: none;
-                    color: var(--swappit-blue);
+                    color: white;
                     font-size: 1.2rem;
                     cursor: pointer;
                     display: flex !important;
                     align-items: center;
                     justify-content: center;
-                    width: 44px;
-                    height: 44px;
+                    width: 48px;
+                    height: 48px;
                     border-radius: 50%;
                     transition: var(--transition);
                     visibility: visible !important;
                     opacity: 1 !important;
+                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3);
                 }
                 
                 .cart-button:hover {
-                    background: var(--neutral-light);
-                    color: var(--swappit-blue-hover);
-                    transform: scale(1.05);
+                    transform: translateY(-2px) scale(1.05);
+                    box-shadow: 0 6px 20px rgba(52, 104, 192, 0.4);
                 }
                 
                 .cart-count {
                     position: absolute;
-                    top: -5px;
-                    right: -5px;
+                    top: -8px;
+                    right: -8px;
                     background: var(--swappit-orange);
                     color: white;
                     border-radius: 50%;
-                    width: 20px;
-                    height: 20px;
+                    width: 24px;
+                    height: 24px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 0.75rem;
-                    font-weight: 600;
+                    font-weight: 700;
                     font-family: var(--font-primary);
                     display: none;
-                    box-shadow: 0 2px 4px rgba(255, 164, 36, 0.4);
-                    border: 2px solid white;
+                    box-shadow: 0 2px 8px rgba(255, 164, 36, 0.4);
+                    border: 3px solid white;
+                    animation: pulse 2s infinite;
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
                 }
                 
                 /* Cart Sidebar */
                 .cart-sidebar {
                     position: fixed;
                     top: 0;
-                    right: -400px;
-                    width: 400px;
+                    right: -450px;
+                    width: 450px;
                     height: 100vh;
                     background: var(--background-white);
-                    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+                    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
                     z-index: 10000;
-                    transition: right 0.3s ease;
+                    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                     display: flex;
                     flex-direction: column;
+                    border-radius: 0 0 0 20px;
                 }
                 
                 .cart-sidebar.open {
@@ -422,108 +434,161 @@ class CartComponent extends HTMLElement {
                 
                 /* Cart Header */
                 .cart-header {
-                    padding: 1.5rem;
-                    border-bottom: 1px solid var(--neutral-light);
+                    padding: 2rem 1.5rem 1.5rem;
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
+                    color: white;
+                    border-radius: 0 0 20px 20px;
+                    position: relative;
+                    overflow: hidden;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
-                    color: white;
+                }
+                
+                .cart-header::before {
+                    content: '';
+                    position: absolute;
+                    top: -50%;
+                    right: -50%;
+                    width: 200%;
+                    height: 200%;
+                    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                    animation: rotate 20s linear infinite;
+                }
+                
+                @keyframes rotate {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
                 }
                 
                 .cart-title {
                     font-family: var(--font-primary);
-                    font-weight: 600;
-                    font-size: 1.25rem;
+                    font-weight: 700;
+                    font-size: 1.5rem;
                     margin: 0;
+                    position: relative;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
                 
                 .cart-close {
-                    background: none;
+                    background: rgba(255, 255, 255, 0.2);
                     border: none;
                     color: white;
-                    font-size: 1.5rem;
+                    font-size: 1.2rem;
                     cursor: pointer;
-                    padding: 0.5rem;
+                    padding: 0.75rem;
                     border-radius: 50%;
                     transition: var(--transition);
+                    position: relative;
+                    z-index: 1;
                 }
                 
                 .cart-close:hover {
-                    background: rgba(255, 255, 255, 0.2);
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(1.1);
                 }
                 
                 /* Cart Content */
                 .cart-content {
                     flex: 1;
                     overflow-y: auto;
-                    padding: 1rem;
+                    padding: 1.5rem;
+                    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
                 }
                 
                 /* Empty Cart */
                 .empty-cart {
                     display: none;
                     text-align: center;
-                    padding: 3rem 1rem;
+                    padding: 4rem 1rem;
                     color: var(--neutral-medium);
                 }
                 
                 .empty-cart i {
-                    font-size: 4rem;
-                    margin-bottom: 1rem;
+                    font-size: 5rem;
+                    margin-bottom: 1.5rem;
                     color: var(--neutral-light);
+                    opacity: 0.6;
                 }
                 
                 .empty-cart h3 {
                     font-family: var(--font-primary);
                     font-weight: 600;
-                    margin-bottom: 0.5rem;
+                    margin-bottom: 0.75rem;
                     color: var(--neutral-dark);
+                    font-size: 1.5rem;
                 }
                 
                 .empty-cart p {
                     font-family: var(--font-secondary);
-                    margin-bottom: 2rem;
+                    margin-bottom: 2.5rem;
+                    font-size: 1.1rem;
+                    line-height: 1.6;
                 }
                 
                 .btn-shop-now {
-                    background: var(--swappit-blue);
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-blue-hover));
                     color: white;
                     border: none;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 25px;
+                    padding: 1rem 2rem;
+                    border-radius: 30px;
                     font-family: var(--font-primary);
                     font-weight: 600;
+                    font-size: 1.1rem;
                     cursor: pointer;
                     transition: var(--transition);
                     text-decoration: none;
                     display: inline-block;
+                    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
                 }
                 
                 .btn-shop-now:hover {
-                    background: var(--swappit-blue-hover);
-                    transform: translateY(-2px);
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 25px rgba(52, 104, 192, 0.4);
                 }
                 
                 /* Cart Items */
                 .cart-items {
                     display: flex;
                     flex-direction: column;
-                    gap: 1rem;
+                    gap: 1.5rem;
                 }
                 
                 .cart-item {
                     display: flex;
-                    gap: 1rem;
-                    padding: 1rem;
-                    border: 1px solid var(--neutral-light);
+                    gap: 1.25rem;
+                    padding: 1.25rem;
+                    border: 2px solid var(--neutral-light);
                     border-radius: var(--border-radius);
                     background: var(--background-white);
                     transition: var(--transition);
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .cart-item::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 4px;
+                    height: 100%;
+                    background: linear-gradient(180deg, var(--swappit-blue), var(--swappit-orange));
+                    transform: scaleY(0);
+                    transition: transform 0.3s ease;
                 }
                 
                 .cart-item:hover {
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                    border-color: var(--swappit-blue);
+                    transform: translateY(-2px);
+                }
+                
+                .cart-item:hover::before {
+                    transform: scaleY(1);
                 }
                 
                 .cart-item-image {
@@ -531,10 +596,17 @@ class CartComponent extends HTMLElement {
                 }
                 
                 .cart-item-image img {
-                    width: 60px;
-                    height: 60px;
+                    width: 80px;
+                    height: 80px;
                     border-radius: var(--border-radius);
                     object-fit: cover;
+                    border: 2px solid var(--neutral-light);
+                    transition: var(--transition);
+                }
+                
+                .cart-item:hover .cart-item-image img {
+                    border-color: var(--swappit-blue);
+                    transform: scale(1.05);
                 }
                 
                 .cart-item-details {
@@ -545,30 +617,44 @@ class CartComponent extends HTMLElement {
                 .cart-item-title {
                     font-family: var(--font-primary);
                     font-weight: 600;
-                    font-size: 0.9rem;
-                    margin: 0 0 0.25rem 0;
+                    font-size: 1.1rem;
+                    margin: 0 0 0.75rem 0;
                     color: var(--neutral-dark);
                     line-height: 1.3;
                 }
                 
                 .cart-item-seller {
                     font-family: var(--font-secondary);
-                    font-size: 0.8rem;
+                    font-size: 0.9rem;
                     color: var(--neutral-medium);
-                    margin: 0 0 0.5rem 0;
+                    margin: 0 0 1rem 0;
+                    font-weight: 500;
+                }
+                
+                .cart-item-price-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
                 }
                 
                 .cart-item-price {
                     font-family: var(--font-primary);
                     font-weight: 600;
                     color: var(--swappit-blue);
-                    font-size: 0.9rem;
+                    font-size: 1rem;
+                }
+                
+                .cart-item-total {
+                    font-family: var(--font-primary);
+                    font-weight: 700;
+                    color: var(--swappit-orange);
+                    font-size: 1.1rem;
                 }
                 
                 .cart-item-controls {
                     display: flex;
                     flex-direction: column;
-                    gap: 0.5rem;
+                    gap: 1rem;
                     align-items: flex-end;
                 }
                 
@@ -577,15 +663,22 @@ class CartComponent extends HTMLElement {
                     align-items: center;
                     gap: 0.5rem;
                     background: var(--neutral-light);
-                    border-radius: 20px;
-                    padding: 0.25rem;
+                    border-radius: 25px;
+                    padding: 0.5rem;
+                    border: 2px solid transparent;
+                    transition: var(--transition);
+                }
+                
+                .quantity-controls:hover {
+                    border-color: var(--swappit-blue);
+                    background: rgba(52, 104, 192, 0.05);
                 }
                 
                 .quantity-btn {
                     background: none;
                     border: none;
-                    width: 24px;
-                    height: 24px;
+                    width: 28px;
+                    height: 28px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
@@ -593,52 +686,63 @@ class CartComponent extends HTMLElement {
                     cursor: pointer;
                     transition: var(--transition);
                     color: var(--neutral-dark);
-                    font-size: 0.7rem;
+                    font-size: 0.8rem;
                 }
                 
                 .quantity-btn:hover {
                     background: var(--swappit-blue);
                     color: white;
+                    transform: scale(1.1);
                 }
                 
                 .quantity {
                     font-family: var(--font-primary);
-                    font-weight: 600;
-                    font-size: 0.8rem;
-                    min-width: 20px;
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                    min-width: 25px;
                     text-align: center;
+                    color: var(--neutral-dark);
                 }
                 
                 .remove-btn {
-                    background: none;
+                    background: linear-gradient(135deg, #dc2626, #b91c1c);
                     border: none;
-                    color: #dc2626;
+                    color: white;
                     cursor: pointer;
-                    padding: 0.25rem;
+                    padding: 0.5rem;
                     border-radius: 50%;
                     transition: var(--transition);
                     font-size: 0.8rem;
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
                 
                 .remove-btn:hover {
-                    background: #fef2f2;
-                    transform: scale(1.1);
+                    transform: scale(1.1) rotate(90deg);
+                    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
                 }
                 
                 /* Cart Footer */
                 .cart-footer {
-                    padding: 1.5rem;
-                    border-top: 1px solid var(--neutral-light);
-                    background: var(--background-white);
+                    padding: 2rem 1.5rem;
+                    background: linear-gradient(135deg, #f8fafc, #ffffff);
+                    border-top: 2px solid var(--neutral-light);
+                    border-radius: 20px 0 0 0;
                 }
                 
                 .cart-total {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 1rem;
-                    padding-bottom: 1rem;
-                    border-bottom: 1px solid var(--neutral-light);
+                    margin-bottom: 1.5rem;
+                    padding: 1rem 1.5rem;
+                    background: var(--background-white);
+                    border-radius: var(--border-radius);
+                    border: 2px solid var(--neutral-light);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
                 }
                 
                 .total-label {
@@ -651,24 +755,50 @@ class CartComponent extends HTMLElement {
                 .total-amount {
                     font-family: var(--font-primary);
                     font-weight: 700;
-                    font-size: 1.25rem;
-                    color: var(--swappit-blue);
+                    font-size: 1.2rem;
+                    color: var(--swappit-orange);
                 }
                 
                 .cart-actions {
                     display: flex;
                     flex-direction: column;
-                    gap: 0.75rem;
+                    gap: 1rem;
                 }
                 
                 .btn-checkout {
-                    background: var(--swappit-orange);
+                    background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-hover));
                     color: white;
                     border: none;
+                    padding: 1.25rem;
+                    border-radius: var(--border-radius);
+                    font-family: var(--font-primary);
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.75rem;
+                    box-shadow: 0 4px 15px rgba(255, 164, 36, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .btn-checkout:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 25px rgba(255, 164, 36, 0.4);
+                }
+                
+                .btn-continue-shopping {
+                    background: transparent;
+                    color: var(--swappit-blue);
+                    border: 2px solid var(--swappit-blue);
                     padding: 1rem;
                     border-radius: var(--border-radius);
                     font-family: var(--font-primary);
                     font-weight: 600;
+                    font-size: 1rem;
                     cursor: pointer;
                     transition: var(--transition);
                     display: flex;
@@ -677,26 +807,11 @@ class CartComponent extends HTMLElement {
                     gap: 0.5rem;
                 }
                 
-                .btn-checkout:hover {
-                    background: var(--swappit-orange-hover);
-                    transform: translateY(-2px);
-                }
-                
-                .btn-continue-shopping {
-                    background: transparent;
-                    color: var(--swappit-blue);
-                    border: 2px solid var(--swappit-blue);
-                    padding: 0.75rem;
-                    border-radius: var(--border-radius);
-                    font-family: var(--font-primary);
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: var(--transition);
-                }
-                
                 .btn-continue-shopping:hover {
                     background: var(--swappit-blue);
                     color: white;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
                 }
                 
                 /* Overlay */
@@ -706,11 +821,12 @@ class CartComponent extends HTMLElement {
                     left: 0;
                     width: 100vw;
                     height: 100vh;
-                    background: rgba(0, 0, 0, 0.5);
+                    background: rgba(0, 0, 0, 0.6);
                     z-index: 9999;
                     opacity: 0;
                     visibility: hidden;
                     transition: var(--transition);
+                    backdrop-filter: blur(5px);
                 }
                 
                 .cart-overlay.open {
@@ -723,6 +839,29 @@ class CartComponent extends HTMLElement {
                     .cart-sidebar {
                         width: 100vw;
                         right: -100vw;
+                    }
+                    
+                    .cart-item {
+                        padding: 1rem;
+                        gap: 1rem;
+                    }
+                    
+                    .cart-item-image img {
+                        width: 70px;
+                        height: 70px;
+                    }
+                    
+                    .btn-checkout, .btn-continue-shopping {
+                        padding: 1rem;
+                        font-size: 1rem;
+                    }
+                    
+                    .cart-items {
+                        gap: 1.25rem;
+                    }
+                    
+                    .cart-content {
+                        padding: 1.25rem;
                     }
                 }
             </style>
@@ -739,7 +878,10 @@ class CartComponent extends HTMLElement {
             <!-- Cart Sidebar -->
             <div class="cart-sidebar" id="cartSidebar">
                 <div class="cart-header">
-                    <h2 class="cart-title">Shopping Cart</h2>
+                    <h2 class="cart-title">
+                        <i class="fas fa-shopping-cart"></i>
+                        Shopping Cart
+                    </h2>
                     <button class="cart-close" id="cartClose">
                         <i class="fas fa-times"></i>
                     </button>
@@ -747,10 +889,11 @@ class CartComponent extends HTMLElement {
                 
                 <div class="cart-content">
                     <div class="empty-cart" id="emptyCart">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fas fa-shopping-bag"></i>
                         <h3>Your cart is empty</h3>
-                        <p>Add some products to start shopping</p>
+                        <p>Start shopping to discover amazing deals on school supplies</p>
                         <a href="/pages/marketplace/marketplace.html" class="btn-shop-now">
+                            <i class="fas fa-store me-2"></i>
                             Go to Marketplace
                         </a>
                     </div>
@@ -763,15 +906,16 @@ class CartComponent extends HTMLElement {
                 <div class="cart-footer">
                     <div class="cart-total">
                         <span class="total-label">Total:</span>
-                        <span class="total-amount cart-total">0 Swapcoin</span>
+                        <span class="total-amount cart-total">0 Swappcoin</span>
                     </div>
                     
                     <div class="cart-actions" id="cartActions">
                         <button class="btn-checkout" id="btnCheckout">
-                            <i class="fas fa-credit-card"></i>
-                            Proceed to Payment
+                            <i class="fas fa-coins"></i>
+                            Purchase with Swappcoin
                         </button>
                         <button class="btn-continue-shopping" id="btnContinueShopping">
+                            <i class="fas fa-arrow-left me-2"></i>
                             Continue Shopping
                         </button>
                     </div>
@@ -871,7 +1015,7 @@ class CartComponent extends HTMLElement {
         
         if (cartSidebar) {
             cartSidebar.classList.remove('open');
-            cartSidebar.style.right = '-400px';
+            cartSidebar.style.right = '-450px';
         }
         if (cartOverlay) {
             cartOverlay.classList.remove('open');
@@ -890,19 +1034,20 @@ class CartComponent extends HTMLElement {
             return;
         }
         
-        // Save cart data for checkout
-        localStorage.setItem('swappit-checkout-cart', JSON.stringify({
-            items: this.cartItems,
-            total: this.total
-        }));
+        // For SWAPPIT, we'll redirect to the product purchase page of the first item
+        // Since we're using Swappcoin, we typically purchase one product at a time
+        const firstItem = this.cartItems[0];
         
-        // Redirect to checkout page
-        window.location.href = '/pages/checkout/checkout.html';
+        // Save product data for purchase page
+        localStorage.setItem('swappit-purchase-product', JSON.stringify(firstItem));
+        
+        // Redirect to product purchase page
+        window.location.href = `/pages/marketplace/product-purchase.html?productId=${firstItem.id}`;
     }
 
     continueShopping() {
         this.closeCart();
-        window.location.href = '/pages/marketplace/marketplace-page.html';
+        window.location.href = '/pages/marketplace/marketplace.html';
     }
 
     // Public method to add item to cart

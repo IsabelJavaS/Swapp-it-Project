@@ -367,6 +367,33 @@ document.addEventListener('DOMContentLoaded', () => {
     animateFloatingShapes();
 });
 
+// Funcionalidad del botón de regreso
+document.addEventListener('DOMContentLoaded', function() {
+    const backBtn = document.getElementById('backBtn');
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            // Efecto de animación al hacer clic
+            this.style.transform = 'translateX(-5px) scale(0.95)';
+            
+            setTimeout(() => {
+                // Intentar ir hacia atrás en el historial
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial, ir a la página principal
+                    window.location.href = '/';
+                }
+            }, 150);
+        });
+        
+        // Restaurar el botón después del clic
+        backBtn.addEventListener('transitionend', function() {
+            this.style.transform = '';
+        });
+    }
+});
+
 // ==================== FLOATING SHAPES ANIMATION ====================
 function animateFloatingShapes() {
     const shapes = document.querySelectorAll('.shape');
