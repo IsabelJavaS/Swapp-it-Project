@@ -1,17 +1,26 @@
 // Student Add Product Component
+console.log('=== STUDENT ADD PRODUCT SCRIPT LOADED ===');
+console.log('Loading Loading StudentAddProduct component...');
+console.log('File File: student-add-product.js loaded');
+
 class StudentAddProduct extends HTMLElement {
     constructor() {
         super();
+        console.log('Constructor  StudentAddProduct constructor called');
         this.attachShadow({ mode: 'open' });
         this.imageFiles = []; // Store image files for upload
+        console.log('Success StudentAddProduct constructor completed');
     }
 
     connectedCallback() {
+        console.log('Connected StudentAddProduct connectedCallback called');
         this.render();
         this.attachEventListeners();
+        console.log('Success StudentAddProduct component loaded successfully');
     }
 
     render() {
+        console.log('Render StudentAddProduct render called');
         this.shadowRoot.innerHTML = `
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -544,6 +553,7 @@ class StudentAddProduct extends HTMLElement {
     }
 
     attachEventListeners() {
+        console.log('Connected StudentAddProduct attachEventListeners called');
         const form = this.shadowRoot.getElementById('addProductForm');
         const transactionTypeInputs = this.shadowRoot.querySelectorAll('input[name="transactionType"]');
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
@@ -629,46 +639,56 @@ class StudentAddProduct extends HTMLElement {
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
         const tradeSection = this.shadowRoot.getElementById('tradeSection');
         
-        // Set initial state (price not required by default)
-        priceInput.required = false;
+        // Set initial state based on default selection (sale is checked by default)
+        priceInput.required = true; // Price is required for sale
         originalPriceInput.required = false;
-        pricingSection.style.display = 'none';
+        pricingSection.style.display = 'block'; // Show pricing for sale
         tradeSection.style.display = 'none';
     }
 
     handleImageFiles(files) {
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-        
+        let errorShown = false;
         Array.from(files).forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <button type="button" class="remove-image" data-index="${this.imageFiles.length}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    imagePreview.appendChild(previewItem);
-
-                    // Remove image functionality
-                    previewItem.querySelector('.remove-image').addEventListener('click', () => {
-                        const fileIndex = parseInt(previewItem.querySelector('.remove-image').dataset.index);
-                        this.imageFiles.splice(fileIndex, 1);
-                        previewItem.remove();
-                        
-                        // Update remaining indices
-                        const remainingButtons = imagePreview.querySelectorAll('.remove-image');
-                        remainingButtons.forEach((btn, idx) => {
-                            btn.dataset.index = idx;
-                        });
-                    });
-                };
-                reader.readAsDataURL(file);
-                this.imageFiles.push(file); // Store the file
+            if (!file.type.startsWith('image/')) {
+                if (!errorShown) {
+                    this.showErrorNotification('Invalid file', 'Only image files are allowed.');
+                    errorShown = true;
+                }
+                return;
             }
+            if (file.size > 5 * 1024 * 1024) {
+                if (!errorShown) {
+                    this.showErrorNotification('File too large', 'Each image must be less than 5MB.');
+                    errorShown = true;
+                }
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <button type="button" class="remove-image" data-index="${this.imageFiles.length}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                imagePreview.appendChild(previewItem);
+                // Remove image functionality
+                previewItem.querySelector('.remove-image').addEventListener('click', () => {
+                    const fileIndex = parseInt(previewItem.querySelector('.remove-image').dataset.index);
+                    this.imageFiles.splice(fileIndex, 1);
+                    previewItem.remove();
+                    // Update remaining indices
+                    const remainingButtons = imagePreview.querySelectorAll('.remove-image');
+                    remainingButtons.forEach((btn, idx) => {
+                        btn.dataset.index = idx;
+                    });
+                });
+            };
+            reader.readAsDataURL(file);
+            this.imageFiles.push(file); // Store the file
         });
     }
 
@@ -677,51 +697,60 @@ class StudentAddProduct extends HTMLElement {
         const loadingIcon = this.shadowRoot.getElementById('loadingIcon');
         const form = this.shadowRoot.getElementById('addProductForm');
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-
+        let currentUser; // Declarar aquí para que esté disponible en toda la función
         try {
             // Show loading state
             submitBtn.disabled = true;
             loadingIcon.classList.add('show');
-
             // Get current user
-            const { getCurrentUser } = await import('/firebase/auth.js');
-            const currentUser = getCurrentUser();
-            
-            if (!currentUser) {
-                throw new Error('User not authenticated. Please log in.');
+            let currentUser;
+            try {
+                const { getCurrentUser } = await import('/firebase/auth.js');
+                currentUser = getCurrentUser();
+            } catch (error) {
+                this.showErrorNotification('Authentication error', 'Could not verify user. Please log in again.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
+            if (!currentUser) {
+                this.showErrorNotification('Not authenticated', 'You must be logged in to add a product.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
+            }
             // Collect form data
             const formData = new FormData(form);
             const transactionType = formData.get('transactionType');
-            
             if (!transactionType) {
-                throw new Error('Please select a transaction type (Sale or Swapp).');
+                this.showErrorNotification('Missing type', 'Please select a transaction type (Sale or Swapp).');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
             // Validate required fields
             const requiredFields = ['productName', 'category', 'condition', 'brand', 'description'];
             for (const field of requiredFields) {
                 if (!formData.get(field)?.trim()) {
-                    throw new Error(`Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    this.showErrorNotification('Missing field', `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
                 }
             }
-
             // Get image files from preview
-            const imageFiles = this.imageFiles; // Use the stored imageFiles
-            
+            const imageFiles = this.imageFiles;
             if (imageFiles.length === 0) {
-                throw new Error('Please upload at least one product image.');
+                this.showErrorNotification('No images', 'Please upload at least one product image.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
             // Prepare product data
             const productData = {
-                // User information (ID is primary, others for display)
                 sellerId: currentUser.uid,
                 sellerEmail: currentUser.email,
                 sellerDisplayName: currentUser.displayName || currentUser.email,
-                
-                // Product information
                 transactionType: transactionType,
                 productName: formData.get('productName').trim(),
                 category: formData.get('category'),
@@ -733,87 +762,75 @@ class StudentAddProduct extends HTMLElement {
                 swappPreferences: transactionType === 'swapp' ? formData.get('swappPreferences') : null,
                 phone: formData.get('phone')?.trim() || null,
                 location: formData.get('location')?.trim() || null,
-                
-                // Media and metadata
-                images: [], // Will be populated after image upload
-                imageCount: 0, // Number of images uploaded
-                
-                // Status and tracking
+                images: [],
+                imageCount: 0,
                 status: 'active',
                 views: 0,
                 favorites: 0,
                 rating: 0,
                 reviewCount: 0,
-                
-                // Timestamps
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
-
             // Import Firebase functions
-            const { addProduct } = await import('/firebase/firestore.js');
-            const { uploadProductImages } = await import('/firebase/storage.js');
-
+            let addProduct, uploadProductImages, updateProduct;
+            try {
+                ({ addProduct } = await import('/firebase/firestore.js'));
+                ({ uploadProductImages } = await import('/firebase/storage.js'));
+                ({ updateProduct } = await import('/firebase/firestore.js'));
+            } catch (error) {
+                this.showErrorNotification('Firebase error', 'Could not load Firebase functions.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
+            }
             // First, create the product document to get the product ID
             const productResult = await addProduct(productData);
-            
             if (!productResult.success) {
-                throw new Error(`Error creating product: ${productResult.error}`);
+                this.showErrorNotification('Error creating product', productResult.error);
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
             const productId = productResult.productId;
-            console.log('Product created successfully with ID:', productId);
-
             // Upload images if we have them
+            let imageUploadResult = { success: false, images: [] };
             if (imageFiles.length > 0) {
-                console.log('Starting image upload for product:', productId);
-                console.log('Number of images to upload:', imageFiles.length);
-                console.log('Transaction type:', transactionType);
-                console.log('Category:', formData.get('category'));
-                
-                const imageUploadResult = await uploadProductImages(
-                    imageFiles, 
-                    productId, 
-                    transactionType, 
+                imageUploadResult = await uploadProductImages(
+                    imageFiles,
+                    productId,
+                    transactionType,
                     formData.get('category')
                 );
-                
-                if (imageUploadResult.success) {
-                    console.log('Image upload successful:', imageUploadResult.images);
-                    
-                    // Update product with image URLs
-                    const { updateProduct } = await import('/firebase/firestore.js');
-                    const updateResult = await updateProduct(productId, {
-                        images: imageUploadResult.images,
-                        imageCount: imageUploadResult.images.length,
-                        updatedAt: new Date().toISOString()
-                    });
-                    
-                    if (!updateResult.success) {
-                        console.warn('Warning: Product created but image URLs could not be updated:', updateResult.error);
-                    }
-                } else {
-                    console.error('Image upload failed:', imageUploadResult.error);
-                    // Product was created but images failed to upload
-                    // We could either delete the product or continue without images
-                    throw new Error(`Product created but image upload failed: ${imageUploadResult.error}`);
+                if (!imageUploadResult.success) {
+                    this.showErrorNotification('Image upload failed', imageUploadResult.error);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
+                }
+                // Update product with image URLs
+                const updateResult = await updateProduct(productId, {
+                    images: imageUploadResult.images,
+                    imageCount: imageUploadResult.images.length,
+                    updatedAt: new Date().toISOString()
+                });
+                if (!updateResult.success) {
+                    this.showErrorNotification('Product created but image URLs could not be updated', updateResult.error);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
                 }
             }
-
             // Show success notification
             this.showSuccessNotification('Product added successfully!', 'Your product has been uploaded and is now available in the marketplace.');
+            // Reset form and preview
             form.reset();
             imagePreview.innerHTML = '';
-            this.imageFiles = []; // Clear image files after successful upload
-
-            // Optionally redirect to products page
-            // window.location.href = '/dashboards/student/student-dashboard.html';
-
+            this.imageFiles = [];
+            this.initializeFormState();
         } catch (error) {
-            console.error('Error adding product:', error);
-            this.showErrorNotification('Error adding product', error.message);
+            this.showErrorNotification('Error', error.message || 'An error occurred while adding the product.');
         } finally {
-            // Hide loading state
             submitBtn.disabled = false;
             loadingIcon.classList.remove('show');
         }
@@ -868,8 +885,8 @@ class StudentAddProduct extends HTMLElement {
             color: #10b981;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -968,8 +985,8 @@ class StudentAddProduct extends HTMLElement {
             color: #ef4444;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -1020,4 +1037,9 @@ class StudentAddProduct extends HTMLElement {
     }
 }
 
-customElements.define('student-add-product', StudentAddProduct); 
+try {
+    customElements.define('student-add-product', StudentAddProduct);
+    console.log('Registered StudentAddProduct component registered successfully');
+} catch (error) {
+    console.error('Error Error registering StudentAddProduct component:', error);
+} 

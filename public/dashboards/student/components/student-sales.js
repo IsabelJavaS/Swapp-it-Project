@@ -60,16 +60,18 @@ class StudentSales extends HTMLElement {
                 <div class="sale-image">
                     <img src="${sale.image}" alt="${sale.productName}" />
                     <div class="sale-status ${sale.status}">
-                        ${sale.status === 'completed' ? '<i class="fas fa-check"></i>' : 
-                          sale.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
-                          sale.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
-                          '<i class="fas fa-shipping-fast"></i>'}
+                            ${sale.status === 'completed' ? '<i class="fas fa-check"></i>' : 
+                            sale.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
+                            sale.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
+                            '<i class="fas fa-shipping-fast"></i>'}
                     </div>
                 </div>
                 <div class="sale-info">
                     <div class="sale-header">
                         <h3 class="sale-title">${sale.productName}</h3>
-                        <div class="sale-price">$${sale.price.toFixed(2)}</div>
+                        <div class="sale-price">
+                            <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>${sale.price.toFixed(2)}
+                        </div>
                     </div>
                     <div class="sale-meta">
                         <span class="meta-item">
@@ -150,6 +152,7 @@ class StudentSales extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
+            <link rel="stylesheet" href="../../css/icon_S/icon_S.css">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');

@@ -366,30 +366,38 @@ export const getProducts = async (filters = {}) => {
     const productsRef = collection(db, COLLECTIONS.PRODUCTS);
     let q = query(productsRef);
     
-    // Apply filters
-    if (filters.status) {
-      q = query(q, where('status', '==', filters.status));
-    }
+    // Apply filters one by one to avoid complex composite indexes
     if (filters.category) {
       q = query(q, where('category', '==', filters.category));
     }
+    
     if (filters.sellerId) {
       q = query(q, where('sellerId', '==', filters.sellerId));
     }
-    if (filters.priceMin || filters.priceMax) {
-      if (filters.priceMin) {
-        q = query(q, where('price', '>=', filters.priceMin));
-      }
-      if (filters.priceMax) {
-        q = query(q, where('price', '<=', filters.priceMax));
-      }
-    }
-    if (filters.search) {
-      // Note: Firestore doesn't support full-text search natively
-      // Consider using Algolia or similar for better search
+    
+    if (filters.transactionType) {
+      q = query(q, where('transactionType', '==', filters.transactionType));
     }
     
-    // Order by (only if no complex filters)
+    if (filters.sellerType) {
+      q = query(q, where('sellerType', '==', filters.sellerType));
+    }
+    
+    // Price filters - apply only one at a time to avoid complex indexes
+    if (filters.priceMin && filters.priceMax) {
+      q = query(q, where('price', '>=', filters.priceMin), where('price', '<=', filters.priceMax));
+    } else if (filters.priceMin) {
+      q = query(q, where('price', '>=', filters.priceMin));
+    } else if (filters.priceMax) {
+      q = query(q, where('price', '<=', filters.priceMax));
+    }
+    
+    // Status filter
+    if (filters.status) {
+      q = query(q, where('status', '==', filters.status));
+    }
+    
+    // Order by - use simple ordering to avoid composite indexes
     const orderByField = filters.orderBy || 'createdAt';
     const orderDirection = filters.orderDirection || 'desc';
     q = query(q, orderBy(orderByField, orderDirection));
@@ -404,16 +412,25 @@ export const getProducts = async (filters = {}) => {
     
     querySnapshot.forEach((doc) => {
       const productData = doc.data();
-      // Filter by status in memory if needed
-      if (!filters.status || productData.status === filters.status) {
-        products.push({
-          id: doc.id,
-          ...productData
-        });
-      }
+      products.push({
+        id: doc.id,
+        ...productData
+      });
     });
     
-    return { success: true, products };
+    // Apply additional filters in memory if needed
+    let filteredProducts = products;
+    
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      filteredProducts = filteredProducts.filter(product => 
+        product.productName?.toLowerCase().includes(searchTerm) ||
+        product.description?.toLowerCase().includes(searchTerm) ||
+        product.brand?.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    return { success: true, products: filteredProducts };
   } catch (error) {
     console.error('Error getting products:', error);
     return { success: false, error: error.message };

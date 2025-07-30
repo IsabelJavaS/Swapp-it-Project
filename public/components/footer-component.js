@@ -101,6 +101,7 @@ class FooterComponent extends HTMLElement {
                     overflow: hidden;
                 }
 
+<<<<<<< HEAD
                 /* Newsletter Section - Professional */
                 .newsletter-section {
                     background: var(--gradient-primary);
@@ -194,6 +195,9 @@ class FooterComponent extends HTMLElement {
                     transform: translateY(-2px);
                     box-shadow: 0 6px 20px rgba(255, 164, 36, 0.4);
                 }
+=======
+
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
 
                 /* Main Footer Content */
                 .footer-main {
@@ -221,15 +225,41 @@ class FooterComponent extends HTMLElement {
                 .footer-column {
                     display: flex;
                     flex-direction: column;
+                    height: 100%;
+                    justify-content: flex-start;
+                }
+
+                /* Ajuste específico para la primera columna */
+                .footer-column:first-child {
+                    align-items: flex-start;
+                }
+
+                /* Ajuste para que el logo esté al mismo nivel que los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
+                    margin-bottom: 0.5rem;
+                }
+
+                .footer-column:first-child .footer-description {
+                    margin-top: 0;
+                    padding-top: 0;
                 }
 
                 /* Footer Brand - Professional */
                 .footer-brand {
                     display: flex;
+<<<<<<< HEAD
                     flex-direction: column;
                     align-items: flex-start;
                     text-align: left;
                     margin-bottom: 1.5rem;
+=======
+                    align-items: flex-start;
+                    margin-bottom: 0.75rem;
+                    margin-top: 0;
+                    padding-top: 0;
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-brand img {
@@ -244,14 +274,26 @@ class FooterComponent extends HTMLElement {
                     transform: translateY(-2px);
                 }
 
+                /* Ajuste para alinear el logo con los títulos */
+                .footer-column:first-child .footer-brand {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
+
                 .footer-description {
                     color: rgba(255, 255, 255, 0.85);
                     line-height: 1.6;
                     margin-bottom: 1.5rem;
+<<<<<<< HEAD
                     font-size: 0.9rem;
                     font-family: var(--font-secondary);
                     text-align: left;
                     max-width: 280px;
+=======
+                    font-size: 0.95rem;
+                    margin-top: 0;
+                    padding-top: 0;
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 /* Social Links - Professional */
@@ -292,8 +334,13 @@ class FooterComponent extends HTMLElement {
                     font-weight: 600;
                     margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
+<<<<<<< HEAD
                     position: relative;
                     margin-top: 0;
+=======
+                    margin-top: 0;
+                    padding-top: 0;
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-title::after {
@@ -321,6 +368,10 @@ class FooterComponent extends HTMLElement {
                     min-height: 1.4em;
                 }
 
+                .footer-links li:first-child {
+                    margin-top: 0;
+                }
+
                 .footer-links a {
                     color: rgba(255, 255, 255, 0.8);
                     text-decoration: none;
@@ -346,9 +397,12 @@ class FooterComponent extends HTMLElement {
                 /* Footer Contact - Professional */
                 .footer-contact {
                     margin-top: 0;
+<<<<<<< HEAD
                     padding-top: 0;
                     margin-bottom: 0;
                     padding-bottom: 0;
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-contact p {
@@ -368,6 +422,10 @@ class FooterComponent extends HTMLElement {
                 .footer-contact p:hover {
                     color: var(--swappit-orange);
                     transform: translateX(3px);
+                }
+
+                .footer-contact p:first-child {
+                    margin-top: 0;
                 }
 
                 .footer-contact p i {
@@ -445,11 +503,14 @@ class FooterComponent extends HTMLElement {
                         gap: 1.5rem;
                     }
 
+<<<<<<< HEAD
                     .newsletter-form {
                         flex-direction: column;
                         padding: 0.75rem;
                     }
 
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                     .footer-bottom-content {
                         flex-direction: column;
                         text-align: center;
@@ -478,6 +539,7 @@ class FooterComponent extends HTMLElement {
                         padding: 2rem 0 1rem;
                     }
 
+<<<<<<< HEAD
                     .newsletter-section {
                         padding: 2rem 0;
                     }
@@ -486,6 +548,8 @@ class FooterComponent extends HTMLElement {
                         font-size: 1.25rem;
                     }
 
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                     .footer-bottom {
                         padding: 1rem 0;
                     }
@@ -497,6 +561,7 @@ class FooterComponent extends HTMLElement {
             </style>
             
             <footer class="marketplace-footer">
+<<<<<<< HEAD
                 <!-- Newsletter Section -->
                 <div class="newsletter-section">
                     <div class="container">
@@ -513,6 +578,8 @@ class FooterComponent extends HTMLElement {
                     </div>
                 </div>
 
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 <!-- Main Footer Content -->
                 <div class="footer-main">
                     <div class="container">
@@ -523,7 +590,11 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
+<<<<<<< HEAD
                                     SWAPPIT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
+=======
+                                    Join the sustainable student community where you can buy, sell, or exchange school supplies.
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -610,6 +681,7 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
+<<<<<<< HEAD
         // Newsletter form submission
         const newsletterForm = this.shadowRoot.getElementById('newsletterForm');
         if (newsletterForm) {
@@ -622,6 +694,8 @@ class FooterComponent extends HTMLElement {
 
 
 
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
         // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
@@ -646,6 +720,7 @@ class FooterComponent extends HTMLElement {
         });
     }
 
+<<<<<<< HEAD
     handleNewsletterSubscription(email) {
         // Simular envío de newsletter con mejor UX
         const form = this.shadowRoot.getElementById('newsletterForm');
@@ -669,10 +744,9 @@ class FooterComponent extends HTMLElement {
                 input.disabled = false;
             }, 2000);
         }, 1500);
+=======
+>>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
 
-        console.log('Newsletter subscription:', email);
-        // Aquí se implementaría la lógica real de suscripción
-    }
 }
 
 // Registrar el componente

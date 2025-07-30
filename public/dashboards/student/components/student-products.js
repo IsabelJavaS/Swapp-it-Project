@@ -10,45 +10,33 @@ class StudentProducts extends HTMLElement {
         this.loadProducts();
     }
 
-    loadProducts() {
-        // Simulate loading products from Firebase
-        const mockProducts = [
-            {
-                id: 1,
-                name: 'Calculus Textbook',
-                category: 'Books',
-                condition: 'Like new',
-                price: 45.00,
-                status: 'active',
-                image: 'https://via.placeholder.com/120x120/3468c0/ffffff?text=C',
-                views: 23,
-                createdAt: '2024-01-15'
-            },
-            {
-                id: 2,
-                name: 'MacBook Air 2020',
-                category: 'Electronics',
-                condition: 'Good',
-                price: 850.00,
-                status: 'active',
-                image: 'https://via.placeholder.com/120x120/ffa424/ffffff?text=M',
-                views: 156,
-                createdAt: '2024-01-10'
-            },
-            {
-                id: 3,
-                name: 'Nike Running Shoes',
-                category: 'Sports',
-                condition: 'Excellent',
-                price: 75.00,
-                status: 'sold',
-                image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=N',
-                views: 89,
-                createdAt: '2024-01-05'
+    async loadProducts() {
+        // Obtener usuario actual
+        let currentUser;
+        try {
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            currentUser = getCurrentUser();
+        } catch (error) {
+            this.showErrorNotification('Error de autenticación', 'No se pudo obtener el usuario actual.');
+            return;
+        }
+        if (!currentUser) {
+            this.showErrorNotification('No autenticado', 'Debes iniciar sesión para ver tus productos.');
+            return;
+        }
+        // Cargar productos del usuario
+        try {
+            const { getProducts } = await import('/firebase/firestore.js');
+            const result = await getProducts({ sellerId: currentUser.uid });
+            if (result.success) {
+                this.updateProductsList(result.products);
+            } else {
+                this.updateProductsList([]);
             }
-        ];
-
-        this.updateProductsList(mockProducts);
+        } catch (error) {
+            this.showErrorNotification('Error al cargar productos', error.message);
+            this.updateProductsList([]);
+        }
     }
 
     updateProductsList(products) {
@@ -61,8 +49,8 @@ class StudentProducts extends HTMLElement {
                     <img src="${product.image}" alt="${product.name}" />
                     <div class="product-status ${product.status}">
                         ${product.status === 'sold' ? '<i class="fas fa-check"></i>' : 
-                          product.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
-                          '<i class="fas fa-eye"></i>'}
+                            product.status === 'pending' ? '<i class="fas fa-clock"></i>' : 
+                            '<i class="fas fa-eye"></i>'}
                     </div>
                 </div>
                 <div class="product-info">
@@ -116,9 +104,34 @@ class StudentProducts extends HTMLElement {
         });
     }
 
+    async deleteProduct(productId) {
+        if (!confirm('Are you sure you want to delete this product?')) return;
+        try {
+            const { deleteProduct } = await import('/firebase/firestore.js');
+            const result = await deleteProduct(productId);
+            if (result.success) {
+                this.showSuccessNotification('Deleted', 'Product deleted successfully.');
+                this.loadProducts();
+            } else {
+                this.showErrorNotification('Error deleting', result.error);
+            }
+        } catch (error) {
+            this.showErrorNotification('Error deleting', error.message);
+        }
+    }
+
     editProduct(productId) {
-        console.log('Edit product:', productId);
-        // Navigate to edit product page
+        // Buscar el producto actual en la lista
+        const productsList = this.shadowRoot.getElementById('productsList');
+        const productCard = productsList.querySelector(`[data-id="${productId}"]`);
+        // Buscar el producto en la lista interna (puedes guardar la lista en this.products)
+        const product = (this.products || []).find(p => p.id == productId);
+        if (!product) {
+            this.showErrorNotification('Error', 'No se encontró el producto para editar.');
+            return;
+        }
+        // Crear modal de edición
+        this.showEditModal(product);
     }
 
     viewProduct(productId) {
@@ -126,11 +139,63 @@ class StudentProducts extends HTMLElement {
         // Navigate to product detail page
     }
 
-    deleteProduct(productId) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            console.log('Delete product:', productId);
-            // Delete product from Firebase
-        }
+    showEditModal(product) {
+        // Crear modal básico
+        let modal = document.createElement('div');
+        modal.className = 'edit-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2>Edit Product</h2>
+                <label>Name: <input type="text" id="editName" value="${product.productName || product.name}" /></label><br>
+                <label>Price: <input type="number" id="editPrice" value="${product.price}" /></label><br>
+                <label>Description: <textarea id="editDesc">${product.description || ''}</textarea></label><br>
+                <button id="saveEditBtn">Save</button>
+                <button id="cancelEditBtn">Cancel</button>
+            </div>
+            <style>
+                .edit-modal { position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; z-index:9999; }
+                .modal-content { background:white; padding:2rem; border-radius:12px; min-width:300px; }
+                .modal-content h2 { margin-top:0; }
+                .modal-content label { display:block; margin-bottom:1rem; }
+                .modal-content button { margin-right:1rem; }
+            </style>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector('#cancelEditBtn').onclick = () => modal.remove();
+        modal.querySelector('#saveEditBtn').onclick = async () => {
+            const newName = modal.querySelector('#editName').value.trim();
+            const newPrice = parseFloat(modal.querySelector('#editPrice').value);
+            const newDesc = modal.querySelector('#editDesc').value.trim();
+            if (!newName || isNaN(newPrice)) {
+                alert('Name and price are required.');
+                return;
+            }
+            try {
+                const { updateProduct } = await import('/firebase/firestore.js');
+                const result = await updateProduct(product.id, {
+                    productName: newName,
+                    price: newPrice,
+                    description: newDesc,
+                    updatedAt: new Date().toISOString()
+                });
+                if (result.success) {
+                    this.showSuccessNotification('Updated', 'Product updated successfully.');
+                    modal.remove();
+                    this.loadProducts();
+                } else {
+                    alert('Error updating: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error updating: ' + error.message);
+            }
+        };
+    }
+
+    showSuccessNotification(title, message) {
+        alert(`${title}\n${message}`);
+    }
+    showErrorNotification(title, message) {
+        alert(`${title}\n${message}`);
     }
 
     render() {

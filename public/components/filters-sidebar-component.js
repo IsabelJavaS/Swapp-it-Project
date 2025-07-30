@@ -484,11 +484,11 @@ class FiltersSidebarComponent extends HTMLElement {
                             </span>
                         </label>
                         <label class="filter-option">
-                            <input type="checkbox" value="swap">
+                            <input type="checkbox" value="swapp">
                             <span class="checkmark"></span>
                             <span class="option-text">
                                 <i class="fas fa-exchange-alt"></i>
-                                For Swap
+                                For Swapp
                             </span>
                         </label>
                     </div>

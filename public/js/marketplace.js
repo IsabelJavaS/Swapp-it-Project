@@ -28,10 +28,13 @@ class MarketplaceLogged {
         this.attachEventListeners();
         this.setupFilters();
         this.showLoadingState();
+        
+        // Load specific sections if on main marketplace page
+        this.loadMainPageSections();
     }
 
     // Load products from Firebase
-    async loadProducts() {
+    async loadProducts(targetGridId = null, customFilters = null) {
         console.log('loadProducts called - Loading from Firebase');
         try {
             this.showLoadingState();
@@ -39,19 +42,30 @@ class MarketplaceLogged {
             // Import Firebase functions
             const { getProducts } = await import('/firebase/firestore.js');
             
-            // Get products from Firebase with filters
-            const result = await getProducts({
+            // Use custom filters if provided, otherwise use default
+            const filters = customFilters || {
                 orderBy: 'createdAt',
                 orderDirection: 'desc'
-            });
+            };
+            
+            // Get products from Firebase with filters
+            const result = await getProducts(filters);
             
             if (result.success) {
-                this.products = result.products.map(product => this.formatProductForDisplay(product));
-                console.log(`Loaded ${this.products.length} products from Firebase`);
-                this.filteredProducts = [...this.products];
+                const formattedProducts = result.products.map(product => this.formatProductForDisplay(product));
+                console.log(`Loaded ${formattedProducts.length} products from Firebase`);
                 
-                this.renderProducts();
-                this.updateProductCount();
+                if (targetGridId) {
+                    // Load products to specific grid
+                    this.renderProductsToGrid(targetGridId, formattedProducts);
+                } else {
+                    // Load all products (main marketplace page)
+                    this.products = formattedProducts;
+                    this.filteredProducts = [...this.products];
+                    this.renderProducts();
+                    this.updateProductCount();
+                }
+                
                 this.hideLoadingState();
             } else {
                 console.error('Error loading products from Firebase:', result.error);
@@ -430,12 +444,64 @@ class MarketplaceLogged {
             .slice(0, 8);
     }
 
+    // Load main page sections
+    async loadMainPageSections() {
+        console.log('Loading main page sections...');
+        
+        // Load New Products (recently added)
+        await this.loadProducts('newProductsGrid', {
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+            limit: 8
+        });
+        
+        // Load Swapp Products
+        await this.loadProducts('swappProductsGrid', {
+            transactionType: 'swapp',
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+            limit: 8
+        });
+        
+        // Load Business Products
+        await this.loadProducts('businessProductsGrid', {
+            sellerType: 'business',
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+            limit: 8
+        });
+    }
+
+    // Render products to specific grid
+    renderProductsToGrid(gridId, products) {
+        const grid = document.getElementById(gridId);
+        if (!grid) {
+            console.error(`Grid with id '${gridId}' not found`);
+            return;
+        }
+        
+        if (products.length === 0) {
+            grid.innerHTML = `
+                <div class="no-products">
+                    <i class="fas fa-box-open"></i>
+                    <p>No products found</p>
+                </div>
+            `;
+            return;
+        }
+        
+        grid.innerHTML = products.map(product => this.createProductCard(product)).join('');
+    }
+
     // View more products for a specific section
     viewMoreProducts(sectionId) {
         console.log(`viewMoreProducts called for section: ${sectionId}`);
         
         // Navigate to specific section pages
         const sectionUrls = {
+            'newProductsGrid': '/pages/marketplace/sections/new-products.html',
+            'swappProductsGrid': '/pages/marketplace/sections/swapp-products.html',
+            'businessProductsGrid': '/pages/marketplace/sections/business-products.html',
             'bestSellersGrid': '/pages/marketplace/sections/best-sellers.html',
             'newArrivalsGrid': '/pages/marketplace/sections/new-arrivals.html',
             'featuredGrid': '/pages/marketplace/sections/featured-products.html'

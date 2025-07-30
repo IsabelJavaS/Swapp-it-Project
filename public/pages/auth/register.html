@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapp-it - Register</title>
-    <link rel="stylesheet" href="/css/register.css">
-    <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+    <link rel="stylesheet" href="../../css/register.css">
+    <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
+    
+    <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
+    <script src="../../js/css-path-fixer.js"></script>
 </head>
 <body>
     
     <div class="register-container">
         <div class="register-box">
-                            <img src="/assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
+            <!-- Botón de regreso dinámico -->
+            <div class="back-button-container">
+                <button class="back-btn" id="backBtn" aria-label="Go back">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M19 12H5"/>
+                        <path d="M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <img src="../../assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
             <h2>Create Account</h2>            
             <div class="role-selector">
                 <button class="role-btn active" data-role="personal">Personal User</button>
