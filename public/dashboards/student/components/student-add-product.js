@@ -741,6 +741,17 @@ class StudentAddProduct extends HTMLElement {
                     return;
                 }
             }
+
+            // Validate price for sale transactions
+            if (transactionType === 'sale') {
+                const price = formData.get('price');
+                if (!price || parseFloat(price) <= 0) {
+                    this.showErrorNotification('Invalid price', 'Please enter a valid price for sale items.');
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
+                }
+            }
             // Get image files from preview
             const imageFiles = this.imageFiles;
             if (imageFiles.length === 0) {

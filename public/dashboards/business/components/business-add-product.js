@@ -3,7 +3,7 @@ class BusinessAddProduct extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.formData = new FormData();
+        this.imageFiles = []; // Store image files for upload
     }
 
     connectedCallback() {
@@ -496,11 +496,17 @@ class BusinessAddProduct extends HTMLElement {
         const maxFiles = 5;
         const maxSize = 5 * 1024 * 1024; // 5MB
 
+        // Clear previous files
+        this.imageFiles = [];
+
         Array.from(files).slice(0, maxFiles).forEach(file => {
             if (file.size > maxSize) {
                 alert('File too large. Maximum size is 5MB.');
                 return;
             }
+
+            // Store file for later upload
+            this.imageFiles.push(file);
 
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -515,6 +521,11 @@ class BusinessAddProduct extends HTMLElement {
 
                 previewItem.querySelector('.remove-image').addEventListener('click', () => {
                     previewItem.remove();
+                    // Remove file from array
+                    const index = this.imageFiles.indexOf(file);
+                    if (index > -1) {
+                        this.imageFiles.splice(index, 1);
+                    }
                 });
 
                 preview.appendChild(previewItem);
@@ -525,27 +536,251 @@ class BusinessAddProduct extends HTMLElement {
 
     async handleFormSubmission() {
         const submitBtn = this.shadowRoot.getElementById('submitBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Product...';
+        const form = this.shadowRoot.getElementById('addProductForm');
+        const imagePreview = this.shadowRoot.getElementById('imagePreview');
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // Show success message
-            alert('Product added successfully!');
-            
-            // Reset form
-            this.shadowRoot.getElementById('addProductForm').reset();
-            this.shadowRoot.getElementById('imagePreview').innerHTML = '';
-            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Product...';
+
+            // Get current user
+            let currentUser;
+            try {
+                const { getCurrentUser } = await import('/firebase/auth.js');
+                currentUser = getCurrentUser();
+            } catch (error) {
+                this.showErrorNotification('Authentication error', 'Could not verify user. Please log in again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            if (!currentUser) {
+                this.showErrorNotification('Not authenticated', 'You must be logged in to add a product.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            // Collect form data
+            const formData = new FormData(form);
+            const productType = formData.get('productType');
+            if (!productType) {
+                this.showErrorNotification('Missing type', 'Please select a product type.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            // Validate required fields
+            const requiredFields = ['productName', 'category', 'price', 'description'];
+            for (const field of requiredFields) {
+                if (!formData.get(field)?.trim()) {
+                    this.showErrorNotification('Missing field', `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                    return;
+                }
+            }
+
+            // Get image files from preview
+            const imageFiles = this.imageFiles;
+            if (imageFiles.length === 0) {
+                this.showErrorNotification('No images', 'Please upload at least one product image.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            // Prepare product data
+            const productData = {
+                sellerId: currentUser.uid,
+                sellerEmail: currentUser.email,
+                sellerDisplayName: currentUser.displayName || currentUser.email,
+                sellerType: 'business',
+                transactionType: 'sale', // Business products are always for sale
+                productType: productType,
+                productName: formData.get('productName').trim(),
+                category: formData.get('category'),
+                price: parseFloat(formData.get('price')),
+                stock: parseInt(formData.get('stock')) || 1,
+                description: formData.get('description').trim(),
+                images: [],
+                imageCount: 0,
+                status: 'active',
+                views: 0,
+                favorites: 0,
+                rating: 0,
+                reviewCount: 0,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // Import Firebase functions
+            let addProduct, uploadProductImages, updateProduct;
+            try {
+                ({ addProduct } = await import('/firebase/firestore.js'));
+                ({ uploadProductImages } = await import('/firebase/storage.js'));
+                ({ updateProduct } = await import('/firebase/firestore.js'));
+            } catch (error) {
+                this.showErrorNotification('Firebase error', 'Could not load Firebase functions.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            // First, create the product document to get the product ID
+            const productResult = await addProduct(productData);
+            if (!productResult.success) {
+                this.showErrorNotification('Error creating product', productResult.error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                return;
+            }
+
+            const productId = productResult.productId;
+
+            // Upload images if we have them
+            let imageUploadResult = { success: false, images: [] };
+            if (imageFiles.length > 0) {
+                imageUploadResult = await uploadProductImages(
+                    imageFiles,
+                    productId,
+                    'sale', // Business products are always for sale
+                    formData.get('category')
+                );
+                if (!imageUploadResult.success) {
+                    this.showErrorNotification('Image upload failed', imageUploadResult.error);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                    return;
+                }
+
+                // Update product with image URLs
+                const updateResult = await updateProduct(productId, {
+                    images: imageUploadResult.images,
+                    imageCount: imageUploadResult.images.length,
+                    updatedAt: new Date().toISOString()
+                });
+                if (!updateResult.success) {
+                    this.showErrorNotification('Product created but image URLs could not be updated', updateResult.error);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
+                    return;
+                }
+            }
+
+            // Show success notification
+            this.showSuccessNotification('Product added successfully!', 'Your product has been uploaded and is now available in the marketplace.');
+
+            // Reset form and preview
+            form.reset();
+            imagePreview.innerHTML = '';
+            this.imageFiles = [];
+
         } catch (error) {
-            console.error('Error adding product:', error);
-            alert('Error adding product. Please try again.');
+            this.showErrorNotification('Error', error.message || 'An error occurred while adding the product.');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-plus"></i> Add Product';
         }
+    }
+
+    showSuccessNotification(title, message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast success';
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+        `;
+
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        `;
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.body.appendChild(notification);
+
+        // Remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
+    }
+
+    showErrorNotification(title, message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast error';
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+        `;
+
+        // Add styles
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        `;
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.body.appendChild(notification);
+
+        // Remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
     }
 }
 
