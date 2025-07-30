@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapp-it - Register</title>
     <link rel="stylesheet" href="../../css/register.css">
+    <link rel="stylesheet" href="../../css/business-register.css">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     
     <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
@@ -24,120 +25,136 @@
                 </button>
             </div>
             
-            <img src="../../assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
-            <h2>Create Account</h2>            
-            <div class="role-selector">
-                <button class="role-btn active" data-role="personal">Personal User</button>
-                <button class="role-btn" data-role="business">Business</button>
-            </div>
-
-            <form id="registerForm">
-                <!-- Campos comunes para ambos roles -->
-                <!-- Email -->
-                <div class="form-group input-icon-group">
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                    <span class="input-icon">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
-                    </span>
-                </div>
-                <!-- Password y Confirm Password ya tienen icono -->
-                <div class="form-group password-group">
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                    <button type="button" class="toggle-password" data-target="password" tabindex="-1" aria-label="Show/Hide password">
-                        <span class="eye-icon">
-                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </span>
-                    </button>
-                </div>
-                <div class="form-group password-group">
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
-                    <button type="button" class="toggle-password" data-target="confirmPassword" tabindex="-1" aria-label="Show/Hide password">
-                        <span class="eye-icon">
-                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </span>
-                    </button>
+            <!-- Contenido principal del formulario -->
+            <div class="form-content">
+                <h2>Create Account</h2>            
+                <div class="role-selector">
+                    <button class="role-btn active" data-role="personal">Personal User</button>
+                    <button class="role-btn" data-role="business">Business</button>
                 </div>
 
-                <!-- Campos para usuario personal -->
-                <!-- Nombre (personal) -->
-                <div class="form-group input-icon-group personal-fields" id="personalFields">
-                    <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
-                    <span class="input-icon">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M2 20c0-4 8-6 10-6s10 2 10 6"/></svg>
-                    </span>
-                </div>
-                <!-- Teléfono (personal) -->
-                <div class="form-group input-icon-group personal-fields">
-                    <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
-                    <span class="input-icon">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/></svg>
-                    </span>
-                </div>
-                <!-- Dirección (personal) -->
-                <div class="form-group input-icon-group personal-fields">
-                    <input type="text" id="direccion" name="direccion" placeholder="Address" required>
-                    <span class="input-icon">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    </span>
-                </div>
+                <form id="registerForm">
+                    <!-- Campos comunes para ambos roles -->
+                    <!-- Email -->
+                    <div class="form-group input-icon-group">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </span>
+                    </div>
+                    <!-- Password y Confirm Password ya tienen icono -->
+                    <div class="form-group password-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <button type="button" class="toggle-password" data-target="password" tabindex="-1" aria-label="Show/Hide password">
+                            <span class="eye-icon">
+                                <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="form-group password-group">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                        <button type="button" class="toggle-password" data-target="confirmPassword" tabindex="-1" aria-label="Show/Hide password">
+                            <span class="eye-icon">
+                                <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </span>
+                        </button>
+                    </div>
 
-                <!-- Campos para negocio -->
-                <div class="business-fields hidden" id="businessFields">
-                    <!-- Nombre de negocio -->
-                    <div class="form-group input-icon-group">
-                        <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name">
+                    <!-- Campos para usuario personal -->
+                    <!-- Nombre (personal) -->
+                    <div class="form-group input-icon-group personal-fields" id="personalFields">
+                        <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
                         <span class="input-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4M8 3v4"/></svg>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M2 20c0-4 8-6 10-6s10 2 10 6"/></svg>
                         </span>
                     </div>
-                    <!-- RUC -->
-                    <div class="form-group input-icon-group">
-                        <input type="text" id="ruc" name="ruc" placeholder="RUC">
-                        <span class="input-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
-                        </span>
-                    </div>
-                    <!-- Dirección de negocio -->
-                    <div class="form-group input-icon-group">
-                        <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address">
-                        <span class="input-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </span>
-                    </div>
-                    <!-- Teléfono de negocio -->
-                    <div class="form-group input-icon-group">
-                        <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number">
+                    <!-- Teléfono (personal) -->
+                    <div class="form-group input-icon-group personal-fields">
+                        <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
                         <span class="input-icon">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/></svg>
                         </span>
                     </div>
-                    <!-- Business Type antes de Business Description -->
-                    <div class="form-group input-icon-group">
-                        <select id="tipoNegocio" name="tipoNegocio">
-                            <option value="">Business Type</option>
-                            <option value="restaurante">Book Store</option>
-                            <option value="tienda">Factory</option>
-                            <option value="servicio">Super Market</option>
-                            <option value="otro">Other</option>
-                        </select>
+                    <!-- Dirección (personal) -->
+                    <div class="form-group input-icon-group personal-fields">
+                        <input type="text" id="direccion" name="direccion" placeholder="Address" required>
                         <span class="input-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
                     </div>
-                    <div class="form-group input-icon-group">
-                        <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description"></textarea>
-                        <span class="input-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
-                        </span>
+
+                    <!-- Campos para negocio -->
+                    <div class="business-fields hidden" id="businessFields">
+                        <div class="business-form-container">
+                            <!-- Primera columna -->
+                            <div class="business-column">
+                                <!-- Nombre de negocio -->
+                                <div class="form-group input-icon-group">
+                                    <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name">
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4M8 3v4"/></svg>
+                                    </span>
+                                </div>
+                                <!-- RUC -->
+                                <div class="form-group input-icon-group">
+                                    <input type="text" id="ruc" name="ruc" placeholder="RUC">
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+                                    </span>
+                                </div>
+                                <!-- Dirección de negocio -->
+                                <div class="form-group input-icon-group">
+                                    <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address">
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Segunda columna -->
+                            <div class="business-column">
+                                <!-- Teléfono de negocio -->
+                                <div class="form-group input-icon-group">
+                                    <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number">
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/></svg>
+                                    </span>
+                                </div>
+                                <!-- Business Type -->
+                                <div class="form-group input-icon-group">
+                                    <select id="tipoNegocio" name="tipoNegocio">
+                                        <option value="">Business Type</option>
+                                        <option value="restaurante">Book Store</option>
+                                        <option value="tienda">Factory</option>
+                                        <option value="servicio">Super Market</option>
+                                        <option value="otro">Other</option>
+                                    </select>
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
+                                    </span>
+                                </div>
+                                <!-- Business Description -->
+                                <div class="form-group input-icon-group">
+                                    <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description"></textarea>
+                                    <span class="input-icon">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8M8 12h8M8 16h8"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <button type="submit" class="register-btn">Sign Up</button>
+                </form>
+
+                <div class="additional-options">
+                    <p>You already have an account? <a href="login.html">Log In</a></p>
                 </div>
+            </div>
 
-                <button type="submit" class="register-btn">Sign Up</button>
-            </form>
-
-            <div class="additional-options">
-                <p>You already have an account? <a href="login.html">Log In</a></p>
-                <p><a href="register-direct.html" style="color: #007bff; text-decoration: underline;">Probar versión directa del registro</a></p>
+            <!-- Logo en el lado derecho -->
+            <div class="logo-sidebar">
+                <img src="../../assets/logos/letraS.png" alt="Swapp-it Logo" class="logo">
             </div>
         </div>
     </div>

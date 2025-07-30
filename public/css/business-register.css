@@ -1,0 +1,374 @@
+/* Business Registration Form Styles */
+/* This file contains all styles specific to the business registration form */
+
+/* Business Mode Body Styles */
+body.business-mode {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 20px 20px 50px;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+}
+
+/* Business Mode Container and Box */
+body.business-mode .register-container,
+body.business-mode .register-box {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+body.business-mode .register-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 8px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 0;
+    max-width: 1400px;
+    width: 100%;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(.4,2,.3,1);
+    max-height: 85vh;
+}
+
+/* Business Form Content */
+body.business-mode .form-content {
+    padding: 40px 50px;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 85vh;
+}
+
+/* Hide Logo in Business Mode */
+body.business-mode .logo-sidebar {
+    display: none;
+}
+
+/* Business Form Title */
+body.business-mode h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Business Role Selector */
+body.business-mode .role-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+body.business-mode .role-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+body.business-mode .role-btn.active {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+body.business-mode .role-btn:not(.active):hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Business Form Structure */
+body.business-mode .register-box form {
+    width: 100%;
+}
+
+/* Business Form Container - Two Column Layout */
+body.business-mode .business-form-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    margin-bottom: 2rem;
+    max-height: 60vh;
+    overflow: hidden;
+}
+
+body.business-mode .business-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Business Form Groups */
+body.business-mode .form-group {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Business Inputs, Selects, and Textareas */
+body.business-mode input,
+body.business-mode select,
+body.business-mode textarea {
+    width: 100%;
+    padding: 14px 16px 14px 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+    height: 50px;
+}
+
+body.business-mode input::placeholder,
+body.business-mode textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+}
+
+body.business-mode input:focus,
+body.business-mode select:focus,
+body.business-mode textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Business Textarea Specific */
+body.business-mode textarea {
+    height: 80px;
+    resize: none;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+/* Business Select Specific */
+body.business-mode select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+    padding-right: 50px;
+}
+
+body.business-mode select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+body.business-mode select option {
+    background: #2a2a2a;
+    color: #ffffff;
+    padding: 12px;
+}
+
+/* Business Input Icons */
+body.business-mode .input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+body.business-mode .form-group:focus-within .input-icon {
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Business Submit Button */
+body.business-mode .register-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+body.business-mode .register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+/* Business Additional Options */
+body.business-mode .additional-options {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.business-mode .additional-options p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+body.business-mode .additional-options a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+body.business-mode .additional-options a:hover {
+    color: #f0f0f0;
+    border-bottom-color: #ffffff;
+}
+
+/* Business Error and Success Messages */
+body.business-mode .error-message, 
+body.business-mode .success-message {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 1rem 0;
+    color: #ffffff;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+/* Responsive Design for Business Form */
+@media (max-width: 768px) {
+    body.business-mode .register-box {
+        max-width: 95vw;
+        padding: 0;
+        max-height: 90vh;
+        margin: 10px;
+    }
+    
+    body.business-mode .form-content {
+        padding: 30px 25px;
+    }
+    
+    body.business-mode .business-form-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    body.business-mode .business-column {
+        gap: 15px;
+    }
+    
+    body.business-mode h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    body.business-mode .role-selector {
+        margin-bottom: 2rem;
+    }
+    
+    body.business-mode input,
+    body.business-mode select,
+    body.business-mode textarea {
+        padding: 12px 14px 12px 45px;
+        font-size: 0.9rem;
+        height: 45px;
+    }
+    
+    body.business-mode textarea {
+        height: 70px;
+    }
+    
+    body.business-mode .input-icon {
+        left: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.business-mode .register-box {
+        max-width: 98vw;
+        margin: 5px;
+    }
+    
+    body.business-mode .form-content {
+        padding: 20px 15px;
+    }
+    
+    body.business-mode h2 {
+        font-size: 1.8rem;
+    }
+    
+    body.business-mode .role-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Business Form Animations */
+@keyframes businessSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.business-mode .business-form-container {
+    animation: businessSlideIn 0.6s ease-out;
+}
+
+body.business-mode .business-column:nth-child(1) {
+    animation: businessSlideIn 0.6s ease-out 0.1s both;
+}
+
+body.business-mode .business-column:nth-child(2) {
+    animation: businessSlideIn 0.6s ease-out 0.2s both;
+}
+
+/* Business Input Focus Animations */
+@keyframes businessGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
+    }
+}
+
+body.business-mode input:focus,
+body.business-mode select:focus,
+body.business-mode textarea:focus {
+    animation: businessGlow 2s ease-in-out infinite;
+} 
