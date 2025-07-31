@@ -15,12 +15,13 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
+            transition: background 0.5s ease;
         }
 
         .container {
@@ -28,7 +29,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            max-width: 600px;
+            max-width: 900px;
             width: 100%;
             position: relative;
         }
@@ -96,75 +97,151 @@
             padding: 3rem 2rem;
         }
 
-        .custom-form {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 2px solid #e5e7eb;
-            transition: all 0.3s ease;
+        .pricing-section {
+            margin-bottom: 3rem;
         }
 
-        .custom-form:hover {
-            border-color: #3468c0;
-            box-shadow: 0 10px 25px rgba(52, 104, 192, 0.1);
-        }
-
-        .form-title {
-            font-size: 1.5rem;
+        .pricing-title {
+            font-size: 1.8rem;
             font-weight: 700;
             color: #1e293b;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        .input-group {
-            margin-bottom: 1.5rem;
+        .pricing-cards {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
         }
 
-        .input-label {
-            display: block;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: #3468c0;
+        .pricing-card {
             background: white;
-            box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            min-width: 200px;
+            max-width: 250px;
+            flex: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .input-field:invalid {
-            border-color: #dc2626;
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
 
-        .price-display {
+        .pricing-card.selected {
+            border-color: #ffa424;
+            box-shadow: 0 10px 25px rgba(255, 164, 36, 0.2);
+        }
+
+        .pricing-card.featured {
             background: linear-gradient(135deg, #ffa424, #ff5722);
             color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            display: none;
+            border-color: #ffa424;
+            transform: scale(1.05);
         }
 
-        .price-display.show {
-            display: block;
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pricing-card.featured.selected {
+            background: linear-gradient(135deg, #ffa424, #ff5722);
+            color: white;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffa424;
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .coin-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .coin-amount img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .coin-amount.featured img {
+            filter: brightness(0) invert(1);
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        .pricing-card.featured .price {
+            color: white;
+        }
+
+        .buy-button {
+            background: linear-gradient(135deg, #ffa424, #ff5722);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .pricing-card.featured .buy-button {
+            background: white;
+            color: #ffa424;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 164, 36, 0.3);
+        }
+
+        .pricing-card.featured .buy-button:hover {
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .selected-info {
+            background: linear-gradient(135deg, #3468c0, #1d4ed8);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: none;
             animation: fadeIn 0.3s ease;
+        }
+
+        .selected-info.show {
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -172,80 +249,33 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .price-amount {
-            font-size: 2rem;
+        .selected-amount {
+            font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
         }
 
-        .price-description {
-            font-size: 0.9rem;
+        .selected-price {
+            font-size: 1.5rem;
             opacity: 0.9;
+            margin-bottom: 1rem;
         }
 
-        .buy-btn {
-            background: linear-gradient(135deg, #ffa424, #ff5722);
-            color: white;
+        .proceed-btn {
+            background: white;
+            color: #3468c0;
             border: none;
             padding: 1rem 2rem;
-            border-radius: 12px;
+            border-radius: 25px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 1rem;
         }
 
-        .buy-btn:hover {
+        .proceed-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 164, 36, 0.3);
-        }
-
-        .buy-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .quick-options {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .quick-options h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .quick-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .quick-btn {
-            background: #f1f5f9;
-            border: 2px solid #e5e7eb;
-            color: #1e293b;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .quick-btn:hover {
-            background: #3468c0;
-            color: white;
-            border-color: #3468c0;
-            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
         }
 
         .info-section {
@@ -318,12 +348,22 @@
                 padding: 2rem 1rem;
             }
 
-            .custom-form {
-                padding: 1.5rem;
+            .pricing-cards {
+                flex-direction: column;
+                align-items: center;
             }
 
-            .quick-buttons {
-                grid-template-columns: repeat(2, 1fr);
+            .pricing-card {
+                max-width: 300px;
+                width: 100%;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-5px);
             }
         }
     </style>
@@ -335,38 +375,50 @@
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h1><i class="fas fa-coins"></i> Buy Swappit Coins</h1>
-            <p>Enter any amount of coins you want to purchase!</p>
+            <p>Choose your coin package and start shopping!</p>
         </div>
 
         <div class="content">
-            <div class="custom-form">
-                <h3 class="form-title"><i class="fas fa-edit"></i> Custom Amount</h3>
+            <div class="pricing-section">
+                <h2 class="pricing-title">Select Your Package</h2>
                 
-                <div class="input-group">
-                    <label class="input-label" for="coinAmount">Number of Swappit Coins</label>
-                    <input type="number" id="coinAmount" class="input-field" placeholder="Enter amount (e.g., 100)" min="1" max="10000" required>
+                <div class="pricing-cards">
+                    <div class="pricing-card" data-amount="100" data-price="1.99">
+                        <div class="coin-amount">
+                            <img src="/assets/signoS_N.svg" alt="SWAPPIT Coins">
+                            100
+                        </div>
+                        <div class="price">$1.99</div>
+                        <button class="buy-button">Buy Now</button>
+                    </div>
+                    
+                    <div class="pricing-card featured" data-amount="500" data-price="7.99">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="coin-amount featured">
+                            <img src="/assets/signoS_B.svg" alt="SWAPPIT Coins">
+                            500
+                        </div>
+                        <div class="price">$7.99</div>
+                        <button class="buy-button">Buy Now</button>
+                    </div>
+                    
+                    <div class="pricing-card" data-amount="1000" data-price="14.99">
+                        <div class="coin-amount">
+                            <img src="/assets/signoS_N.svg" alt="SWAPPIT Coins">
+                            1000
+                        </div>
+                        <div class="price">$14.99</div>
+                        <button class="buy-button">Buy Now</button>
+                    </div>
                 </div>
-
-                <div class="price-display" id="priceDisplay">
-                    <div class="price-amount" id="priceAmount">$0.00</div>
-                    <div class="price-description" id="priceDescription">Total cost for your coins</div>
-                </div>
-
-                <button class="buy-btn" id="buyBtn" onclick="purchaseCoins()" disabled>
-                    <i class="fas fa-shopping-cart"></i> Purchase Coins
-                </button>
             </div>
 
-            <div class="quick-options">
-                <h3>Quick Options</h3>
-                <div class="quick-buttons">
-                    <button class="quick-btn" onclick="setAmount(50)">50 Coins</button>
-                    <button class="quick-btn" onclick="setAmount(100)">100 Coins</button>
-                    <button class="quick-btn" onclick="setAmount(250)">250 Coins</button>
-                    <button class="quick-btn" onclick="setAmount(500)">500 Coins</button>
-                    <button class="quick-btn" onclick="setAmount(1000)">1000 Coins</button>
-                    <button class="quick-btn" onclick="setAmount(2000)">2000 Coins</button>
-                </div>
+            <div class="selected-info" id="selectedInfo">
+                <div class="selected-amount" id="selectedAmount">500 SWAPPIT Coins</div>
+                <div class="selected-price" id="selectedPrice">$7.99</div>
+                <button class="proceed-btn" onclick="proceedToPayment()">
+                    <i class="fas fa-shopping-cart"></i> Proceed to Payment
+                </button>
             </div>
 
             <div class="info-section">
@@ -414,69 +466,82 @@
     </div>
 
     <script>
-        const coinAmountInput = document.getElementById('coinAmount');
-        const priceDisplay = document.getElementById('priceDisplay');
-        const priceAmount = document.getElementById('priceAmount');
-        const priceDescription = document.getElementById('priceDescription');
-        const buyBtn = document.getElementById('buyBtn');
+        let selectedPackage = null;
 
-        // Calculate price based on coin amount
-        function calculatePrice(amount) {
-            // Simple pricing: $1.00 for every 50 coins
-            const basePrice = (amount / 50) * 1.00;
-            return Math.round(basePrice * 100) / 100; // Round to 2 decimal places
-        }
+        // Add click event listeners to all pricing cards
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected class from all cards
+                document.querySelectorAll('.pricing-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked card
+                this.classList.add('selected');
+                
+                // Get package data
+                const amount = this.dataset.amount;
+                const price = this.dataset.price;
+                
+                selectedPackage = {
+                    amount: parseInt(amount),
+                    price: parseFloat(price)
+                };
+                
+                // Update selected info display
+                updateSelectedInfo();
+                
+                // Update body background based on selection
+                updateBackground();
+            });
+        });
 
-        // Update price display
-        function updatePriceDisplay(amount) {
-            if (amount > 0) {
-                const price = calculatePrice(amount);
-                priceAmount.textContent = `$${price.toFixed(2)}`;
-                priceDescription.textContent = `${amount} coins for $${price.toFixed(2)}`;
-                priceDisplay.classList.add('show');
-                buyBtn.disabled = false;
-            } else {
-                priceDisplay.classList.remove('show');
-                buyBtn.disabled = true;
+        function updateSelectedInfo() {
+            if (selectedPackage) {
+                const selectedInfo = document.getElementById('selectedInfo');
+                const selectedAmount = document.getElementById('selectedAmount');
+                const selectedPrice = document.getElementById('selectedPrice');
+                
+                selectedAmount.textContent = `${selectedPackage.amount} SWAPPIT Coins`;
+                selectedPrice.textContent = `$${selectedPackage.price.toFixed(2)}`;
+                
+                selectedInfo.classList.add('show');
             }
         }
 
-        // Set amount from quick buttons
-        function setAmount(amount) {
-            coinAmountInput.value = amount;
-            updatePriceDisplay(amount);
-            coinAmountInput.focus();
+        function updateBackground() {
+            const body = document.body;
+            
+            // Remove existing background classes
+            body.className = '';
+            
+                         // Add new background based on selection
+             if (selectedPackage) {
+                 if (selectedPackage.amount === 100) {
+                     body.style.background = '#f8fafc';
+                 } else if (selectedPackage.amount === 500) {
+                     body.style.background = '#fff7ed';
+                 } else if (selectedPackage.amount === 1000) {
+                     body.style.background = '#f0f9ff';
+                 }
+             }
         }
 
-        // Purchase coins function
-        function purchaseCoins() {
-            const amount = parseInt(coinAmountInput.value);
-            if (amount > 0) {
-                const price = calculatePrice(amount);
-                
-                // Store the purchase details
+        function proceedToPayment() {
+            if (selectedPackage) {
+                // Store the selected package
                 localStorage.setItem('selectedCoinPackage', JSON.stringify({
-                    amount: amount,
-                    price: price,
-                    totalAmount: amount
+                    amount: selectedPackage.amount,
+                    price: selectedPackage.price,
+                    totalAmount: selectedPackage.amount
                 }));
                 
                 // Redirect to payment page
                 window.location.href = 'payment.html';
+            } else {
+                alert('Please select a coin package first!');
             }
         }
-
-        // Event listeners
-        coinAmountInput.addEventListener('input', function() {
-            const amount = parseInt(this.value) || 0;
-            updatePriceDisplay(amount);
-        });
-
-        coinAmountInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                purchaseCoins();
-            }
-        });
 
         function goBack() {
             // Go back to previous page
@@ -487,10 +552,14 @@
             }
         }
 
-        // Initialize
+        // Initialize with default selection (500 coins - most popular)
         document.addEventListener('DOMContentLoaded', function() {
-            coinAmountInput.focus();
+            const defaultCard = document.querySelector('.pricing-card.featured');
+            if (defaultCard) {
+                defaultCard.click();
+            }
         });
     </script>
 </body>
+</html> 
 </html> 

@@ -127,7 +127,7 @@ class ProductPurchasePage {
         const productPrice = document.getElementById('product-price');
         if (productPrice) {
             const price = this.product.price || 0;
-            productPrice.textContent = price;
+            productPrice.textContent = price.toFixed(2);
         }
     }
 
@@ -174,17 +174,17 @@ class ProductPurchasePage {
         // Update summary display
         const summaryPrice = document.getElementById('summary-price');
         if (summaryPrice) {
-            summaryPrice.textContent = `${productPrice} Swappit Coins`;
+            summaryPrice.textContent = `${productPrice.toFixed(2)} Swappit Coins`;
         }
 
         const summaryDelivery = document.getElementById('summary-delivery');
         if (summaryDelivery) {
-            summaryDelivery.textContent = `${deliveryFee} Swappit Coins`;
+            summaryDelivery.textContent = `${deliveryFee.toFixed(2)} Swappit Coins`;
         }
 
         const summaryTotal = document.getElementById('summary-total');
         if (summaryTotal) {
-            summaryTotal.textContent = `${total} Swappit Coins`;
+            summaryTotal.textContent = `${total.toFixed(2)} Swappit Coins`;
         }
 
         // Check if user has sufficient funds

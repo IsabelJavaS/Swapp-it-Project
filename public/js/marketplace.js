@@ -520,9 +520,15 @@ class MarketplaceLogged {
     createProductCard(product) {
         const stars = this.generateStars(product.rating);
         const badges = this.generateBadges(product);
-        const originalPrice = product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : '';
+        
+        // Calculate Swappit Coin equivalent (1 SWAPPIT Coin = $0.03)
+        const swappitCoinRate = 0.03;
+        const priceInSwappitCoins = product.price / swappitCoinRate;
+        const originalPriceInSwappitCoins = product.originalPrice ? product.originalPrice / swappitCoinRate : null;
+        
+        const originalPrice = product.originalPrice ? `<span class="original-price">${originalPriceInSwappitCoins.toFixed(0)} SWAPPIT Coins</span>` : '';
         const priceDisplay = product.transactionType === 'sale' ? 
-            `<div class="product-price">$${product.price} ${originalPrice}</div>` : 
+            `<div class="product-price">${priceInSwappitCoins.toFixed(0)} SWAPPIT Coins ${originalPrice}</div>` : 
             `<div class="product-price swapp-price">For Swapp</div>`;
         
         const defaultImage = product.images && product.images.length > 0 ? 

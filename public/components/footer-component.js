@@ -386,6 +386,71 @@ class FooterComponent extends HTMLElement {
                         gap: 1.5rem;
                     }
 
+                    /* Center all footer content on tablets */
+                    .footer-column {
+                        text-align: center;
+                        align-items: center;
+                    }
+
+                    .footer-brand {
+                        align-items: center;
+                        text-align: center;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .footer-brand img {
+                        margin: 0 auto 1rem auto;
+                        display: block;
+                        width: 120px;
+                        height: auto;
+                    }
+
+                    .footer-description {
+                        text-align: center;
+                        max-width: 100%;
+                    }
+
+                    .footer-social {
+                        justify-content: center;
+                        margin: 0 auto;
+                    }
+
+                    .footer-title {
+                        text-align: center;
+                    }
+
+                    .footer-title::after {
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+
+                    .footer-links {
+                        text-align: center;
+                    }
+
+                    .footer-links a {
+                        justify-content: center;
+                    }
+
+                    .footer-links a:hover {
+                        transform: translateY(-2px);
+                        padding-left: 0;
+                    }
+
+                    .footer-contact {
+                        text-align: center;
+                    }
+
+                    .footer-contact p {
+                        justify-content: center;
+                    }
+
+                    .footer-contact p:hover {
+                        transform: translateY(-2px);
+                    }
+
                     .footer-bottom-content {
                         flex-direction: column;
                         text-align: center;
@@ -402,6 +467,71 @@ class FooterComponent extends HTMLElement {
                     .footer-grid {
                         grid-template-columns: 1fr;
                         gap: 1.5rem;
+                    }
+
+                    /* Center all footer content on mobile */
+                    .footer-column {
+                        text-align: center;
+                        align-items: center;
+                    }
+
+                    .footer-brand {
+                        align-items: center;
+                        text-align: center;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .footer-brand img {
+                        margin: 0 auto 1rem auto;
+                        display: block;
+                        width: 120px;
+                        height: auto;
+                    }
+
+                    .footer-description {
+                        text-align: center;
+                        max-width: 100%;
+                    }
+
+                    .footer-social {
+                        justify-content: center;
+                        margin: 0 auto;
+                    }
+
+                    .footer-title {
+                        text-align: center;
+                    }
+
+                    .footer-title::after {
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+
+                    .footer-links {
+                        text-align: center;
+                    }
+
+                    .footer-links a {
+                        justify-content: center;
+                    }
+
+                    .footer-links a:hover {
+                        transform: translateY(-2px);
+                        padding-left: 0;
+                    }
+
+                    .footer-contact {
+                        text-align: center;
+                    }
+
+                    .footer-contact p {
+                        justify-content: center;
+                    }
+
+                    .footer-contact p:hover {
+                        transform: translateY(-2px);
                     }
 
                     .footer-main {

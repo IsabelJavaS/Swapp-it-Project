@@ -325,7 +325,7 @@ class HeaderComponent extends HTMLElement {
                     color: var(--swappit-blue);
                 }
 
-                /* Mobile Menu Styles */
+                /* Mobile Menu Styles - Improved */
                 .mobile-menu {
                     position: fixed;
                     top: 0;
@@ -340,6 +340,7 @@ class HeaderComponent extends HTMLElement {
                     opacity: 0;
                     visibility: hidden;
                     transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
                 }
                 
                 .mobile-menu.show {
@@ -356,6 +357,7 @@ class HeaderComponent extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                    border-radius: 0 0 0 20px;
                 }
                 
                 .mobile-menu.show .mobile-menu-content {
@@ -370,6 +372,7 @@ class HeaderComponent extends HTMLElement {
                     border-bottom: 1px solid #e2e8f0;
                     background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
                     color: white;
+                    border-radius: 0 0 0 20px;
                 }
                 
                 .mobile-menu-header h3 {
@@ -462,7 +465,7 @@ class HeaderComponent extends HTMLElement {
                     color: #dc2626;
                 }
                 
-                /* Responsive Design */
+                /* Responsive Design - Improved for Mobile */
                 @media (max-width: 768px) {
                     .menu {
                         display: none;
@@ -475,6 +478,20 @@ class HeaderComponent extends HTMLElement {
                     .container {
                         justify-content: space-between;
                     }
+                    
+                    /* Hide buttons and cart on mobile */
+                    .buttons {
+                        display: none !important;
+                    }
+                    
+                    cart-component {
+                        display: none !important;
+                    }
+                    
+                    /* Show only logo and hamburger menu */
+                    .right {
+                        gap: 0;
+                    }
                 }
                 
                 @media (max-width: 768px) {
@@ -485,23 +502,9 @@ class HeaderComponent extends HTMLElement {
                     .logo img {
                         width: 120px;
                     }
-                    
-                    .buttons {
-                        gap: 0.5rem;
-                    }
-                    
-                    .btn {
-                        padding: 0.4rem 1rem;
-                        font-size: 0.8rem;
-                    }
                 }
                 
                 @media (max-width: 480px) {
-                    .btn {
-                        padding: 0.3rem 0.8rem;
-                        font-size: 0.75rem;
-                    }
-                    
                     .logo img {
                         width: 100px;
                     }
@@ -770,7 +773,7 @@ class HeaderComponent extends HTMLElement {
                                 <i class="fas fa-bars"></i>
                             </button>
                             
-                            <!-- Auth Buttons -->
+                            <!-- Auth Buttons - Hidden on Mobile -->
                             <div class="buttons">
                                 <a href="${this.getLoginPath()}" class="btn btn-signin">
                                     Sign In
@@ -780,7 +783,7 @@ class HeaderComponent extends HTMLElement {
                                 </a>
                             </div>
                             
-                            <!-- Cart Component -->
+                            <!-- Cart Component - Hidden on Mobile -->
                             <cart-component></cart-component>
                         </div>
                     </div>
@@ -955,12 +958,6 @@ class HeaderComponent extends HTMLElement {
                             <i class="fas fa-user-plus"></i>
                             Sign Up
                         </a>
-                        <div class="mobile-menu-divider"></div>
-                        <div class="mobile-menu-section">Shopping</div>
-                        <a href="#" class="mobile-menu-item" id="mobileCartBtn">
-                            <i class="fas fa-shopping-cart"></i>
-                            Shopping Cart
-                        </a>
                     </div>
                 </div>
             `;
@@ -982,6 +979,7 @@ class HeaderComponent extends HTMLElement {
                     opacity: 0;
                     visibility: hidden;
                     transition: all 0.3s ease;
+                    backdrop-filter: blur(5px);
                 }
                 
                 .mobile-menu.show {
@@ -998,6 +996,7 @@ class HeaderComponent extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                    border-radius: 0 0 0 20px;
                 }
                 
                 .mobile-menu.show .mobile-menu-content {
@@ -1012,6 +1011,25 @@ class HeaderComponent extends HTMLElement {
                     border-bottom: 1px solid #e2e8f0;
                     background: linear-gradient(135deg, #3468c0, #ffa424);
                     color: white;
+                    border-radius: 0 0 0 20px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .mobile-menu-header::before {
+                    content: '';
+                    position: absolute;
+                    top: -50%;
+                    right: -50%;
+                    width: 200%;
+                    height: 200%;
+                    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                    animation: rotate 20s linear infinite;
+                }
+                
+                @keyframes rotate {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
                 }
                 
                 .mobile-menu-header h3 {
@@ -1019,27 +1037,33 @@ class HeaderComponent extends HTMLElement {
                     font-family: 'Poppins', sans-serif;
                     font-weight: 600;
                     font-size: 1.2rem;
+                    position: relative;
+                    z-index: 1;
                 }
                 
                 .mobile-menu-close {
-                    background: none;
+                    background: rgba(255, 255, 255, 0.2);
                     border: none;
                     color: white;
                     font-size: 1.5rem;
                     cursor: pointer;
                     padding: 0.5rem;
                     border-radius: 50%;
-                    transition: background 0.3s ease;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    z-index: 1;
                 }
                 
                 .mobile-menu-close:hover {
-                    background: rgba(255, 255, 255, 0.2);
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(1.1);
                 }
                 
                 .mobile-menu-items {
                     flex: 1;
                     padding: 1rem 0;
                     overflow-y: auto;
+                    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
                 }
                 
                 .mobile-menu-item {
@@ -1053,6 +1077,23 @@ class HeaderComponent extends HTMLElement {
                     font-weight: 500;
                     transition: all 0.3s ease;
                     border-left: 3px solid transparent;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .mobile-menu-item::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(52, 104, 192, 0.1), transparent);
+                    transition: left 0.5s ease;
+                }
+                
+                .mobile-menu-item:hover::before {
+                    left: 100%;
                 }
                 
                 .mobile-menu-item:hover {
@@ -1067,10 +1108,12 @@ class HeaderComponent extends HTMLElement {
                     text-align: center;
                     color: #64748b;
                     font-size: 1rem;
+                    transition: all 0.3s ease;
                 }
                 
                 .mobile-menu-item:hover i {
                     color: #3468c0;
+                    transform: scale(1.1);
                 }
                 
                 .mobile-menu-divider {
@@ -1089,6 +1132,38 @@ class HeaderComponent extends HTMLElement {
                     background: rgba(255, 164, 36, 0.1);
                     border-left: 3px solid #ffa424;
                     margin: 0.5rem 0;
+                    position: relative;
+                }
+                
+                .mobile-menu-section::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, rgba(255, 164, 36, 0.05), transparent);
+                    pointer-events: none;
+                }
+                
+                /* Responsive adjustments for mobile menu */
+                @media (max-width: 480px) {
+                    .mobile-menu-content {
+                        width: 100vw;
+                        right: -100vw;
+                    }
+                    
+                    .mobile-menu-item {
+                        padding: 1.25rem 1.5rem;
+                    }
+                    
+                    .mobile-menu-header {
+                        padding: 1.25rem;
+                    }
+                    
+                    .mobile-menu-header h3 {
+                        font-size: 1.1rem;
+                    }
                 }
             `;
             document.head.appendChild(style);
@@ -1096,22 +1171,9 @@ class HeaderComponent extends HTMLElement {
             
             // Add event listeners
             const closeBtn = mobileMenu.querySelector('#mobileMenuClose');
-            const cartBtn = mobileMenu.querySelector('#mobileCartBtn');
             
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => this.closeMobileMenu());
-            }
-            
-            if (cartBtn) {
-                cartBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.closeMobileMenu();
-                    // Trigger cart component to open
-                    const cartComponent = document.querySelector('cart-component');
-                    if (cartComponent && cartComponent.openCart) {
-                        cartComponent.openCart();
-                    }
-                });
             }
             
             // Close on overlay click

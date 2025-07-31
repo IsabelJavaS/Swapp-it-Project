@@ -63,6 +63,11 @@ class HeaderAuthComponent extends HTMLElement {
         const dropdownUserName = this.shadowRoot.querySelector('.dropdown-header .user-name');
         const dropdownUserEmail = this.shadowRoot.querySelector('.dropdown-header .user-email');
         
+        // Mobile elements
+        const mobileUserAvatar = this.shadowRoot.querySelector('#mobileUserAvatarImg');
+        const mobileUserName = this.shadowRoot.querySelector('.mobile-user-name');
+        const mobileUserRole = this.shadowRoot.querySelector('.mobile-user-role');
+        
         if (userAvatar && this.userData) {
             if (this.userData.photoURL) {
                 userAvatar.src = this.userData.photoURL;
@@ -73,8 +78,24 @@ class HeaderAuthComponent extends HTMLElement {
             userAvatar.alt = `${this.userData.displayName} Avatar`;
         }
         
+        // Update mobile avatar
+        if (mobileUserAvatar && this.userData) {
+            if (this.userData.photoURL) {
+                mobileUserAvatar.src = this.userData.photoURL;
+            } else {
+                // Generate avatar from initials
+                mobileUserAvatar.src = this.generateAvatarFromName(this.userData.displayName);
+            }
+            mobileUserAvatar.alt = `${this.userData.displayName} Avatar`;
+        }
+        
         if (userName && this.userData) {
             userName.textContent = this.userData.displayName;
+        }
+        
+        // Update mobile user name
+        if (mobileUserName && this.userData) {
+            mobileUserName.textContent = this.userData.displayName;
         }
         
         // Update user role
@@ -93,6 +114,24 @@ class HeaderAuthComponent extends HTMLElement {
             // Capitalize first letter
             role = role.charAt(0).toUpperCase() + role.slice(1);
             userRole.textContent = role;
+        }
+        
+        // Update mobile user role
+        if (mobileUserRole) {
+            // Try to get role from various sources
+            let role = 'Student'; // Default
+            
+            if (window.userProfile && window.userProfile.role) {
+                role = window.userProfile.role;
+            } else if (window.localStorage.getItem('userRole')) {
+                role = window.localStorage.getItem('userRole');
+            } else if (window.sessionStorage.getItem('userRole')) {
+                role = window.sessionStorage.getItem('userRole');
+            }
+            
+            // Capitalize first letter
+            role = role.charAt(0).toUpperCase() + role.slice(1);
+            mobileUserRole.textContent = role;
         }
         
         // Update dropdown header as well
@@ -156,10 +195,26 @@ class HeaderAuthComponent extends HTMLElement {
     // Update coin balance display
     updateCoinBalance() {
         const coinBalanceElement = this.shadowRoot.getElementById('userCoinBalance');
+        const mobileCoinBalanceElement = this.shadowRoot.getElementById('mobileUserCoinBalance');
+        const mobileMenuCoinBalanceElement = document.getElementById('mobileMenuCoinBalance');
+        
         if (coinBalanceElement) {
             const balance = localStorage.getItem('userCoinBalance') || 0;
             const formattedBalance = parseInt(balance).toLocaleString();
             coinBalanceElement.textContent = formattedBalance;
+        }
+        
+        if (mobileCoinBalanceElement) {
+            const balance = localStorage.getItem('userCoinBalance') || 0;
+            const formattedBalance = parseInt(balance).toLocaleString();
+            mobileCoinBalanceElement.textContent = formattedBalance;
+        }
+        
+        // Update mobile menu coin balance if sidebar is open
+        if (mobileMenuCoinBalanceElement) {
+            const balance = localStorage.getItem('userCoinBalance') || 0;
+            const formattedBalance = parseInt(balance).toLocaleString();
+            mobileMenuCoinBalanceElement.textContent = formattedBalance;
         }
     }
     
@@ -297,6 +352,19 @@ class HeaderAuthComponent extends HTMLElement {
                     backdrop-filter: blur(10px);
                 }
                 
+                /* Desktop/Laptop spacing for single header */
+                body {
+                    padding-top: 100px; /* Account for 80px header + 20px extra space */
+                }
+                
+                /* Ensure main content areas start after the header */
+                main,
+                .marketplace-main,
+                .all-products-main,
+                .main-content {
+                    margin-top: 20px; /* Additional spacing */
+                }
+                
                 .nav {
                     height: 100%;
                     display: flex;
@@ -312,6 +380,186 @@ class HeaderAuthComponent extends HTMLElement {
                     grid-template-columns: 0.8fr 2.2fr 1fr;
                     align-items: center;
                     gap: 2rem;
+                }
+
+                /* Mobile/Tablet Dual Header Structure */
+                .mobile-header-container {
+                    display: none;
+                }
+
+                .mobile-header-top {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0.75rem 1rem;
+                    background: var(--background-white);
+                    border-bottom: 1px solid var(--neutral-light);
+                }
+
+                .mobile-header-bottom {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 0.75rem 1rem;
+                    background: var(--background-white);
+                }
+
+                .mobile-logo {
+                    text-decoration: none;
+                    flex-shrink: 0;
+                }
+
+                .mobile-logo img {
+                    width: 120px;
+                    height: auto;
+                }
+
+                .mobile-coins-container {
+                    display: none; /* Hidden in first header */
+                }
+
+                .mobile-coins-container:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    color: var(--swappit-orange);
+                    text-decoration: none;
+                }
+
+                .mobile-user-avatar {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
+                    border-radius: var(--border-radius);
+                    cursor: pointer;
+                    transition: var(--transition);
+                    border: 2px solid transparent;
+                }
+
+                .mobile-user-avatar:hover {
+                    background: var(--neutral-light);
+                    border-color: var(--swappit-blue);
+                }
+
+                .mobile-user-avatar img {
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 2px solid var(--swappit-blue);
+                }
+
+                .mobile-user-info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .mobile-user-name {
+                    font-family: var(--font-primary);
+                    font-weight: 600;
+                    font-size: 0.8rem;
+                    color: var(--neutral-dark);
+                    line-height: 1.2;
+                }
+
+                .mobile-user-role {
+                    font-family: var(--font-secondary);
+                    font-size: 0.7rem;
+                    color: var(--swappit-blue);
+                    line-height: 1.2;
+                    font-weight: 500;
+                }
+
+                /* Mobile Filter Button */
+                .mobile-filter-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                    background: var(--neutral-light);
+                    border: none;
+                    border-radius: 6px;
+                    color: var(--neutral-dark);
+                    font-family: var(--font-primary);
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    flex-shrink: 0;
+                }
+
+                .mobile-filter-btn:hover {
+                    background: var(--swappit-orange);
+                    color: white;
+                }
+
+                .mobile-filter-btn i {
+                    font-size: 1rem;
+                }
+
+                /* Mobile Search Container */
+                .mobile-search-container {
+                    flex: 1;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    min-width: 0;
+                }
+
+                .mobile-search-input {
+                    width: 100%;
+                    border: 2px solid var(--neutral-light);
+                    border-radius: 25px;
+                    padding: 0.5rem 1rem 0.5rem 2.5rem;
+                    font-size: 0.9rem;
+                    background: var(--background-white);
+                    transition: var(--transition);
+                    font-family: var(--font-secondary);
+                }
+
+                .mobile-search-input:focus {
+                    outline: none;
+                    border-color: var(--swappit-orange);
+                    box-shadow: 0 0 0 3px rgba(255, 164, 36, 0.1);
+                }
+
+                .mobile-search-btn {
+                    position: absolute;
+                    left: 0.75rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    color: var(--neutral-medium);
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: var(--transition);
+                }
+
+                .mobile-search-btn:hover {
+                    color: var(--swappit-orange);
+                }
+
+                .mobile-cart-btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    background: var(--swappit-orange);
+                    border: none;
+                    border-radius: 50%;
+                    color: white;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    transition: var(--transition);
+                    flex-shrink: 0;
+                }
+
+                .mobile-cart-btn:hover {
+                    background: var(--swappit-orange-hover);
+                    transform: scale(1.1);
                 }
                 
                 /* Logo - Left */
@@ -965,85 +1213,110 @@ class HeaderAuthComponent extends HTMLElement {
                 
 
                 
+                /* Mobile/Tablet Responsive - Dual Header */
                 @media (max-width: 768px) {
-                    .container {
-                        padding: 0 1rem;
-                        grid-template-columns: 1fr 2fr 1fr;
-                        gap: 1rem;
-                    }
-                    
-                    .column-2 {
-                        gap: 1rem;
-                    }
-                    
-                    .categories-nav span,
-                    .marketplace-nav span {
+                    /* Hide desktop header */
+                    .header .nav .container {
                         display: none;
                     }
                     
-                    .categories-nav,
-                    .marketplace-nav {
-                        padding: 0.5rem;
+                    /* Show mobile dual header */
+                    .mobile-header-container {
+                        display: block;
                     }
                     
-                    .search-container {
-                        max-width: 200px;
+                    /* Adjust header height for dual structure */
+                    .header {
+                        height: auto;
+                        min-height: 120px;
                     }
                     
-                    .logo img {
-                        width: 120px;
+                    .nav {
+                        height: auto;
                     }
                     
-                    .column-3 {
-                        gap: 0.5rem;
+                    /* Add spacing for page content to start after mobile headers */
+                    body {
+                        padding-top: 140px; /* Account for dual header height + some extra space */
                     }
                     
-                    .coins-container {
-                        padding: 0.4rem 0.8rem;
-                        font-size: 0.8rem;
+                    /* Ensure main content areas start after the header */
+                    main,
+                    .marketplace-main,
+                    .all-products-main,
+                    .main-content {
+                        margin-top: 20px; /* Additional spacing */
                     }
                 }
 
                 @media (max-width: 480px) {
-                    .container {
-                        grid-template-columns: 1fr 1fr 1fr;
-                        gap: 0.5rem;
+                    .mobile-header-top {
+                        padding: 0.5rem 0.75rem;
                     }
                     
-                    .column-2 {
-                        gap: 0.5rem;
+                    .mobile-header-bottom {
+                        padding: 0.5rem 0.75rem;
                     }
                     
-                    .search-container {
-                        max-width: 150px;
-                    }
-                    
-                    .logo img {
+                    .mobile-logo img {
                         width: 100px;
                     }
                     
-                    .coins-container {
-                        display: none;
-                    }
-                }
-                
-                @media (max-width: 480px) {
-                    .coins-container {
-                        display: none;
+                    .mobile-coins-container {
+                        padding: 0.4rem 0.8rem;
+                        font-size: 0.8rem;
                     }
                     
-                    .search-container.active .search-input {
-                        width: 140px;
+                    .mobile-user-avatar img {
+                        width: 30px;
+                        height: 30px;
                     }
                     
-                    .logo img {
-                        width: 100px;
+                    .mobile-user-name {
+                        font-size: 0.75rem;
+                    }
+                    
+                    .mobile-user-role {
+                        font-size: 0.65rem;
+                    }
+                    
+                    .mobile-filter-btn {
+                        padding: 0.4rem 0.8rem;
+                        font-size: 0.8rem;
+                    }
+                    
+                    .mobile-search-container {
+                        max-width: 200px;
+                    }
+                    
+                    .mobile-search-input {
+                        font-size: 0.8rem;
+                        padding: 0.4rem 1rem 0.4rem 2.2rem;
+                    }
+                    
+                    .mobile-cart-btn {
+                        width: 35px;
+                        height: 35px;
+                        font-size: 0.9rem;
+                    }
+                    
+                    /* Adjust spacing for smaller mobile screens */
+                    body {
+                        padding-top: 130px; /* Slightly less padding for smaller screens */
+                    }
+                    
+                    main,
+                    .marketplace-main,
+                    .all-products-main,
+                    .main-content {
+                        margin-top: 15px; /* Slightly less margin for smaller screens */
                     }
                 }
             </style>
             
                         <header class="header">
                 <nav class="nav">
+                    <!-- Desktop Header -->
                     <div class="container">
                         <!-- Column 1: Logo -->
                         <div class="column-1">
@@ -1052,18 +1325,12 @@ class HeaderAuthComponent extends HTMLElement {
                             </a>
                         </div>
 
-                        <!-- Column 2: Categories + Marketplace + Search -->
+                        <!-- Column 2: Categories + Search -->
                         <div class="column-2">
                             <!-- Categories Navigation -->
                             <a href="#" class="categories-nav" id="categoriesNav">
                                 <i class="fas fa-bars"></i>
                                 <span>Categories</span>
-                            </a>
-                            
-                            <!-- Marketplace Navigation -->
-                            <a href="${this.getMarketplacePath()}" class="marketplace-nav" id="marketplaceNav">
-                                <i class="fas fa-store"></i>
-                                <span>Marketplace</span>
                             </a>
                             
                             <!-- Search Bar -->
@@ -1144,6 +1411,51 @@ class HeaderAuthComponent extends HTMLElement {
                             
                             <!-- Cart Component -->
                             <cart-component></cart-component>
+                        </div>
+                    </div>
+
+                    <!-- Mobile/Tablet Dual Header -->
+                    <div class="mobile-header-container">
+                        <!-- Header Superior: Logo + Avatar + Cart -->
+                        <div class="mobile-header-top">
+                            <!-- Logo -->
+                            <a href="${this.getMarketplacePath()}" class="mobile-logo">
+                                <img src="${logoPath}" alt="SWAPPIT Logo">
+                            </a>
+                            
+                            <!-- Right side: Cart + Avatar -->
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <!-- Cart Button -->
+                                <button class="mobile-cart-btn" id="mobileCartBtn">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                                
+                                <!-- User Avatar (triggers sidebar) -->
+                                <div class="mobile-user-avatar" id="mobileUserAvatar">
+                                    <img src="" alt="User Avatar" id="mobileUserAvatarImg">
+                                    <div class="mobile-user-info">
+                                        <div class="mobile-user-name">Loading...</div>
+                                        <div class="mobile-user-role">Student</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Header Inferior: Categorías + Search -->
+                        <div class="mobile-header-bottom">
+                            <!-- Categories Button -->
+                            <button class="mobile-filter-btn" id="mobileFilterBtn">
+                                <i class="fas fa-bars"></i>
+                                <span>Categorías</span>
+                            </button>
+                            
+                            <!-- Search Container -->
+                            <div class="mobile-search-container">
+                                <input type="text" class="mobile-search-input" placeholder="Buscar productos..." id="mobileSearchInput">
+                                <button class="mobile-search-btn" id="mobileSearchBtn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </nav>
@@ -1311,6 +1623,58 @@ class HeaderAuthComponent extends HTMLElement {
             });
         }
         
+        // Mobile avatar click for sidebar
+        const mobileUserAvatar = this.shadowRoot.getElementById('mobileUserAvatar');
+        if (mobileUserAvatar) {
+            mobileUserAvatar.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleMobileMenu();
+            });
+        }
+        
+        // Mobile filter button
+        const mobileFilterBtn = this.shadowRoot.getElementById('mobileFilterBtn');
+        if (mobileFilterBtn) {
+            mobileFilterBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Trigger filters sidebar
+                const filtersSidebar = document.querySelector('filters-sidebar-component');
+                if (filtersSidebar && filtersSidebar.open) {
+                    filtersSidebar.open();
+                }
+            });
+        }
+        
+        // Mobile search functionality
+        const mobileSearchBtn = this.shadowRoot.getElementById('mobileSearchBtn');
+        const mobileSearchInput = this.shadowRoot.getElementById('mobileSearchInput');
+        
+        if (mobileSearchBtn && mobileSearchInput) {
+            mobileSearchBtn.addEventListener('click', () => {
+                this.performMobileSearch(mobileSearchInput.value);
+            });
+            
+            mobileSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.performMobileSearch(mobileSearchInput.value);
+                }
+            });
+        }
+        
+        // Mobile cart button
+        const mobileCartBtn = this.shadowRoot.getElementById('mobileCartBtn');
+        if (mobileCartBtn) {
+            mobileCartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Trigger cart component to open
+                const cartComponent = document.querySelector('cart-component');
+                if (cartComponent && cartComponent.openCart) {
+                    cartComponent.openCart();
+                }
+            });
+        }
+        
         // Active link highlighting
         this.setActiveLink();
     }
@@ -1424,6 +1788,13 @@ class HeaderAuthComponent extends HTMLElement {
         }
     }
     
+    performMobileSearch(query) {
+        if (query.trim()) {
+            // Navigate to all products page with search query
+            window.location.href = `/pages/marketplace/all-products.html?search=${encodeURIComponent(query)}`;
+        }
+    }
+    
     handleSearchInput(value) {
         // Real-time search suggestions could be implemented here
         console.log('Search input:', value);
@@ -1442,7 +1813,13 @@ class HeaderAuthComponent extends HTMLElement {
             mobileMenu.innerHTML = `
                 <div class="mobile-menu-content">
                     <div class="mobile-menu-header">
-                        <h3>Menú</h3>
+                        <div class="mobile-menu-header-content">
+                            <h3>Menú</h3>
+                            <div class="mobile-menu-coins">
+                                <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" width="20" height="20">
+                                <span id="mobileMenuCoinBalance">0</span> SWAPPIT Coins
+                            </div>
+                        </div>
                         <button class="mobile-menu-close" id="mobileMenuClose">
                             <i class="fas fa-times"></i>
                         </button>
@@ -1530,10 +1907,25 @@ class HeaderAuthComponent extends HTMLElement {
                     color: white;
                 }
                 
+                .mobile-menu-header-content {
+                    flex: 1;
+                }
+                
                 .mobile-menu-header h3 {
-                    margin: 0;
+                    margin: 0 0 0.5rem 0;
                     font-family: 'Poppins', sans-serif;
                     font-weight: 600;
+                    font-size: 1.1rem;
+                }
+                
+                .mobile-menu-coins {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                    opacity: 0.9;
                 }
                 
                 .mobile-menu-close {
@@ -1635,6 +2027,9 @@ class HeaderAuthComponent extends HTMLElement {
         // Show mobile menu
         mobileMenu.classList.add('show');
         document.body.style.overflow = 'hidden';
+        
+        // Update coin balance in mobile menu
+        this.updateCoinBalance();
     }
     
     closeMobileMenu() {

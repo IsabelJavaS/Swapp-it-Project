@@ -264,8 +264,8 @@ class CartComponent extends HTMLElement {
         }
         
         if (cartTotal) {
-            cartTotal.textContent = `${this.total} Swappcoin`;
-            console.log('Updated cart total to:', this.total, 'Swappcoin');
+            cartTotal.textContent = `${this.total.toFixed(2)} Swappcoin`;
+            console.log('Updated cart total to:', this.total.toFixed(2), 'Swappcoin');
         } else {
             console.error('Cart total element not found!');
         }
@@ -475,20 +475,21 @@ class CartComponent extends HTMLElement {
                 .cart-sidebar {
                     position: fixed;
                     top: 0;
-                    right: -450px;
+                    right: 0;
                     width: 450px;
                     height: 100vh;
                     background: var(--background-white);
                     box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
                     z-index: 10000;
-                    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    transform: translateX(100%);
+                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                     display: flex;
                     flex-direction: column;
                     border-radius: 0 0 0 20px;
                 }
                 
                 .cart-sidebar.open {
-                    right: 0;
+                    transform: translateX(0);
                 }
                 
                 /* Cart Header */
@@ -842,7 +843,7 @@ class CartComponent extends HTMLElement {
                 @media (max-width: 768px) {
                     .cart-sidebar {
                         width: 100vw;
-                        right: -100vw;
+                        transform: translateX(100%);
                     }
                     
                     .cart-item {
@@ -866,6 +867,85 @@ class CartComponent extends HTMLElement {
                     
                     .cart-content {
                         padding: 1.25rem;
+                    }
+                    
+                    /* Improve mobile cart header */
+                    .cart-header {
+                        padding: 1.5rem 1rem;
+                    }
+                    
+                    .cart-title {
+                        font-size: 1.3rem;
+                    }
+                    
+                    /* Better mobile cart footer */
+                    .cart-footer {
+                        padding: 1.25rem;
+                    }
+                    
+                    .cart-total {
+                        padding: 0.875rem 1.25rem;
+                    }
+                    
+                    /* Improve mobile cart actions */
+                    .cart-actions {
+                        gap: 1rem;
+                    }
+                    
+                    .btn-checkout, .btn-continue-shopping, .btn-my-coins {
+                        padding: 1rem;
+                        font-size: 1rem;
+                        border-radius: 8px;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .cart-sidebar {
+                        width: 100vw;
+                        transform: translateX(100%);
+                    }
+                    
+                    .cart-item {
+                        padding: 0.875rem;
+                        gap: 0.875rem;
+                    }
+                    
+                    .cart-item-image img {
+                        width: 60px;
+                        height: 60px;
+                    }
+                    
+                    .cart-item-title {
+                        font-size: 0.9rem;
+                    }
+                    
+                    .cart-item-seller {
+                        font-size: 0.8rem;
+                    }
+                    
+                    .cart-content {
+                        padding: 1rem;
+                    }
+                    
+                    .cart-header {
+                        padding: 1.25rem 1rem;
+                    }
+                    
+                    .cart-title {
+                        font-size: 1.2rem;
+                    }
+                    
+                    .cart-footer {
+                        padding: 1rem;
+                    }
+                    
+                    .cart-total {
+                        padding: 0.75rem 1rem;
+                    }
+                    
+                    .btn-checkout, .btn-continue-shopping, .btn-my-coins {
+                        padding: 0.875rem;
+                        font-size: 0.9rem;
                     }
                 }
             </style>
@@ -1033,7 +1113,7 @@ class CartComponent extends HTMLElement {
         
         if (cartSidebar) {
             cartSidebar.classList.add('open');
-            cartSidebar.style.right = '0';
+            cartSidebar.style.transform = 'translateX(0)';
         }
         if (cartOverlay) {
             cartOverlay.classList.add('open');
@@ -1053,7 +1133,7 @@ class CartComponent extends HTMLElement {
         
         if (cartSidebar) {
             cartSidebar.classList.remove('open');
-            cartSidebar.style.right = '-450px';
+            cartSidebar.style.transform = 'translateX(100%)';
         }
         if (cartOverlay) {
             cartOverlay.classList.remove('open');
@@ -1238,6 +1318,28 @@ class CartComponent extends HTMLElement {
     // Public method to get cart total
     getCartTotal() {
         return this.total;
+    }
+
+    // Public method to open cart from external components
+    openCart() {
+        console.log('CartComponent.openCart called from external component');
+        this.isOpen = true;
+        const cartSidebar = this.shadowRoot.getElementById('cartSidebar');
+        const cartOverlay = this.shadowRoot.getElementById('cartOverlay');
+        
+        if (cartSidebar) {
+            cartSidebar.classList.add('open');
+            cartSidebar.style.transform = 'translateX(0)';
+        }
+        if (cartOverlay) {
+            cartOverlay.classList.add('open');
+            cartOverlay.style.display = 'block';
+        }
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        console.log('Cart opened successfully from external component');
     }
 
     // Debug method to check cart items
