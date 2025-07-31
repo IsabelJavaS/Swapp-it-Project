@@ -68,6 +68,11 @@ class BusinessDashboard extends HTMLElement {
             this.loadSection(e.detail.section);
         });
 
+        // Listen for section changes from components
+        this.addEventListener('sectionChange', (e) => {
+            this.loadSection(e.detail.section);
+        });
+
         // Listen for sidebar toggle
         sidebar.addEventListener('sidebarToggle', (e) => {
             this.isSidebarCollapsed = e.detail.collapsed;

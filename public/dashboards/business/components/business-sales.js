@@ -8,6 +8,15 @@ class BusinessSales extends HTMLElement {
     connectedCallback() {
         this.render();
         this.loadSalesData();
+        
+        // Add event listener for navigation to add product
+        this.addEventListener('navigateToAddProduct', () => {
+            console.log('BusinessSales: Navigating to add product section');
+            // Dispatch event to parent dashboard to change section
+            this.dispatchEvent(new CustomEvent('sectionChange', {
+                detail: { section: 'add-product' }
+            }));
+        });
     }
 
     async loadSalesData() {
@@ -329,19 +338,20 @@ class BusinessSales extends HTMLElement {
                     background: linear-gradient(135deg, #3468c0, #1d4ed8);
                     color: white;
                     border: none;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 12px;
+                    padding: 0.5rem 1rem;
+                    border-radius: 8px;
                     font-weight: 600;
                     cursor: pointer;
                     transition: all 0.3s ease;
                     display: inline-flex;
                     align-items: center;
                     gap: 0.5rem;
+                    font-size: 0.875rem;
                 }
 
                 .add-product-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(52, 104, 192, 0.3);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3);
                 }
 
                 @media (max-width: 768px) {

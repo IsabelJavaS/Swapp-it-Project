@@ -324,9 +324,146 @@ class HeaderComponent extends HTMLElement {
                     background: var(--neutral-light);
                     color: var(--swappit-blue);
                 }
+
+                /* Mobile Menu Styles */
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-menu.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .mobile-menu-content {
+                    width: 320px;
+                    height: 100vh;
+                    background: white;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .mobile-menu.show .mobile-menu-content {
+                    transform: translateX(0);
+                }
+                
+                .mobile-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid #e2e8f0;
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+                    color: white;
+                }
+                
+                .mobile-menu-header h3 {
+                    margin: 0;
+                    font-family: var(--font-primary);
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+                
+                .mobile-menu-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .mobile-menu-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .mobile-menu-items {
+                    flex: 1;
+                    padding: 1rem 0;
+                    overflow-y: auto;
+                }
+                
+                .mobile-menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem 1.5rem;
+                    color: var(--neutral-dark);
+                    text-decoration: none;
+                    font-family: var(--font-secondary);
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    border-left: 3px solid transparent;
+                }
+                
+                .mobile-menu-item:hover {
+                    background: var(--neutral-light);
+                    border-left-color: var(--swappit-blue);
+                    color: var(--swappit-blue);
+                    transform: translateX(5px);
+                }
+                
+                .mobile-menu-item i {
+                    width: 20px;
+                    text-align: center;
+                    color: var(--neutral-medium);
+                    font-size: 1rem;
+                }
+                
+                .mobile-menu-item:hover i {
+                    color: var(--swappit-blue);
+                }
+                
+                .mobile-menu-divider {
+                    height: 1px;
+                    background: var(--neutral-light);
+                    margin: 0.5rem 1.5rem;
+                }
+                
+                .mobile-menu-section {
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: var(--swappit-orange);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid var(--swappit-orange);
+                    margin: 0.5rem 0;
+                }
+                
+                .mobile-menu-item.logout {
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout:hover {
+                    background: #fef2f2;
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout i {
+                    color: #dc2626;
+                }
                 
                 /* Responsive Design */
-                @media (max-width: 991px) {
+                @media (max-width: 768px) {
                     .menu {
                         display: none;
                     }
@@ -657,8 +794,7 @@ class HeaderComponent extends HTMLElement {
         const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
         if (mobileToggle) {
             mobileToggle.addEventListener('click', () => {
-                // For now, just show an alert. You can implement a mobile menu later
-                alert('Menú móvil - Funcionalidad en desarrollo');
+                this.toggleMobileMenu();
             });
         }
         
@@ -773,6 +909,230 @@ class HeaderComponent extends HTMLElement {
                 link.classList.add('active');
             }
         });
+    }
+
+    toggleMobileMenu() {
+        // Create mobile menu if it doesn't exist
+        let mobileMenu = document.getElementById('mobileMenu');
+        
+        if (!mobileMenu) {
+            mobileMenu = document.createElement('div');
+            mobileMenu.id = 'mobileMenu';
+            mobileMenu.className = 'mobile-menu';
+            mobileMenu.innerHTML = `
+                <div class="mobile-menu-content">
+                    <div class="mobile-menu-header">
+                        <h3>SWAPPIT Menu</h3>
+                        <button class="mobile-menu-close" id="mobileMenuClose">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mobile-menu-items">
+                        <div class="mobile-menu-section">Navigation</div>
+                        <a href="${this.getHomePath()}" class="mobile-menu-item">
+                            <i class="fas fa-home"></i>
+                            Home
+                        </a>
+                        <a href="${this.getMarketplacePath()}" class="mobile-menu-item">
+                            <i class="fas fa-store"></i>
+                            Marketplace
+                        </a>
+                        <a href="${this.getAboutPath()}" class="mobile-menu-item">
+                            <i class="fas fa-info-circle"></i>
+                            About Us
+                        </a>
+                        <a href="${this.getContactPath()}" class="mobile-menu-item">
+                            <i class="fas fa-envelope"></i>
+                            Contact
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">Account</div>
+                        <a href="${this.getLoginPath()}" class="mobile-menu-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </a>
+                        <a href="${this.getRegisterPath()}" class="mobile-menu-item">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">Shopping</div>
+                        <a href="#" class="mobile-menu-item" id="mobileCartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Shopping Cart
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-menu.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .mobile-menu-content {
+                    width: 320px;
+                    height: 100vh;
+                    background: white;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .mobile-menu.show .mobile-menu-content {
+                    transform: translateX(0);
+                }
+                
+                .mobile-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid #e2e8f0;
+                    background: linear-gradient(135deg, #3468c0, #ffa424);
+                    color: white;
+                }
+                
+                .mobile-menu-header h3 {
+                    margin: 0;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+                
+                .mobile-menu-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .mobile-menu-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .mobile-menu-items {
+                    flex: 1;
+                    padding: 1rem 0;
+                    overflow-y: auto;
+                }
+                
+                .mobile-menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem 1.5rem;
+                    color: #1e293b;
+                    text-decoration: none;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    border-left: 3px solid transparent;
+                }
+                
+                .mobile-menu-item:hover {
+                    background: #f1f5f9;
+                    border-left-color: #3468c0;
+                    color: #3468c0;
+                    transform: translateX(5px);
+                }
+                
+                .mobile-menu-item i {
+                    width: 20px;
+                    text-align: center;
+                    color: #64748b;
+                    font-size: 1rem;
+                }
+                
+                .mobile-menu-item:hover i {
+                    color: #3468c0;
+                }
+                
+                .mobile-menu-divider {
+                    height: 1px;
+                    background: #e2e8f0;
+                    margin: 0.5rem 1.5rem;
+                }
+                
+                .mobile-menu-section {
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: #ffa424;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid #ffa424;
+                    margin: 0.5rem 0;
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(mobileMenu);
+            
+            // Add event listeners
+            const closeBtn = mobileMenu.querySelector('#mobileMenuClose');
+            const cartBtn = mobileMenu.querySelector('#mobileCartBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => this.closeMobileMenu());
+            }
+            
+            if (cartBtn) {
+                cartBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.closeMobileMenu();
+                    // Trigger cart component to open
+                    const cartComponent = document.querySelector('cart-component');
+                    if (cartComponent && cartComponent.openCart) {
+                        cartComponent.openCart();
+                    }
+                });
+            }
+            
+            // Close on overlay click
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+        
+        // Show mobile menu
+        mobileMenu.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            mobileMenu.classList.remove('show');
+            document.body.style.overflow = '';
+        }
     }
 }
 

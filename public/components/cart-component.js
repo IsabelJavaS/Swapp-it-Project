@@ -105,12 +105,43 @@ class CartComponent extends HTMLElement {
         // Ensure product has required fields
         const productToAdd = {
             id: product.id,
-            title: product.title || 'Product',
+            title: product.title || product.productName || 'Product',
             price: product.price || 0,
-            images: product.images || [],
+            images: [],
             sellerName: product.sellerDisplayName || product.sellerName || 'Seller',
             description: product.description || ''
         };
+        
+        // Handle different image formats and ensure they are valid URLs
+        if (product.images) {
+            if (Array.isArray(product.images)) {
+                // Filter out invalid images and ensure they are strings
+                productToAdd.images = product.images
+                    .filter(img => img && typeof img === 'string' && img.trim() !== '' && this.isValidImageUrl(img.trim()))
+                    .map(img => img.trim());
+                console.log('Images array processed:', productToAdd.images);
+            } else if (typeof product.images === 'string') {
+                const trimmedImage = product.images.trim();
+                if (trimmedImage && this.isValidImageUrl(trimmedImage)) {
+                    productToAdd.images = [trimmedImage];
+                    console.log('Single image string converted to array:', trimmedImage);
+                } else {
+                    console.log('Single image string is invalid URL:', trimmedImage);
+                }
+            } else {
+                console.log('Images property is not a valid format:', typeof product.images);
+            }
+        } else if (product.imageUrl) {
+            const trimmedImage = product.imageUrl.trim();
+            if (trimmedImage && this.isValidImageUrl(trimmedImage)) {
+                productToAdd.images = [trimmedImage];
+                console.log('Using imageUrl property:', trimmedImage);
+            } else {
+                console.log('imageUrl is invalid URL:', trimmedImage);
+            }
+        } else {
+            console.log('No valid images found in product data');
+        }
         
         console.log('Processed product:', productToAdd);
         
@@ -134,6 +165,9 @@ class CartComponent extends HTMLElement {
         this.updateCartDisplay();
         this.updateCartCount();
         this.showNotification('Product added to cart');
+        
+        // Debug cart items
+        this.debugCartItems();
         
         console.log('Cart updated. Items:', this.cartItems.length, 'Total:', this.total);
     }
@@ -244,28 +278,53 @@ class CartComponent extends HTMLElement {
         
         const itemsHTML = this.cartItems.map(item => {
             console.log('Processing item:', item);
+            console.log('Item images:', item.images);
             
             // Use product image or default image
-            const imageUrl = item.images && item.images.length > 0 
-                ? item.images[0] 
-                : '/assets/logos/utiles-escolares.jpg';
+            let imageUrl = '/assets/logos/utiles-escolares.jpg'; // Default fallback
+            
+            if (item.images && Array.isArray(item.images) && item.images.length > 0) {
+                const firstImage = item.images[0];
+                if (firstImage && typeof firstImage === 'string' && firstImage.trim() !== '' && this.isValidImageUrl(firstImage.trim())) {
+                    imageUrl = firstImage.trim();
+                    console.log('Using first image from array:', imageUrl);
+                } else {
+                    console.log('First image is invalid URL, using default');
+                }
+            } else if (item.images && typeof item.images === 'string') {
+                const trimmedImage = item.images.trim();
+                if (trimmedImage && this.isValidImageUrl(trimmedImage)) {
+                    imageUrl = trimmedImage;
+                    console.log('Using single image string:', imageUrl);
+                } else {
+                    console.log('Single image string is invalid URL, using default');
+                }
+            } else if (item.imageUrl) {
+                const trimmedImage = item.imageUrl.trim();
+                if (trimmedImage && this.isValidImageUrl(trimmedImage)) {
+                    imageUrl = trimmedImage;
+                    console.log('Using imageUrl property:', imageUrl);
+                } else {
+                    console.log('imageUrl is invalid URL, using default');
+                }
+            } else {
+                console.log('No valid images found, using default image');
+            }
             
             const sellerName = item.sellerName || item.sellerDisplayName || 'Seller';
-            const price = item.price || 0;
-            const totalPrice = price * item.quantity;
             
             return `
                 <div class="cart-item" data-product-id="${item.id}">
                     <div class="cart-item-image">
-                        <img src="${imageUrl}" alt="${item.title}" onerror="this.src='/assets/logos/utiles-escolares.jpg'">
+                        <img src="${imageUrl}" 
+                             alt="${item.title}" 
+                             onerror="console.log('Image failed to load:', this.src); this.src='/assets/logos/utiles-escolares.jpg'; this.onerror=null;"
+                             onload="console.log('Image loaded successfully:', this.src)"
+                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb;">
                     </div>
                     <div class="cart-item-details">
                         <h4 class="cart-item-title">${item.title}</h4>
                         <p class="cart-item-seller">by ${sellerName}</p>
-                        <div class="cart-item-price-info">
-                            <span class="cart-item-price">${price} Swappcoin</span>
-                            <span class="cart-item-total">Total: ${totalPrice} Swappcoin</span>
-                        </div>
                     </div>
                     <div class="cart-item-controls">
                         <div class="quantity-controls">
@@ -555,40 +614,23 @@ class CartComponent extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     gap: 1.5rem;
+                    padding: 1rem 0;
                 }
                 
                 .cart-item {
                     display: flex;
-                    gap: 1.25rem;
-                    padding: 1.25rem;
-                    border: 2px solid var(--neutral-light);
-                    border-radius: var(--border-radius);
-                    background: var(--background-white);
-                    transition: var(--transition);
+                    gap: 1rem;
+                    padding: 1.5rem;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 12px;
+                    background: white;
+                    transition: all 0.3s ease;
                     position: relative;
-                    overflow: hidden;
-                }
-                
-                .cart-item::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 4px;
-                    height: 100%;
-                    background: linear-gradient(180deg, var(--swappit-blue), var(--swappit-orange));
-                    transform: scaleY(0);
-                    transition: transform 0.3s ease;
                 }
                 
                 .cart-item:hover {
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                     border-color: var(--swappit-blue);
-                    transform: translateY(-2px);
-                }
-                
-                .cart-item:hover::before {
-                    transform: scaleY(1);
                 }
                 
                 .cart-item-image {
@@ -598,57 +640,33 @@ class CartComponent extends HTMLElement {
                 .cart-item-image img {
                     width: 80px;
                     height: 80px;
-                    border-radius: var(--border-radius);
+                    border-radius: 8px;
                     object-fit: cover;
-                    border: 2px solid var(--neutral-light);
-                    transition: var(--transition);
-                }
-                
-                .cart-item:hover .cart-item-image img {
-                    border-color: var(--swappit-blue);
-                    transform: scale(1.05);
+                    border: 1px solid #e5e7eb;
                 }
                 
                 .cart-item-details {
                     flex: 1;
-                    min-width: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.75rem;
                 }
                 
                 .cart-item-title {
                     font-family: var(--font-primary);
                     font-weight: 600;
-                    font-size: 1.1rem;
-                    margin: 0 0 0.75rem 0;
+                    font-size: 1rem;
+                    margin: 0;
                     color: var(--neutral-dark);
                     line-height: 1.3;
                 }
                 
                 .cart-item-seller {
                     font-family: var(--font-secondary);
-                    font-size: 0.9rem;
+                    font-size: 0.875rem;
                     color: var(--neutral-medium);
-                    margin: 0 0 1rem 0;
+                    margin: 0;
                     font-weight: 500;
-                }
-                
-                .cart-item-price-info {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                
-                .cart-item-price {
-                    font-family: var(--font-primary);
-                    font-weight: 600;
-                    color: var(--swappit-blue);
-                    font-size: 1rem;
-                }
-                
-                .cart-item-total {
-                    font-family: var(--font-primary);
-                    font-weight: 700;
-                    color: var(--swappit-orange);
-                    font-size: 1.1rem;
                 }
                 
                 .cart-item-controls {
@@ -662,75 +680,67 @@ class CartComponent extends HTMLElement {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
-                    background: var(--neutral-light);
-                    border-radius: 25px;
+                    background: #f8fafc;
+                    border-radius: 20px;
                     padding: 0.5rem;
-                    border: 2px solid transparent;
-                    transition: var(--transition);
-                }
-                
-                .quantity-controls:hover {
-                    border-color: var(--swappit-blue);
-                    background: rgba(52, 104, 192, 0.05);
+                    border: 1px solid #e5e7eb;
                 }
                 
                 .quantity-btn {
                     background: none;
                     border: none;
-                    width: 28px;
-                    height: 28px;
+                    width: 24px;
+                    height: 24px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
-                    transition: var(--transition);
+                    transition: all 0.2s ease;
                     color: var(--neutral-dark);
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
                 }
                 
                 .quantity-btn:hover {
                     background: var(--swappit-blue);
                     color: white;
-                    transform: scale(1.1);
                 }
                 
                 .quantity {
                     font-family: var(--font-primary);
-                    font-weight: 700;
-                    font-size: 0.9rem;
-                    min-width: 25px;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    min-width: 20px;
                     text-align: center;
                     color: var(--neutral-dark);
                 }
                 
                 .remove-btn {
-                    background: linear-gradient(135deg, #dc2626, #b91c1c);
+                    background: #ef4444;
                     border: none;
                     color: white;
                     cursor: pointer;
                     padding: 0.5rem;
                     border-radius: 50%;
-                    transition: var(--transition);
-                    font-size: 0.8rem;
-                    width: 32px;
-                    height: 32px;
+                    transition: all 0.2s ease;
+                    font-size: 0.75rem;
+                    width: 28px;
+                    height: 28px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                 }
                 
                 .remove-btn:hover {
-                    transform: scale(1.1) rotate(90deg);
-                    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+                    background: #dc2626;
+                    transform: scale(1.1);
                 }
                 
                 /* Cart Footer */
                 .cart-footer {
-                    padding: 2rem 1.5rem;
-                    background: linear-gradient(135deg, #f8fafc, #ffffff);
-                    border-top: 2px solid var(--neutral-light);
-                    border-radius: 20px 0 0 0;
+                    padding: 1.5rem;
+                    background: white;
+                    border-top: 1px solid #e5e7eb;
                 }
                 
                 .cart-total {
@@ -739,68 +749,64 @@ class CartComponent extends HTMLElement {
                     align-items: center;
                     margin-bottom: 1.5rem;
                     padding: 1rem 1.5rem;
-                    background: var(--background-white);
-                    border-radius: var(--border-radius);
-                    border: 2px solid var(--neutral-light);
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                    background: #f8fafc;
+                    border-radius: 8px;
+                    border: 1px solid #e5e7eb;
                 }
                 
                 .total-label {
                     font-family: var(--font-primary);
                     font-weight: 600;
-                    font-size: 1.1rem;
+                    font-size: 1rem;
                     color: var(--neutral-dark);
                 }
                 
                 .total-amount {
                     font-family: var(--font-primary);
                     font-weight: 700;
-                    font-size: 1.2rem;
+                    font-size: 1.125rem;
                     color: var(--swappit-orange);
                 }
                 
                 .cart-actions {
                     display: flex;
                     flex-direction: column;
-                    gap: 1rem;
+                    gap: 1.25rem;
                 }
                 
                 .btn-checkout {
-                    background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-hover));
+                    background: var(--swappit-orange);
                     color: white;
                     border: none;
-                    padding: 1.25rem;
-                    border-radius: var(--border-radius);
+                    padding: 1rem;
+                    border-radius: 8px;
                     font-family: var(--font-primary);
-                    font-weight: 700;
-                    font-size: 1.1rem;
+                    font-weight: 600;
+                    font-size: 1rem;
                     cursor: pointer;
-                    transition: var(--transition);
+                    transition: all 0.2s ease;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 0.75rem;
-                    box-shadow: 0 4px 15px rgba(255, 164, 36, 0.3);
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    gap: 0.5rem;
                 }
                 
                 .btn-checkout:hover {
-                    transform: translateY(-3px);
-                    box-shadow: 0 6px 25px rgba(255, 164, 36, 0.4);
+                    background: #ff5722;
+                    transform: translateY(-1px);
                 }
                 
                 .btn-continue-shopping {
                     background: transparent;
                     color: var(--swappit-blue);
-                    border: 2px solid var(--swappit-blue);
-                    padding: 1rem;
-                    border-radius: var(--border-radius);
+                    border: 1px solid var(--swappit-blue);
+                    padding: 0.875rem;
+                    border-radius: 8px;
                     font-family: var(--font-primary);
                     font-weight: 600;
-                    font-size: 1rem;
+                    font-size: 0.875rem;
                     cursor: pointer;
-                    transition: var(--transition);
+                    transition: all 0.2s ease;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -810,8 +816,6 @@ class CartComponent extends HTMLElement {
                 .btn-continue-shopping:hover {
                     background: var(--swappit-blue);
                     color: white;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
                 }
                 
                 /* Overlay */
@@ -918,6 +922,26 @@ class CartComponent extends HTMLElement {
                             <i class="fas fa-arrow-left me-2"></i>
                             Continue Shopping
                         </button>
+                        <button class="btn-my-coins" id="btnMyCoins" style="
+                            background: transparent;
+                            color: var(--swappit-blue);
+                            border: 1px solid var(--swappit-blue);
+                            padding: 0.75rem;
+                            border-radius: 8px;
+                            font-family: var(--font-primary);
+                            font-weight: 600;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 0.5rem;
+                            margin-top: 0.5rem;
+                        ">
+                            <i class="fas fa-wallet"></i>
+                            My Coins
+                        </button>
                     </div>
                 </div>
             </div>
@@ -946,6 +970,7 @@ class CartComponent extends HTMLElement {
         // Cart actions
         const btnCheckout = this.shadowRoot.getElementById('btnCheckout');
         const btnContinueShopping = this.shadowRoot.getElementById('btnContinueShopping');
+        const btnMyCoins = this.shadowRoot.getElementById('btnMyCoins');
         
         if (btnCheckout) {
             btnCheckout.addEventListener('click', () => this.proceedToCheckout());
@@ -953,6 +978,10 @@ class CartComponent extends HTMLElement {
         
         if (btnContinueShopping) {
             btnContinueShopping.addEventListener('click', () => this.continueShopping());
+        }
+
+        if (btnMyCoins) {
+            btnMyCoins.addEventListener('click', () => this.showMyCoins());
         }
         
         // Event delegation for cart items
@@ -984,6 +1013,15 @@ class CartComponent extends HTMLElement {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.closeCart();
+            }
+        });
+        
+        // Listen for coin balance updates to refresh header
+        window.addEventListener('coinBalanceUpdated', (e) => {
+            // Find and refresh the header auth component
+            const headerAuth = document.querySelector('header-auth-component');
+            if (headerAuth && headerAuth.refreshCoinBalance) {
+                headerAuth.refreshCoinBalance();
             }
         });
     }
@@ -1034,6 +1072,19 @@ class CartComponent extends HTMLElement {
             return;
         }
         
+        // Check if user has enough coins
+        const userBalance = parseInt(localStorage.getItem('userCoinBalance') || 0);
+        const cartTotal = this.total;
+        
+        if (userBalance < cartTotal) {
+            // Show insufficient coins message and redirect to buy coins
+            this.showNotification('Insufficient Swappit Coins');
+            
+            // Create and show insufficient coins modal
+            this.showInsufficientCoinsModal();
+            return;
+        }
+        
         // For SWAPPIT, we'll redirect to the product purchase page of the first item
         // Since we're using Swappcoin, we typically purchase one product at a time
         const firstItem = this.cartItems[0];
@@ -1045,9 +1096,132 @@ class CartComponent extends HTMLElement {
         window.location.href = `/pages/marketplace/product-purchase.html?productId=${firstItem.id}`;
     }
 
+    showInsufficientCoinsModal() {
+        // Create modal element
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20000;
+            backdrop-filter: blur(5px);
+        `;
+        
+        modal.innerHTML = `
+            <div style="
+                background: white;
+                border-radius: 16px;
+                padding: 2rem;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                animation: slideIn 0.3s ease;
+            ">
+                <div style="
+                    background: linear-gradient(135deg, #ffa424, #ff5722);
+                    color: white;
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 1rem;
+                    font-size: 1.5rem;
+                ">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 style="
+                    color: #1e293b;
+                    font-size: 1.5rem;
+                    margin-bottom: 0.5rem;
+                    font-family: 'Poppins', sans-serif;
+                ">Insufficient Swappit Coins</h3>
+                <p style="
+                    color: #64748b;
+                    margin-bottom: 1.5rem;
+                    line-height: 1.5;
+                    font-family: 'Inter', sans-serif;
+                ">You don't have enough Swappit Coins to complete this purchase.</p>
+                <div style="
+                    background: #f8fafc;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin-bottom: 1.5rem;
+                ">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: #64748b;">Cart Total:</span>
+                        <span style="color: #1e293b; font-weight: 600;">${this.total} Coins</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #64748b;">Your Balance:</span>
+                        <span style="color: #dc2626; font-weight: 600;">${localStorage.getItem('userCoinBalance') || 0} Coins</span>
+                    </div>
+                </div>
+                <button onclick="this.closest('.insufficient-modal').remove()" style="
+                    background: linear-gradient(135deg, #ffa424, #ff5722);
+                    color: white;
+                    border: none;
+                    padding: 1rem 2rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-right: 0.5rem;
+                    transition: all 0.3s ease;
+                ">+ Buy More Swappit Coins</button>
+                <button onclick="this.closest('.insufficient-modal').remove()" style="
+                    background: transparent;
+                    color: #64748b;
+                    border: 1px solid #e5e7eb;
+                    padding: 1rem 2rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">Cancel</button>
+            </div>
+        `;
+        
+        modal.className = 'insufficient-modal';
+        document.body.appendChild(modal);
+        
+        // Add click event to buy more coins button
+        const buyButton = modal.querySelector('button');
+        buyButton.addEventListener('click', () => {
+            modal.remove();
+            window.location.href = '/pages/swapcoin/buy-coins.html';
+        });
+        
+        // Add click event to cancel button
+        const cancelButton = modal.querySelectorAll('button')[1];
+        cancelButton.addEventListener('click', () => {
+            modal.remove();
+        });
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+    }
+
     continueShopping() {
         this.closeCart();
         window.location.href = '/pages/marketplace/marketplace.html';
+    }
+
+    showMyCoins() {
+        this.closeCart();
+        window.location.href = '/pages/swapcoin/my-coins.html';
     }
 
     // Public method to add item to cart
@@ -1064,6 +1238,36 @@ class CartComponent extends HTMLElement {
     // Public method to get cart total
     getCartTotal() {
         return this.total;
+    }
+
+    // Debug method to check cart items
+    debugCartItems() {
+        console.log('=== CART DEBUG ===');
+        console.log('Cart items count:', this.cartItems.length);
+        this.cartItems.forEach((item, index) => {
+            console.log(`Item ${index + 1}:`, {
+                id: item.id,
+                title: item.title,
+                images: item.images,
+                imageUrl: item.imageUrl,
+                hasImages: !!item.images,
+                imagesLength: item.images ? item.images.length : 0
+            });
+        });
+        console.log('=== END DEBUG ===');
+    }
+
+    // Validate if a string is a valid URL
+    isValidImageUrl(url) {
+        if (!url || typeof url !== 'string') return false;
+        
+        try {
+            const urlObj = new URL(url);
+            return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+        } catch (e) {
+            // If it's a relative path, it's also valid
+            return url.startsWith('/') || url.startsWith('./') || url.startsWith('../');
+        }
     }
 }
 

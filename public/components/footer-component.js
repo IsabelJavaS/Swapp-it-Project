@@ -101,103 +101,7 @@ class FooterComponent extends HTMLElement {
                     overflow: hidden;
                 }
 
-<<<<<<< HEAD
-                /* Newsletter Section - Professional */
-                .newsletter-section {
-                    background: var(--gradient-primary);
-                    padding: 3rem 0;
-                    text-align: center;
-                    position: relative;
-                }
 
-                .newsletter-section::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-                    opacity: 0.3;
-                    z-index: 1;
-                }
-
-                .newsletter-content {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 0 1rem;
-                    position: relative;
-                    z-index: 2;
-                }
-
-                .newsletter-title {
-                    font-family: var(--font-primary);
-                    font-size: 1.75rem;
-                    font-weight: 700;
-                    margin-bottom: 0.75rem;
-                    color: white;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-
-                .newsletter-subtitle {
-                    color: rgba(255, 255, 255, 0.95);
-                    margin-bottom: 2rem;
-                    font-size: 1rem;
-                    font-family: var(--font-secondary);
-                    line-height: 1.6;
-                }
-
-                .newsletter-form {
-                    display: flex;
-                    gap: 0.75rem;
-                    max-width: 450px;
-                    margin: 0 auto;
-                    background: rgba(255, 255, 255, 0.1);
-                    padding: 0.5rem;
-                    border-radius: 10px;
-                    backdrop-filter: blur(10px);
-                }
-
-                .newsletter-input {
-                    flex: 1;
-                    padding: 0.75rem 1rem;
-                    border: none;
-                    border-radius: 6px;
-                    font-size: 0.9rem;
-                    background: rgba(255, 255, 255, 0.95);
-                    color: var(--neutral-dark);
-                    font-family: var(--font-secondary);
-                    transition: all 0.3s ease;
-                }
-
-                .newsletter-input:focus {
-                    outline: none;
-                    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-                    background: white;
-                }
-
-                .newsletter-button {
-                    padding: 0.75rem 1.5rem;
-                    background: var(--gradient-secondary);
-                    color: white;
-                    border: none;
-                    border-radius: 6px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    white-space: nowrap;
-                    font-family: var(--font-primary);
-                    font-size: 0.9rem;
-                    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.3);
-                }
-
-                .newsletter-button:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(255, 164, 36, 0.4);
-                }
-=======
-
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
 
                 /* Main Footer Content */
                 .footer-main {
@@ -249,17 +153,10 @@ class FooterComponent extends HTMLElement {
                 /* Footer Brand - Professional */
                 .footer-brand {
                     display: flex;
-<<<<<<< HEAD
                     flex-direction: column;
                     align-items: flex-start;
                     text-align: left;
                     margin-bottom: 1.5rem;
-=======
-                    align-items: flex-start;
-                    margin-bottom: 0.75rem;
-                    margin-top: 0;
-                    padding-top: 0;
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-brand img {
@@ -284,16 +181,10 @@ class FooterComponent extends HTMLElement {
                     color: rgba(255, 255, 255, 0.85);
                     line-height: 1.6;
                     margin-bottom: 1.5rem;
-<<<<<<< HEAD
                     font-size: 0.9rem;
                     font-family: var(--font-secondary);
                     text-align: left;
                     max-width: 280px;
-=======
-                    font-size: 0.95rem;
-                    margin-top: 0;
-                    padding-top: 0;
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 /* Social Links - Professional */
@@ -334,13 +225,8 @@ class FooterComponent extends HTMLElement {
                     font-weight: 600;
                     margin-bottom: 1.25rem;
                     font-family: var(--font-primary);
-<<<<<<< HEAD
                     position: relative;
                     margin-top: 0;
-=======
-                    margin-top: 0;
-                    padding-top: 0;
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-title::after {
@@ -397,12 +283,9 @@ class FooterComponent extends HTMLElement {
                 /* Footer Contact - Professional */
                 .footer-contact {
                     margin-top: 0;
-<<<<<<< HEAD
                     padding-top: 0;
                     margin-bottom: 0;
                     padding-bottom: 0;
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 }
 
                 .footer-contact p {
@@ -503,14 +386,6 @@ class FooterComponent extends HTMLElement {
                         gap: 1.5rem;
                     }
 
-<<<<<<< HEAD
-                    .newsletter-form {
-                        flex-direction: column;
-                        padding: 0.75rem;
-                    }
-
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                     .footer-bottom-content {
                         flex-direction: column;
                         text-align: center;
@@ -521,12 +396,6 @@ class FooterComponent extends HTMLElement {
                         justify-content: center;
                         flex-wrap: wrap;
                     }
-
-                    .newsletter-title {
-                        font-size: 1.5rem;
-                    }
-
-
                 }
 
                 @media (max-width: 576px) {
@@ -539,17 +408,6 @@ class FooterComponent extends HTMLElement {
                         padding: 2rem 0 1rem;
                     }
 
-<<<<<<< HEAD
-                    .newsletter-section {
-                        padding: 2rem 0;
-                    }
-
-                    .newsletter-title {
-                        font-size: 1.25rem;
-                    }
-
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                     .footer-bottom {
                         padding: 1rem 0;
                     }
@@ -561,25 +419,6 @@ class FooterComponent extends HTMLElement {
             </style>
             
             <footer class="marketplace-footer">
-<<<<<<< HEAD
-                <!-- Newsletter Section -->
-                <div class="newsletter-section">
-                    <div class="container">
-                        <div class="newsletter-content">
-                            <h2 class="newsletter-title">Join the SWAPPIT Community</h2>
-                            <p class="newsletter-subtitle">Get exclusive access to student deals, sustainability tips, and community updates.</p>
-                            <form class="newsletter-form" id="newsletterForm">
-                                <input type="email" class="newsletter-input" placeholder="Enter your student email" required>
-                                <button type="submit" class="newsletter-button">
-                                    <i class="fas fa-paper-plane me-2"></i>Subscribe
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                 <!-- Main Footer Content -->
                 <div class="footer-main">
                     <div class="container">
@@ -590,11 +429,7 @@ class FooterComponent extends HTMLElement {
                                     <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
                                 </div>
                                 <p class="footer-description">
-<<<<<<< HEAD
                                     SWAPPIT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
-=======
-                                    Join the sustainable student community where you can buy, sell, or exchange school supplies.
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -623,7 +458,7 @@ class FooterComponent extends HTMLElement {
                                     <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace.html">Marketplace</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/about/about.html">About Us</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/support/support.html">Support Center</a></li>
-                                    <li><a href="${this.getBaseUrl()}/pages/swapcoin/info.html">Swappit Coins</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/swapcoin/buy-coins.html">Swappit Coins</a></li>
                                     <li><a href="#">Student Portal</a></li>
                                 </ul>
                             </div>
@@ -681,21 +516,6 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-<<<<<<< HEAD
-        // Newsletter form submission
-        const newsletterForm = this.shadowRoot.getElementById('newsletterForm');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = newsletterForm.querySelector('input[type="email"]').value;
-                this.handleNewsletterSubscription(email);
-            });
-        }
-
-
-
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
         // Social links
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
@@ -719,34 +539,6 @@ class FooterComponent extends HTMLElement {
             });
         });
     }
-
-<<<<<<< HEAD
-    handleNewsletterSubscription(email) {
-        // Simular envío de newsletter con mejor UX
-        const form = this.shadowRoot.getElementById('newsletterForm');
-        const button = form.querySelector('button');
-        const input = form.querySelector('input[type="email"]');
-        const originalText = button.innerHTML;
-        
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
-        button.disabled = true;
-        input.disabled = true;
-        
-        setTimeout(() => {
-            button.innerHTML = '<i class="fas fa-check me-2"></i>Subscribed!';
-            button.style.background = 'var(--success-green)';
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.disabled = false;
-                button.style.background = '';
-                input.value = '';
-                input.disabled = false;
-            }, 2000);
-        }, 1500);
-=======
->>>>>>> b08317d247ac2f2830055412f61332c488a0dfca
-
 }
 
 // Registrar el componente

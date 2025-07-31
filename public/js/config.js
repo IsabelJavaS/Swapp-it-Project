@@ -63,8 +63,8 @@ export class AppConfig {
         return this.getPagePath('/pages/auth/register.html');
     }
 
-    static getSwappitCoinsInfoPath() {
-        return this.getPagePath('/pages/swapcoin/info.html');
+    static     getSwappitCoinsInfoPath() {
+        return this.getPagePath('/pages/swapcoin/buy-coins.html');
     }
 
     // Detectar entorno
@@ -193,7 +193,7 @@ class PathConfig {
 
     // Rutas para Swappit Coins
     getSwappitCoinsInfoPath() {
-        return `${this.basePath}/pages/swapcoin/info.html`;
+        return `${this.basePath}/pages/swapcoin/buy-coins.html`;
     }
 
     // Ruta para logo

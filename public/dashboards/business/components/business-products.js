@@ -9,6 +9,15 @@ class BusinessProducts extends HTMLElement {
         console.log('BusinessProducts: Component connected');
         this.render();
         this.loadProducts();
+        
+        // Add event listener for navigation to add product
+        this.addEventListener('navigateToAddProduct', () => {
+            console.log('BusinessProducts: Navigating to add product section');
+            // Dispatch event to parent dashboard to change section
+            this.dispatchEvent(new CustomEvent('sectionChange', {
+                detail: { section: 'add-product' }
+            }));
+        });
     }
 
     async loadProducts() {
@@ -439,22 +448,23 @@ class BusinessProducts extends HTMLElement {
                 }
 
                 .add-product-btn {
-                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
-                    color: white;
-                    border: none;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 12px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
+                    background: linear-gradient(135deg, #3468c0, #1d4ed8) !important;
+                    color: white !important;
+                    border: none !important;
+                    padding: 0.5rem 1rem !important;
+                    border-radius: 8px !important;
+                    font-weight: 600 !important;
+                    cursor: pointer !important;
+                    transition: all 0.3s ease !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    gap: 0.5rem !important;
+                    font-size: 0.875rem !important;
                 }
 
                 .add-product-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(52, 104, 192, 0.3);
+                    transform: translateY(-1px) !important;
+                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3) !important;
                 }
 
                 /* Responsive */

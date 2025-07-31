@@ -103,6 +103,10 @@ class HeaderAuthComponent extends HTMLElement {
         if (dropdownUserEmail && this.userData) {
             dropdownUserEmail.textContent = this.userData.email;
         }
+        
+        // Initialize and update coin balance
+        this.initializeCoinBalance();
+        this.updateCoinBalance();
     }
 
     // Generate avatar from user name
@@ -148,6 +152,28 @@ class HeaderAuthComponent extends HTMLElement {
         // Return first letter of first and last name
         return words[0].charAt(0) + words[words.length - 1].charAt(0);
     }
+    
+    // Update coin balance display
+    updateCoinBalance() {
+        const coinBalanceElement = this.shadowRoot.getElementById('userCoinBalance');
+        if (coinBalanceElement) {
+            const balance = localStorage.getItem('userCoinBalance') || 0;
+            const formattedBalance = parseInt(balance).toLocaleString();
+            coinBalanceElement.textContent = formattedBalance;
+        }
+    }
+    
+    // Initialize coin balance if not set
+    initializeCoinBalance() {
+        if (!localStorage.getItem('userCoinBalance')) {
+            localStorage.setItem('userCoinBalance', '0');
+        }
+    }
+    
+    // Public method to refresh coin balance (can be called from other components)
+    refreshCoinBalance() {
+        this.updateCoinBalance();
+    }
 
     // Get logo path
     getLogoPath() {
@@ -183,7 +209,7 @@ class HeaderAuthComponent extends HTMLElement {
     }
 
     getSwappitCoinsInfoPath() {
-        return window.pathConfig ? window.pathConfig.getSwappitCoinsInfoPath() : '/pages/swapcoin/info.html';
+        return window.pathConfig ? window.pathConfig.getSwappitCoinsInfoPath() : '/pages/swapcoin/buy-coins.html';
     }
 
     getSupportPath() {
@@ -267,7 +293,7 @@ class HeaderAuthComponent extends HTMLElement {
                     right: 0;
                     z-index: 1000;
                     height: 80px;
-                    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
+                    border-bottom: 2px solid var(--swappit-orange);
                     backdrop-filter: blur(10px);
                 }
                 
@@ -301,7 +327,7 @@ class HeaderAuthComponent extends HTMLElement {
                 }
                 
                 .logo:hover {
-                    transform: translateY(-1px);
+                    transform: translateY(-1px) scale(1.02);
                 }
                 
                 .logo img {
@@ -328,29 +354,82 @@ class HeaderAuthComponent extends HTMLElement {
 
 
 
-                /* Explore Navigation */
-                .explore-nav {
+                /* Categories Navigation */
+                .categories-nav {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
-                    color: var(--neutral-dark);
+                    color: var(--text-dark);
                     text-decoration: none;
                     font-family: var(--font-primary);
-                    font-weight: 500;
+                    font-weight: 600;
                     font-size: 0.95rem;
                     padding: 0.5rem 1rem;
                     border-radius: 6px;
                     transition: var(--transition);
+                    border: 2px solid transparent;
                 }
 
-                .explore-nav:hover {
-                    background: var(--neutral-light);
-                    color: var(--swappit-blue);
+                .categories-nav:hover {
+                    background: rgba(255, 164, 36, 0.1);
+                    color: var(--swappit-orange);
                     text-decoration: none;
+                    border-color: var(--swappit-orange);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.2);
                 }
 
-                .explore-nav i {
+                .categories-nav i {
                     font-size: 1rem;
+                    color: var(--text-dark);
+                    transition: transform 0.3s ease;
+                }
+
+                .categories-nav:hover i {
+                    transform: rotate(90deg);
+                    animation: pulse 1s infinite;
+                    color: var(--swappit-orange);
+                }
+
+                @keyframes pulse {
+                    0% { transform: rotate(90deg) scale(1); }
+                    50% { transform: rotate(90deg) scale(1.1); }
+                    100% { transform: rotate(90deg) scale(1); }
+                }
+
+                /* Marketplace Navigation */
+                .marketplace-nav {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color: var(--text-dark);
+                    text-decoration: none;
+                    font-family: var(--font-primary);
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                    padding: 0.5rem 1rem;
+                    border-radius: 6px;
+                    transition: var(--transition);
+                    border: 2px solid transparent;
+                }
+
+                .marketplace-nav:hover {
+                    background: rgba(255, 164, 36, 0.1);
+                    color: var(--swappit-orange);
+                    text-decoration: none;
+                    border-color: var(--swappit-orange);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.2);
+                }
+
+                .marketplace-nav i {
+                    font-size: 1rem;
+                    color: var(--text-dark);
+                    transition: transform 0.3s ease;
+                }
+
+                .marketplace-nav:hover i {
+                    transform: scale(1.1);
                     color: var(--swappit-orange);
                 }
 
@@ -470,8 +549,8 @@ class HeaderAuthComponent extends HTMLElement {
                 
                 .search-input:focus {
                     outline: none;
-                    border-color: var(--swappit-blue);
-                    box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+                    border-color: var(--swappit-orange);
+                    box-shadow: 0 0 0 3px rgba(255, 164, 36, 0.1);
                 }
                 
                 .search-btn {
@@ -488,7 +567,7 @@ class HeaderAuthComponent extends HTMLElement {
                 }
                 
                 .search-btn:hover {
-                    color: var(--swappit-blue);
+                    color: var(--swappit-orange);
                 }
                 
                 /* SWAPPIT Coins */
@@ -497,13 +576,13 @@ class HeaderAuthComponent extends HTMLElement {
                     align-items: center;
                     gap: 0.5rem;
                     padding: 0.5rem 1rem;
-                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+                    background: transparent;
                     border-radius: 25px;
-                    color: white;
+                    color: var(--text-dark);
                     font-family: var(--font-primary);
                     font-weight: 600;
                     font-size: 0.9rem;
-                    box-shadow: 0 2px 8px rgba(255, 164, 36, 0.3);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                     transition: var(--transition);
                     text-decoration: none;
                     cursor: pointer;
@@ -511,8 +590,8 @@ class HeaderAuthComponent extends HTMLElement {
                 
                 .coins-container:hover {
                     transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(255, 164, 36, 0.4);
-                    color: white;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    color: var(--swappit-orange);
                     text-decoration: none;
                 }
                 
@@ -703,6 +782,143 @@ class HeaderAuthComponent extends HTMLElement {
                     background: var(--neutral-light);
                     color: var(--swappit-blue);
                 }
+
+                /* Mobile Menu Styles */
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-menu.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .mobile-menu-content {
+                    width: 320px;
+                    height: 100vh;
+                    background: white;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .mobile-menu.show .mobile-menu-content {
+                    transform: translateX(0);
+                }
+                
+                .mobile-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid #e2e8f0;
+                    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+                    color: white;
+                }
+                
+                .mobile-menu-header h3 {
+                    margin: 0;
+                    font-family: var(--font-primary);
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+                
+                .mobile-menu-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .mobile-menu-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .mobile-menu-items {
+                    flex: 1;
+                    padding: 1rem 0;
+                    overflow-y: auto;
+                }
+                
+                .mobile-menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem 1.5rem;
+                    color: var(--neutral-dark);
+                    text-decoration: none;
+                    font-family: var(--font-secondary);
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    border-left: 3px solid transparent;
+                }
+                
+                .mobile-menu-item:hover {
+                    background: var(--neutral-light);
+                    border-left-color: var(--swappit-blue);
+                    color: var(--swappit-blue);
+                    transform: translateX(5px);
+                }
+                
+                .mobile-menu-item i {
+                    width: 20px;
+                    text-align: center;
+                    color: var(--neutral-medium);
+                    font-size: 1rem;
+                }
+                
+                .mobile-menu-item:hover i {
+                    color: var(--swappit-blue);
+                }
+                
+                .mobile-menu-divider {
+                    height: 1px;
+                    background: var(--neutral-light);
+                    margin: 0.5rem 1.5rem;
+                }
+                
+                .mobile-menu-section {
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: var(--swappit-orange);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid var(--swappit-orange);
+                    margin: 0.5rem 0;
+                }
+                
+                .mobile-menu-item.logout {
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout:hover {
+                    background: #fef2f2;
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout i {
+                    color: #dc2626;
+                }
                 
                 /* Responsive Design */
                 @media (max-width: 1024px) {
@@ -736,6 +952,15 @@ class HeaderAuthComponent extends HTMLElement {
                     .search-container.active .search-input {
                         width: 200px;
                     }
+                    
+                    .column-2 {
+                        gap: 1rem;
+                    }
+                    
+                    .categories-nav span,
+                    .marketplace-nav span {
+                        display: none;
+                    }
                 }
                 
 
@@ -751,11 +976,13 @@ class HeaderAuthComponent extends HTMLElement {
                         gap: 1rem;
                     }
                     
-                    .explore-nav span {
+                    .categories-nav span,
+                    .marketplace-nav span {
                         display: none;
                     }
                     
-                    .explore-nav {
+                    .categories-nav,
+                    .marketplace-nav {
                         padding: 0.5rem;
                     }
                     
@@ -825,12 +1052,18 @@ class HeaderAuthComponent extends HTMLElement {
                             </a>
                         </div>
 
-                        <!-- Column 2: Explore + Search -->
+                        <!-- Column 2: Categories + Marketplace + Search -->
                         <div class="column-2">
-                            <!-- Explore Navigation -->
-                            <a href="#" class="explore-nav" id="exploreNav">
-                                <i class="fas fa-compass"></i>
-                                <span>Explorer</span>
+                            <!-- Categories Navigation -->
+                            <a href="#" class="categories-nav" id="categoriesNav">
+                                <i class="fas fa-bars"></i>
+                                <span>Categories</span>
+                            </a>
+                            
+                            <!-- Marketplace Navigation -->
+                            <a href="${this.getMarketplacePath()}" class="marketplace-nav" id="marketplaceNav">
+                                <i class="fas fa-store"></i>
+                                <span>Marketplace</span>
                             </a>
                             
                             <!-- Search Bar -->
@@ -844,10 +1077,15 @@ class HeaderAuthComponent extends HTMLElement {
 
                         <!-- Column 3: SWAPPIT Coins + Avatar + Cart -->
                         <div class="column-3">
+                            <!-- Mobile Menu Toggle -->
+                            <button class="mobile-toggle" id="mobileToggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            
                             <!-- SWAPPIT Coins -->
-                            <a href="${this.getSwappitCoinsInfoPath()}" class="coins-container">
+                            <a href="/pages/swapcoin/my-coins.html" class="coins-container">
                                 <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" class="coins-icon" width="30" height="30">
-                                <span>1,250</span>
+                                <span id="userCoinBalance">0</span>
                             </a>
                             
                             <!-- User Avatar & Dropdown -->
@@ -883,11 +1121,11 @@ class HeaderAuthComponent extends HTMLElement {
                                         <div class="dropdown-divider"></div>
                                         <!-- SWAPPIT Coins Section -->
                                         <div class="dropdown-section-title">SWAPPIT Coins</div>
-                                        <a href="${this.getSwappitCoinsInfoPath()}" class="dropdown-item" id="swapcoinInfoLink">
+                                        <a href="/pages/swapcoin/my-coins.html" class="dropdown-item" id="swapcoinInfoLink">
                                             <i class="fas fa-coins"></i>
                                             My Coins
                                         </a>
-                                        <a href="${this.getSwappitCoinsInfoPath()}?action=buy" class="dropdown-item" id="buyCoinsLink">
+                                        <a href="/pages/swapcoin/buy-coins.html" class="dropdown-item" id="buyCoinsLink">
                                             <i class="fas fa-shopping-cart"></i>
                                             Buy Coins
                                         </a>
@@ -917,13 +1155,24 @@ class HeaderAuthComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Explore navigation for sidebar
-        const exploreNav = this.shadowRoot.getElementById('exploreNav');
+        // Listen for coin balance updates
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'userCoinBalance') {
+                this.updateCoinBalance();
+                // Dispatch custom event for other components
+                window.dispatchEvent(new CustomEvent('coinBalanceUpdated', {
+                    detail: { balance: localStorage.getItem('userCoinBalance') }
+                }));
+            }
+        });
         
-        if (exploreNav) {
-            exploreNav.addEventListener('click', (e) => {
+        // Categories navigation for sidebar
+        const categoriesNav = this.shadowRoot.getElementById('categoriesNav');
+        
+        if (categoriesNav) {
+            categoriesNav.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('Explore nav clicked');
+                console.log('Categories nav clicked');
                 // Get the filters sidebar component - try multiple selectors
                 let filtersSidebar = document.querySelector('filters-sidebar-component');
                 
@@ -1054,6 +1303,14 @@ class HeaderAuthComponent extends HTMLElement {
             });
         }
         
+        // Mobile menu toggle
+        const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => {
+                this.toggleMobileMenu();
+            });
+        }
+        
         // Active link highlighting
         this.setActiveLink();
     }
@@ -1121,12 +1378,12 @@ class HeaderAuthComponent extends HTMLElement {
 
     navigateToSwappitCoinsInfo() {
         this.closeDropdown();
-        window.location.href = this.getSwappitCoinsInfoPath();
+        window.location.href = '/pages/swapcoin/my-coins.html';
     }
 
     navigateToBuyCoins() {
         this.closeDropdown();
-        window.location.href = `${this.getSwappitCoinsInfoPath()}?action=buy`;
+        window.location.href = '/pages/swapcoin/buy-coins.html';
     }
 
 
@@ -1414,6 +1671,282 @@ class HeaderAuthComponent extends HTMLElement {
                 link.classList.add('active');
             }
         });
+    }
+
+    toggleMobileMenu() {
+        // Create mobile menu if it doesn't exist
+        let mobileMenu = document.getElementById('mobileMenu');
+        
+        if (!mobileMenu) {
+            mobileMenu = document.createElement('div');
+            mobileMenu.id = 'mobileMenu';
+            mobileMenu.className = 'mobile-menu';
+            mobileMenu.innerHTML = `
+                <div class="mobile-menu-content">
+                    <div class="mobile-menu-header">
+                        <h3>SWAPPIT Menu</h3>
+                        <button class="mobile-menu-close" id="mobileMenuClose">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mobile-menu-items">
+                        <div class="mobile-menu-section">Navigation</div>
+                        <a href="${this.getMarketplacePath()}" class="mobile-menu-item">
+                            <i class="fas fa-store"></i>
+                            Marketplace
+                        </a>
+                        <a href="#" class="mobile-menu-item" id="mobileCategoriesBtn">
+                            <i class="fas fa-bars"></i>
+                            Categories
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">Account</div>
+                        <a href="${this.getDashboardPath()}" class="mobile-menu-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a href="${this.getProfilePath()}" class="mobile-menu-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="${this.getSettingsPath()}" class="mobile-menu-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">SWAPPIT Coins</div>
+                        <a href="/pages/swapcoin/my-coins.html" class="mobile-menu-item">
+                            <i class="fas fa-coins"></i>
+                            My Coins
+                        </a>
+                        <a href="/pages/swapcoin/buy-coins.html" class="mobile-menu-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            Buy Coins
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">Support</div>
+                        <a href="${this.getSupportPath()}" class="mobile-menu-item">
+                            <i class="fas fa-question-circle"></i>
+                            Help & Support
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-menu-section">Shopping</div>
+                        <a href="#" class="mobile-menu-item" id="mobileCartBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            Shopping Cart
+                        </a>
+                        <div class="mobile-menu-divider"></div>
+                        <a href="#" class="mobile-menu-item logout" id="mobileLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.5);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-end;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                
+                .mobile-menu.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .mobile-menu-content {
+                    width: 320px;
+                    height: 100vh;
+                    background: white;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .mobile-menu.show .mobile-menu-content {
+                    transform: translateX(0);
+                }
+                
+                .mobile-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid #e2e8f0;
+                    background: linear-gradient(135deg, #3468c0, #ffa424);
+                    color: white;
+                }
+                
+                .mobile-menu-header h3 {
+                    margin: 0;
+                    font-family: 'Poppins', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+                
+                .mobile-menu-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .mobile-menu-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .mobile-menu-items {
+                    flex: 1;
+                    padding: 1rem 0;
+                    overflow-y: auto;
+                }
+                
+                .mobile-menu-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 1rem 1.5rem;
+                    color: #1e293b;
+                    text-decoration: none;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    border-left: 3px solid transparent;
+                }
+                
+                .mobile-menu-item:hover {
+                    background: #f1f5f9;
+                    border-left-color: #3468c0;
+                    color: #3468c0;
+                    transform: translateX(5px);
+                }
+                
+                .mobile-menu-item i {
+                    width: 20px;
+                    text-align: center;
+                    color: #64748b;
+                    font-size: 1rem;
+                }
+                
+                .mobile-menu-item:hover i {
+                    color: #3468c0;
+                }
+                
+                .mobile-menu-divider {
+                    height: 1px;
+                    background: #e2e8f0;
+                    margin: 0.5rem 1.5rem;
+                }
+                
+                .mobile-menu-section {
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    color: #ffa424;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background: rgba(255, 164, 36, 0.1);
+                    border-left: 3px solid #ffa424;
+                    margin: 0.5rem 0;
+                }
+                
+                .mobile-menu-item.logout {
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout:hover {
+                    background: #fef2f2;
+                    color: #dc2626;
+                }
+                
+                .mobile-menu-item.logout i {
+                    color: #dc2626;
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(mobileMenu);
+            
+            // Add event listeners
+            const closeBtn = mobileMenu.querySelector('#mobileMenuClose');
+            const categoriesBtn = mobileMenu.querySelector('#mobileCategoriesBtn');
+            const cartBtn = mobileMenu.querySelector('#mobileCartBtn');
+            const logoutBtn = mobileMenu.querySelector('#mobileLogoutBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => this.closeMobileMenu());
+            }
+            
+            if (categoriesBtn) {
+                categoriesBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.closeMobileMenu();
+                    // Trigger categories sidebar
+                    const filtersSidebar = document.querySelector('filters-sidebar-component');
+                    if (filtersSidebar && filtersSidebar.open) {
+                        filtersSidebar.open();
+                    }
+                });
+            }
+            
+            if (cartBtn) {
+                cartBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.closeMobileMenu();
+                    // Trigger cart component to open
+                    const cartComponent = document.querySelector('cart-component');
+                    if (cartComponent && cartComponent.openCart) {
+                        cartComponent.openCart();
+                    }
+                });
+            }
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.closeMobileMenu();
+                    this.handleLogout();
+                });
+            }
+            
+            // Close on overlay click
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+        
+        // Show mobile menu
+        mobileMenu.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            mobileMenu.classList.remove('show');
+            document.body.style.overflow = '';
+        }
     }
 }
 

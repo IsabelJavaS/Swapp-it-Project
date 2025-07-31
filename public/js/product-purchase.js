@@ -298,7 +298,7 @@ window.processPurchase = async function() {
 
         window.buyMoreSwappitCoins = function() {
     // Redirect to Swappcoin purchase page
-    window.location.href = '../../pages/swapcoin/info.html';
+                    window.location.href = '../../pages/swapcoin/buy-coins.html';
 };
 
 // Initialize the page

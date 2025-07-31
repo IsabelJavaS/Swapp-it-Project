@@ -281,12 +281,12 @@ async function handleRegistration(formData) {
 
         console.log('Firestore user profile created successfully');
 
-        // 4. Success - redirect to dashboard
-        showSuccess('Account created successfully! Redirecting...', '', selectedRole);
+        // 4. Success - redirect to marketplace
+        showSuccess('Account created successfully! Redirecting to marketplace...', '', selectedRole);
         
         setTimeout(() => {
-            // Redirect based on role
-            pathConfig.redirectToDashboard(selectedRole);
+            // Redirect to marketplace
+            pathConfig.redirectTo(pathConfig.getMarketplacePath());
         }, 2000);
 
     } catch (error) {
@@ -344,8 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Check if user is already authenticated
     if (isAuthenticated()) {
-        console.log('User already authenticated, redirecting...');
-        navigateToDashboard();
+        console.log('User already authenticated, redirecting to marketplace...');
+        pathConfig.redirectTo(pathConfig.getMarketplacePath());
         return;
     }
     

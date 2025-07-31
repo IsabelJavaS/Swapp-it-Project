@@ -8,6 +8,15 @@ class StudentSales extends HTMLElement {
     connectedCallback() {
         this.render();
         this.loadSales();
+        
+        // Add event listener for navigation to add product
+        this.addEventListener('navigateToAddProduct', () => {
+            console.log('StudentSales: Navigating to add product section');
+            // Dispatch event to parent dashboard to change section
+            this.dispatchEvent(new CustomEvent('sectionChange', {
+                detail: { section: 'add-product' }
+            }));
+        });
     }
 
     async loadSales() {
@@ -71,7 +80,7 @@ class StudentSales extends HTMLElement {
                     <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
                     <h2>No sales recorded</h2>
                     <p>When you sell products, they will appear here.</p>
-                    <button class="btn btn-primary" onclick="window.location.href='/dashboards/student/student-dashboard.html'" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="this.dispatchEvent(new CustomEvent('navigateToAddProduct'))" style="margin-top: 1rem;">
                         <i class="fas fa-plus"></i>
                         Add Products
                     </button>
