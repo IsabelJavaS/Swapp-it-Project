@@ -1,6 +1,10 @@
 // Enhanced Register JavaScript - Simplified Version
 console.log('Register script loaded');
 
+// Import Firebase functions
+import { registerUser } from '../firebase/auth.js';
+import { createUserProfile } from '../firebase/firestore.js';
+
 // DOM elements
 let registerForm, registerBtn, personalBtn, businessBtn, personalFields, businessFields;
 let colegioSelect, otherSchoolGroup, otherSchoolInput;
@@ -328,13 +332,62 @@ async function handleFormSubmit(event) {
         
         console.log('Form submitted:', { email, activeRole });
         
-        // For now, just show success message
+        // Create user account in Firebase Auth
+        console.log('Creating user account in Firebase Auth...');
+        const authResult = await registerUser(email, password, email.split('@')[0]);
+        
+        if (!authResult.success) {
+            throw new Error(authResult.error);
+        }
+        
+        console.log('User account created successfully:', authResult.user);
+        
+        // Prepare user data for Firestore
+        const userData = {
+            uid: authResult.user.uid,
+            email: email,
+            role: activeRole,
+            swappitCoins: 100, // Starting coins
+            isActive: true
+        };
+        
+        // Add role-specific data
+        if (activeRole === 'personal') {
+            userData.nombre = formData.get('nombre');
+            userData.telefono = formData.get('telefono');
+            userData.direccion = formData.get('direccion');
+            userData.colegio = formData.get('colegio');
+            userData.otherSchool = formData.get('otherSchool') || null;
+        } else {
+            userData.nombreNegocio = formData.get('nombreNegocio');
+            userData.ruc = formData.get('ruc');
+            userData.direccionNegocio = formData.get('direccionNegocio');
+            userData.telefonoNegocio = formData.get('telefonoNegocio');
+            userData.tipoNegocio = formData.get('tipoNegocio');
+            userData.descripcionNegocio = formData.get('descripcionNegocio');
+        }
+        
+        // Create user profile in Firestore
+        console.log('Creating user profile in Firestore...');
+        const profileResult = await createUserProfile(userData);
+        
+        if (!profileResult.success) {
+            throw new Error(`Failed to create user profile: ${profileResult.error}`);
+        }
+        
+        console.log('User profile created successfully');
+        
+        // Show success message
         showSuccess(activeRole === 'personal' ? 
             'Personal account created successfully! Welcome to Swapp-it!' : 
             'Business account created successfully! Welcome to Swapp-it!');
         
-        // In a real implementation, you would create the user account here
-        // const authResult = await createUserWithEmailAndPassword(email, password);
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+            window.location.href = activeRole === 'personal' ? 
+                '/dashboards/student/student-dashboard.html' : 
+                '/dashboards/business/business-dashboard.html';
+        }, 2000);
         
     } catch (error) {
         console.error('Registration error:', error);
