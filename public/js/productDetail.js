@@ -283,14 +283,14 @@ class ProductDetailPage {
         
         if (currentPriceElement) {
             currentPriceElement.innerHTML = `
-                <span class="swappit-price">${priceInSwappitCoins.toFixed(0)} SWAPPIT Coins</span>
+                <span class="swappit-price">${priceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
                 <span class="dollar-price">($${price.toFixed(2)})</span>
             `;
         }
         
         if (originalPriceElement && originalPrice > price) {
             originalPriceElement.innerHTML = `
-                <span class="swappit-price">${originalPriceInSwappitCoins.toFixed(0)} SWAPPIT Coins</span>
+                <span class="swappit-price">${originalPriceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
                 <span class="dollar-price">($${originalPrice.toFixed(2)})</span>
             `;
             originalPriceElement.style.display = 'inline';
@@ -596,7 +596,7 @@ class ProductDetailPage {
                     <h3 class="product-title">${product.productName}</h3>
                     <p class="product-seller">by ${product.sellerDisplayName || product.sellerEmail}</p>
                     <div class="product-price">
-                        <span class="swappit-price">${(product.price / 0.03).toFixed(0)} SWAPPIT Coins</span>
+                        <span class="swappit-price">${(product.price / 0.03).toFixed(0)} SWAPP-IT Coins</span>
                         <span class="dollar-price">($${product.price.toFixed(2)})</span>
                     </div>
                     <button class="btn btn-add-cart" onclick="productDetailPage.addToCart('${product.id}')">

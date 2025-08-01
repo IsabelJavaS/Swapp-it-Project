@@ -10,7 +10,7 @@ class ProductPurchasePage {
         this.userBalance = 0;
         this.selectedDeliveryMethod = 'delivery';
         this.deliveryFees = {
-            delivery: 5, // 5 Swappit Coins for home delivery
+            delivery: 5, // 5 Swapp-it Coins for home delivery
             pickup: 0    // Free pickup
         };
     }
@@ -174,17 +174,17 @@ class ProductPurchasePage {
         // Update summary display
         const summaryPrice = document.getElementById('summary-price');
         if (summaryPrice) {
-            summaryPrice.textContent = `${productPrice.toFixed(2)} Swappit Coins`;
+            summaryPrice.textContent = `${productPrice.toFixed(2)} Swapp-it Coins`;
         }
 
         const summaryDelivery = document.getElementById('summary-delivery');
         if (summaryDelivery) {
-            summaryDelivery.textContent = `${deliveryFee.toFixed(2)} Swappit Coins`;
+            summaryDelivery.textContent = `${deliveryFee.toFixed(2)} Swapp-it Coins`;
         }
 
         const summaryTotal = document.getElementById('summary-total');
         if (summaryTotal) {
-            summaryTotal.textContent = `${total.toFixed(2)} Swappit Coins`;
+            summaryTotal.textContent = `${total.toFixed(2)} Swapp-it Coins`;
         }
 
         // Check if user has sufficient funds
@@ -210,7 +210,7 @@ class ProductPurchasePage {
             // Disable purchase button
             if (purchaseBtn) {
                 purchaseBtn.disabled = true;
-                purchaseBtn.textContent = 'Insufficient Swappit Coins';
+                purchaseBtn.textContent = 'Insufficient Swapp-it Coins';
             }
         } else {
             // Hide insufficient funds warning
@@ -271,13 +271,13 @@ window.processPurchase = async function() {
 
         // Check if user has sufficient funds
         if (purchasePage.userBalance < total) {
-            throw new Error('Insufficient Swappit Coins');
+            throw new Error('Insufficient Swapp-it Coins');
         }
 
         // TODO: Implement actual purchase logic
         // This would involve:
         // 1. Creating a transaction record
-                    // 2. Deducting Swappit Coins from user
+                    // 2. Deducting Swapp-it Coins from user
         // 3. Updating product status
         // 4. Sending notifications
 

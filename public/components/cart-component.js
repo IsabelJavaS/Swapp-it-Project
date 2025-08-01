@@ -1158,7 +1158,7 @@ class CartComponent extends HTMLElement {
         
         if (userBalance < cartTotal) {
             // Show insufficient coins message and redirect to buy coins
-            this.showNotification('Insufficient Swappit Coins');
+            this.showNotification('Insufficient Swapp-it Coins');
             
             // Create and show insufficient coins modal
             this.showInsufficientCoinsModal();
@@ -1223,13 +1223,13 @@ class CartComponent extends HTMLElement {
                     font-size: 1.5rem;
                     margin-bottom: 0.5rem;
                     font-family: 'Poppins', sans-serif;
-                ">Insufficient Swappit Coins</h3>
+                ">Insufficient Swapp-it Coins</h3>
                 <p style="
                     color: #64748b;
                     margin-bottom: 1.5rem;
                     line-height: 1.5;
                     font-family: 'Inter', sans-serif;
-                ">You don't have enough Swappit Coins to complete this purchase.</p>
+                ">You don't have enough Swapp-it Coins to complete this purchase.</p>
                 <div style="
                     background: #f8fafc;
                     border: 1px solid #e5e7eb;
@@ -1256,7 +1256,7 @@ class CartComponent extends HTMLElement {
                     cursor: pointer;
                     margin-right: 0.5rem;
                     transition: all 0.3s ease;
-                ">+ Buy More Swappit Coins</button>
+                ">+ Buy More Swapp-it Coins</button>
                 <button onclick="this.closest('.insufficient-modal').remove()" style="
                     background: transparent;
                     color: #64748b;

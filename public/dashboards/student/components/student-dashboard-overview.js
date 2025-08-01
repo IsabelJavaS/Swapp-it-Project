@@ -500,7 +500,7 @@ class StudentDashboardOverview extends HTMLElement {
                                     <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
                                     0
                                 </div>
-                                <div class="stat-label">SWAPPIT Coins</div>
+                                <div class="stat-label">SWAPP-IT Coins</div>
                             </div>
                         </div>
                         <div class="stat-change positive">
@@ -701,7 +701,7 @@ class StudentDashboardOverview extends HTMLElement {
                 recentActivity: [
                     {
                         type: 'coin',
-                        title: 'Swappit Coins Balance',
+                        title: 'Swapp-it Coins Balance',
                         description: 'Your current available balance.',
                         price: 0,
                         time: 'Available'
@@ -759,11 +759,11 @@ class StudentDashboardOverview extends HTMLElement {
             if (activeProductsElement) activeProductsElement.textContent = data.activeProducts;
             if (swappitCoinsBalanceElement) swappitCoinsBalanceElement.textContent = data.swappitCoinsBalance;
 
-            // Add SWAPPIT Coins to the activity list
+            // Add SWAPP-IT Coins to the activity list
             const activityWithCoins = [
                 {
                     type: 'coin',
-                    title: 'Swappit Coins Balance',
+                    title: 'Swapp-it Coins Balance',
                     description: 'Your current available balance.',
                     price: data.swappitCoinsBalance,
                     time: 'Available'

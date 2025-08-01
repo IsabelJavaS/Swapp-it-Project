@@ -12,6 +12,73 @@ class HeaderAuthComponent extends HTMLElement {
         this.render();
         this.attachEventListeners();
         this.initializeAuth();
+        this.removePermanentNotifications();
+        this.ensureNotificationsHiddenOnMobile();
+    }
+
+    // Remove any permanent notification elements
+    removePermanentNotifications() {
+        // Remove any notification elements that might be permanently visible
+        const notifications = document.querySelectorAll('.notification-toast, .alert, .notification, [class*="notification"], [class*="alert"], [id*="notification"], [id*="alert"]');
+        notifications.forEach(notification => {
+            // Check if notification is permanently visible (has show class or is visible)
+            if (notification.classList.contains('show') || 
+                notification.style.display === 'block' || 
+                notification.style.visibility === 'visible' ||
+                notification.style.opacity === '1' ||
+                notification.style.transform === 'translateX(0)' ||
+                notification.style.transform === 'translateY(0)') {
+                notification.remove();
+            }
+        });
+        
+        // Also check for any notification elements in the mobile header
+        const mobileHeader = document.querySelector('.mobile-header-container');
+        if (mobileHeader) {
+            const mobileNotifications = mobileHeader.querySelectorAll('.notification-toast, .alert, .notification, [class*="notification"], [class*="alert"], [id*="notification"], [id*="alert"]');
+            mobileNotifications.forEach(notification => {
+                notification.remove();
+            });
+        }
+        
+        // Remove any notification elements that might be in the header shadow DOM
+        const headerElements = document.querySelectorAll('header-component, header-auth-component');
+        headerElements.forEach(header => {
+            if (header.shadowRoot) {
+                const shadowNotifications = header.shadowRoot.querySelectorAll('.notification-toast, .alert, .notification, [class*="notification"], [class*="alert"], [id*="notification"], [id*="alert"]');
+                shadowNotifications.forEach(notification => {
+                    notification.remove();
+                });
+            }
+        });
+        
+        // Force hide any remaining notification elements
+        const allNotifications = document.querySelectorAll('.notification-toast, .alert, .notification');
+        allNotifications.forEach(notification => {
+            notification.classList.remove('show');
+            notification.style.display = 'none';
+            notification.style.visibility = 'hidden';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(400px)';
+            notification.style.pointerEvents = 'none';
+        });
+    }
+
+    // Ensure notifications are properly hidden on mobile devices
+    ensureNotificationsHiddenOnMobile() {
+        if (window.innerWidth <= 768) {
+            const notifications = document.querySelectorAll('.notification-toast, .alert, .notification');
+            notifications.forEach(notification => {
+                // Force hide notifications on mobile
+                notification.classList.remove('show');
+                notification.style.display = 'none';
+                notification.style.visibility = 'hidden';
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(400px)';
+                notification.style.pointerEvents = 'none';
+                notification.style.zIndex = '-1';
+            });
+        }
     }
 
     // Initialize Firebase Auth
@@ -57,6 +124,9 @@ class HeaderAuthComponent extends HTMLElement {
 
     // Update UI with user data
     updateUserInterface() {
+        // Ensure no permanent notifications are visible
+        this.removePermanentNotifications();
+        this.ensureNotificationsHiddenOnMobile();
         const userAvatar = this.shadowRoot.querySelector('.user-avatar img');
         const userName = this.shadowRoot.querySelector('.user-name');
         const userRole = this.shadowRoot.querySelector('.user-role');
@@ -310,6 +380,10 @@ class HeaderAuthComponent extends HTMLElement {
     }
 
     render() {
+        // Remove any permanent notifications when rendering
+        this.removePermanentNotifications();
+        this.ensureNotificationsHiddenOnMobile();
+        
         const logoPath = this.getLogoPath();
         
         this.shadowRoot.innerHTML = `
@@ -681,7 +755,7 @@ class HeaderAuthComponent extends HTMLElement {
                     color: var(--swappit-orange);
                 }
 
-                /* Column 3: SWAPPIT Coins + Avatar + Cart */
+                /* Column 3: SWAPP-IT Coins + Avatar + Cart */
                 .column-3 {
                     display: flex;
                     align-items: center;
@@ -818,7 +892,7 @@ class HeaderAuthComponent extends HTMLElement {
                     color: var(--swappit-orange);
                 }
                 
-                /* SWAPPIT Coins */
+                /* SWAPP-IT Coins */
                 .coins-container {
                     display: flex;
                     align-items: center;
@@ -1225,6 +1299,18 @@ class HeaderAuthComponent extends HTMLElement {
                         display: block;
                     }
                     
+                    /* Force hide notifications on mobile */
+                    .notification-toast,
+                    .alert,
+                    .notification {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        transform: translateX(400px) !important;
+                        pointer-events: none !important;
+                        z-index: -1 !important;
+                    }
+                    
                     /* Adjust header height for dual structure */
                     .header {
                         height: auto;
@@ -1342,16 +1428,16 @@ class HeaderAuthComponent extends HTMLElement {
                             </div>
                         </div>
 
-                        <!-- Column 3: SWAPPIT Coins + Avatar + Cart -->
+                        <!-- Column 3: SWAPP-IT Coins + Avatar + Cart -->
                         <div class="column-3">
                             <!-- Mobile Menu Toggle -->
                             <button class="mobile-toggle" id="mobileToggle">
                                 <i class="fas fa-bars"></i>
                             </button>
                             
-                            <!-- SWAPPIT Coins -->
+                            <!-- SWAPP-IT Coins -->
                             <a href="/pages/swapcoin/my-coins.html" class="coins-container">
-                                <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" class="coins-icon" width="30" height="30">
+                                <img src="/assets/coin_SwappIt.png" alt="SWAPP-IT Coins" class="coins-icon" width="30" height="30">
                                 <span id="userCoinBalance">0</span>
                             </a>
                             
@@ -1386,8 +1472,8 @@ class HeaderAuthComponent extends HTMLElement {
                                             Settings
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <!-- SWAPPIT Coins Section -->
-                                        <div class="dropdown-section-title">SWAPPIT Coins</div>
+                                        <!-- SWAPP-IT Coins Section -->
+<div class="dropdown-section-title">SWAPP-IT Coins</div>
                                         <a href="/pages/swapcoin/my-coins.html" class="dropdown-item" id="swapcoinInfoLink">
                                             <i class="fas fa-coins"></i>
                                             My Coins
@@ -1629,6 +1715,9 @@ class HeaderAuthComponent extends HTMLElement {
             mobileUserAvatar.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                // Remove any permanent notifications before opening mobile menu
+                this.removePermanentNotifications();
+                this.ensureNotificationsHiddenOnMobile();
                 this.toggleMobileMenu();
             });
         }
@@ -1638,6 +1727,10 @@ class HeaderAuthComponent extends HTMLElement {
         if (mobileFilterBtn) {
             mobileFilterBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Remove any permanent notifications before opening filters
+                this.removePermanentNotifications();
+                this.ensureNotificationsHiddenOnMobile();
+                
                 // Trigger filters sidebar
                 const filtersSidebar = document.querySelector('filters-sidebar-component');
                 if (filtersSidebar && filtersSidebar.open) {
@@ -1667,6 +1760,10 @@ class HeaderAuthComponent extends HTMLElement {
         if (mobileCartBtn) {
             mobileCartBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Remove any permanent notifications before opening cart
+                this.removePermanentNotifications();
+                this.ensureNotificationsHiddenOnMobile();
+                
                 // Trigger cart component to open
                 const cartComponent = document.querySelector('cart-component');
                 if (cartComponent && cartComponent.openCart) {
@@ -1677,6 +1774,12 @@ class HeaderAuthComponent extends HTMLElement {
         
         // Active link highlighting
         this.setActiveLink();
+        
+        // Add window resize listener for responsive behavior
+        window.addEventListener('resize', () => {
+            this.setActiveLink();
+            this.ensureNotificationsHiddenOnMobile();
+        });
     }
     
     toggleSearch() {
@@ -1803,6 +1906,10 @@ class HeaderAuthComponent extends HTMLElement {
 
     
     toggleMobileMenu() {
+        // Remove any permanent notifications before opening mobile menu
+        this.removePermanentNotifications();
+        this.ensureNotificationsHiddenOnMobile();
+        
         // Create mobile menu if it doesn't exist
         let mobileMenu = document.getElementById('mobileMenu');
         
@@ -1816,8 +1923,8 @@ class HeaderAuthComponent extends HTMLElement {
                         <div class="mobile-menu-header-content">
                             <h3>Menú</h3>
                             <div class="mobile-menu-coins">
-                                <img src="/assets/coin_SwappIt.png" alt="SWAPPIT Coins" width="20" height="20">
-                                <span id="mobileMenuCoinBalance">0</span> SWAPPIT Coins
+                                <img src="/assets/coin_SwappIt.png" alt="SWAPP-IT Coins" width="20" height="20">
+<span id="mobileMenuCoinBalance">0</span> SWAPP-IT Coins
                             </div>
                         </div>
                         <button class="mobile-menu-close" id="mobileMenuClose">
@@ -1835,7 +1942,7 @@ class HeaderAuthComponent extends HTMLElement {
                         </a>
                         <a href="${this.getSwappitCoinsInfoPath()}" class="mobile-menu-item">
                             <i class="fas fa-coins"></i>
-                            SWAPPIT Coins
+                            SWAPP-IT Coins
                         </a>
                         <div class="mobile-menu-divider"></div>
                         <a href="${this.getDashboardPath()}" class="mobile-menu-item">
@@ -2069,6 +2176,10 @@ class HeaderAuthComponent extends HTMLElement {
     }
 
     toggleMobileMenu() {
+        // Remove any permanent notifications before opening mobile menu
+        this.removePermanentNotifications();
+        this.ensureNotificationsHiddenOnMobile();
+        
         // Create mobile menu if it doesn't exist
         let mobileMenu = document.getElementById('mobileMenu');
         
@@ -2109,7 +2220,7 @@ class HeaderAuthComponent extends HTMLElement {
                             Settings
                         </a>
                         <div class="mobile-menu-divider"></div>
-                        <div class="mobile-menu-section">SWAPPIT Coins</div>
+                        <div class="mobile-menu-section">SWAPP-IT Coins</div>
                         <a href="/pages/swapcoin/my-coins.html" class="mobile-menu-item">
                             <i class="fas fa-coins"></i>
                             My Coins

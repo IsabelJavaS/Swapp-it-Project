@@ -588,7 +588,7 @@ class FooterComponent extends HTMLElement {
                                     <li><a href="${this.getBaseUrl()}/pages/marketplace/marketplace.html">Marketplace</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/about/about.html">About Us</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/support/support.html">Support Center</a></li>
-                                    <li><a href="${this.getBaseUrl()}/pages/swapcoin/buy-coins.html">Swappit Coins</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/swapcoin/buy-coins.html">Swapp-it Coins</a></li>
                                     <li><a href="#">Student Portal</a></li>
                                 </ul>
                             </div>

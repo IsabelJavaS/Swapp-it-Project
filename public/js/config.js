@@ -191,7 +191,7 @@ class PathConfig {
         return `${this.basePath}/pages/marketplace/marketplace.html`;
     }
 
-    // Rutas para Swappit Coins
+    // Rutas para Swapp-it Coins
     getSwappitCoinsInfoPath() {
         return `${this.basePath}/pages/swapcoin/buy-coins.html`;
     }

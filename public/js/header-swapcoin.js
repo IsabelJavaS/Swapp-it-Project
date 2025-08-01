@@ -1,15 +1,15 @@
-// Header Swappit Coins Balance Management
+// Header Swapp-it Coins Balance Management
 document.addEventListener('DOMContentLoaded', function() {
     // Update SwapCoin balance in header
     updateHeaderSwapCoinBalance();
 });
 
-    // Function to get user Swappit Coins from localStorage
+    // Function to get user Swapp-it Coins from localStorage
     function getUserSwappitCoins() {
         return parseInt(localStorage.getItem('swapcoin-balance') || 120);
     }
 
-    // Update Swappit Coins balance display in header
+    // Update Swapp-it Coins balance display in header
     function updateHeaderSwappitCoinsBalance() {
         const swapcoinAmount = document.getElementById('swapcoin-amount');
         if (swapcoinAmount) {

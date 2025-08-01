@@ -19,9 +19,9 @@ This document summarizes the creation of a new product purchase page and the deb
 
 ### 2. Product Purchase Page Creation
 **Request**: Create a product purchase page where users can:
-- Redeem products with available Swappit Coins
+- Redeem products with available Swapp-it Coins
 - Choose between delivery or self-pickup at educational centers
-- Be redirected to buy more Swappit Coins if balance is insufficient
+- Be redirected to buy more Swapp-it Coins if balance is insufficient
 
 **Solution Implemented**:
 
@@ -33,7 +33,7 @@ This document summarizes the creation of a new product purchase page and the deb
    - Swappcoin balance display
    - Delivery method selection (Home Delivery vs Self Pickup)
    - Purchase summary with price breakdown
-   - Insufficient funds warning with "Buy More Swappit Coins" button
+   - Insufficient funds warning with "Buy More Swapp-it Coins" button
    - Responsive design with modern UI
 
 2. **`public/js/product-purchase.js`**
@@ -48,7 +48,7 @@ This document summarizes the creation of a new product purchase page and the deb
 #### Features Implemented:
 
 1. **Product Display**:
-   - Shows product image, name, description, and price in Swappit Coins
+   - Shows product image, name, description, and price in Swapp-it Coins
    - Handles missing images with placeholder
 
 2. **User Balance**:
@@ -56,7 +56,7 @@ This document summarizes the creation of a new product purchase page and the deb
    - Real-time balance checking
 
 3. **Delivery Options**:
-   - Home Delivery (5 Swappit Coins fee)
+   - Home Delivery (5 Swapp-it Coins fee)
    - Self Pickup (free)
    - Interactive selection with visual feedback
 
@@ -69,7 +69,7 @@ This document summarizes the creation of a new product purchase page and the deb
 5. **Insufficient Funds Handling**:
    - Automatic detection when balance < total cost
    - Warning message display
-   - "Buy More Swappit Coins" button redirects to Swappit Coins info page
+   - "Buy More Swapp-it Coins" button redirects to Swapp-it Coins info page
    - Purchase button disabled when insufficient funds
 
 6. **Purchase Process**:
@@ -92,10 +92,10 @@ public/pages/marketplace/product-purchase.html
 │   ├── Product Image
 │   ├── Product Name
 │   ├── Product Description
-│   └── Product Price (in Swappit Coins)
+│   └── Product Price (in Swapp-it Coins)
 ├── Swappcoin Balance Display
 ├── Delivery Method Selection
-│   ├── Home Delivery (5 Swappit Coins)
+│   ├── Home Delivery (5 Swapp-it Coins)
 │   └── Self Pickup (Free)
 ├── Purchase Summary
 │   ├── Product Price
@@ -160,7 +160,7 @@ class ProductPurchasePage {
 3. Verify redirect to purchase page with correct product data
 4. Test delivery method selection
 5. Test with different user balance scenarios
-6. Test "Buy More Swappit Coins" button functionality
+6. Test "Buy More Swapp-it Coins" button functionality
 
 ## Next Steps
 
