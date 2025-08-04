@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Register Simple</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .register-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .role-btn.active {
+            border-color: #3468c0;
+            background: #3468c0;
+            color: white;
+        }
+        
+        .role-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3468c0;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: #3468c0;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        
+        .business-form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .business-form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .success-message {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Create Account</h2>
+        
+        <!-- Role Selector -->
+        <div class="role-selector">
+            <button class="role-btn active" id="personalBtn">
+                Personal User
+            </button>
+            <button class="role-btn" id="businessBtn">
+                Business
+            </button>
+        </div>
+        
+        <form id="registerForm">
+            <!-- Common fields -->
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+            </div>
+            
+            <!-- Personal User Fields -->
+            <div id="personalFields">
+                <div class="form-group">
+                    <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="direccion" name="direccion" placeholder="Address" required>
+                </div>
+                
+                <div class="form-group">
+                    <select id="colegio" name="colegio" required>
+                        <option value="">Select your school</option>
+                        <option value="jose_dolores_moscote">José Dolores Moscote</option>
+                        <option value="instituto_comercial_panama">Instituto Comercial de Panamá</option>
+                        <option value="instituto_rubiano">Instituto Rubiano</option>
+                        <option value="colegio_san_francisco_beckman">Colegio San Francisco Beckman</option>
+                        <option value="colegio_alfredo_canton">Colegio Alfredo Cantón</option>
+                        <option value="instituto_america_panama">Instituto América de Panamá</option>
+                        <option value="colegio_fermin_naudeu">Colegio Fermin Naudeu</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="otherSchoolGroup" style="display: none;">
+                    <input type="text" id="otherSchool" name="otherSchool" placeholder="Enter your school name">
+                </div>
+            </div>
+            
+            <!-- Business Fields -->
+            <div id="businessFields" class="hidden">
+                <div class="business-form-container">
+                    <div>
+                        <div class="form-group">
+                            <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="ruc" name="ruc" placeholder="RUC" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <select id="tipoNegocio" name="tipoNegocio" required>
+                                <option value="">Business Type</option>
+                                <option value="book_store">Book Store</option>
+                                <option value="factory">Factory</option>
+                                <option value="super_market">Super Market</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description" required rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="register-btn">Create Account</button>
+        </form>
+    </div>
+
+    <script>
+        console.log('Test page loaded');
+        
+        // Get DOM elements
+        const personalBtn = document.getElementById('personalBtn');
+        const businessBtn = document.getElementById('businessBtn');
+        const personalFields = document.getElementById('personalFields');
+        const businessFields = document.getElementById('businessFields');
+        const registerForm = document.getElementById('registerForm');
+        const colegioSelect = document.getElementById('colegio');
+        const otherSchoolGroup = document.getElementById('otherSchoolGroup');
+        
+        console.log('Elements found:', {
+            personalBtn: !!personalBtn,
+            businessBtn: !!businessBtn,
+            personalFields: !!personalFields,
+            businessFields: !!businessFields,
+            registerForm: !!registerForm
+        });
+        
+        // Function to switch roles
+        function switchToRole(role) {
+            console.log('Switching to role:', role);
+            
+            // Update button states
+            personalBtn.classList.toggle('active', role === 'personal');
+            businessBtn.classList.toggle('active', role === 'business');
+            
+            // Show/hide fields
+            if (role === 'personal') {
+                businessFields.classList.add('hidden');
+                personalFields.classList.remove('hidden');
+                console.log('Showing personal fields');
+            } else {
+                personalFields.classList.add('hidden');
+                businessFields.classList.remove('hidden');
+                console.log('Showing business fields');
+            }
+        }
+        
+        // Add event listeners
+        personalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Personal button clicked');
+            switchToRole('personal');
+        });
+        
+        businessBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Business button clicked');
+            switchToRole('business');
+        });
+        
+        // Handle school selection
+        colegioSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            console.log('School selected:', selectedValue);
+            
+            if (selectedValue === 'other') {
+                otherSchoolGroup.style.display = 'block';
+            } else {
+                otherSchoolGroup.style.display = 'none';
+            }
+        });
+        
+        // Handle form submission
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            const activeRole = personalBtn.classList.contains('active') ? 'personal' : 'business';
+            console.log('Active role:', activeRole);
+            
+            // Show success message
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = activeRole === 'personal' ? 
+                'Personal account created successfully!' : 
+                'Business account created successfully!';
+            
+            registerForm.insertBefore(successDiv, registerForm.firstChild);
+        });
+        
+        // Initialize
+        switchToRole('personal');
+        console.log('Test initialization complete');
+    </script>
+</body>
+</html> 

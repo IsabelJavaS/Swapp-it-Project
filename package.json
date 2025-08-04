@@ -1,21 +1,17 @@
 {
   "name": "swapp-it-project",
   "version": "1.0.0",
-  "description": "Marketplace para estudiantes - SWAPPIT",
+  "description": "Swapp-it marketplace project",
   "main": "index.js",
   "scripts": {
-    "dev": "firebase serve",
-    "build": "echo 'No build step needed for static site'",
-    "deploy": "firebase deploy",
-    "setup": "firebase init"
+    "dev": "npx http-server public -p 8080 -c-1",
+    "start": "npx http-server public -p 8080 -c-1",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["marketplace", "students", "firebase", "javascript"],
-  "author": "SWAPPIT Team",
-  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "firebase-tools": "^13.0.0"
-  },
-  "dependencies": {
-    "firebase": "^10.7.0"
+    "http-server": "^14.1.1"
   }
 } 

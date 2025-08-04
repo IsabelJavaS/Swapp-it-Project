@@ -63,8 +63,8 @@ export class AppConfig {
         return this.getPagePath('/pages/auth/register.html');
     }
 
-    static getSwapcoinInfoPath() {
-        return this.getPagePath('/pages/swapcoin/info.html');
+    static     getSwappitCoinsInfoPath() {
+        return this.getPagePath('/pages/swapcoin/buy-coins.html');
     }
 
     // Detectar entorno
@@ -191,9 +191,9 @@ class PathConfig {
         return `${this.basePath}/pages/marketplace/marketplace.html`;
     }
 
-    // Rutas para swapcoin
-    getSwapcoinInfoPath() {
-        return `${this.basePath}/pages/swapcoin/info.html`;
+    // Rutas para Swapp-it Coins
+    getSwappitCoinsInfoPath() {
+        return `${this.basePath}/pages/swapcoin/buy-coins.html`;
     }
 
     // Ruta para logo
@@ -208,8 +208,11 @@ class PathConfig {
 
     // Función helper para redirección basada en rol
     redirectToDashboard(role) {
-        // Redirigir al marketplace logueado en lugar de los dashboards
-        this.redirectTo('/pages/marketplace/marketplace.html');
+        if (role === 'business') {
+            this.redirectTo(this.getBusinessDashboardPath());
+        } else {
+            this.redirectTo(this.getStudentDashboardPath());
+        }
     }
 }
 

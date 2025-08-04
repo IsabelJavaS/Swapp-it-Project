@@ -1,4 +1,4 @@
-// Componente web para configuraciones del negocio
+// Web component for business settings
 class BusinessSettings extends HTMLElement {
     constructor() {
         super();

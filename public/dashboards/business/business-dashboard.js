@@ -1,4 +1,4 @@
-// Componente principal del dashboard de negocio
+// Main business dashboard component
 class BusinessDashboard extends HTMLElement {
     constructor() {
         super();
@@ -65,6 +65,11 @@ class BusinessDashboard extends HTMLElement {
 
         // Listen for section changes
         sidebar.addEventListener('sectionChange', (e) => {
+            this.loadSection(e.detail.section);
+        });
+
+        // Listen for section changes from components
+        this.addEventListener('sectionChange', (e) => {
             this.loadSection(e.detail.section);
         });
 

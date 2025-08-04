@@ -1,4 +1,4 @@
-// Componente web para ventas del estudiante
+// Web component for student sales
 class StudentSales extends HTMLElement {
     constructor() {
         super();
@@ -8,47 +8,108 @@ class StudentSales extends HTMLElement {
     connectedCallback() {
         this.render();
         this.loadSales();
+        
+        // Add event listener for navigation to add product
+        this.addEventListener('navigateToAddProduct', () => {
+            console.log('StudentSales: Navigating to add product section');
+            // Dispatch event to parent dashboard to change section
+            this.dispatchEvent(new CustomEvent('sectionChange', {
+                detail: { section: 'add-product' }
+            }));
+        });
     }
 
-    loadSales() {
-        // Simulate loading sales from Firebase
-        const mockSales = [
-            {
-                id: 1,
-                productName: 'Calculus Textbook',
-                buyer: 'Maria Garcia',
-                price: 45.00,
-                status: 'completed',
-                date: '2024-01-15',
-                image: 'https://via.placeholder.com/120x120/3468c0/ffffff?text=C',
-                rating: 5,
-                review: 'Excellent condition, very helpful!'
-            },
-            {
-                id: 2,
-                productName: 'Nike Running Shoes',
-                buyer: 'Alex Johnson',
-                price: 75.00,
-                status: 'completed',
-                date: '2024-01-10',
-                image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=N',
-                rating: 4,
-                review: 'Great shoes, exactly as described'
-            },
-            {
-                id: 3,
-                productName: 'MacBook Air 2020',
-                buyer: 'TechStore',
-                price: 850.00,
-                status: 'pending',
-                date: '2024-01-08',
-                image: 'https://via.placeholder.com/120x120/ffa424/ffffff?text=M',
-                rating: null,
-                review: null
+    async loadSales() {
+        try {
+            // Get real user data
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            const { getProducts } = await import('/firebase/firestore.js');
+            
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                this.showNoSalesMessage();
+                return;
             }
-        ];
 
-        this.updateSalesList(mockSales);
+            // Get user products
+            const productsResult = await getProducts({ sellerId: currentUser.uid });
+            const userProducts = productsResult.success ? productsResult.products : [];
+
+            // Filter sold products
+            const soldProducts = userProducts.filter(p => p.status === 'sold');
+            
+            if (soldProducts.length === 0) {
+                this.showNoSalesMessage();
+                return;
+            }
+
+            // Convert sold products to sales format
+            const sales = soldProducts.map((product, index) => ({
+                id: product.id || `sale_${index}`,
+                productName: product.productName,
+                buyer: 'Buyer', // Generic for now, can be implemented later
+                price: product.price || 0,
+                status: 'completed',
+                date: product.updatedAt || product.createdAt,
+                image: this.getProductImage(product),
+                rating: product.rating || null,
+                review: product.review || null
+            }));
+
+            this.updateSalesList(sales);
+            this.updateStats(sales);
+        } catch (error) {
+            console.error('Error loading sales:', error);
+            this.showNoSalesMessage();
+        }
+    }
+
+    getProductImage(product) {
+        if (product.images && product.images.length > 0) {
+            const img = product.images[0];
+            return typeof img === 'string' ? img : img.url;
+        }
+        return '/assets/logos/utiles-escolares.jpg';
+    }
+
+    showNoSalesMessage() {
+        const salesList = this.shadowRoot.getElementById('salesList');
+        if (salesList) {
+            salesList.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: #64748b;">
+                    <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
+                    <h2>No sales recorded</h2>
+                    <p>When you sell products, they will appear here.</p>
+                    <button class="btn btn-primary" onclick="this.dispatchEvent(new CustomEvent('navigateToAddProduct'))" style="margin-top: 1rem;">
+                        <i class="fas fa-plus"></i>
+                        Add Products
+                    </button>
+                </div>
+            `;
+        }
+
+        // Update statistics to 0
+        const statsElements = this.shadowRoot.querySelectorAll('.stat-number');
+        if (statsElements.length >= 4) {
+            statsElements[0].textContent = '0'; // Completed Sales
+            statsElements[1].textContent = '0'; // Pending Orders
+            statsElements[2].textContent = '0'; // Cancelled
+            statsElements[3].textContent = '$0'; // Total Revenue
+        }
+    }
+
+    updateStats(sales) {
+        const completedSales = sales.filter(s => s.status === 'completed').length;
+        const totalRevenue = sales.reduce((sum, s) => sum + s.price, 0);
+
+        // Update statistics
+        const statsElements = this.shadowRoot.querySelectorAll('.stat-number');
+        if (statsElements.length >= 4) {
+            statsElements[0].textContent = completedSales; // Completed Sales
+            statsElements[1].textContent = '0'; // Pending Orders (0 for now)
+            statsElements[2].textContent = '0'; // Cancelled (0 for now)
+            statsElements[3].textContent = `$${totalRevenue.toFixed(2)}`; // Total Revenue
+        }
     }
 
     updateSalesList(sales) {
@@ -152,7 +213,7 @@ class StudentSales extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="../../css/icon_S/icon_S.css">
+            <link rel="stylesheet" href="/css/icon_S/icon_S.css">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');

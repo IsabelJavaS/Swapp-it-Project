@@ -1,4 +1,4 @@
-// Componente web para el perfil de negocio
+// Web component for business profile
 class BusinessProfile extends HTMLElement {
     constructor() {
         super();

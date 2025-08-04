@@ -139,15 +139,67 @@
     gap: 1rem;
 }
 
+/* Related products price styling */
+.related-products .product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.related-products .product-price .swappit-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--swappit-blue);
+}
+
+.related-products .product-price .dollar-price {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--neutral-medium);
+}
+
 .current-price {
     font-family: var(--font-primary);
     font-size: 2rem;
     font-weight: 700;
     color: var(--swappit-blue);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.current-price .swappit-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--swappit-blue);
+}
+
+.current-price .dollar-price {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--neutral-medium);
 }
 
 .original-price {
     font-size: 1.25rem;
+    color: var(--neutral-medium);
+    text-decoration: line-through;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.original-price .swappit-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--neutral-medium);
+    text-decoration: line-through;
+}
+
+.original-price .dollar-price {
+    font-size: 0.9rem;
+    font-weight: 500;
     color: var(--neutral-medium);
     text-decoration: line-through;
 }
@@ -623,6 +675,10 @@
         grid-template-columns: 1fr;
         gap: 1rem;
     }
+    
+    .notification-toast {
+        top: 160px; /* Account for dual header height on mobile */
+    }
 }
 
 @media (max-width: 576px) {
@@ -642,12 +698,16 @@
         padding: 0.75rem 1rem;
         font-size: 0.95rem;
     }
+    
+    .notification-toast {
+        top: 150px; /* Slightly less for smaller mobile screens */
+    }
 }
 
 /* Notification Toast Styles */
 .notification-toast {
     position: fixed;
-    top: 20px;
+    top: 100px; /* Account for header height */
     right: 20px;
     z-index: 9999;
     background: white;

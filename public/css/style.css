@@ -307,7 +307,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
+    padding: 0 2rem;
     margin: 0;
     position: relative;
     color: #1e293b;
@@ -330,6 +330,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 1rem;
 }
 
 .hero-title {
@@ -376,13 +377,15 @@ main {
     border: 2px solid #ffa424;
     font-weight: 700;
     box-shadow: 0 4px 16px rgba(255,164,36,0.18);
-    padding: 1.25rem 2.5rem;
+    padding: 1.25rem 3rem;
     border-radius: 50px;
     font-family: var(--font-primary);
     font-size: 1.25rem;
     display: inline-flex;
     align-items: center;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    min-width: 200px;
+    justify-content: center;
 }
 
 .btn-primary-large:hover {
@@ -397,7 +400,7 @@ main {
     background: rgba(255,255,255,0.15);
     color: var(--swappit-blue);
     border: 2px solid var(--swappit-blue);
-    padding: 1.25rem 2.5rem;
+    padding: 1.25rem 3rem;
     border-radius: 50px;
     font-family: var(--font-primary);
     font-weight: 700;
@@ -406,6 +409,8 @@ main {
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.10);
     display: inline-flex;
     align-items: center;
+    min-width: 200px;
+    justify-content: center;
 }
 
 .btn-secondary-large:hover {
@@ -502,6 +507,14 @@ main {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    .hero-section {
+        padding: 0 1rem;
+    }
+    
+    .hero-content {
+        padding: 0 0.5rem;
+    }
+    
     .hero-title {
         font-size: 3rem;
     }
@@ -513,6 +526,8 @@ main {
     .hero-buttons {
         flex-direction: column;
         gap: 1rem;
+        width: 100%;
+        max-width: 300px;
     }
 
     .btn-primary-large,
@@ -520,10 +535,39 @@ main {
         width: 100%;
         padding: 1rem 2rem;
         font-size: 1.125rem;
+        min-width: unset;
     }
 
     .feature-card {
         margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 0 0.5rem;
+    }
+    
+    .hero-content {
+        padding: 0 0.25rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons {
+        max-width: 280px;
+    }
+    
+    .btn-primary-large,
+    .btn-secondary-large {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
     }
 }
 

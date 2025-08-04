@@ -96,9 +96,8 @@ export const requireRole = (requiredRole, redirectTo = '/pages/auth/login.html')
         return false;
     }
     if (getUserRole() !== requiredRole) {
-        // Redirect to appropriate dashboard based on user role
-        const userRole = getUserRole();
-        pathConfig.redirectToDashboard(userRole);
+        // Redirect to marketplace instead of dashboard
+        pathConfig.redirectTo(pathConfig.getMarketplacePath());
         return false;
     }
     return true;
@@ -137,8 +136,8 @@ export const navigateToDashboard = () => {
         pathConfig.redirectTo(pathConfig.getLoginPath());
         return;
     }
-    const role = getUserRole();
-    pathConfig.redirectToDashboard(role);
+    // Redirect to marketplace instead of dashboard
+    pathConfig.redirectTo(pathConfig.getMarketplacePath());
 };
 
 // Initialize auth state when module is loaded
