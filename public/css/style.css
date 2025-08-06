@@ -302,7 +302,12 @@ main {
    Hero Section Styles
    ========================================= */
 .hero-section {
-    background: #f1f1f1;
+    background: url('../assets/logos/Banner.jpg') no-repeat center center;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
@@ -310,7 +315,7 @@ main {
     padding: 0;
     margin: 0;
     position: relative;
-    color: #1e293b;
+    color: black;
     overflow: hidden;
 }
 
@@ -333,12 +338,12 @@ main {
 }
 
 .hero-title {
-    color: #1e293b;
+    color: white;
     text-shadow: 0 2px 8px rgba(255,255,255,0.15);
 }
 
 .hero-subtitle {
-    color: #334155;
+    color: white;
     text-shadow: 0 1px 4px rgba(255,255,255,0.10);
 }
 
