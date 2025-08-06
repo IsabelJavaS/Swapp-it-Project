@@ -35,12 +35,12 @@ const COLLECTIONS = {
 };
 
 // ==================== USER FUNCTIONS ====================
-export const createUserProfile = async (userId, userData) => {
+export const createUserProfile = async (userData) => {
   try {
-    console.log('createUserProfile called with:', { userId, userData });
+    console.log('createUserProfile called with:', userData);
     
     // Verificar que tenemos los datos necesarios
-    if (!userId) {
+    if (!userData.uid) {
       throw new Error('User ID is required');
     }
     
@@ -53,24 +53,40 @@ export const createUserProfile = async (userId, userData) => {
       throw new Error('Firestore database not initialized');
     }
     
-    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    const userRef = doc(db, COLLECTIONS.USERS, userData.uid);
     console.log('User reference created:', userRef.path);
     
-    // Estructura simplificada del perfil de usuario
+    // Estructura del perfil de usuario
     const completeUserProfile = {
-      userId: userId,
+      uid: userData.uid,
       email: userData.email,
       role: userData.role,
       status: 'active',
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      lastLogin: serverTimestamp(),
+      swappitCoins: userData.swappitCoins || 100,
+      isActive: userData.isActive || true
     };
     
     // Agregar datos específicos del rol
-    if (userData.role === 'personal' && userData.personal) {
-      completeUserProfile.personal = userData.personal;
-    } else if (userData.role === 'business' && userData.business) {
-      completeUserProfile.business = userData.business;
+    if (userData.role === 'personal') {
+      completeUserProfile.personal = {
+        nombre: userData.nombre,
+        telefono: userData.telefono,
+        direccion: userData.direccion,
+        colegio: userData.colegio,
+        otherSchool: userData.otherSchool || null
+      };
+    } else if (userData.role === 'business') {
+      completeUserProfile.business = {
+        nombreNegocio: userData.nombreNegocio,
+        ruc: userData.ruc,
+        direccionNegocio: userData.direccionNegocio,
+        telefonoNegocio: userData.telefonoNegocio,
+        tipoNegocio: userData.tipoNegocio,
+        descripcionNegocio: userData.descripcionNegocio
+      };
     }
     
     // Agregar sistema de puntos
@@ -366,30 +382,38 @@ export const getProducts = async (filters = {}) => {
     const productsRef = collection(db, COLLECTIONS.PRODUCTS);
     let q = query(productsRef);
     
-    // Apply filters
-    if (filters.status) {
-      q = query(q, where('status', '==', filters.status));
-    }
+    // Apply filters one by one to avoid complex composite indexes
     if (filters.category) {
       q = query(q, where('category', '==', filters.category));
     }
+    
     if (filters.sellerId) {
       q = query(q, where('sellerId', '==', filters.sellerId));
     }
-    if (filters.priceMin || filters.priceMax) {
-      if (filters.priceMin) {
-        q = query(q, where('price', '>=', filters.priceMin));
-      }
-      if (filters.priceMax) {
-        q = query(q, where('price', '<=', filters.priceMax));
-      }
-    }
-    if (filters.search) {
-      // Note: Firestore doesn't support full-text search natively
-      // Consider using Algolia or similar for better search
+    
+    if (filters.transactionType) {
+      q = query(q, where('transactionType', '==', filters.transactionType));
     }
     
-    // Order by (only if no complex filters)
+    if (filters.sellerType) {
+      q = query(q, where('sellerType', '==', filters.sellerType));
+    }
+    
+    // Price filters - apply only one at a time to avoid complex indexes
+    if (filters.priceMin && filters.priceMax) {
+      q = query(q, where('price', '>=', filters.priceMin), where('price', '<=', filters.priceMax));
+    } else if (filters.priceMin) {
+      q = query(q, where('price', '>=', filters.priceMin));
+    } else if (filters.priceMax) {
+      q = query(q, where('price', '<=', filters.priceMax));
+    }
+    
+    // Status filter
+    if (filters.status) {
+      q = query(q, where('status', '==', filters.status));
+    }
+    
+    // Order by - use simple ordering to avoid composite indexes
     const orderByField = filters.orderBy || 'createdAt';
     const orderDirection = filters.orderDirection || 'desc';
     q = query(q, orderBy(orderByField, orderDirection));
@@ -404,16 +428,25 @@ export const getProducts = async (filters = {}) => {
     
     querySnapshot.forEach((doc) => {
       const productData = doc.data();
-      // Filter by status in memory if needed
-      if (!filters.status || productData.status === filters.status) {
-        products.push({
-          id: doc.id,
-          ...productData
-        });
-      }
+      products.push({
+        id: doc.id,
+        ...productData
+      });
     });
     
-    return { success: true, products };
+    // Apply additional filters in memory if needed
+    let filteredProducts = products;
+    
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      filteredProducts = filteredProducts.filter(product => 
+        product.productName?.toLowerCase().includes(searchTerm) ||
+        product.description?.toLowerCase().includes(searchTerm) ||
+        product.brand?.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    return { success: true, products: filteredProducts };
   } catch (error) {
     console.error('Error getting products:', error);
     return { success: false, error: error.message };

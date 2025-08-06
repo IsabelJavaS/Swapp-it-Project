@@ -1,280 +1,248 @@
 // Student Add Product Component
+console.log('=== STUDENT ADD PRODUCT SCRIPT LOADED ===');
+console.log('Loading Loading StudentAddProduct component...');
+console.log('File File: student-add-product.js loaded');
+
 class StudentAddProduct extends HTMLElement {
     constructor() {
         super();
+        console.log('Constructor  StudentAddProduct constructor called');
         this.attachShadow({ mode: 'open' });
         this.imageFiles = []; // Store image files for upload
+        console.log('Success StudentAddProduct constructor completed');
     }
 
     connectedCallback() {
+        console.log('Connected StudentAddProduct connectedCallback called');
         this.render();
         this.attachEventListeners();
+        console.log('Success StudentAddProduct component loaded successfully');
     }
 
     render() {
+        console.log('Render StudentAddProduct render called');
         this.shadowRoot.innerHTML = `
             <style>
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
                 :host {
                     display: block;
-                    font-family: 'Inter', sans-serif;
+                    font-family: var(--font-primary, 'Poppins', sans-serif);
+                    background: var(--neutral-light, #f1f5f9);
                 }
-
                 .add-product-container {
-                    padding: 0.5rem 3rem 0.5rem 3rem;
+                    max-width: 700px;
+                    margin: 2rem auto 2rem auto;
+                    padding: 2rem 1.5rem 2rem 1.5rem;
+                    background: var(--background-white, #fff);
+                    border-radius: 24px;
+                    box-shadow: 0 8px 32px rgba(52,104,192,0.10);
+                    border: 1.5px solid #e5e7eb;
+                    position: relative;
                 }
-
                 .section-header {
-                    margin-bottom: 2rem;
+                    margin-bottom: 2.5rem;
+                    text-align: center;
                 }
-
                 .section-header h1 {
-                    font-size: 2rem;
-                    font-weight: 700;
-                    color: #1e293b;
+                    font-size: 2.3rem;
+                    font-weight: 800;
+                    color: var(--swappit-blue, #3468c0);
                     margin: 0 0 0.5rem 0;
+                    letter-spacing: -1px;
                 }
-
                 .section-header p {
-                    color: #64748b;
-                    font-size: 1rem;
+                    color: var(--neutral-medium, #64748b);
+                    font-size: 1.1rem;
                     margin: 0;
                 }
-
                 .form-card {
-                    background: white;
-                    border-radius: 16px;
-                    padding: 2rem;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    background: transparent;
+                    border-radius: 18px;
+                    padding: 0;
+                    box-shadow: none;
+                    border: none;
                 }
-
                 .form-section {
-                    margin-bottom: 2rem;
+                    margin-bottom: 2.2rem;
                 }
-
                 .form-section:last-child {
                     margin-bottom: 0;
                 }
-
                 .section-title {
-                    font-size: 1.25rem;
-                    font-weight: 600;
-                    color: #1e293b;
-                    margin: 0 0 1rem 0;
+                    font-size: 1.15rem;
+                    font-weight: 700;
+                    color: var(--swappit-blue, #3468c0);
+                    margin: 0 0 1.2rem 0;
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
+                    gap: 0.7rem;
+                    letter-spacing: -0.5px;
                 }
-
                 .section-title i {
-                    color: #3468c0;
+                    color: var(--swappit-orange, #ffa424);
+                    font-size: 1.2em;
                 }
-
                 .form-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     gap: 1.5rem;
                 }
-
                 .form-group {
                     display: flex;
                     flex-direction: column;
                 }
-
                 .form-group.full-width {
                     grid-column: 1 / -1;
                 }
-
                 .form-label {
-                    font-size: 0.875rem;
+                    font-size: 0.97rem;
                     font-weight: 600;
-                    color: #374151;
+                    color: var(--neutral-dark, #1e293b);
                     margin-bottom: 0.5rem;
                 }
-
                 .form-label.required::after {
                     content: ' *';
                     color: #ef4444;
                 }
-
                 .form-input,
                 .form-select,
                 .form-textarea {
-                    padding: 0.75rem 1rem;
+                    padding: 0.7rem 1rem;
                     border: 2px solid #e5e7eb;
-                    border-radius: 8px;
-                    font-size: 0.875rem;
+                    border-radius: 10px;
+                    font-size: 1rem;
                     font-family: inherit;
-                    transition: all 0.2s ease;
-                    background: white;
+                    transition: all 0.2s;
+                    background: #f9fafb;
                 }
-
                 .form-input:focus,
                 .form-select:focus,
                 .form-textarea:focus {
                     outline: none;
-                    border-color: #3468c0;
-                    box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.1);
+                    border-color: var(--swappit-blue, #3468c0);
+                    box-shadow: 0 0 0 3px rgba(52, 104, 192, 0.10);
+                    background: #fff;
                 }
-
                 .form-textarea {
                     resize: vertical;
-                    min-height: 120px;
+                    min-height: 110px;
                 }
-
-                .form-input.error,
-                .form-select.error,
-                .form-textarea.error {
-                    border-color: #ef4444;
-                }
-
-                .error-message {
-                    color: #ef4444;
-                    font-size: 0.75rem;
-                    margin-top: 0.25rem;
-                }
-
-                /* Transaction Type Selection */
                 .transaction-type {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    gap: 1rem;
+                    gap: 1.2rem;
                     margin-bottom: 1.5rem;
                 }
-
                 .type-option {
                     position: relative;
                     cursor: pointer;
                 }
-
                 .type-option input[type="radio"] {
                     position: absolute;
                     opacity: 0;
                 }
-
                 .type-card {
-                    padding: 1.5rem;
+                    padding: 1.2rem 1rem;
                     border: 2px solid #e5e7eb;
-                    border-radius: 12px;
+                    border-radius: 14px;
                     text-align: center;
-                    transition: all 0.2s ease;
-                    background: white;
+                    transition: all 0.2s;
+                    background: #f9fafb;
+                    box-shadow: 0 2px 8px rgba(52,104,192,0.04);
                 }
-
                 .type-option input[type="radio"]:checked + .type-card {
-                    border-color: #3468c0;
-                    background: linear-gradient(135deg, rgba(52, 104, 192, 0.05), rgba(52, 104, 192, 0.1));
-                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.15);
+                    border-color: var(--swappit-blue, #3468c0);
+                    background: linear-gradient(135deg, rgba(52, 104, 192, 0.07), rgba(52, 104, 192, 0.13));
+                    box-shadow: 0 4px 16px rgba(52, 104, 192, 0.10);
                 }
-
                 .type-card:hover {
-                    border-color: #3468c0;
-                    transform: translateY(-2px);
+                    border-color: var(--swappit-blue, #3468c0);
+                    transform: translateY(-2px) scale(1.03);
                 }
-
                 .type-icon {
-                    width: 48px;
-                    height: 48px;
+                    width: 44px;
+                    height: 44px;
                     border-radius: 12px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.5rem;
+                    font-size: 1.3rem;
                     color: white;
-                    margin: 0 auto 1rem;
+                    margin: 0 auto 0.7rem auto;
                 }
-
                 .type-icon.sale {
-                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
+                    background: linear-gradient(135deg, var(--swappit-blue, #3468c0), var(--swappit-blue-hover, #1d4ed8));
                 }
-
                 .type-icon.trade {
-                    background: linear-gradient(135deg, #ffa424, #ff8c00);
+                    background: linear-gradient(135deg, var(--swappit-orange, #ffa424), var(--swappit-orange-hover, #ff5722));
                 }
-
                 .type-title {
-                    font-size: 1rem;
-                    font-weight: 600;
-                    color: #1e293b;
-                    margin: 0 0 0.5rem 0;
+                    font-size: 1.05rem;
+                    font-weight: 700;
+                    color: var(--neutral-dark, #1e293b);
+                    margin: 0 0 0.3rem 0;
                 }
-
                 .type-description {
-                    font-size: 0.875rem;
-                    color: #64748b;
+                    font-size: 0.93rem;
+                    color: var(--neutral-medium, #64748b);
                     margin: 0;
                 }
-
-                /* Image Upload */
                 .image-upload {
                     border: 2px dashed #d1d5db;
-                    border-radius: 12px;
-                    padding: 2rem;
+                    border-radius: 14px;
+                    padding: 2.2rem 1rem;
                     text-align: center;
-                    transition: all 0.2s ease;
+                    transition: all 0.2s;
                     cursor: pointer;
                     background: #f9fafb;
                 }
-
-                .image-upload:hover {
-                    border-color: #3468c0;
-                    background: rgba(52, 104, 192, 0.05);
+                .image-upload:hover, .image-upload.dragover {
+                    border-color: var(--swappit-blue, #3468c0);
+                    background: rgba(52, 104, 192, 0.07);
                 }
-
-                .image-upload.dragover {
-                    border-color: #3468c0;
-                    background: rgba(52, 104, 192, 0.1);
-                }
-
                 .upload-icon {
-                    width: 64px;
-                    height: 64px;
+                    width: 60px;
+                    height: 60px;
                     border-radius: 16px;
-                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
+                    background: linear-gradient(135deg, var(--swappit-blue, #3468c0), var(--swappit-blue-hover, #1d4ed8));
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 1.5rem;
                     color: white;
-                    margin: 0 auto 1rem;
+                    margin: 0 auto 1rem auto;
                 }
-
                 .upload-text {
-                    font-size: 1rem;
-                    font-weight: 600;
-                    color: #1e293b;
-                    margin: 0 0 0.5rem 0;
+                    font-size: 1.05rem;
+                    font-weight: 700;
+                    color: var(--neutral-dark, #1e293b);
+                    margin: 0 0 0.3rem 0;
                 }
-
                 .upload-hint {
-                    font-size: 0.875rem;
-                    color: #64748b;
+                    font-size: 0.93rem;
+                    color: var(--neutral-medium, #64748b);
                     margin: 0;
                 }
-
                 .image-preview {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
                     gap: 1rem;
-                    margin-top: 1rem;
+                    margin-top: 1.2rem;
                 }
-
                 .preview-item {
                     position: relative;
                     border-radius: 8px;
                     overflow: hidden;
                     aspect-ratio: 1;
+                    box-shadow: 0 2px 8px rgba(52,104,192,0.07);
+                    background: #fff;
                 }
-
                 .preview-item img {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
                 }
-
                 .remove-image {
                     position: absolute;
                     top: 0.25rem;
@@ -282,91 +250,79 @@ class StudentAddProduct extends HTMLElement {
                     width: 24px;
                     height: 24px;
                     border-radius: 50%;
-                    background: rgba(0, 0, 0, 0.7);
+                    background: var(--swappit-blue, #3468c0);
                     color: white;
                     border: none;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 0.75rem;
-                    transition: all 0.2s ease;
+                    font-size: 0.9rem;
+                    transition: background 0.2s;
                 }
-
                 .remove-image:hover {
-                    background: rgba(239, 68, 68, 0.9);
+                    background: #ef4444;
                 }
-
-                /* Form Actions */
                 .form-actions {
                     display: flex;
                     gap: 1rem;
                     justify-content: flex-end;
-                    margin-top: 2rem;
+                    margin-top: 2.2rem;
                     padding-top: 2rem;
                     border-top: 1px solid #e5e7eb;
                 }
-
                 .btn {
-                    padding: 0.75rem 1.5rem;
+                    padding: 0.8rem 1.7rem;
                     border: none;
-                    border-radius: 8px;
-                    font-size: 0.875rem;
-                    font-weight: 600;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    font-weight: 700;
                     cursor: pointer;
-                    transition: all 0.2s ease;
+                    transition: all 0.2s;
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
+                    gap: 0.6rem;
                 }
-
                 .btn-secondary {
                     background: #f3f4f6;
                     color: #374151;
                 }
-
                 .btn-secondary:hover {
                     background: #e5e7eb;
                 }
-
                 .btn-primary {
-                    background: linear-gradient(135deg, #3468c0, #1d4ed8);
+                    background: linear-gradient(135deg, var(--swappit-blue, #3468c0), var(--swappit-blue-hover, #1d4ed8));
                     color: white;
+                    box-shadow: 0 2px 8px rgba(52,104,192,0.10);
                 }
-
                 .btn-primary:hover {
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3);
+                    transform: translateY(-1px) scale(1.03);
+                    box-shadow: 0 4px 16px rgba(52,104,192,0.18);
                 }
-
                 .btn-primary:disabled {
                     opacity: 0.6;
                     cursor: not-allowed;
                     transform: none;
                 }
-
                 .loading {
                     display: none;
                 }
-
                 .loading.show {
                     display: inline-block;
                 }
-
-                /* Responsive */
                 @media (max-width: 768px) {
+                    .add-product-container {
+                        padding: 1rem 0.2rem 1rem 0.2rem;
+                    }
                     .form-grid {
                         grid-template-columns: 1fr;
                     }
-
                     .transaction-type {
                         grid-template-columns: 1fr;
                     }
-
                     .form-actions {
                         flex-direction: column;
                     }
-
                     .section-header h1 {
                         font-size: 1.5rem;
                     }
@@ -426,16 +382,19 @@ class StudentAddProduct extends HTMLElement {
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Category</label>
-                                    <select class="form-select" name="category" required>
-                                        <option value="">Select Category</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="books">Books</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="furniture">Furniture</option>
-                                        <option value="sports">Sports & Fitness</option>
-                                        <option value="beauty">Beauty & Health</option>
-                                        <option value="other">Other</option>
-                                    </select>
+                                            <select class="form-select" name="category" required>
+            <option value="">Select Category</option>
+            <option value="accessories">Accessories</option>
+            <option value="books">Books</option>
+            <option value="category-art">Art</option>
+            <option value="electronics">Electronics</option>
+            <option value="notebooks">Notebooks</option>
+            <option value="school-bags">School Bags</option>
+            <option value="shoes">Shoes</option>
+            <option value="sports">Sports</option>
+            <option value="stationery">Stationery</option>
+            <option value="uniforms">Uniforms</option>
+        </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Condition</label>
@@ -544,6 +503,7 @@ class StudentAddProduct extends HTMLElement {
     }
 
     attachEventListeners() {
+        console.log('Connected StudentAddProduct attachEventListeners called');
         const form = this.shadowRoot.getElementById('addProductForm');
         const transactionTypeInputs = this.shadowRoot.querySelectorAll('input[name="transactionType"]');
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
@@ -629,46 +589,56 @@ class StudentAddProduct extends HTMLElement {
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
         const tradeSection = this.shadowRoot.getElementById('tradeSection');
         
-        // Set initial state (price not required by default)
-        priceInput.required = false;
+        // Set initial state based on default selection (sale is checked by default)
+        priceInput.required = true; // Price is required for sale
         originalPriceInput.required = false;
-        pricingSection.style.display = 'none';
+        pricingSection.style.display = 'block'; // Show pricing for sale
         tradeSection.style.display = 'none';
     }
 
     handleImageFiles(files) {
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-        
+        let errorShown = false;
         Array.from(files).forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview">
-                        <button type="button" class="remove-image" data-index="${this.imageFiles.length}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    imagePreview.appendChild(previewItem);
-
-                    // Remove image functionality
-                    previewItem.querySelector('.remove-image').addEventListener('click', () => {
-                        const fileIndex = parseInt(previewItem.querySelector('.remove-image').dataset.index);
-                        this.imageFiles.splice(fileIndex, 1);
-                        previewItem.remove();
-                        
-                        // Update remaining indices
-                        const remainingButtons = imagePreview.querySelectorAll('.remove-image');
-                        remainingButtons.forEach((btn, idx) => {
-                            btn.dataset.index = idx;
-                        });
-                    });
-                };
-                reader.readAsDataURL(file);
-                this.imageFiles.push(file); // Store the file
+            if (!file.type.startsWith('image/')) {
+                if (!errorShown) {
+                    this.showErrorNotification('Invalid file', 'Only image files are allowed.');
+                    errorShown = true;
+                }
+                return;
             }
+            if (file.size > 5 * 1024 * 1024) {
+                if (!errorShown) {
+                    this.showErrorNotification('File too large', 'Each image must be less than 5MB.');
+                    errorShown = true;
+                }
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <button type="button" class="remove-image" data-index="${this.imageFiles.length}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                imagePreview.appendChild(previewItem);
+                // Remove image functionality
+                previewItem.querySelector('.remove-image').addEventListener('click', () => {
+                    const fileIndex = parseInt(previewItem.querySelector('.remove-image').dataset.index);
+                    this.imageFiles.splice(fileIndex, 1);
+                    previewItem.remove();
+                    // Update remaining indices
+                    const remainingButtons = imagePreview.querySelectorAll('.remove-image');
+                    remainingButtons.forEach((btn, idx) => {
+                        btn.dataset.index = idx;
+                    });
+                });
+            };
+            reader.readAsDataURL(file);
+            this.imageFiles.push(file); // Store the file
         });
     }
 
@@ -677,51 +647,71 @@ class StudentAddProduct extends HTMLElement {
         const loadingIcon = this.shadowRoot.getElementById('loadingIcon');
         const form = this.shadowRoot.getElementById('addProductForm');
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-
+                    let currentUser; // Declare here so it's available throughout the function
         try {
             // Show loading state
             submitBtn.disabled = true;
             loadingIcon.classList.add('show');
-
             // Get current user
-            const { getCurrentUser } = await import('/firebase/auth.js');
-            const currentUser = getCurrentUser();
-            
-            if (!currentUser) {
-                throw new Error('User not authenticated. Please log in.');
+            let currentUser;
+            try {
+                const { getCurrentUser } = await import('/firebase/auth.js');
+                currentUser = getCurrentUser();
+            } catch (error) {
+                this.showErrorNotification('Authentication error', 'Could not verify user. Please log in again.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
+            if (!currentUser) {
+                this.showErrorNotification('Not authenticated', 'You must be logged in to add a product.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
+            }
             // Collect form data
             const formData = new FormData(form);
             const transactionType = formData.get('transactionType');
-            
             if (!transactionType) {
-                throw new Error('Please select a transaction type (Sale or Swapp).');
+                this.showErrorNotification('Missing type', 'Please select a transaction type (Sale or Swapp).');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
             // Validate required fields
             const requiredFields = ['productName', 'category', 'condition', 'brand', 'description'];
             for (const field of requiredFields) {
                 if (!formData.get(field)?.trim()) {
-                    throw new Error(`Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    this.showErrorNotification('Missing field', `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
                 }
             }
 
-            // Get image files from preview
-            const imageFiles = this.imageFiles; // Use the stored imageFiles
-            
-            if (imageFiles.length === 0) {
-                throw new Error('Please upload at least one product image.');
+            // Validate price for sale transactions
+            if (transactionType === 'sale') {
+                const price = formData.get('price');
+                if (!price || parseFloat(price) <= 0) {
+                    this.showErrorNotification('Invalid price', 'Please enter a valid price for sale items.');
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
+                }
             }
-
+            // Get image files from preview
+            const imageFiles = this.imageFiles;
+            if (imageFiles.length === 0) {
+                this.showErrorNotification('No images', 'Please upload at least one product image.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
+            }
             // Prepare product data
             const productData = {
-                // User information (ID is primary, others for display)
                 sellerId: currentUser.uid,
                 sellerEmail: currentUser.email,
                 sellerDisplayName: currentUser.displayName || currentUser.email,
-                
-                // Product information
                 transactionType: transactionType,
                 productName: formData.get('productName').trim(),
                 category: formData.get('category'),
@@ -733,87 +723,75 @@ class StudentAddProduct extends HTMLElement {
                 swappPreferences: transactionType === 'swapp' ? formData.get('swappPreferences') : null,
                 phone: formData.get('phone')?.trim() || null,
                 location: formData.get('location')?.trim() || null,
-                
-                // Media and metadata
-                images: [], // Will be populated after image upload
-                imageCount: 0, // Number of images uploaded
-                
-                // Status and tracking
+                images: [],
+                imageCount: 0,
                 status: 'active',
                 views: 0,
                 favorites: 0,
                 rating: 0,
                 reviewCount: 0,
-                
-                // Timestamps
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
-
             // Import Firebase functions
-            const { addProduct } = await import('/firebase/firestore.js');
-            const { uploadProductImages } = await import('/firebase/storage.js');
-
+            let addProduct, uploadProductImages, updateProduct;
+            try {
+                ({ addProduct } = await import('/firebase/firestore.js'));
+                ({ uploadProductImages } = await import('/firebase/storage.js'));
+                ({ updateProduct } = await import('/firebase/firestore.js'));
+            } catch (error) {
+                this.showErrorNotification('Firebase error', 'Could not load Firebase functions.');
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
+            }
             // First, create the product document to get the product ID
             const productResult = await addProduct(productData);
-            
             if (!productResult.success) {
-                throw new Error(`Error creating product: ${productResult.error}`);
+                this.showErrorNotification('Error creating product', productResult.error);
+                submitBtn.disabled = false;
+                loadingIcon.classList.remove('show');
+                return;
             }
-
             const productId = productResult.productId;
-            console.log('Product created successfully with ID:', productId);
-
             // Upload images if we have them
+            let imageUploadResult = { success: false, images: [] };
             if (imageFiles.length > 0) {
-                console.log('Starting image upload for product:', productId);
-                console.log('Number of images to upload:', imageFiles.length);
-                console.log('Transaction type:', transactionType);
-                console.log('Category:', formData.get('category'));
-                
-                const imageUploadResult = await uploadProductImages(
-                    imageFiles, 
-                    productId, 
-                    transactionType, 
+                imageUploadResult = await uploadProductImages(
+                    imageFiles,
+                    productId,
+                    transactionType,
                     formData.get('category')
                 );
-                
-                if (imageUploadResult.success) {
-                    console.log('Image upload successful:', imageUploadResult.images);
-                    
-                    // Update product with image URLs
-                    const { updateProduct } = await import('/firebase/firestore.js');
-                    const updateResult = await updateProduct(productId, {
-                        images: imageUploadResult.images,
-                        imageCount: imageUploadResult.images.length,
-                        updatedAt: new Date().toISOString()
-                    });
-                    
-                    if (!updateResult.success) {
-                        console.warn('Warning: Product created but image URLs could not be updated:', updateResult.error);
-                    }
-                } else {
-                    console.error('Image upload failed:', imageUploadResult.error);
-                    // Product was created but images failed to upload
-                    // We could either delete the product or continue without images
-                    throw new Error(`Product created but image upload failed: ${imageUploadResult.error}`);
+                if (!imageUploadResult.success) {
+                    this.showErrorNotification('Image upload failed', imageUploadResult.error);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
+                }
+                // Update product with image URLs
+                const updateResult = await updateProduct(productId, {
+                    images: imageUploadResult.images,
+                    imageCount: imageUploadResult.images.length,
+                    updatedAt: new Date().toISOString()
+                });
+                if (!updateResult.success) {
+                    this.showErrorNotification('Product created but image URLs could not be updated', updateResult.error);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
                 }
             }
-
             // Show success notification
             this.showSuccessNotification('Product added successfully!', 'Your product has been uploaded and is now available in the marketplace.');
+            // Reset form and preview
             form.reset();
             imagePreview.innerHTML = '';
-            this.imageFiles = []; // Clear image files after successful upload
-
-            // Optionally redirect to products page
-            // window.location.href = '/dashboards/student/student-dashboard.html';
-
+            this.imageFiles = [];
+            this.initializeFormState();
         } catch (error) {
-            console.error('Error adding product:', error);
-            this.showErrorNotification('Error adding product', error.message);
+            this.showErrorNotification('Error', error.message || 'An error occurred while adding the product.');
         } finally {
-            // Hide loading state
             submitBtn.disabled = false;
             loadingIcon.classList.remove('show');
         }
@@ -868,8 +846,8 @@ class StudentAddProduct extends HTMLElement {
             color: #10b981;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -968,8 +946,8 @@ class StudentAddProduct extends HTMLElement {
             color: #ef4444;
         `;
 
-        const message = notification.querySelector('.toast-message');
-        message.style.cssText = `
+        const messageElement = notification.querySelector('.toast-message');
+        messageElement.style.cssText = `
             font-weight: 500;
             color: #1e293b;
             font-size: 0.95rem;
@@ -1020,4 +998,9 @@ class StudentAddProduct extends HTMLElement {
     }
 }
 
-customElements.define('student-add-product', StudentAddProduct); 
+try {
+    customElements.define('student-add-product', StudentAddProduct);
+    console.log('Registered StudentAddProduct component registered successfully');
+} catch (error) {
+    console.error('Error Error registering StudentAddProduct component:', error);
+} 

@@ -312,6 +312,21 @@ html {
     font-size: 1.25rem;
     color: var(--swappit-blue);
     margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.product-price .swappit-price {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--swappit-blue);
+}
+
+.product-price .dollar-price {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--neutral-medium);
 }
 
 .original-price {
@@ -341,10 +356,12 @@ html {
     display: flex;
     gap: 0.5rem;
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .product-actions .btn {
     flex: 1;
+    min-width: 120px;
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
     font-weight: 600;
@@ -656,7 +673,7 @@ html {
    ========================================= */
 .notification-toast {
     position: fixed;
-    top: 20px;
+    top: 100px; /* Account for header height */
     right: 20px;
     background: white;
     border-radius: 12px;
@@ -768,12 +785,28 @@ html {
         text-align: center;
         gap: 1rem;
     }
+    
+    /* Desktop/Laptop: Botones uno debajo del otro */
+    .product-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .product-actions .btn {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 @media (max-width: 992px) {
     .marketplace-container,
     .container {
         padding: 0 1.5rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
     
     .products-controls {
@@ -800,6 +833,17 @@ html {
     .new-arrivals-section {
         padding: 3rem 1.5rem;
     }
+    
+    /* Tablet: Botones uno debajo del otro */
+    .product-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .product-actions .btn {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 @media (max-width: 768px) {
@@ -820,8 +864,9 @@ html {
         padding: 0 1rem;
     }
     
+    /* Tablet: 1-2 tarjetas dependiendo del ancho */
     .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1rem;
     }
     
@@ -862,6 +907,7 @@ html {
     }
     
     .notification-toast {
+        top: 160px; /* Account for dual header height on mobile */
         left: 1rem;
         right: 1rem;
         width: auto;
@@ -885,6 +931,17 @@ html {
     .new-arrivals-section {
         padding: 2rem 1rem;
     }
+    
+    /* Tablet: Botones uno debajo del otro */
+    .product-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .product-actions .btn {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 @media (max-width: 480px) {
@@ -895,6 +952,12 @@ html {
     
     .product-actions {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .product-actions .btn {
+        width: 100%;
+        min-width: unset;
     }
     
     .banner-text h1 {
@@ -910,5 +973,9 @@ html {
     .best-sellers-section,
     .new-arrivals-section {
         padding: 1.5rem 0.5rem;
+    }
+    
+    .notification-toast {
+        top: 150px; /* Slightly less for smaller mobile screens */
     }
 } 

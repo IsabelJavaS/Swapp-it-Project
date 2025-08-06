@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Marketplace Responsive - SWAPPIT</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .test-header h1 {
+            color: #3468c0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-header p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .responsive-info {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3468c0;
+        }
+        
+        .responsive-info h3 {
+            color: #3468c0;
+            margin-bottom: 1rem;
+        }
+        
+        .responsive-info ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        
+        .responsive-info li {
+            margin-bottom: 0.5rem;
+            color: #64748b;
+        }
+        
+        .device-test {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .device-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #3468c0;
+            background: white;
+            color: #3468c0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .device-btn:hover,
+        .device-btn.active {
+            background: #3468c0;
+            color: white;
+        }
+        
+        .current-width {
+            background: #ffa424;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Importar estilos del marketplace */
+        @import url('../css/marketplace.css');
+        
+        .test-products {
+            margin-top: 2rem;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+        }
+        
+        .test-section h3 {
+            color: #3468c0;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🛍️ Test Marketplace Responsive</h1>
+            <p>Verificando la responsividad de las tarjetas de productos</p>
+        </div>
+        
+        <div class="responsive-info">
+            <h3>📱 Mejoras Implementadas:</h3>
+            <ul>
+                <li><strong>Desktop/Laptop (≤1200px):</strong> 3-4 tarjetas, botones uno debajo del otro</li>
+                <li><strong>Tablet (≤992px):</strong> 2 tarjetas, botones uno debajo del otro</li>
+                <li><strong>Tablet (≤768px):</strong> 1-2 tarjetas (auto-fit), botones uno debajo del otro</li>
+                <li><strong>Mobile (≤480px):</strong> 1 tarjeta, botones uno debajo del otro</li>
+            </ul>
+        </div>
+        
+        <div class="device-test">
+            <button class="device-btn active" onclick="testDevice('desktop')">🖥️ Desktop</button>
+            <button class="device-btn" onclick="testDevice('laptop')">💻 Laptop</button>
+            <button class="device-btn" onclick="testDevice('tablet')">📱 Tablet</button>
+            <button class="device-btn" onclick="testDevice('mobile')">📱 Mobile</button>
+        </div>
+        
+        <div class="current-width" id="currentWidth">
+            Ancho actual: <span id="widthValue">1200px</span>
+        </div>
+        
+        <div class="test-products">
+            <div class="test-section">
+                <h3>🆕 New Products</h3>
+                <div class="products-grid" id="newProductsGrid">
+                    <!-- Product cards will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h3>🔄 Swapp Products</h3>
+                <div class="products-grid" id="swappProductsGrid">
+                    <!-- Product cards will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="test-section">
+                <h3>🏢 Business Products</h3>
+                <div class="products-grid" id="businessProductsGrid">
+                    <!-- Product cards will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular productos para testing
+        const sampleProducts = [
+            {
+                id: 1,
+                title: "Calculadora Científica TI-84 Plus",
+                seller: "Student Store",
+                price: 89.99,
+                originalPrice: 120.00,
+                rating: 4.8,
+                image: "../assets/utiles-escolares.jpg",
+                badge: "bestseller"
+            },
+            {
+                id: 2,
+                title: "Libro de Matemáticas Avanzadas",
+                seller: "Book Exchange",
+                price: 45.00,
+                originalPrice: 65.00,
+                rating: 4.5,
+                image: "../assets/utiles-escolares.jpg",
+                badge: "sale"
+            },
+            {
+                id: 3,
+                title: "Uniforme Escolar Completo",
+                seller: "Uniform Store",
+                price: 75.00,
+                originalPrice: 95.00,
+                rating: 4.7,
+                image: "../assets/utiles-escolares.jpg",
+                badge: "new"
+            },
+            {
+                id: 4,
+                title: "Mochila Escolar Premium",
+                seller: "Accessories Plus",
+                price: 55.00,
+                originalPrice: 80.00,
+                rating: 4.6,
+                image: "../assets/utiles-escolares.jpg",
+                badge: "bestseller"
+            }
+        ];
+
+        function createProductCard(product) {
+            const badgeClass = product.badge || '';
+            const badgeText = product.badge === 'bestseller' ? 'Best Seller' : 
+                             product.badge === 'new' ? 'New' : 
+                             product.badge === 'sale' ? 'Sale' : '';
+            
+            return `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.title}">
+                        ${badgeText ? `<div class="product-badge ${badgeClass}">${badgeText}</div>` : ''}
+                        <div class="product-overlay">
+                            <button title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">
+                            <a href="#">${product.title}</a>
+                        </div>
+                        <div class="product-seller">by ${product.seller}</div>
+                        <div class="product-price">
+                            $${product.price.toFixed(2)}
+                            ${product.originalPrice > product.price ? `<span class="original-price">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                        </div>
+                        <div class="product-rating">
+                            <div class="stars">
+                                ${'★'.repeat(Math.floor(product.rating))}${product.rating % 1 >= 0.5 ? '★' : ''}${'☆'.repeat(5 - Math.ceil(product.rating))}
+                            </div>
+                            <span class="rating-text">(${product.rating})</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn btn-add-cart">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                            <button class="btn btn-swapp">
+                                <i class="fas fa-exchange-alt"></i>
+                                Swapp
+                            </button>
+                            <button class="btn btn-details">
+                                <i class="fas fa-info-circle"></i>
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadProducts() {
+            const grids = ['newProductsGrid', 'swappProductsGrid', 'businessProductsGrid'];
+            
+            grids.forEach(gridId => {
+                const grid = document.getElementById(gridId);
+                if (grid) {
+                    grid.innerHTML = sampleProducts.map(product => createProductCard(product)).join('');
+                }
+            });
+        }
+
+        function updateWidthInfo() {
+            const width = window.innerWidth;
+            const widthElement = document.getElementById('widthValue');
+            if (widthElement) {
+                widthElement.textContent = `${width}px`;
+            }
+        }
+
+        function testDevice(device) {
+            const buttons = document.querySelectorAll('.device-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Simular diferentes anchos de pantalla
+            const widths = {
+                'desktop': 1400,
+                'laptop': 1200,
+                'tablet': 768,
+                'mobile': 480
+            };
+            
+            const width = widths[device];
+            if (width) {
+                // En un entorno real, esto cambiaría el viewport
+                console.log(`Testing ${device} at ${width}px width`);
+                updateWidthInfo();
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateWidthInfo();
+            
+            // Actualizar información de ancho cuando cambie el tamaño de la ventana
+            window.addEventListener('resize', updateWidthInfo);
+        });
+    </script>
+</body>
+</html> 

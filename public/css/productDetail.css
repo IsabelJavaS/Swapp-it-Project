@@ -11,6 +11,22 @@
 .product-detail-page {
     padding-top: 2rem;
     padding-bottom: 4rem;
+    position: relative;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 /* Breadcrumb */
@@ -123,15 +139,67 @@
     gap: 1rem;
 }
 
+/* Related products price styling */
+.related-products .product-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.related-products .product-price .swappit-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--swappit-blue);
+}
+
+.related-products .product-price .dollar-price {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--neutral-medium);
+}
+
 .current-price {
     font-family: var(--font-primary);
     font-size: 2rem;
     font-weight: 700;
     color: var(--swappit-blue);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.current-price .swappit-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--swappit-blue);
+}
+
+.current-price .dollar-price {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--neutral-medium);
 }
 
 .original-price {
     font-size: 1.25rem;
+    color: var(--neutral-medium);
+    text-decoration: line-through;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.original-price .swappit-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--neutral-medium);
+    text-decoration: line-through;
+}
+
+.original-price .dollar-price {
+    font-size: 0.9rem;
+    font-weight: 500;
     color: var(--neutral-medium);
     text-decoration: line-through;
 }
@@ -607,6 +675,10 @@
         grid-template-columns: 1fr;
         gap: 1rem;
     }
+    
+    .notification-toast {
+        top: 160px; /* Account for dual header height on mobile */
+    }
 }
 
 @media (max-width: 576px) {
@@ -626,4 +698,75 @@
         padding: 0.75rem 1rem;
         font-size: 0.95rem;
     }
+    
+    .notification-toast {
+        top: 150px; /* Slightly less for smaller mobile screens */
+    }
+}
+
+/* Notification Toast Styles */
+.notification-toast {
+    position: fixed;
+    top: 100px; /* Account for header height */
+    right: 20px;
+    z-index: 9999;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 1rem 1.5rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+    border-left: 4px solid var(--swappit-blue);
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+}
+
+.notification-toast.success {
+    border-left-color: #10b981;
+}
+
+.notification-toast.error {
+    border-left-color: #ef4444;
+}
+
+.notification-toast.warning {
+    border-left-color: #f59e0b;
+}
+
+.notification-toast.info {
+    border-left-color: #3b82f6;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toast-content i {
+    font-size: 1.25rem;
+}
+
+.notification-toast.success .toast-content i {
+    color: #10b981;
+}
+
+.notification-toast.error .toast-content i {
+    color: #ef4444;
+}
+
+.notification-toast.warning .toast-content i {
+    color: #f59e0b;
+}
+
+.notification-toast.info .toast-content i {
+    color: #3b82f6;
+}
+
+.toast-message {
+    font-weight: 500;
+    color: var(--text-primary);
 } 

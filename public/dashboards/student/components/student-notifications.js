@@ -1,4 +1,4 @@
-// Componente web para notificaciones del estudiante
+// Web component for student notifications
 class StudentNotifications extends HTMLElement {
     constructor() {
         super();
@@ -10,52 +10,135 @@ class StudentNotifications extends HTMLElement {
         this.loadNotifications();
     }
 
-    loadNotifications() {
-        // Simulate loading notifications from Firebase
-        const mockNotifications = [
-            {
-                id: 1,
-                type: 'sale',
-                title: 'New Sale!',
-                message: 'Your product "Calculus Textbook" was purchased by Maria Garcia',
-                time: '2 hours ago',
-                read: false,
-                icon: 'fas fa-dollar-sign',
-                color: '#10b981'
-            },
-            {
-                id: 2,
-                type: 'message',
-                title: 'New Message',
-                message: 'You received a message from Alex Johnson about "Nike Running Shoes"',
-                time: '4 hours ago',
-                read: false,
-                icon: 'fas fa-comment',
-                color: '#3468c0'
-            },
-            {
-                id: 3,
-                type: 'review',
-                title: 'New Review',
-                message: 'You received a 5-star review for "MacBook Air 2020"',
-                time: '1 day ago',
-                read: true,
-                icon: 'fas fa-star',
-                color: '#fbbf24'
-            },
-            {
-                id: 4,
-                type: 'system',
-                title: 'System Update',
-                message: 'New features are available! Check out the latest updates',
-                time: '2 days ago',
-                read: true,
-                icon: 'fas fa-bell',
-                color: '#8b5cf6'
+    async loadNotifications() {
+        try {
+            // Get real user data
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            const { getProducts } = await import('/firebase/firestore.js');
+            
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                this.showNoNotificationsMessage();
+                return;
             }
-        ];
 
-        this.updateNotificationsList(mockNotifications);
+            // Get user products to generate notifications based on activity
+            const productsResult = await getProducts({ sellerId: currentUser.uid });
+            const userProducts = productsResult.success ? productsResult.products : [];
+
+            // Generate notifications based on real products
+            const notifications = [];
+            
+            // Sold products notifications
+            const soldProducts = userProducts.filter(p => p.status === 'sold');
+            soldProducts.slice(0, 2).forEach((product, index) => {
+                notifications.push({
+                    id: `sale_${index}`,
+                    type: 'sale',
+                    title: 'New Sale!',
+                    message: `Your product "${product.productName}" was sold`,
+                    time: this.formatTimeAgo(product.updatedAt || product.createdAt),
+                    read: false,
+                    icon: 'fas fa-dollar-sign',
+                    color: '#10b981'
+                });
+            });
+
+            // Popular products notifications
+            const popularProducts = userProducts
+                .filter(p => p.views > 10 && p.status === 'active')
+                .slice(0, 1);
+            
+            popularProducts.forEach((product, index) => {
+                notifications.push({
+                    id: `popular_${index}`,
+                    type: 'view',
+                    title: 'Popular Product',
+                    message: `"${product.productName}" has ${product.views} views`,
+                    time: this.formatTimeAgo(product.createdAt),
+                    read: false,
+                    icon: 'fas fa-eye',
+                    color: '#3468c0'
+                });
+            });
+
+            // Recent products notifications
+            const recentProducts = userProducts
+                .filter(p => p.status === 'active')
+                .slice(0, 1);
+            
+            recentProducts.forEach((product, index) => {
+                notifications.push({
+                    id: `recent_${index}`,
+                    type: 'product',
+                    title: 'Product Added',
+                    message: `"${product.productName}" was added successfully`,
+                    time: this.formatTimeAgo(product.createdAt),
+                    read: true,
+                    icon: 'fas fa-plus',
+                    color: '#10b981'
+                });
+            });
+
+            // If no notifications, show message
+            if (notifications.length === 0) {
+                this.showNoNotificationsMessage();
+                return;
+            }
+
+            this.updateNotificationsList(notifications);
+            this.updateStats(notifications);
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+            this.showNoNotificationsMessage();
+        }
+    }
+
+    showNoNotificationsMessage() {
+        const notificationsList = this.shadowRoot.getElementById('notificationsList');
+        if (notificationsList) {
+            notificationsList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-bell-slash"></i>
+                    <h3>No notifications</h3>
+                    <p>When you have activity in your account, you'll see notifications here.</p>
+                </div>
+            `;
+        }
+    }
+
+    updateStats(notifications) {
+        const unreadCount = notifications.filter(n => !n.read).length;
+        const readCount = notifications.filter(n => n.read).length;
+        const totalCount = notifications.length;
+
+        // Actualizar estadísticas
+        const unreadElement = this.shadowRoot.querySelector('.stat-card:nth-child(1) .stat-number');
+        const readElement = this.shadowRoot.querySelector('.stat-card:nth-child(2) .stat-number');
+        const totalElement = this.shadowRoot.querySelector('.stat-card:nth-child(3) .stat-number');
+
+        if (unreadElement) unreadElement.textContent = unreadCount;
+        if (readElement) readElement.textContent = readCount;
+        if (totalElement) totalElement.textContent = totalCount;
+    }
+
+    formatTimeAgo(dateString) {
+        if (!dateString) return 'A while ago';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+        
+        if (diffInHours < 1) return 'Less than 1 hour ago';
+        if (diffInHours < 24) return `${diffInHours}h ago`;
+        
+        const diffInDays = Math.floor(diffInHours / 24);
+        if (diffInDays < 7) return `${diffInDays}d ago`;
+        
+        const diffInWeeks = Math.floor(diffInDays / 7);
+        if (diffInWeeks < 4) return `${diffInWeeks} weeks ago`;
+        
+        return date.toLocaleDateString('en-US');
     }
 
     updateNotificationsList(notifications) {

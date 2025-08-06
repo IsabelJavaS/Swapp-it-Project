@@ -134,16 +134,16 @@ async function handleLogin(formData) {
         // 3. Update last login timestamp
         await updateLastLogin(authResult.user.uid);
 
-        // 4. Success - redirect based on role
+        // 4. Success - redirect to marketplace
         showSuccessAnimation();
-        showSuccess('Login successful! Redirecting...');
+        showSuccess('Login successful! Redirecting to marketplace...');
         
         // Store login info for welcome icon (but don't show icon yet)
         sessionStorage.setItem('justLoggedIn', 'true');
         sessionStorage.setItem('userRole', userProfile.role);
         
         setTimeout(() => {
-            pathConfig.redirectToDashboard(userProfile.role);
+            pathConfig.redirectTo(pathConfig.getMarketplacePath());
         }, 2000);
 
     } catch (error) {
@@ -356,7 +356,7 @@ if (togglePasswordBtn) {
 document.addEventListener('DOMContentLoaded', () => {
     // Check if user is already authenticated
     if (isAuthenticated()) {
-        navigateToDashboard();
+        pathConfig.redirectTo(pathConfig.getMarketplacePath());
     }
     
     // Initialize animations
@@ -365,6 +365,33 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add floating shapes animation
     animateFloatingShapes();
+});
+
+// Funcionalidad del botón de regreso
+document.addEventListener('DOMContentLoaded', function() {
+    const backBtn = document.getElementById('backBtn');
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            // Efecto de animación al hacer clic
+            this.style.transform = 'translateX(-5px) scale(0.95)';
+            
+            setTimeout(() => {
+                // Intentar ir hacia atrás en el historial
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    // Si no hay historial, ir a la página principal
+                    window.location.href = '/';
+                }
+            }, 150);
+        });
+        
+        // Restaurar el botón después del clic
+        backBtn.addEventListener('transitionend', function() {
+            this.style.transform = '';
+        });
+    }
 });
 
 // ==================== FLOATING SHAPES ANIMATION ====================

@@ -9,7 +9,16 @@ export class AppConfig {
         if (isFirebase) {
             return ''; // Firebase Hosting sirve desde la raíz
         } else {
-            // Local development - siempre usar /public para consistencia
+            // Local development - detectar profundidad
+            const path = window.location.pathname;
+            const segments = path.split('/').filter(s => s);
+            
+            // Si estamos en la raíz o en /public
+            if (segments.length === 0 || segments[0] === 'public') {
+                return '/public';
+            }
+            
+            // Si estamos en subdirectorios
             return '/public';
         }
     }
@@ -43,7 +52,7 @@ export class AppConfig {
     }
 
     static getMarketplacePath() {
-        return this.getPagePath('/pages/marketplace/marketplace-page.html');
+        return this.getPagePath('/pages/marketplace/marketplace.html');
     }
 
     static getLoginPath() {
@@ -54,8 +63,8 @@ export class AppConfig {
         return this.getPagePath('/pages/auth/register.html');
     }
 
-    static getSwapcoinInfoPath() {
-        return this.getPagePath('/pages/swapcoin/info.html');
+    static     getSwappitCoinsInfoPath() {
+        return this.getPagePath('/pages/swapcoin/buy-coins.html');
     }
 
     // Detectar entorno
@@ -71,6 +80,15 @@ export class AppConfig {
     // Configuración de debug
     static isDebugMode() {
         return this.isDevelopment() || window.location.search.includes('debug=true');
+    }
+
+    // Función para detectar Live Server
+    static isLiveServer() {
+        return window.location.port === '5500' || 
+               window.location.port === '3000' || 
+               window.location.port === '8080' ||
+               window.location.hostname === 'localhost' ||
+               window.location.hostname === '127.0.0.1';
     }
 }
 
@@ -170,12 +188,12 @@ class PathConfig {
 
     // Rutas para marketplace
     getMarketplacePath() {
-        return `${this.basePath}/pages/marketplace/marketplace-page.html`;
+        return `${this.basePath}/pages/marketplace/marketplace.html`;
     }
 
-    // Rutas para swapcoin
-    getSwapcoinInfoPath() {
-        return `${this.basePath}/pages/swapcoin/info.html`;
+    // Rutas para Swapp-it Coins
+    getSwappitCoinsInfoPath() {
+        return `${this.basePath}/pages/swapcoin/buy-coins.html`;
     }
 
     // Ruta para logo
@@ -190,8 +208,11 @@ class PathConfig {
 
     // Función helper para redirección basada en rol
     redirectToDashboard(role) {
-        // Redirigir al marketplace logueado en lugar de los dashboards
-        this.redirectTo('/pages/marketplace/marketplace.html');
+        if (role === 'business') {
+            this.redirectTo(this.getBusinessDashboardPath());
+        } else {
+            this.redirectTo(this.getStudentDashboardPath());
+        }
     }
 }
 
@@ -204,4 +225,5 @@ export default pathConfig;
 // También hacer disponible globalmente para scripts no-module
 if (typeof window !== 'undefined') {
     window.pathConfig = pathConfig;
+    window.AppConfig = AppConfig;
 } 

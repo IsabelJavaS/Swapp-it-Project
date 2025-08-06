@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mobile Header - SWAPPIT</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .test-header h1 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-header p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #3468c0;
+        }
+        
+        .test-section h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .test-btn {
+            background: linear-gradient(135deg, #3468c0, #ffa424);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(52, 104, 192, 0.3);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .info-card h4 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .info-value {
+            color: #3468c0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .status.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .fixes-list {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .fixes-list h4 {
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fixes-list ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #0c4a6e;
+        }
+        
+        .fixes-list li {
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🧪 Mobile Header Test</h1>
+            <p>Test the responsive header and cart functionality</p>
+        </div>
+        
+        <div class="fixes-list">
+            <h4>✅ Latest Fixes Applied:</h4>
+            <ul>
+                <li><strong>Removed "Shopping Cart" menu item</strong> from mobile sidebar (cart icon already exists in header)</li>
+                <li><strong>Fixed cart closing issue</strong> - Cart now closes completely using transform instead of right positioning</li>
+                <li><strong>Updated all cart methods</strong> to use transform-based positioning for consistent behavior</li>
+                <li><strong>Cleaned up event listeners</strong> - Removed unused mobile cart button listener</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>📱 Responsive Testing</h3>
+            <p>Resize your browser window to test mobile and tablet layouts:</p>
+            <ul>
+                <li><strong>Desktop (>768px):</strong> Full header with login/signup buttons and cart visible</li>
+                <li><strong>Tablet (≤768px):</strong> Login/signup buttons and cart hidden, hamburger menu visible</li>
+                <li><strong>Mobile (≤480px):</strong> Compact mobile layout with hamburger menu</li>
+            </ul>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Window Width</h4>
+                    <div class="info-value" id="windowWidth">-</div>
+                </div>
+                <div class="info-card">
+                    <h4>Device Type</h4>
+                    <div class="info-value" id="deviceType">-</div>
+                </div>
+                <div class="info-card">
+                    <h4>Header Elements</h4>
+                    <div class="info-value" id="headerElements">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Manual Tests</h3>
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testAddToCart()">Add Test Item</button>
+                <button class="test-btn" onclick="testOpenCart()">Open Cart</button>
+                <button class="test-btn" onclick="testMobileMenu()">Toggle Mobile Menu</button>
+                <button class="test-btn" onclick="testCartClosing()">Test Cart Closing</button>
+                <button class="test-btn" onclick="testResponsive()">Check Responsive</button>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Cart Items</h4>
+                    <div class="info-value" id="cartCount">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>Cart Total</h4>
+                    <div class="info-value" id="cartTotal">$0</div>
+                </div>
+                <div class="info-card">
+                    <h4>Cart Status</h4>
+                    <div class="info-value" id="cartStatus">Closed</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Test Instructions</h3>
+            <ol>
+                <li><strong>Responsive Test:</strong> Resize browser to test mobile/tablet layouts</li>
+                <li><strong>Mobile Menu:</strong> Click hamburger menu (visible on mobile/tablet) to open sidebar</li>
+                <li><strong>Cart Test:</strong> Use "Add Test Item" and "Open Cart" buttons to test cart functionality</li>
+                <li><strong>Cart Closing:</strong> Use "Test Cart Closing" to verify cart closes completely</li>
+                <li><strong>Integration:</strong> Verify cart icon in header opens cart (not mobile menu item)</li>
+            </ol>
+            
+            <div id="testStatus" class="status success">
+                ✅ Ready for testing
+            </div>
+        </div>
+    </div>
+
+    <!-- Include components -->
+    <script src="components/header-component.js"></script>
+    <script src="components/cart-component.js"></script>
+    
+    <script>
+        // Test functions
+        function testAddToCart() {
+            const testProduct = {
+                id: 'test-' + Date.now(),
+                title: 'Test Product',
+                price: 25,
+                imageUrl: '/assets/logos/LogoSinFondo.png',
+                seller: 'Test Seller'
+            };
+            
+            if (window.SwappitCart) {
+                window.SwappitCart.addToCart(testProduct);
+                updateCartInfo();
+                showStatus('Test item added to cart', 'success');
+            } else {
+                showStatus('Cart component not found', 'error');
+            }
+        }
+        
+        function testOpenCart() {
+            const cartComponent = document.querySelector('cart-component');
+            if (cartComponent && cartComponent.openCart) {
+                cartComponent.openCart();
+                updateCartInfo();
+                showStatus('Cart opened successfully', 'success');
+            } else {
+                showStatus('Cart component not found', 'error');
+            }
+        }
+        
+        function testMobileMenu() {
+            const headerComponent = document.querySelector('header-component');
+            if (headerComponent) {
+                // Simulate hamburger menu click
+                const hamburgerBtn = headerComponent.shadowRoot?.querySelector('.hamburger-menu');
+                if (hamburgerBtn) {
+                    hamburgerBtn.click();
+                    showStatus('Mobile menu toggled', 'success');
+                } else {
+                    showStatus('Hamburger menu not found', 'warning');
+                }
+            } else {
+                showStatus('Header component not found', 'error');
+            }
+        }
+        
+        function testCartClosing() {
+            const cartComponent = document.querySelector('cart-component');
+            if (cartComponent) {
+                // First open the cart
+                cartComponent.openCart();
+                
+                // Then close it after a short delay
+                setTimeout(() => {
+                    cartComponent.closeCart();
+                    updateCartInfo();
+                    showStatus('Cart closing test completed', 'success');
+                }, 1000);
+            } else {
+                showStatus('Cart component not found', 'error');
+            }
+        }
+        
+        function testResponsive() {
+            updateResponsiveInfo();
+            showStatus('Responsive info updated', 'success');
+        }
+        
+        function updateCartInfo() {
+            const cartCount = window.SwappitCart?.getCartCount() || 0;
+            const cartTotal = window.SwappitCart?.getCartTotal() || 0;
+            
+            document.getElementById('cartCount').textContent = cartCount;
+            document.getElementById('cartTotal').textContent = `$${cartTotal}`;
+            
+            const cartComponent = document.querySelector('cart-component');
+            const cartStatus = cartComponent?.isOpen ? 'Open' : 'Closed';
+            document.getElementById('cartStatus').textContent = cartStatus;
+        }
+        
+        function updateResponsiveInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            document.getElementById('windowWidth').textContent = `${width}px × ${height}px`;
+            
+            let deviceType = 'Desktop';
+            if (width <= 480) deviceType = 'Mobile';
+            else if (width <= 768) deviceType = 'Tablet';
+            
+            document.getElementById('deviceType').textContent = deviceType;
+            
+            // Check header elements visibility
+            const headerComponent = document.querySelector('header-component');
+            let headerElements = 'Unknown';
+            
+            if (headerComponent && headerComponent.shadowRoot) {
+                const buttons = headerComponent.shadowRoot.querySelector('.buttons');
+                const cart = headerComponent.shadowRoot.querySelector('cart-component');
+                const hamburger = headerComponent.shadowRoot.querySelector('.hamburger-menu');
+                
+                if (width <= 768) {
+                    headerElements = `Buttons: Hidden, Cart: Hidden, Hamburger: ${hamburger ? 'Visible' : 'Hidden'}`;
+                } else {
+                    headerElements = `Buttons: ${buttons ? 'Visible' : 'Hidden'}, Cart: ${cart ? 'Visible' : 'Hidden'}, Hamburger: Hidden`;
+                }
+            }
+            
+            document.getElementById('headerElements').textContent = headerElements;
+        }
+        
+        function showStatus(message, type = 'success') {
+            const statusEl = document.getElementById('testStatus');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+            
+            setTimeout(() => {
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ Ready for testing';
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateResponsiveInfo();
+            updateCartInfo();
+            
+            // Update info on window resize
+            window.addEventListener('resize', () => {
+                updateResponsiveInfo();
+            });
+            
+            // Update cart info periodically
+            setInterval(updateCartInfo, 1000);
+        });
+    </script>
+</body>
+</html> 

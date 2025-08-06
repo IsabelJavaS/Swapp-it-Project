@@ -1,4 +1,4 @@
-// Componente web para compras del estudiante
+// Web component for student purchases
 class StudentPurchases extends HTMLElement {
     constructor() {
         super();
@@ -10,45 +10,56 @@ class StudentPurchases extends HTMLElement {
         this.loadPurchases();
     }
 
-    loadPurchases() {
-        // Simulate loading purchases from Firebase
-        const mockPurchases = [
-            {
-                id: 1,
-                productName: 'iPhone 12 Pro Max',
-                seller: 'John Doe',
-                price: 450.00,
-                status: 'completed',
-                date: '2024-01-15',
-                image: 'https://via.placeholder.com/120x120/3468c0/ffffff?text=I',
-                rating: 5,
-                review: 'Great condition, fast delivery!'
-            },
-            {
-                id: 2,
-                productName: 'MacBook Air 2020',
-                seller: 'TechStore',
-                price: 850.00,
-                status: 'in_progress',
-                date: '2024-01-12',
-                image: 'https://via.placeholder.com/120x120/ffa424/ffffff?text=M',
-                rating: null,
-                review: null
-            },
-            {
-                id: 3,
-                productName: 'Calculus Textbook',
-                seller: 'Sarah Wilson',
-                price: 35.00,
-                status: 'completed',
-                date: '2024-01-08',
-                image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=C',
-                rating: 4,
-                review: 'Perfect for my course'
+    async loadPurchases() {
+        try {
+            // Get real user data
+            const { getCurrentUser } = await import('/firebase/auth.js');
+            const { getProducts } = await import('/firebase/firestore.js');
+            
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                this.showNoPurchasesMessage();
+                return;
             }
-        ];
 
-        this.updatePurchasesList(mockPurchases);
+            // For now, since there's no purchase system implemented,
+            // we'll show an informative message
+            this.showNoPurchasesMessage();
+            
+            // In the future, real user purchases would be loaded here
+            // const purchasesResult = await getPurchases({ buyerId: currentUser.uid });
+            // const userPurchases = purchasesResult.success ? purchasesResult.purchases : [];
+            
+        } catch (error) {
+            console.error('Error loading purchases:', error);
+            this.showNoPurchasesMessage();
+        }
+    }
+
+    showNoPurchasesMessage() {
+        const purchasesList = this.shadowRoot.getElementById('purchasesList');
+        if (purchasesList) {
+            purchasesList.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: #64748b;">
+                    <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
+                    <h2>No purchases recorded</h2>
+                    <p>When you make purchases in the marketplace, they will appear here.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/pages/marketplace/marketplace.html'" style="margin-top: 1rem;">
+                        <i class="fas fa-shopping-bag"></i>
+                        Explore Marketplace
+                    </button>
+                </div>
+            `;
+        }
+
+        // Actualizar estadísticas a 0
+        const statsElements = this.shadowRoot.querySelectorAll('.stat-number');
+        if (statsElements.length >= 4) {
+            statsElements[0].textContent = '0'; // Completed
+            statsElements[1].textContent = '0'; // In Progress
+            statsElements[2].textContent = '0'; // Cancelled
+            statsElements[3].textContent = '$0'; // Total Spent
+        }
     }
 
     updatePurchasesList(purchases) {
@@ -61,15 +72,17 @@ class StudentPurchases extends HTMLElement {
                     <img src="${purchase.image}" alt="${purchase.productName}" />
                     <div class="purchase-status ${purchase.status}">
                         ${purchase.status === 'completed' ? '<i class="fas fa-check"></i>' : 
-                          purchase.status === 'in_progress' ? '<i class="fas fa-clock"></i>' : 
-                          purchase.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
-                          '<i class="fas fa-shipping-fast"></i>'}
+                            purchase.status === 'in_progress' ? '<i class="fas fa-clock"></i>' : 
+                            purchase.status === 'cancelled' ? '<i class="fas fa-times"></i>' : 
+                            '<i class="fas fa-shipping-fast"></i>'}
                     </div>
                 </div>
                 <div class="purchase-info">
                     <div class="purchase-header">
                         <h3 class="purchase-title">${purchase.productName}</h3>
-                        <div class="purchase-price">$${purchase.price.toFixed(2)}</div>
+                        <div class="purchase-price">
+                            <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>${purchase.price.toFixed(2)}
+                        </div>
                     </div>
                     <div class="purchase-meta">
                         <span class="meta-item">

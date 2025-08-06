@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Register Business</title>
+    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/business-register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    
+    <!-- Spline-style Animated Background -->
+    <div class="spline-background">
+        <div class="particle-system">
+            <div class="particle particle-1"></div>
+            <div class="particle particle-2"></div>
+            <div class="particle particle-3"></div>
+            <div class="particle particle-4"></div>
+            <div class="particle particle-5"></div>
+            <div class="particle particle-6"></div>
+            <div class="particle particle-7"></div>
+            <div class="particle particle-8"></div>
+        </div>
+        
+        <div class="floating-elements">
+            <div class="floating-element element-1">
+                <div class="element-inner"></div>
+            </div>
+            <div class="floating-element element-2">
+                <div class="element-inner"></div>
+            </div>
+            <div class="floating-element element-3">
+                <div class="element-inner"></div>
+            </div>
+        </div>
+        
+        <div class="gradient-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+    </div>
+
+    <div class="register-container">
+        <div class="register-box" id="registerBox">
+            <!-- Botón de regreso dinámico -->
+            <div class="back-button-container">
+                <button class="back-btn" id="backBtn" aria-label="Go back">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M19 12H5"/>
+                        <path d="M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Interactive Logo with 3D effects -->
+            <div class="logo-container" id="logoContainer">
+                <div class="logo-3d-wrapper">
+                    <img src="assets/logos/letraS.png" alt="Swapp-it Logo" class="logo" id="logo">
+                    <div class="logo-reflection"></div>
+                    <div class="logo-shadow"></div>
+                </div>
+                <div class="logo-particles">
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                    <div class="logo-particle"></div>
+                </div>
+            </div>
+            
+            <h2 class="register-title" id="registerTitle">Create Account</h2>
+            <p class="register-subtitle" id="registerSubtitle">Join the Swapp-it community</p>
+            
+            <!-- Role Selector with enhanced design -->
+            <div class="role-selector" id="roleSelector">
+                <button class="role-btn active" data-role="personal" id="personalBtn">
+                    <i class="fas fa-user"></i>
+                    <span>Personal User</span>
+                </button>
+                <button class="role-btn" data-role="business" id="businessBtn">
+                    <i class="fas fa-building"></i>
+                    <span>Business</span>
+                </button>
+            </div>
+            
+            <form id="registerForm" class="register-form">
+                <!-- Common fields for both roles -->
+                <div class="form-group input-icon-group" id="emailGroup">
+                    <div class="input-3d-wrapper">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                        <div class="input-highlight"></div>
+                        <div class="input-glow"></div>
+                    </div>
+                    <span class="input-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </span>
+                    <div class="field-particles"></div>
+                </div>
+                
+                <div class="form-group password-group" id="passwordGroup">
+                    <div class="input-3d-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <div class="input-highlight"></div>
+                        <div class="input-glow"></div>
+                    </div>
+                    <button type="button" class="toggle-password" data-target="password" tabindex="-1" aria-label="Show/Hide password">
+                        <span class="eye-icon">
+                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="field-particles"></div>
+                </div>
+                
+                <div class="form-group password-group" id="confirmPasswordGroup">
+                    <div class="input-3d-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                        <div class="input-highlight"></div>
+                        <div class="input-glow"></div>
+                    </div>
+                    <button type="button" class="toggle-password" data-target="confirmPassword" tabindex="-1" aria-label="Show/Hide password">
+                        <span class="eye-icon">
+                            <svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="field-particles"></div>
+                </div>
+
+                <!-- Personal User Fields -->
+                <div class="personal-fields" id="personalFields">
+                    <div class="form-group input-icon-group">
+                        <div class="input-3d-wrapper">
+                            <input type="text" id="nombre" name="nombre" placeholder="Full Name" required>
+                            <div class="input-highlight"></div>
+                            <div class="input-glow"></div>
+                        </div>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="4"/>
+                                <path d="M2 20c0-4 8-6 10-6s10 2 10 6"/>
+                            </svg>
+                        </span>
+                        <div class="field-particles"></div>
+                    </div>
+                    
+                    <div class="form-group input-icon-group">
+                        <div class="input-3d-wrapper">
+                            <input type="tel" id="telefono" name="telefono" placeholder="Phone Number" required>
+                            <div class="input-highlight"></div>
+                            <div class="input-glow"></div>
+                        </div>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </span>
+                        <div class="field-particles"></div>
+                    </div>
+                    
+                    <div class="form-group input-icon-group">
+                        <div class="input-3d-wrapper">
+                            <input type="text" id="direccion" name="direccion" placeholder="Address" required>
+                            <div class="input-highlight"></div>
+                            <div class="input-glow"></div>
+                        </div>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </span>
+                        <div class="field-particles"></div>
+                    </div>
+                    
+                    <!-- School Selection for Personal Users -->
+                    <div class="form-group input-icon-group">
+                        <div class="input-3d-wrapper">
+                            <select id="colegio" name="colegio" required>
+                                <option value="">Select your school</option>
+                                <option value="jose_dolores_moscote">José Dolores Moscote</option>
+                                <option value="instituto_comercial_panama">Instituto Comercial de Panamá</option>
+                                <option value="instituto_rubiano">Instituto Rubiano</option>
+                                <option value="colegio_san_francisco_beckman">Colegio San Francisco Beckman</option>
+                                <option value="colegio_alfredo_canton">Colegio Alfredo Cantón</option>
+                                <option value="instituto_america_panama">Instituto América de Panamá</option>
+                                <option value="colegio_fermin_naudeu">Colegio Fermin Naudeu</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="input-highlight"></div>
+                            <div class="input-glow"></div>
+                        </div>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                <path d="M6 12v6c3 3 9 3 12 0v-6"/>
+                            </svg>
+                        </span>
+                        <div class="field-particles"></div>
+                    </div>
+                    
+                    <!-- Other School Input (hidden by default) -->
+                    <div class="form-group input-icon-group" id="otherSchoolGroup" style="display: none;">
+                        <div class="input-3d-wrapper">
+                            <input type="text" id="otherSchool" name="otherSchool" placeholder="Enter your school name">
+                            <div class="input-highlight"></div>
+                            <div class="input-glow"></div>
+                        </div>
+                        <span class="input-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                <path d="M6 12v6c3 3 9 3 12 0v-6"/>
+                            </svg>
+                        </span>
+                        <div class="field-particles"></div>
+                    </div>
+                </div>
+
+                <!-- Business Fields (hidden by default) -->
+                <div class="business-fields hidden" id="businessFields">
+                    <div class="business-form-container">
+                        <!-- First Column -->
+                        <div class="business-column">
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <input type="text" id="nombreNegocio" name="nombreNegocio" placeholder="Business Name" required>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="3" y="7" width="18" height="13" rx="2"/>
+                                        <path d="M16 3v4M8 3v4"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                            
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <input type="text" id="ruc" name="ruc" placeholder="RUC" required>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                        <path d="M9 9h6v6H9z"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                            
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <input type="text" id="direccionNegocio" name="direccionNegocio" placeholder="Business Address" required>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Second Column -->
+                        <div class="business-column">
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <input type="tel" id="telefonoNegocio" name="telefonoNegocio" placeholder="Business Phone Number" required>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.13.37 2.23.72 3.28a2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c1.05.35 2.15.59 3.28.72A2 2 0 0 1 22 16.92z"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                            
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <select id="tipoNegocio" name="tipoNegocio" required>
+                                        <option value="">Business Type</option>
+                                        <option value="book_store">Book Store</option>
+                                        <option value="factory">Factory</option>
+                                        <option value="super_market">Super Market</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                        <path d="M8 8h8M8 12h8M8 16h8"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                            
+                            <div class="form-group input-icon-group">
+                                <div class="input-3d-wrapper">
+                                    <textarea id="descripcionNegocio" name="descripcionNegocio" placeholder="Business Description" required></textarea>
+                                    <div class="input-highlight"></div>
+                                    <div class="input-glow"></div>
+                                </div>
+                                <span class="input-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                        <path d="M8 8h8M8 12h8M8 16h8"/>
+                                    </svg>
+                                </span>
+                                <div class="field-particles"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced 3D button -->
+                <button type="submit" class="register-btn" id="registerBtn">
+                    <div class="btn-3d-wrapper">
+                        <span class="btn-text">Create Account</span>
+                        <span class="btn-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="btn-particles"></div>
+                    <div class="btn-glow"></div>
+                </button>
+            </form>
+            
+            <div class="additional-options">
+                <div class="divider"><span>or</span></div>
+                <div class="social-login-buttons horizontal-social">
+                    <button class="social-btn social-square google-btn" type="button" aria-label="Sign up with Google">
+                        <span class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.7 32.9 29.8 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c2.7 0 5.2.9 7.2 2.4l6.4-6.4C33.5 5.1 28.1 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.5 20-21 0-1.3-.1-2.7-.3-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.5 17.1 19.4 14 24 14c2.7 0 5.2.9 7.2 2.4l6.4-6.4C33.5 5.1 28.1 3 24 3c-7.7 0-14.3 4.3-17.7 10.7z"/><path fill="#FBBC05" d="M24 44c5.8 0 10.7-1.9 14.6-5.1l-6.7-5.5C29.8 36 24 36 24 36c-5.8 0-10.7-1.9-14.6-5.1l6.7-5.5C18.2 32.9 23.1 36 24 36z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7C34.7 32.9 29.8 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c2.7 0 5.2.9 7.2 2.4l6.4-6.4C33.5 5.1 28.1 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.5 0 20-7.5 20-21 0-1.3-.1-2.7-.3-4z"/></g></svg>
+                        </span>
+                    </button>
+                    <button class="social-btn social-square microsoft-btn" type="button" aria-label="Sign up with Microsoft">
+                        <span class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48"><g><rect x="4" y="4" width="18" height="18" fill="#F35325"/><rect x="26" y="4" width="18" height="18" fill="#81BC06"/><rect x="4" y="26" width="18" height="18" fill="#05A6F0"/><rect x="26" y="26" width="18" height="18" fill="#FFBA08"/></g></svg>
+                        </span>
+                    </button>
+                </div>
+                <p class="login-text">You already have an account? <a href="/pages/auth/login.html" class="login-link" id="loginLink">Log In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded');
+            
+            // Get DOM elements
+            const personalBtn = document.getElementById('personalBtn');
+            const businessBtn = document.getElementById('businessBtn');
+            const personalFields = document.getElementById('personalFields');
+            const businessFields = document.getElementById('businessFields');
+            
+            console.log('Personal button:', personalBtn);
+            console.log('Business button:', businessBtn);
+            console.log('Personal fields:', personalFields);
+            console.log('Business fields:', businessFields);
+            
+            // Test role switching
+            function switchToRole(role) {
+                console.log('Switching to role:', role);
+                
+                // Update button states
+                personalBtn.classList.toggle('active', role === 'personal');
+                businessBtn.classList.toggle('active', role === 'business');
+                
+                // Show/hide fields with animation
+                if (role === 'personal') {
+                    businessFields.classList.add('hidden');
+                    personalFields.classList.remove('hidden');
+                    personalFields.style.animation = 'slideInFromRight 0.5s ease';
+                    console.log('Showing personal fields');
+                } else {
+                    personalFields.classList.add('hidden');
+                    businessFields.classList.remove('hidden');
+                    businessFields.style.animation = 'slideInFromRight 0.5s ease';
+                    console.log('Showing business fields');
+                }
+            }
+            
+            // Add event listeners
+            personalBtn.addEventListener('click', () => {
+                console.log('Personal button clicked');
+                switchToRole('personal');
+            });
+            
+            businessBtn.addEventListener('click', () => {
+                console.log('Business button clicked');
+                switchToRole('business');
+            });
+            
+            // Initialize with personal
+            switchToRole('personal');
+            
+            console.log('Test initialization complete');
+        });
+    </script>
+</body>
+</html> 
