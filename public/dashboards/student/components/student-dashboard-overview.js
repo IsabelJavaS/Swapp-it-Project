@@ -7,12 +7,15 @@ class StudentDashboardOverview extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        this.loadDashboardData();
+        // Use setTimeout to ensure the component is fully rendered before loading data
+        setTimeout(() => {
+            this.loadDashboardData();
+        }, 100);
     }
 
     render() {
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="../../css/icon_S/icon_S.css">
+            <link rel="stylesheet" href="/css/icon_S/icon_S.css">
             <style>
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
                 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
@@ -493,11 +496,11 @@ class StudentDashboardOverview extends HTMLElement {
                                 <i class="fas fa-wallet"></i>
                             </div>
                             <div class="stat-value">
-                                <div class="stat-number" id="swapcoinBalance">
+                                <div class="stat-number" id="swappitCoinsBalance">
                                     <span class="icon-logo_S"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span>
                                     0
                                 </div>
-                                <div class="stat-label">SWAPPIT Coins</div>
+                                <div class="stat-label">SWAPP-IT Coins</div>
                             </div>
                         </div>
                         <div class="stat-change positive">
@@ -543,219 +546,409 @@ class StudentDashboardOverview extends HTMLElement {
 
     async loadDashboardData() {
         try {
-            // Simulate loading dashboard data
-            // In a real app, this would fetch from Firebase
-            const mockData = {
-                totalSales: 1250.00,
-                totalPurchases: 890.50,
-                activeProducts: 12,
-                swapcoinBalance: 1250,
+            console.log('StudentDashboardOverview: Starting to load dashboard data...');
+            
+            // Show loading state first
+            this.showLoadingState();
+            
+            // Get real user data
+            const { getCurrentUser, onAuthStateChange } = await import('/firebase/auth.js');
+            const { getProducts, getUserProfile } = await import('/firebase/firestore.js');
+            
+            console.log('StudentDashboardOverview: Firebase modules imported successfully');
+            
+            // Wait for authentication to be established
+            const currentUser = getCurrentUser();
+            console.log('StudentDashboardOverview: Current user check:', currentUser ? 'User found' : 'No user');
+            
+            if (!currentUser) {
+                // If no user immediately available, wait for auth state change
+                console.log('StudentDashboardOverview: No current user, waiting for auth state...');
+                return new Promise((resolve) => {
+                    const unsubscribe = onAuthStateChange((user) => {
+                        console.log('StudentDashboardOverview: Auth state changed:', user ? 'User authenticated' : 'No user');
+                        unsubscribe(); // Stop listening after first change
+                        if (user) {
+                            this.loadUserData(user);
+                        } else {
+                            this.showDefaultDashboard();
+                        }
+                        resolve();
+                    });
+                    
+                    // Timeout after 5 seconds
+                    setTimeout(() => {
+                        console.log('StudentDashboardOverview: Auth state timeout, showing default dashboard');
+                        unsubscribe();
+                        this.showDefaultDashboard();
+                        resolve();
+                    }, 5000);
+                });
+            }
+            
+            // User is available, load data
+            console.log('StudentDashboardOverview: User available, loading user data...');
+            await this.loadUserData(currentUser);
+            
+        } catch (error) {
+            console.error('StudentDashboardOverview: Error loading dashboard data:', error);
+            this.showDefaultDashboard();
+        }
+    }
+    
+    async loadUserData(user) {
+        try {
+            console.log('StudentDashboardOverview: Loading user data for user:', user.uid);
+            
+            // Get user profile
+            const { getUserProfile } = await import('/firebase/firestore.js');
+            const profileResult = await getUserProfile(user.uid);
+            const userProfile = profileResult.success ? profileResult.data : null;
+            console.log('StudentDashboardOverview: User profile loaded:', userProfile ? 'Success' : 'No profile');
+
+            // Get user products
+            const { getProducts } = await import('/firebase/firestore.js');
+            const productsResult = await getProducts({ sellerId: user.uid });
+            const userProducts = productsResult.success ? productsResult.products : [];
+            console.log('StudentDashboardOverview: User products loaded:', userProducts.length, 'products');
+
+            // Calculate real statistics
+            const soldProducts = userProducts.filter(p => p.status === 'sold');
+            const totalSales = soldProducts.reduce((sum, p) => sum + (p.price || 0), 0);
+            const totalPurchases = 0; // For now 0, can be implemented later
+            const activeProducts = userProducts.filter(p => p.status === 'active').length;
+            const swappitCoinsBalance = userProfile?.points?.balance || 0;
+            
+            console.log('StudentDashboardOverview: Calculated stats - Sales:', totalSales, 'Active:', activeProducts, 'Balance:', swappitCoinsBalance);
+
+            // Generate recent activity based on real products
+            const recentActivity = [];
+            
+            // Add recent products
+            userProducts.slice(0, 3).forEach(product => {
+                recentActivity.push({
+                    type: 'product',
+                    title: 'Product Added',
+                    description: product.productName,
+                    price: product.price ? `$${product.price.toFixed(2)}` : 'Listed',
+                    time: this.formatTimeAgo(product.createdAt)
+                });
+            });
+
+            // Add recent sales
+            soldProducts.slice(0, 2).forEach(product => {
+                recentActivity.push({
+                    type: 'sale',
+                    title: 'Product Sold',
+                    description: product.productName,
+                    price: `$${product.price.toFixed(2)}`,
+                    time: this.formatTimeAgo(product.updatedAt || product.createdAt)
+                });
+            });
+
+            // Sort by date and take the most recent
+            recentActivity.sort((a, b) => new Date(b.time) - new Date(a.time));
+            recentActivity.splice(4); // Keep only 4 activities
+            
+            console.log('StudentDashboardOverview: Generated', recentActivity.length, 'recent activities');
+
+            const realData = {
+                totalSales,
+                totalPurchases,
+                activeProducts,
+                swappitCoinsBalance,
+                recentActivity
+            };
+
+            console.log('StudentDashboardOverview: Updating dashboard with real data');
+            this.updateDashboardData(realData);
+            this.renderChart('7D');
+            console.log('StudentDashboardOverview: Dashboard data loaded successfully');
+            
+        } catch (error) {
+            console.error('StudentDashboardOverview: Error loading user data:', error);
+            // Even if there's an error, show the dashboard with default data
+            this.showDefaultDashboard();
+        }
+    }
+    
+    showLoadingState() {
+        const content = this.shadowRoot.querySelector('.dashboard-overview');
+        if (content) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: #64748b;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 1rem; color: #3468c0;"></i>
+                    <h2>Loading Dashboard...</h2>
+                    <p>Please wait while we load your data.</p>
+                </div>
+            `;
+        }
+    }
+
+    showDefaultDashboard() {
+        console.log('StudentDashboardOverview: Showing default dashboard with charts and structure');
+        // Re-render the full dashboard structure
+        this.render();
+        
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            // Update with default data
+            const defaultData = {
+                totalSales: 0,
+                totalPurchases: 0,
+                activeProducts: 0,
+                swappitCoinsBalance: 0,
                 recentActivity: [
                     {
-                        type: 'sale',
-                        title: 'Product Sold',
-                        description: 'iPhone 12 Pro Max sold to John Doe',
-                        price: '$450.00',
-                        time: '2 hours ago'
-                    },
-                    {
-                        type: 'purchase',
-                        title: 'Product Purchased',
-                        description: 'MacBook Air 2020 from TechStore',
-                        price: '$850.00',
-                        time: '1 day ago'
-                    },
-                    {
-                        type: 'product',
-                        title: 'Product Added',
-                        description: 'New product "Gaming Laptop" added',
-                        price: 'Listed',
-                        time: '2 days ago'
+                        type: 'coin',
+                        title: 'Swapp-it Coins Balance',
+                        description: 'Your current available balance.',
+                        price: 0,
+                        time: 'Available'
                     }
                 ]
             };
-
-            this.updateDashboardData(mockData);
+            
+            this.updateDashboardData(defaultData);
             this.renderChart('7D');
-        } catch (error) {
-            console.error('Error loading dashboard data:', error);
+        }, 100);
+    }
+
+    showNoDataMessage() {
+        const content = this.shadowRoot.querySelector('.dashboard-overview');
+        if (content) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 3rem; color: #64748b;">
+                    <i class="fas fa-info-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h2>No data available</h2>
+                    <p>Start adding products to see statistics here.</p>
+                </div>
+            `;
         }
+    }
+
+    formatTimeAgo(dateString) {
+        if (!dateString) return 'A while ago';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+        
+        if (diffInHours < 1) return 'Less than 1 hour ago';
+        if (diffInHours < 24) return `${diffInHours}h ago`;
+        
+        const diffInDays = Math.floor(diffInHours / 24);
+        if (diffInDays < 7) return `${diffInDays}d ago`;
+        
+        const diffInWeeks = Math.floor(diffInDays / 7);
+        if (diffInWeeks < 4) return `${diffInWeeks} weeks ago`;
+        
+        return date.toLocaleDateString('en-US');
     }
 
     updateDashboardData(data) {
-        // Update stats
-        this.shadowRoot.getElementById('totalSales').textContent = `$${data.totalSales.toFixed(2)}`;
-        this.shadowRoot.getElementById('totalPurchases').textContent = `$${data.totalPurchases.toFixed(2)}`;
-        this.shadowRoot.getElementById('activeProducts').textContent = data.activeProducts;
-        this.shadowRoot.getElementById('swapcoinBalance').textContent = data.swapcoinBalance;
+        try {
+            // Update stats with null checks
+            const totalSalesElement = this.shadowRoot.getElementById('totalSales');
+            const totalPurchasesElement = this.shadowRoot.getElementById('totalPurchases');
+            const activeProductsElement = this.shadowRoot.getElementById('activeProducts');
+            const swappitCoinsBalanceElement = this.shadowRoot.getElementById('swappitCoinsBalance');
+            
+            if (totalSalesElement) totalSalesElement.textContent = `$${data.totalSales.toFixed(2)}`;
+            if (totalPurchasesElement) totalPurchasesElement.textContent = `$${data.totalPurchases.toFixed(2)}`;
+            if (activeProductsElement) activeProductsElement.textContent = data.activeProducts;
+            if (swappitCoinsBalanceElement) swappitCoinsBalanceElement.textContent = data.swappitCoinsBalance;
 
-        // Add SWAPPIT Coins to the activity list
-        const activityWithCoins = [
-            {
-                type: 'coin',
-                title: 'SWAPPIT Coins Balance',
-                description: 'Your current available balance.',
-                price: data.swapcoinBalance,
-                time: 'Available'
-            },
-            ...data.recentActivity
-        ];
+            // Add SWAPP-IT Coins to the activity list
+            const activityWithCoins = [
+                {
+                    type: 'coin',
+                    title: 'Swapp-it Coins Balance',
+                    description: 'Your current available balance.',
+                    price: data.swappitCoinsBalance,
+                    time: 'Available'
+                },
+                ...data.recentActivity
+            ];
 
-        // Update activity list
-        const activityList = this.shadowRoot.getElementById('activityList');
-        activityList.innerHTML = activityWithCoins.map(activity => `
-            <div class="activity-item">
-                <div class="activity-icon ${activity.type}">
-                    <i class="fas fa-${this.getActivityIcon(activity.type)}"></i>
-                </div>
-                <div class="activity-details">
-                    <div class="activity-title">${activity.title}</div>
-                    <div class="activity-desc">${activity.description}</div>
-                </div>
-                <div class="activity-meta">
-                    <div class="activity-price">${activity.price}</div>
-                    <div class="activity-time">${activity.time}</div>
-                </div>
-            </div>
-        `).join('');
-        // Update activity summary
-        this.shadowRoot.getElementById('activityCount').textContent = `Showing latest ${data.recentActivity.length} activities`;
+            // Update activity list
+            const activityList = this.shadowRoot.getElementById('activityList');
+            if (activityList) {
+                activityList.innerHTML = activityWithCoins.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon ${activity.type}">
+                            <i class="fas fa-${this.getActivityIcon(activity.type)}"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">${activity.title}</div>
+                            <div class="activity-desc">${activity.description}</div>
+                        </div>
+                        <div class="activity-meta">
+                            <div class="activity-price">${activity.price}</div>
+                            <div class="activity-time">${activity.time}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update activity summary
+            const activityCountElement = this.shadowRoot.getElementById('activityCount');
+            if (activityCountElement) {
+                activityCountElement.textContent = `Showing latest ${data.recentActivity.length} activities`;
+            }
+        } catch (error) {
+            console.error('StudentDashboardOverview: Error updating dashboard data:', error);
+        }
     }
 
     renderChart(period = '7D') {
-        // Cargar Chart.js si no está cargado
-        if (!this.shadowRoot.getElementById('chartjs-script')) {
-            const script = document.createElement('script');
-            script.id = 'chartjs-script';
-            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-            script.onload = () => this._drawChart(period);
-            this.shadowRoot.appendChild(script);
-        } else {
-            this._drawChart(period);
-        }
-
-        // Botones de periodo
-        const periods = ['7D', '30D', '90D'];
-        periods.forEach(p => {
-            const btn = this.shadowRoot.getElementById('btn' + p);
-            if (btn) {
-                btn.classList.toggle('active', p === period);
-                btn.onclick = () => this.renderChart(p);
+        try {
+            // Load Chart.js if not loaded
+            if (!this.shadowRoot.getElementById('chartjs-script')) {
+                const script = document.createElement('script');
+                script.id = 'chartjs-script';
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => this._drawChart(period);
+                this.shadowRoot.appendChild(script);
+            } else {
+                this._drawChart(period);
             }
-        });
+
+            // Period buttons
+            const periods = ['7D', '30D', '90D'];
+            periods.forEach(p => {
+                const btn = this.shadowRoot.getElementById('btn' + p);
+                if (btn) {
+                    btn.classList.toggle('active', p === period);
+                    btn.onclick = () => this.renderChart(p);
+                }
+            });
+        } catch (error) {
+            console.error('StudentDashboardOverview: Error rendering chart:', error);
+        }
     }
 
     _drawChart(period) {
-        const ctx = this.shadowRoot.getElementById('trendChart').getContext('2d');
-        if (this._chartInstance) {
-            this._chartInstance.destroy();
-        }
-        // Datos de ejemplo para cada periodo
-        const dataMap = {
-            '7D': {
-                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                sales:   [12, 19, 3, 4, 5, 7, 10],
-                purchases: [8, 11, 5, 6, 4, 3, 8]
-            },
-            '30D': {
-                labels: Array.from({length: 30}, (_, i) => `Día ${i+1}`),
-                sales: Array.from({length: 30}, () => Math.floor(Math.random()*20)),
-                purchases: Array.from({length: 30}, () => Math.floor(Math.random()*15))
-            },
-            '90D': {
-                labels: Array.from({length: 90}, (_, i) => `Día ${i+1}`),
-                sales: Array.from({length: 90}, () => Math.floor(Math.random()*20)),
-                purchases: Array.from({length: 90}, () => Math.floor(Math.random()*15))
+        try {
+            const canvas = this.shadowRoot.getElementById('trendChart');
+            if (!canvas) {
+                console.error('StudentDashboardOverview: Canvas element not found');
+                return;
             }
-        };
-        const chartData = dataMap[period];
-        this._chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: chartData.labels,
-                datasets: [
-                    {
-                        label: 'Sales',
-                        data: chartData.sales,
-                        borderColor: '#3468c0',
-                        backgroundColor: 'rgba(52,104,192,0.08)',
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#3468c0',
-                        pointRadius: 5,
-                        borderWidth: 3
-                    },
-                    {
-                        label: 'Purchases',
-                        data: chartData.purchases,
-                        borderColor: '#ffa424',
-                        backgroundColor: 'rgba(255,164,36,0.08)',
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#ffa424',
-                        pointRadius: 5,
-                        borderWidth: 3
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        labels: {
-                            color: '#1e293b',
-                            font: { size: 14, weight: 'bold' }
+            
+            const ctx = canvas.getContext('2d');
+            if (this._chartInstance) {
+                this._chartInstance.destroy();
+            }
+            
+            // Datos de ejemplo para cada periodo
+            const dataMap = {
+                '7D': {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    sales:   [12, 19, 3, 4, 5, 7, 10],
+                    purchases: [8, 11, 5, 6, 4, 3, 8]
+                },
+                '30D': {
+                    labels: Array.from({length: 30}, (_, i) => `Día ${i+1}`),
+                    sales: Array.from({length: 30}, () => Math.floor(Math.random()*20)),
+                    purchases: Array.from({length: 30}, () => Math.floor(Math.random()*15))
+                },
+                '90D': {
+                    labels: Array.from({length: 90}, (_, i) => `Día ${i+1}`),
+                    sales: Array.from({length: 90}, () => Math.floor(Math.random()*20)),
+                    purchases: Array.from({length: 90}, () => Math.floor(Math.random()*15))
+                }
+            };
+            const chartData = dataMap[period];
+            this._chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: 'Sales',
+                            data: chartData.sales,
+                            borderColor: '#3468c0',
+                            backgroundColor: 'rgba(52,104,192,0.08)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#3468c0',
+                            pointRadius: 5,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'Purchases',
+                            data: chartData.purchases,
+                            borderColor: '#ffa424',
+                            backgroundColor: 'rgba(255,164,36,0.08)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#ffa424',
+                            pointRadius: 5,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#1e293b',
+                                font: { size: 14, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false
                         }
                     },
-                    tooltip: {
-                        enabled: true,
+                    interaction: {
                         mode: 'index',
-                        intersect: false
-                    }
-                },
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                    axis: 'x'
-                },
-                scales: {
-                    x: {
-                        ticks: { color: '#64748b', font: { size: 13 } },
-                        grid: { display: false }
+                        intersect: false,
+                        axis: 'x'
                     },
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#64748b', font: { size: 13 } },
-                        grid: { color: '#e2e8f0' }
+                    scales: {
+                        x: {
+                            ticks: { color: '#64748b', font: { size: 13 } },
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#64748b', font: { size: 13 } },
+                            grid: { color: '#e2e8f0' }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutElastic'
                     }
-                },
-                animation: {
-                    duration: 1000,
-                    easing: 'easeOutElastic'
                 }
-            }
-        });
+            });
 
-        // Animación interactiva al hacer click/tap
-        const canvas = this.shadowRoot.getElementById('trendChart');
-        if (canvas) {
-            canvas.onclick = () => {
-                this._chartInstance.options.animation = {
-                    duration: 1200,
-                    easing: 'easeInOutBounce'
+            // Animación interactiva al hacer click/tap
+            if (canvas) {
+                canvas.onclick = () => {
+                    this._chartInstance.options.animation = {
+                        duration: 1200,
+                        easing: 'easeInOutBounce'
+                    };
+                    this._chartInstance.update();
                 };
-                this._chartInstance.update();
-            };
-            // Para dispositivos táctiles
-            canvas.ontouchstart = () => {
-                this._chartInstance.options.animation = {
-                    duration: 1200,
-                    easing: 'easeInOutBounce'
+                // Para dispositivos táctiles
+                canvas.ontouchstart = () => {
+                    this._chartInstance.options.animation = {
+                        duration: 1200,
+                        easing: 'easeInOutBounce'
+                    };
+                    this._chartInstance.update();
                 };
-                this._chartInstance.update();
-            };
+            }
+        } catch (error) {
+            console.error('StudentDashboardOverview: Error drawing chart:', error);
         }
     }
 

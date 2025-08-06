@@ -382,16 +382,19 @@ class StudentAddProduct extends HTMLElement {
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Category</label>
-                                    <select class="form-select" name="category" required>
-                                        <option value="">Select Category</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="books">Books</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="furniture">Furniture</option>
-                                        <option value="sports">Sports & Fitness</option>
-                                        <option value="beauty">Beauty & Health</option>
-                                        <option value="other">Other</option>
-                                    </select>
+                                            <select class="form-select" name="category" required>
+            <option value="">Select Category</option>
+            <option value="accessories">Accessories</option>
+            <option value="books">Books</option>
+            <option value="category-art">Art</option>
+            <option value="electronics">Electronics</option>
+            <option value="notebooks">Notebooks</option>
+            <option value="school-bags">School Bags</option>
+            <option value="shoes">Shoes</option>
+            <option value="sports">Sports</option>
+            <option value="stationery">Stationery</option>
+            <option value="uniforms">Uniforms</option>
+        </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Condition</label>
@@ -586,10 +589,10 @@ class StudentAddProduct extends HTMLElement {
         const pricingSection = this.shadowRoot.getElementById('pricingSection');
         const tradeSection = this.shadowRoot.getElementById('tradeSection');
         
-        // Set initial state (price not required by default)
-        priceInput.required = false;
+        // Set initial state based on default selection (sale is checked by default)
+        priceInput.required = true; // Price is required for sale
         originalPriceInput.required = false;
-        pricingSection.style.display = 'none';
+        pricingSection.style.display = 'block'; // Show pricing for sale
         tradeSection.style.display = 'none';
     }
 
@@ -644,12 +647,13 @@ class StudentAddProduct extends HTMLElement {
         const loadingIcon = this.shadowRoot.getElementById('loadingIcon');
         const form = this.shadowRoot.getElementById('addProductForm');
         const imagePreview = this.shadowRoot.getElementById('imagePreview');
-        let currentUser; // Declarar aquí para que esté disponible en toda la función
+                    let currentUser; // Declare here so it's available throughout the function
         try {
             // Show loading state
             submitBtn.disabled = true;
             loadingIcon.classList.add('show');
             // Get current user
+            let currentUser;
             try {
                 const { getCurrentUser } = await import('/firebase/auth.js');
                 currentUser = getCurrentUser();
@@ -679,6 +683,17 @@ class StudentAddProduct extends HTMLElement {
             for (const field of requiredFields) {
                 if (!formData.get(field)?.trim()) {
                     this.showErrorNotification('Missing field', `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                    submitBtn.disabled = false;
+                    loadingIcon.classList.remove('show');
+                    return;
+                }
+            }
+
+            // Validate price for sale transactions
+            if (transactionType === 'sale') {
+                const price = formData.get('price');
+                if (!price || parseFloat(price) <= 0) {
+                    this.showErrorNotification('Invalid price', 'Please enter a valid price for sale items.');
                     submitBtn.disabled = false;
                     loadingIcon.classList.remove('show');
                     return;

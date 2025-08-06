@@ -10,7 +10,7 @@ class ProductPurchasePage {
         this.userBalance = 0;
         this.selectedDeliveryMethod = 'delivery';
         this.deliveryFees = {
-            delivery: 5, // 5 Swappcoins for home delivery
+            delivery: 5, // 5 Swapp-it Coins for home delivery
             pickup: 0    // Free pickup
         };
     }
@@ -127,7 +127,7 @@ class ProductPurchasePage {
         const productPrice = document.getElementById('product-price');
         if (productPrice) {
             const price = this.product.price || 0;
-            productPrice.textContent = price;
+            productPrice.textContent = price.toFixed(2);
         }
     }
 
@@ -174,17 +174,17 @@ class ProductPurchasePage {
         // Update summary display
         const summaryPrice = document.getElementById('summary-price');
         if (summaryPrice) {
-            summaryPrice.textContent = `${productPrice} Swappcoins`;
+            summaryPrice.textContent = `${productPrice.toFixed(2)} Swapp-it Coins`;
         }
 
         const summaryDelivery = document.getElementById('summary-delivery');
         if (summaryDelivery) {
-            summaryDelivery.textContent = `${deliveryFee} Swappcoins`;
+            summaryDelivery.textContent = `${deliveryFee.toFixed(2)} Swapp-it Coins`;
         }
 
         const summaryTotal = document.getElementById('summary-total');
         if (summaryTotal) {
-            summaryTotal.textContent = `${total} Swappcoins`;
+            summaryTotal.textContent = `${total.toFixed(2)} Swapp-it Coins`;
         }
 
         // Check if user has sufficient funds
@@ -210,7 +210,7 @@ class ProductPurchasePage {
             // Disable purchase button
             if (purchaseBtn) {
                 purchaseBtn.disabled = true;
-                purchaseBtn.textContent = 'Insufficient Swappcoins';
+                purchaseBtn.textContent = 'Insufficient Swapp-it Coins';
             }
         } else {
             // Hide insufficient funds warning
@@ -271,13 +271,13 @@ window.processPurchase = async function() {
 
         // Check if user has sufficient funds
         if (purchasePage.userBalance < total) {
-            throw new Error('Insufficient Swappcoins');
+            throw new Error('Insufficient Swapp-it Coins');
         }
 
         // TODO: Implement actual purchase logic
         // This would involve:
         // 1. Creating a transaction record
-        // 2. Deducting Swappcoins from user
+                    // 2. Deducting Swapp-it Coins from user
         // 3. Updating product status
         // 4. Sending notifications
 
@@ -296,9 +296,9 @@ window.processPurchase = async function() {
     }
 };
 
-window.buyMoreSwappcoins = function() {
+        window.buyMoreSwappitCoins = function() {
     // Redirect to Swappcoin purchase page
-    window.location.href = '../../pages/swapcoin/info.html';
+                    window.location.href = '../../pages/swapcoin/buy-coins.html';
 };
 
 // Initialize the page

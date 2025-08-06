@@ -134,16 +134,16 @@ async function handleLogin(formData) {
         // 3. Update last login timestamp
         await updateLastLogin(authResult.user.uid);
 
-        // 4. Success - redirect based on role
+        // 4. Success - redirect to marketplace
         showSuccessAnimation();
-        showSuccess('Login successful! Redirecting...');
+        showSuccess('Login successful! Redirecting to marketplace...');
         
         // Store login info for welcome icon (but don't show icon yet)
         sessionStorage.setItem('justLoggedIn', 'true');
         sessionStorage.setItem('userRole', userProfile.role);
         
         setTimeout(() => {
-            pathConfig.redirectToDashboard(userProfile.role);
+            pathConfig.redirectTo(pathConfig.getMarketplacePath());
         }, 2000);
 
     } catch (error) {
@@ -356,7 +356,7 @@ if (togglePasswordBtn) {
 document.addEventListener('DOMContentLoaded', () => {
     // Check if user is already authenticated
     if (isAuthenticated()) {
-        navigateToDashboard();
+        pathConfig.redirectTo(pathConfig.getMarketplacePath());
     }
     
     // Initialize animations

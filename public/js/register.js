@@ -1,84 +1,148 @@
-// Firebase imports
+// Enhanced Register JavaScript - Simplified Version
+console.log('Register script loaded');
+
+// Import Firebase functions
 import { registerUser } from '../firebase/auth.js';
 import { createUserProfile } from '../firebase/firestore.js';
-import { isAuthenticated, navigateToDashboard } from './auth-state.js';
-import pathConfig from './config.js';
 
 // DOM elements
-const roleButtons = document.querySelectorAll('.role-btn');
-const personalFields = document.getElementById('personalFields');
-const businessFields = document.getElementById('businessFields');
-const registerForm = document.getElementById('registerForm');
+let registerForm, registerBtn, personalBtn, businessBtn, personalFields, businessFields;
+let colegioSelect, otherSchoolGroup, otherSchoolInput;
 
 // Loading state
 let isLoading = false;
 
-// ==================== BOTÓN DE REGRESO ====================
-document.addEventListener('DOMContentLoaded', function() {
-    const backBtn = document.getElementById('backBtn');
+// ==================== DOM INITIALIZATION ====================
+function initializeDOM() {
+    console.log('Initializing DOM elements...');
     
-    if (backBtn) {
-        backBtn.addEventListener('click', function() {
-            // Efecto de animación al hacer clic
-            this.style.transform = 'translateX(-5px) scale(0.95)';
-            
-            setTimeout(() => {
-                // Intentar ir hacia atrás en el historial
-                if (window.history.length > 1) {
-                    window.history.back();
-                } else {
-                    // Si no hay historial, ir a la página principal
-                    window.location.href = '/';
-                }
-            }, 150);
-        });
-        
-        // Restaurar el botón después del clic
-        backBtn.addEventListener('transitionend', function() {
-            this.style.transform = '';
-        });
+    registerForm = document.getElementById('registerForm');
+    registerBtn = document.querySelector('.register-btn');
+    personalBtn = document.getElementById('personalBtn');
+    businessBtn = document.getElementById('businessBtn');
+    personalFields = document.getElementById('personalFields');
+    businessFields = document.getElementById('businessFields');
+    colegioSelect = document.getElementById('colegio');
+    otherSchoolGroup = document.getElementById('otherSchoolGroup');
+    otherSchoolInput = document.getElementById('otherSchool');
+
+    console.log('DOM elements found:', {
+        registerForm: !!registerForm,
+        registerBtn: !!registerBtn,
+        personalBtn: !!personalBtn,
+        businessBtn: !!businessBtn,
+        personalFields: !!personalFields,
+        businessFields: !!businessFields,
+        colegioSelect: !!colegioSelect,
+        otherSchoolGroup: !!otherSchoolGroup,
+        otherSchoolInput: !!otherSchoolInput
+    });
+
+    // Verify all elements exist
+    if (!registerForm || !registerBtn || !personalBtn || !businessBtn || !personalFields || !businessFields) {
+        console.error('Required DOM elements not found');
+        return false;
     }
-});
+
+    return true;
+}
 
 // ==================== ROLE SELECTION ====================
-function handleRoleChange(event) {
-    const selectedRole = event.target.dataset.role;
+function initializeRoleSelection() {
+    console.log('Initializing role selection...');
     
-    // Update buttons
-    roleButtons.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    // Toggle business mode for visual effects
-    const body = document.body;
-    if (selectedRole === 'business') {
-        body.classList.add('business-mode');
-    } else {
-        body.classList.remove('business-mode');
+    if (!personalBtn || !businessBtn) {
+        console.error('Role buttons not found');
+        return;
     }
+
+    // Remove any existing event listeners
+    personalBtn.replaceWith(personalBtn.cloneNode(true));
+    businessBtn.replaceWith(businessBtn.cloneNode(true));
     
-    // Show/hide fields based on role
-    if (selectedRole === 'personal') {
-        personalFields.classList.remove('hidden');
+    // Get fresh references
+    personalBtn = document.getElementById('personalBtn');
+    businessBtn = document.getElementById('businessBtn');
+
+    personalBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Personal button clicked');
+        switchToRole('personal');
+    });
+    
+    businessBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Business button clicked');
+        switchToRole('business');
+    });
+    
+    // Set initial state
+    switchToRole('personal');
+}
+
+function switchToRole(role) {
+    console.log('Switching to role:', role);
+    
+    // Update button states
+    personalBtn.classList.toggle('active', role === 'personal');
+    businessBtn.classList.toggle('active', role === 'business');
+    
+    console.log('Button states updated');
+    console.log('Personal button active:', personalBtn.classList.contains('active'));
+    console.log('Business button active:', businessBtn.classList.contains('active'));
+    
+    // Show/hide fields with animation
+    if (role === 'personal') {
         businessFields.classList.add('hidden');
-        toggleRequiredFields(personalFields, true);
-        toggleRequiredFields(businessFields, false);
+        personalFields.classList.remove('hidden');
+        personalFields.style.animation = 'slideInFromRight 0.5s ease';
+        console.log('Showing personal fields, hiding business fields');
     } else {
         personalFields.classList.add('hidden');
         businessFields.classList.remove('hidden');
-        toggleRequiredFields(personalFields, false);
-        toggleRequiredFields(businessFields, true);
+        businessFields.style.animation = 'slideInFromRight 0.5s ease';
+        console.log('Showing business fields, hiding personal fields');
+    }
+    
+    // Update form validation
+    updateFormValidation(role);
+}
+
+function updateFormValidation(role) {
+    const personalInputs = personalFields.querySelectorAll('input, select');
+    const businessInputs = businessFields.querySelectorAll('input, select, textarea');
+    
+    if (role === 'personal') {
+        personalInputs.forEach(input => input.required = true);
+        businessInputs.forEach(input => input.required = false);
+    } else {
+        personalInputs.forEach(input => input.required = false);
+        businessInputs.forEach(input => input.required = true);
     }
 }
 
-function toggleRequiredFields(container, required) {
-    const inputs = container.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        if (required) {
-            input.setAttribute('required', '');
-        } else {
-            input.removeAttribute('required');
-        }
-    });
+// ==================== SCHOOL SELECTION ====================
+function initializeSchoolSelection() {
+    if (!colegioSelect) {
+        console.error('School select not found');
+        return;
+    }
+    
+    colegioSelect.addEventListener('change', handleSchoolSelection);
+}
+
+function handleSchoolSelection() {
+    const selectedValue = colegioSelect.value;
+    
+    if (selectedValue === 'other') {
+        otherSchoolGroup.style.display = 'block';
+        otherSchoolInput.required = true;
+        otherSchoolInput.focus();
+    } else {
+        otherSchoolGroup.style.display = 'none';
+        otherSchoolInput.required = false;
+        otherSchoolInput.value = '';
+    }
 }
 
 // ==================== FORM VALIDATION ====================
@@ -86,48 +150,54 @@ function validateForm() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const selectedRole = document.querySelector('.role-btn.active').dataset.role;
-
+    
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         showError('Please enter a valid email address');
         return false;
     }
-
+    
     // Password validation
     if (password.length < 6) {
         showError('Password must be at least 6 characters long');
         return false;
     }
-
+    
+    // Confirm password validation
     if (password !== confirmPassword) {
         showError('Passwords do not match');
         return false;
     }
-
+    
     // Role-specific validation
-    if (selectedRole === 'personal') {
+    const activeRole = personalBtn.classList.contains('active') ? 'personal' : 'business';
+    
+    if (activeRole === 'personal') {
         const nombre = document.getElementById('nombre').value;
         const telefono = document.getElementById('telefono').value;
         const direccion = document.getElementById('direccion').value;
-
-        if (!nombre.trim() || !telefono.trim() || !direccion.trim()) {
-            showError('Please fill in all required personal fields');
+        const colegio = colegioSelect.value;
+        
+        if (!nombre || !telefono || !direccion || !colegio) {
+            showError('Please fill in all required fields for personal account');
+            return false;
+        }
+        
+        if (colegio === 'other' && !otherSchoolInput.value) {
+            showError('Please enter your school name');
             return false;
         }
     } else {
-        const nombreNegocio = document.getElementById('nombreNegocio').value;
-        const ruc = document.getElementById('ruc').value;
-        const direccionNegocio = document.getElementById('direccionNegocio').value;
-        const telefonoNegocio = document.getElementById('telefonoNegocio').value;
-
-        if (!nombreNegocio.trim() || !ruc.trim() || !direccionNegocio.trim() || !telefonoNegocio.trim()) {
-            showError('Please fill in all required business fields');
-            return false;
+        const businessInputs = businessFields.querySelectorAll('input[required], select[required], textarea[required]');
+        for (let input of businessInputs) {
+            if (!input.value.trim()) {
+                showError('Please fill in all required fields for business account');
+                return false;
+            }
         }
     }
-
+    
     return true;
 }
 
@@ -147,14 +217,15 @@ function showError(message) {
         color: #dc3545;
         background-color: #f8d7da;
         border: 1px solid #f5c6cb;
-        border-radius: 4px;
-        padding: 10px;
+        border-radius: 8px;
+        padding: 12px 16px;
         margin: 10px 0;
         text-align: center;
+        font-size: 0.9rem;
+        animation: slideInFromTop 0.3s ease;
     `;
 
-    const form = document.getElementById('registerForm');
-    form.insertBefore(errorDiv, form.firstChild);
+    registerForm.insertBefore(errorDiv, registerForm.firstChild);
 
     // Auto-remove after 5 seconds
     setTimeout(() => {
@@ -164,153 +235,79 @@ function showError(message) {
     }, 5000);
 }
 
-function showSuccess(message, subtext = 'Redirecting...', role = '') {
-    const existingMessage = document.querySelector('.success-message, .success-message-student, .success-message-business');
+function showSuccess(message) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.success-message');
     if (existingMessage) {
         existingMessage.remove();
     }
-    
-    let successDiv;
-    if (role === 'business') {
-        // Mensaje de éxito para business con ícono de portafolio y texto animado
-        successDiv = document.createElement('div');
-        successDiv.className = 'success-message-business';
-        successDiv.innerHTML = `
-            <svg class="business-portfolio-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
-            <span class="gradient-text-business">Welcome to Swapp-it Business Suite</span>
-        `;
-        document.body.appendChild(successDiv);
-    } else {
-        // Mensaje de éxito para student - solo texto animado
-        successDiv = document.createElement('div');
-        successDiv.className = 'success-message-student';
-        successDiv.innerHTML = `
-            <span class="gradient-text">Welcome to Swapp-it!</span>
-        `;
-        document.body.appendChild(successDiv);
-    }
+
+    // Create and show success message
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.textContent = message;
+    successDiv.style.cssText = `
+        color: #155724;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin: 10px 0;
+        text-align: center;
+        font-size: 0.9rem;
+        animation: slideInFromTop 0.3s ease;
+    `;
+
+    registerForm.insertBefore(successDiv, registerForm.firstChild);
 }
 
 function setLoadingState(loading) {
     isLoading = loading;
-    const submitBtn = document.querySelector('.register-btn');
     
     if (loading) {
-        submitBtn.textContent = 'Creating Account...';
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
+        registerBtn.classList.add('loading');
+        registerBtn.disabled = true;
+        const btnText = registerBtn.querySelector('.btn-text');
+        if (btnText) {
+            btnText.textContent = 'Creating Account...';
+        }
     } else {
-        submitBtn.textContent = 'Sign Up';
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
+        registerBtn.classList.remove('loading');
+        registerBtn.disabled = false;
+        const btnText = registerBtn.querySelector('.btn-text');
+        if (btnText) {
+            btnText.textContent = 'Create Account';
+        }
     }
 }
 
-// ==================== FIREBASE INTEGRATION ====================
-async function handleRegistration(formData) {
-    try {
-        setLoadingState(true);
-        
-        const email = formData.get('email');
-        const password = formData.get('password');
-        const selectedRole = document.querySelector('.role-btn.active').dataset.role;
-
-        console.log('Starting registration process...');
-        console.log('Email:', email);
-        console.log('Role:', selectedRole);
-
-        // 1. Create Firebase Auth user
-        console.log('Creating Firebase Auth user...');
-        const authResult = await registerUser(email, password, formData.get('nombre') || formData.get('nombreNegocio'));
-        
-        if (!authResult.success) {
-            console.error('Auth creation failed:', authResult.error);
-            throw new Error(authResult.error);
-        }
-
-        console.log('Firebase Auth user created successfully:', authResult.user.uid);
-
-        // 2. Prepare user profile data
-        const userProfile = {
-            email: email,
-            role: selectedRole,
-            createdAt: new Date(),
-            status: 'active'
-        };
-
-        // Add role-specific data
-        if (selectedRole === 'personal') {
-            userProfile.personal = {
-                nombre: formData.get('nombre'),
-                telefono: formData.get('telefono'),
-                direccion: formData.get('direccion')
-            };
-        } else {
-            userProfile.business = {
-                nombreNegocio: formData.get('nombreNegocio'),
-                ruc: formData.get('ruc'),
-                direccionNegocio: formData.get('direccionNegocio'),
-                telefonoNegocio: formData.get('telefonoNegocio'),
-                tipoNegocio: formData.get('tipoNegocio'),
-                descripcionNegocio: formData.get('descripcionNegocio')
-            };
-        }
-
-        console.log('User profile data prepared:', userProfile);
-
-        // 3. Create Firestore user profile
-        console.log('Creating Firestore user profile...');
-        console.log('User ID:', authResult.user.uid);
-        console.log('User Profile Data:', JSON.stringify(userProfile, null, 2));
-        
-        const profileResult = await createUserProfile(authResult.user.uid, userProfile);
-        
-        console.log('Profile creation result:', profileResult);
-        
-        if (!profileResult.success) {
-            console.error('Profile creation failed:', profileResult.error);
-            console.error('Error code:', profileResult.errorCode);
-            console.error('Original error:', profileResult.originalError);
+// ==================== PASSWORD TOGGLE ====================
+function initializePasswordToggles() {
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const eyeIcon = button.querySelector('.eye-icon');
             
-            // If profile creation fails, we should clean up the auth user
-            // But for now, let's just show the error
-            throw new Error(`Profile creation failed: ${profileResult.error}`);
-        }
-
-        console.log('Firestore user profile created successfully');
-
-        // 4. Success - redirect to dashboard
-        showSuccess('Account created successfully! Redirecting...', '', selectedRole);
-        
-        setTimeout(() => {
-            // Redirect based on role
-            pathConfig.redirectToDashboard(selectedRole);
-        }, 2000);
-
-    } catch (error) {
-        console.error('Registration error:', error);
-        
-        // Provide more specific error messages
-        let errorMessage = error.message;
-        
-        if (error.message.includes('permission') || error.message.includes('insufficient')) {
-            errorMessage = 'Permission error: Please check your Firebase configuration and security rules.';
-        } else if (error.message.includes('network') || error.message.includes('fetch')) {
-            errorMessage = 'Network error: Please check your internet connection and try again.';
-        } else if (error.message.includes('auth/email-already-in-use')) {
-            errorMessage = 'An account with this email already exists. Please use a different email or try logging in.';
-        } else if (error.message.includes('auth/weak-password')) {
-            errorMessage = 'Password is too weak. Please choose a stronger password.';
-        } else if (error.message.includes('auth/invalid-email')) {
-            errorMessage = 'Please enter a valid email address.';
-        }
-        
-        showError(errorMessage);
-    } finally {
-        setLoadingState(false);
-    }
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    eyeIcon.innerHTML = `<svg class="icon-eye-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.06 10.06 0 0 1 12 19c-7 0-11-7-11-7a18.77 18.77 0 0 1 5.06-5.94M1 1l22 22"/>
+                        <path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/>
+                    </svg>`;
+                } else {
+                    input.type = 'password';
+                    eyeIcon.innerHTML = `<svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>`;
+                }
+            }
+        });
+    });
 }
 
 // ==================== FORM SUBMISSION ====================
@@ -324,143 +321,215 @@ async function handleFormSubmit(event) {
         return;
     }
 
-    // Get form data
-    const formData = new FormData(registerForm);
-    
-    // Handle registration
-    await handleRegistration(formData);
+    setLoadingState(true);
+
+    try {
+        // Get form data
+        const formData = new FormData(registerForm);
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const activeRole = personalBtn.classList.contains('active') ? 'personal' : 'business';
+        
+        console.log('Form submitted:', { email, activeRole });
+        
+        // Create user account in Firebase Auth
+        console.log('Creating user account in Firebase Auth...');
+        const authResult = await registerUser(email, password, email.split('@')[0]);
+        
+        if (!authResult.success) {
+            throw new Error(authResult.error);
+        }
+        
+        console.log('User account created successfully:', authResult.user);
+        
+        // Prepare user data for Firestore
+        const userData = {
+            uid: authResult.user.uid,
+            email: email,
+            role: activeRole,
+            swappitCoins: 100, // Starting coins
+            isActive: true
+        };
+        
+        // Add role-specific data
+        if (activeRole === 'personal') {
+            userData.nombre = formData.get('nombre');
+            userData.telefono = formData.get('telefono');
+            userData.direccion = formData.get('direccion');
+            userData.colegio = formData.get('colegio');
+            userData.otherSchool = formData.get('otherSchool') || null;
+        } else {
+            userData.nombreNegocio = formData.get('nombreNegocio');
+            userData.ruc = formData.get('ruc');
+            userData.direccionNegocio = formData.get('direccionNegocio');
+            userData.telefonoNegocio = formData.get('telefonoNegocio');
+            userData.tipoNegocio = formData.get('tipoNegocio');
+            userData.descripcionNegocio = formData.get('descripcionNegocio');
+        }
+        
+        // Create user profile in Firestore
+        console.log('Creating user profile in Firestore...');
+        const profileResult = await createUserProfile(userData);
+        
+        if (!profileResult.success) {
+            throw new Error(`Failed to create user profile: ${profileResult.error}`);
+        }
+        
+        console.log('User profile created successfully');
+        
+        // Show success message
+        showSuccess(activeRole === 'personal' ? 
+            'Personal account created successfully! Welcome to Swapp-it!' : 
+            'Business account created successfully! Welcome to Swapp-it!');
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+            window.location.href = activeRole === 'personal' ? 
+                '/dashboards/student/student-dashboard.html' : 
+                '/dashboards/business/business-dashboard.html';
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Registration error:', error);
+        showError(error.message || 'Failed to create account. Please try again.');
+    } finally {
+        setLoadingState(false);
+    }
 }
 
-// ==================== EVENT LISTENERS ====================
-roleButtons.forEach(button => {
-    button.addEventListener('click', handleRoleChange);
-});
-
-registerForm.addEventListener('submit', handleFormSubmit);
-
-// Initialize form state
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Registration page loaded');
+// ==================== INPUT ANIMATIONS ====================
+function addInputAnimations() {
+    const inputs = document.querySelectorAll('input, select, textarea');
     
-    // Check if user is already authenticated
-    if (isAuthenticated()) {
-        console.log('User already authenticated, redirecting...');
-        navigateToDashboard();
+    inputs.forEach(input => {
+        // Add focus effects
+        input.addEventListener('focus', () => {
+            const wrapper = input.closest('.input-3d-wrapper');
+            if (wrapper) {
+                wrapper.style.transform = 'translateY(-2px)';
+            }
+        });
+        
+        input.addEventListener('blur', () => {
+            const wrapper = input.closest('.input-3d-wrapper');
+            if (wrapper) {
+                wrapper.style.transform = 'translateY(0)';
+            }
+        });
+        
+        // Add typing animation
+        input.addEventListener('input', () => {
+            if (input.value.length > 0) {
+                input.classList.add('has-content');
+            } else {
+                input.classList.remove('has-content');
+            }
+        });
+    });
+}
+
+// ==================== BACK BUTTON ====================
+function initializeBackButton() {
+    const backBtn = document.getElementById('backBtn');
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            // Animation effect
+            this.style.transform = 'translateX(-5px) scale(0.95)';
+            
+            setTimeout(() => {
+                // Go back in history or to home
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/';
+                }
+            }, 150);
+        });
+        
+        // Restore button after animation
+        backBtn.addEventListener('transitionend', function() {
+            this.style.transform = '';
+        });
+    }
+}
+
+// ==================== SOCIAL LOGIN ====================
+function initializeSocialLogin() {
+    const googleBtn = document.querySelector('.google-btn');
+    const microsoftBtn = document.querySelector('.microsoft-btn');
+    
+    if (googleBtn) {
+        googleBtn.addEventListener('click', () => {
+            showError('Google sign-up coming soon!');
+        });
+    }
+    
+    if (microsoftBtn) {
+        microsoftBtn.addEventListener('click', () => {
+            showError('Microsoft sign-up coming soon!');
+        });
+    }
+}
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Register page loaded');
+    
+    // Initialize DOM elements
+    if (!initializeDOM()) {
+        console.error('Failed to initialize DOM elements');
         return;
     }
     
-    // Check URL parameters for role selection
-    const urlParams = new URLSearchParams(window.location.search);
-    const roleParam = urlParams.get('role');
+    // Initialize all components
+    initializeRoleSelection();
+    initializeSchoolSelection();
+    initializePasswordToggles();
+    initializeBackButton();
+    initializeSocialLogin();
+    addInputAnimations();
     
-    // Set initial role and visual mode
-    let activeRole = document.querySelector('.role-btn.active');
+    // Set up form submission
+    registerForm.addEventListener('submit', handleFormSubmit);
     
-    // If role parameter is specified, select that role
-    if (roleParam === 'business') {
-        console.log('Role parameter detected: business');
-        const businessBtn = document.querySelector('.role-btn[data-role="business"]');
-        if (businessBtn) {
-            // Remove active class from current active button
-            if (activeRole) {
-                activeRole.classList.remove('active');
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
             }
-            // Add active class to business button
-            businessBtn.classList.add('active');
-            activeRole = businessBtn;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-    }
-    
-    if (activeRole) {
-        activeRole.click();
         
-        // Initialize visual mode based on active role
-        const selectedRole = activeRole.dataset.role;
-        const body = document.body;
-        if (selectedRole === 'business') {
-            body.classList.add('business-mode');
-        } else {
-            body.classList.remove('business-mode');
+        .register-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
         }
-    }
+        
+        .register-btn.loading .btn-icon {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    console.log('Register page initialization complete');
+});
 
-    // Custom select para business type SOLO con click
-    const customSelect = document.getElementById('customSelectBusiness');
-    const selectedOption = document.getElementById('selectedBusinessType');
-    const optionsList = document.getElementById('businessTypeOptions');
-    const hiddenInput = document.getElementById('tipoNegocio');
-    if (customSelect && selectedOption && optionsList && hiddenInput) {
-        // Abrir/cerrar solo con click
-        selectedOption.addEventListener('click', () => {
-            customSelect.classList.toggle('open');
-        });
-        // Seleccionar opción con click
-        optionsList.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-            });
-            option.addEventListener('click', (e) => {
-                const value = option.getAttribute('data-value');
-                const text = option.textContent;
-                selectedOption.textContent = text;
-                hiddenInput.value = value;
-                customSelect.classList.remove('open');
-            });
-        });
-        // Cerrar si se hace click fuera
-        document.addEventListener('mousedown', (e) => {
-            if (!customSelect.contains(e.target)) {
-                customSelect.classList.remove('open');
-            }
-        });
-    }
-
-    // Mostrar/ocultar contraseña con SVG profesional
-    document.querySelectorAll('.toggle-password').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-target');
-            const input = document.getElementById(targetId);
-            const eyeIcon = btn.querySelector('.eye-icon');
-            if (input) {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    eyeIcon.innerHTML = `<svg class="icon-eye-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.06 10.06 0 0 1 12 19c-7 0-11-7-11-7a18.77 18.77 0 0 1 5.06-5.94M1 1l22 22"/><path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/></svg>`;
-                } else {
-                    input.type = 'password';
-                    eyeIcon.innerHTML = `<svg class="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
-                }
-            }
-        });
-    });
-
-    // Mensaje de validación en inglés para campos required
-    document.querySelectorAll('input[required], textarea[required], select[required]').forEach(field => {
-        field.addEventListener('invalid', function(e) {
-            e.target.setCustomValidity('Please fill out this field');
-        });
-        field.addEventListener('input', function(e) {
-            e.target.setCustomValidity('');
-        });
-    });
-
-    // Efecto tilt 3D en el formulario student
-    const registerBox = document.querySelector('.register-box');
-    if (registerBox) {
-        registerBox.addEventListener('mousemove', (e) => {
-            const rect = registerBox.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * 8; // máximo 8 grados
-            const rotateY = ((x - centerX) / centerX) * 12; // máximo 12 grados
-            registerBox.style.transform = `translateY(-6px) scale(1.025) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        registerBox.addEventListener('mouseleave', () => {
-            registerBox.style.transform = '';
-        });
-        registerBox.addEventListener('mouseenter', () => {
-            registerBox.style.transition = 'transform 0.35s cubic-bezier(.4,2,.3,1)';
-        });
-    }
-}); 
+// Make functions available globally for testing
+window.registerFunctions = {
+    switchToRole,
+    validateForm,
+    showError,
+    showSuccess
+}; 

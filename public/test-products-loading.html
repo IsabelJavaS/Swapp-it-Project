@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Products Loading</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .test-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .test-button {
+            background: #3468c0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .test-button:hover {
+            background: #1d4ed8;
+        }
+        .log-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test de Carga de Productos</h1>
+        
+        <div class="test-section">
+            <div class="test-title">1. Verificar Componente</div>
+            <div class="test-description">Comprueba si el componente student-products está registrado correctamente</div>
+            <button class="test-button" onclick="testComponentRegistration()">Verificar Componente</button>
+            <div id="component-test-output" class="log-output"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">2. Verificar Firebase Auth</div>
+            <div class="test-description">Comprueba si Firebase Auth está funcionando</div>
+            <button class="test-button" onclick="testFirebaseAuth()">Verificar Auth</button>
+            <div id="auth-test-output" class="log-output"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">3. Verificar Firestore</div>
+            <div class="test-description">Comprueba si Firestore está funcionando</div>
+            <button class="test-button" onclick="testFirestore()">Verificar Firestore</button>
+            <div id="firestore-test-output" class="log-output"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">4. Cargar Componente de Productos</div>
+            <div class="test-description">Carga el componente student-products y verifica su funcionamiento</div>
+            <button class="test-button" onclick="testProductsComponent()">Cargar Componente</button>
+            <div id="products-test-output" class="log-output"></div>
+            <div id="products-component-container" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module" src="/firebase/config.js"></script>
+    <script type="module" src="/firebase/auth.js"></script>
+    <script type="module" src="/firebase/firestore.js"></script>
+    
+    <!-- Component Scripts -->
+    <script type="module" src="/dashboards/student/components/student-products.js"></script>
+
+    <script>
+        function logToElement(elementId, message) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.innerHTML += `[${timestamp}] ${message}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function testComponentRegistration() {
+            logToElement('component-test-output', '🔍 Verificando registro del componente...');
+            
+            setTimeout(() => {
+                if (customElements.get('student-products')) {
+                    logToElement('component-test-output', '✅ Componente student-products está registrado');
+                } else {
+                    logToElement('component-test-output', '❌ Componente student-products NO está registrado');
+                }
+                
+                // Verificar otros componentes
+                const components = ['student-dashboard', 'student-sidebar', 'student-add-product'];
+                components.forEach(comp => {
+                    if (customElements.get(comp)) {
+                        logToElement('component-test-output', `✅ Componente ${comp} está registrado`);
+                    } else {
+                        logToElement('component-test-output', `❌ Componente ${comp} NO está registrado`);
+                    }
+                });
+            }, 1000);
+        }
+
+        async function testFirebaseAuth() {
+            logToElement('auth-test-output', '🔍 Verificando Firebase Auth...');
+            
+            try {
+                const { getCurrentUser } = await import('/firebase/auth.js');
+                const user = getCurrentUser();
+                
+                if (user) {
+                    logToElement('auth-test-output', `✅ Usuario autenticado: ${user.email}`);
+                    logToElement('auth-test-output', `   UID: ${user.uid}`);
+                } else {
+                    logToElement('auth-test-output', '⚠️ No hay usuario autenticado');
+                }
+            } catch (error) {
+                logToElement('auth-test-output', `❌ Error en Firebase Auth: ${error.message}`);
+            }
+        }
+
+        async function testFirestore() {
+            logToElement('firestore-test-output', '🔍 Verificando Firestore...');
+            
+            try {
+                const { getProducts } = await import('/firebase/firestore.js');
+                logToElement('firestore-test-output', '✅ Firestore importado correctamente');
+                
+                // Intentar obtener productos (sin filtros para ver si funciona)
+                const result = await getProducts({});
+                logToElement('firestore-test-output', `✅ Firestore funcionando. Resultado: ${result.success ? 'Éxito' : 'Error'}`);
+                
+                if (result.success) {
+                    logToElement('firestore-test-output', `   Productos encontrados: ${result.products.length}`);
+                } else {
+                    logToElement('firestore-test-output', `   Error: ${result.error}`);
+                }
+            } catch (error) {
+                logToElement('firestore-test-output', `❌ Error en Firestore: ${error.message}`);
+            }
+        }
+
+        async function testProductsComponent() {
+            logToElement('products-test-output', '🔍 Cargando componente de productos...');
+            
+            const container = document.getElementById('products-component-container');
+            container.innerHTML = '<student-products></student-products>';
+            
+            logToElement('products-test-output', '✅ Componente añadido al DOM');
+            
+            // Esperar un poco y verificar si se cargó
+            setTimeout(() => {
+                const component = container.querySelector('student-products');
+                if (component && component.shadowRoot) {
+                    logToElement('products-test-output', '✅ Componente renderizado correctamente');
+                    
+                    // Verificar si hay elementos internos
+                    const productsList = component.shadowRoot.getElementById('productsList');
+                    if (productsList) {
+                        logToElement('products-test-output', '✅ Elemento productsList encontrado');
+                    } else {
+                        logToElement('products-test-output', '❌ Elemento productsList NO encontrado');
+                    }
+                } else {
+                    logToElement('products-test-output', '❌ Componente NO se renderizó correctamente');
+                }
+            }, 2000);
+        }
+
+        // Auto-ejecutar pruebas al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            logToElement('component-test-output', '🚀 Iniciando pruebas automáticas...');
+            setTimeout(testComponentRegistration, 500);
+            setTimeout(testFirebaseAuth, 1000);
+            setTimeout(testFirestore, 1500);
+            setTimeout(testProductsComponent, 2000);
+        });
+    </script>
+</body>
+</html> 

@@ -35,12 +35,12 @@ const COLLECTIONS = {
 };
 
 // ==================== USER FUNCTIONS ====================
-export const createUserProfile = async (userId, userData) => {
+export const createUserProfile = async (userData) => {
   try {
-    console.log('createUserProfile called with:', { userId, userData });
+    console.log('createUserProfile called with:', userData);
     
     // Verificar que tenemos los datos necesarios
-    if (!userId) {
+    if (!userData.uid) {
       throw new Error('User ID is required');
     }
     
@@ -53,24 +53,40 @@ export const createUserProfile = async (userId, userData) => {
       throw new Error('Firestore database not initialized');
     }
     
-    const userRef = doc(db, COLLECTIONS.USERS, userId);
+    const userRef = doc(db, COLLECTIONS.USERS, userData.uid);
     console.log('User reference created:', userRef.path);
     
-    // Estructura simplificada del perfil de usuario
+    // Estructura del perfil de usuario
     const completeUserProfile = {
-      userId: userId,
+      uid: userData.uid,
       email: userData.email,
       role: userData.role,
       status: 'active',
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      lastLogin: serverTimestamp(),
+      swappitCoins: userData.swappitCoins || 100,
+      isActive: userData.isActive || true
     };
     
     // Agregar datos específicos del rol
-    if (userData.role === 'personal' && userData.personal) {
-      completeUserProfile.personal = userData.personal;
-    } else if (userData.role === 'business' && userData.business) {
-      completeUserProfile.business = userData.business;
+    if (userData.role === 'personal') {
+      completeUserProfile.personal = {
+        nombre: userData.nombre,
+        telefono: userData.telefono,
+        direccion: userData.direccion,
+        colegio: userData.colegio,
+        otherSchool: userData.otherSchool || null
+      };
+    } else if (userData.role === 'business') {
+      completeUserProfile.business = {
+        nombreNegocio: userData.nombreNegocio,
+        ruc: userData.ruc,
+        direccionNegocio: userData.direccionNegocio,
+        telefonoNegocio: userData.telefonoNegocio,
+        tipoNegocio: userData.tipoNegocio,
+        descripcionNegocio: userData.descripcionNegocio
+      };
     }
     
     // Agregar sistema de puntos

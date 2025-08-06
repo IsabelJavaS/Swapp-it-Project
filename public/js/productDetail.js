@@ -276,12 +276,23 @@ class ProductDetailPage {
         const price = this.product.price || 0;
         const originalPrice = this.product.originalPrice || price;
         
+        // Calculate Swappit Coin equivalent (1 SWAPPIT Coin = $0.03)
+        const swappitCoinRate = 0.03;
+        const priceInSwappitCoins = price / swappitCoinRate;
+        const originalPriceInSwappitCoins = originalPrice / swappitCoinRate;
+        
         if (currentPriceElement) {
-            currentPriceElement.textContent = `${price} Swappcoin`;
+            currentPriceElement.innerHTML = `
+                <span class="swappit-price">${priceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
+                <span class="dollar-price">($${price.toFixed(2)})</span>
+            `;
         }
         
         if (originalPriceElement && originalPrice > price) {
-            originalPriceElement.textContent = `${originalPrice} Swappcoin`;
+            originalPriceElement.innerHTML = `
+                <span class="swappit-price">${originalPriceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
+                <span class="dollar-price">($${originalPrice.toFixed(2)})</span>
+            `;
             originalPriceElement.style.display = 'inline';
             
             if (discountBadgeElement) {
@@ -584,7 +595,10 @@ class ProductDetailPage {
                 <div class="product-info">
                     <h3 class="product-title">${product.productName}</h3>
                     <p class="product-seller">by ${product.sellerDisplayName || product.sellerEmail}</p>
-                    <div class="product-price">${product.price} Swappcoin</div>
+                    <div class="product-price">
+                        <span class="swappit-price">${(product.price / 0.03).toFixed(0)} SWAPP-IT Coins</span>
+                        <span class="dollar-price">($${product.price.toFixed(2)})</span>
+                    </div>
                     <button class="btn btn-add-cart" onclick="productDetailPage.addToCart('${product.id}')">
                         Add to Cart
                     </button>

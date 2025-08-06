@@ -5,52 +5,451 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pago - SwappIt</title>
   <link rel="stylesheet" href="/public/css/payment.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --swappit-orange: #ffa424;
+      --swappit-orange-dark: #ff8c00;
+      --swappit-orange-light: #ffb366;
+      --success-green: #10b981;
+      --warning-red: #ef4444;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --border-light: #e5e7eb;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #ffffff;
+      color: var(--text-dark);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="coins" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,164,36,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23coins)"/></svg>');
+      opacity: 0.1;
+      z-index: -1;
+    }
+
+    .header-bg {
+      display: none;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 40px;
+      padding: 40px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: var(--swappit-orange);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(255, 164, 36, 0.3);
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-btn:hover {
+      background: var(--swappit-orange-dark);
+      transform: scale(1.1) translateX(-2px);
+      box-shadow: 0 6px 20px rgba(255, 164, 36, 0.4);
+    }
+
+    .coin-info {
+      background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-dark));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(255, 164, 36, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coin-info::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .coin-info h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .coin-info p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .payment-form {
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .payment-form h2 {
+      margin-top: 0;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon input,
+    .input-icon select {
+      width: 100%;
+      padding: 15px 15px 15px 50px;
+      border: 2px solid var(--border-light);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: white;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .input-icon::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 2;
+    }
+
+    .input-icon input[type="email"]::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+    }
+
+    .input-icon input[type="text"]::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+    }
+
+    .input-icon input[type="tel"]::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E");
+    }
+
+    .input-icon input:focus,
+    .input-icon select:focus {
+      border-color: var(--swappit-orange);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 164, 36, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-dark));
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 18px 0;
+      margin: 2rem auto 0 auto;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      box-shadow: 0 8px 25px rgba(255, 164, 36, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pay-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(255, 164, 36, 0.4);
+    }
+
+    .pay-btn:hover::before {
+      left: 100%;
+    }
+
+    .pay-btn:active {
+      transform: translateY(0);
+    }
+
+    .summary-box {
+      flex: 1.2;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      min-width: 280px;
+      max-width: 350px;
+      margin-top: 0;
+      height: fit-content;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      position: relative;
+    }
+
+    .summary-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--swappit-orange), var(--swappit-orange-dark));
+      border-radius: 15px 15px 0 0;
+    }
+
+    .summary-box h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    .summary-box p {
+      margin: 0 0 1.5rem 0;
+      color: var(--text-light);
+      font-size: 1rem;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0 0 0;
+      font-size: 1.1rem;
+      padding: 0.75rem 0;
+    }
+
+    .summary-total {
+      border-top: 2px solid var(--border-light);
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--swappit-orange);
+    }
+
+    .summary-total span:last-child {
+      background: linear-gradient(135deg, var(--swappit-orange), var(--swappit-orange-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 10px;
+      color: var(--success-green);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .security-badge i {
+      margin-right: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem 1rem;
+        margin: 1rem;
+      }
+      
+      .summary-box {
+        max-width: 100%;
+        margin-top: 1rem;
+      }
+      
+      .payment-form h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem 1rem;
+        margin: 0.5rem;
+      }
+      
+      .payment-form h2 {
+        font-size: 1.6rem;
+      }
+      
+      .coin-info {
+        padding: 1rem;
+      }
+      
+      .coin-info h4 {
+        font-size: 1.1rem;
+      }
+      
+      .coin-info p {
+        font-size: 1rem;
+      }
+    }
+
+    /* Loading animation for form */
+    .form-group.loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .form-group.loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-light);
+      border-top: 2px solid var(--swappit-orange);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      transform: translateY(-50%);
+    }
+
+    @keyframes spin {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Success animation */
+    .success-animation {
+      animation: successPulse 0.6s ease-in-out;
+    }
+
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
-  <div class="header-bg"></div>
   <div class="container">
+    <button class="back-btn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    
+    <div class="coin-info" id="coinInfo" style="display: none;">
+      <h4><i class="fas fa-coins"></i> Swapp-it Coins Package</h4>
+      <p id="coinDetails">Loading package details...</p>
+    </div>
+
     <form class="payment-form" autocomplete="off">
-      <h2>Payment Information</h2>
+      <h2><i class="fas fa-shopping-cart"></i> Complete Your Purchase</h2>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
         <div class="input-icon">
           <input type="email" id="email" name="email" placeholder="you@email.com" required>
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z" stroke="none"/><path d="M4 4l8 8 8-8"/></svg>
         </div>
       </div>
       <div class="form-group">
-        <label for="card">Card number</label>
-        <div class="input-icon" style="position:relative;">
-          <input type="text" id="card" name="card" placeholder="1234 1234 1234 1234" maxlength="19" required pattern="[0-9 ]{19}">
-          <div class="card-icons">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Mastercard-logo.png" alt="Mastercard">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo_%282018%29.svg" alt="Amex">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Discover_Card_logo.svg" alt="Discover">
-          </div>
+        <label for="name"><i class="fas fa-user"></i> Full Name</label>
+        <div class="input-icon">
+          <input type="text" id="name" name="name" placeholder="Your full name" required>
         </div>
       </div>
-      <div class="card-row">
-        <div class="form-group">
-          <label for="exp">Expiration</label>
-          <input type="text" id="exp" name="exp" placeholder="MM / YY" maxlength="7" required pattern="(0[1-9]|1[0-2])\s?/\s?([0-9]{2})">
-        </div>
-        <div class="form-group">
-          <label for="cvc">CVC</label>
-          <div class="input-icon">
-            <input type="text" id="cvc" name="cvc" placeholder="CVC" maxlength="4" required pattern="[0-9]{3,4}">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
-          </div>
+      <div class="form-group">
+        <label for="phone"><i class="fas fa-phone"></i> Phone Number (Optional)</label>
+        <div class="input-icon">
+          <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
         </div>
       </div>
-      <div class="card-row">
-        <div class="form-group">
-          <label for="country">Country</label>
+      <div class="form-group">
+        <label for="country"><i class="fas fa-globe"></i> Country</label>
+        <div class="input-icon">
           <select id="country" name="country" required>
-            <option value="">Select</option>
+            <option value="">Select your country</option>
             <option value="US">United States</option>
             <option value="MX">Mexico</option>
-            <option value="ES">Spain</option>
+            <option value="PA">Panama</option>
             <option value="AR">Argentina</option>
             <option value="CO">Colombia</option>
             <option value="CL">Chile</option>
@@ -61,28 +460,154 @@
             <option value="Other">Other</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="zip">ZIP</label>
-          <input type="text" id="zip" name="zip" placeholder="12345" maxlength="10" required pattern="[0-9A-Za-z\- ]{3,10}">
-        </div>
       </div>
-      <button class="pay-btn" type="submit">Pay $150</button>
-      <a href="#" class="stripe-secure">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
-        Payment secured by Stripe
-      </a>
+      <button class="pay-btn" type="submit" id="payButton">
+        <i class="fas fa-lock"></i> Complete Purchase $0.00
+      </button>
     </form>
+    
     <div class="summary-box">
-      <h3>Consultation Fee</h3>
-      <p>Personalized care and guidance tailored to your needs by our experienced specialist.</p>
+      <h3><i class="fas fa-coins"></i> Swapp-it Coins Package</h3>
+<p>Purchase Swapp-it Coins to enjoy the best prices in our marketplace and unlock exclusive benefits.</p>
       <div class="summary-row">
-        <span>$150.00</span>
+        <span>Package Amount</span>
+        <span id="packageAmount">$0.00</span>
       </div>
       <div class="summary-row summary-total">
         <span>Total</span>
-        <span>$150.00</span>
+        <span id="totalAmount">$0.00</span>
+      </div>
+      <div class="security-badge">
+        <i class="fas fa-shield-alt"></i>
+        Secure Payment • Instant Delivery
       </div>
     </div>
   </div>
+
+  <script>
+    // Load selected package from localStorage
+    function loadSelectedPackage() {
+      const selectedPackage = localStorage.getItem('selectedCoinPackage');
+      
+      if (selectedPackage) {
+        const package = JSON.parse(selectedPackage);
+        
+        // Update payment button
+        document.getElementById('payButton').innerHTML = `<i class="fas fa-lock"></i> Complete Purchase $${package.price.toFixed(2)}`;
+        
+        // Update summary amounts
+        document.getElementById('packageAmount').textContent = `$${package.price.toFixed(2)}`;
+        document.getElementById('totalAmount').textContent = `$${package.price.toFixed(2)}`;
+        
+        // Update coin info
+        const coinInfo = document.getElementById('coinInfo');
+        const coinDetails = document.getElementById('coinDetails');
+        
+        coinInfo.style.display = 'block';
+        coinDetails.textContent = `${package.amount} Coins + ${package.totalAmount - package.amount} Bonus = ${package.totalAmount} Total Coins`;
+        
+        // Add success animation
+        coinInfo.classList.add('success-animation');
+        setTimeout(() => coinInfo.classList.remove('success-animation'), 600);
+        
+        console.log('Loaded package:', package);
+      } else {
+        // Default values if no package selected
+        document.getElementById('payButton').innerHTML = `<i class="fas fa-lock"></i> Complete Purchase $1.00`;
+        document.getElementById('packageAmount').textContent = '$1.00';
+        document.getElementById('totalAmount').textContent = '$1.00';
+        
+        console.log('No package selected, using defaults');
+      }
+    }
+
+    function goBack() {
+      // Go back to previous page
+      if (document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = 'buy-coins.html';
+      }
+    }
+
+    // Handle form submission - immediate purchase
+    document.querySelector('.payment-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const selectedPackage = localStorage.getItem('selectedCoinPackage');
+      if (selectedPackage) {
+        const package = JSON.parse(selectedPackage);
+        
+        // Get form data
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const country = document.getElementById('country').value;
+        
+        // Validate required fields
+        if (!email || !name || !country) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+        
+        // Add loading state
+        const payButton = document.getElementById('payButton');
+        const originalText = payButton.innerHTML;
+        payButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        payButton.disabled = true;
+        
+        // Simulate processing delay
+        setTimeout(() => {
+          // Immediately add coins to user's balance
+          const currentBalance = parseInt(localStorage.getItem('userCoinBalance') || 0);
+          const newBalance = currentBalance + package.totalAmount;
+          localStorage.setItem('userCoinBalance', newBalance);
+          
+          // Store purchase history
+          const purchaseHistory = JSON.parse(localStorage.getItem('coinPurchaseHistory') || '[]');
+          purchaseHistory.push({
+            date: new Date().toISOString(),
+            amount: package.totalAmount,
+            price: package.price,
+            email: email,
+            name: name
+          });
+          localStorage.setItem('coinPurchaseHistory', JSON.stringify(purchaseHistory));
+          
+          // Clear the selected package
+          localStorage.removeItem('selectedCoinPackage');
+          
+          // Show success message
+          payButton.innerHTML = '<i class="fas fa-check"></i> Purchase Successful!';
+          payButton.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+          
+          setTimeout(() => {
+            alert(`Purchase successful! ${package.totalAmount} coins have been added to your account.`);
+            window.location.href = 'my-coins.html';
+          }, 1000);
+          
+        }, 1500);
+        
+      } else {
+        alert('No package selected. Please go back and select a coin package.');
+      }
+    });
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSelectedPackage();
+      
+      // Add focus effects to inputs
+      const inputs = document.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('focused');
+        });
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// Business Sidebar Component (copia de student-sidebar.js adaptada)
+// Business Sidebar Component (adapted from student-sidebar.js)
 class BusinessSidebar extends HTMLElement {
     constructor() {
         super();
@@ -172,7 +172,7 @@ class BusinessSidebar extends HTMLElement {
         // Collapse/Expand functionality
         collapseBtn.addEventListener('click', () => {
             this.toggleCollapse();
-            // Cambia el icono según el estado
+            // Change icon based on state
             if (this.isCollapsed) {
                 collapseIcon.classList.remove('fa-arrow-left');
                 collapseIcon.classList.add('fa-arrow-right');
