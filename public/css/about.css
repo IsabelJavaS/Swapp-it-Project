@@ -181,7 +181,7 @@ body {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 24px rgba(52,104,192,0.10);
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 2rem 2rem;
   flex: 1 1 320px;
   min-width: 320px;
   max-width: 420px;
@@ -249,6 +249,10 @@ body {
   align-items: center;
   margin-bottom: 1.5rem;
   transition: transform 0.2s, box-shadow 0.2s;
+}
+/* Nudge Accessibility card (3rd) slightly down to align bottoms with Our Mission */
+.values-cards .value-card-new:nth-child(3) {
+  margin-top: 0.75rem;
 }
 .value-card-new:hover {
   transform: translateY(-6px) scale(1.04);
@@ -517,6 +521,9 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     align-items: stretch;
+  }
+  .values-cards .value-card-new:nth-child(3) {
+    margin-top: 0;
   }
   .about-stats-cards {
     justify-content: center;
