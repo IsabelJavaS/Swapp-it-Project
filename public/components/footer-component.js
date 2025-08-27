@@ -556,10 +556,10 @@ class FooterComponent extends HTMLElement {
                             <!-- Brand Column -->
                             <div class="footer-column">
                                 <div class="footer-brand">
-                                    <img src="${this.getLogoPath()}" alt="SWAPPIT Logo">
+                                    <img src="${this.getLogoPath()}" alt="SWAPP-IT Logo">
                                 </div>
                                 <p class="footer-description">
-                                    SWAPPIT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
+                                    SWAPP-IT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
                                 </p>
                                 <div class="footer-social">
                                     <a href="#" class="social-link" title="Facebook">
@@ -625,7 +625,7 @@ class FooterComponent extends HTMLElement {
                         <div class="footer-bottom-content">
                             <div class="footer-bottom-left">
                                 <p class="copyright">
-                                    © 2024 SWAPPIT. All rights reserved. | Making education sustainable, one exchange at a time.
+                                    © 2024 SWAPP-IT. All rights reserved. | Making education sustainable, one exchange at a time.
                                 </p>
                             </div>
                             <div class="footer-legal">

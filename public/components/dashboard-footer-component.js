@@ -179,9 +179,9 @@ class DashboardFooter extends HTMLElement {
                     <div class="footer-row">
                         <div class="footer-copyright">
                             <div class="footer-logo">
-                                <img src="/assets/logos/letraS.png" alt="SWAPPIT Logo">
+                                <img src="/assets/logos/letraS.png" alt="SWAPP-IT Logo">
                             </div>
-                            <span>© ${currentYear} SWAPPIT. All rights reserved.</span>
+                            <span>© ${currentYear} SWAPP-IT. All rights reserved.</span>
                         </div>
                         
                         <div class="footer-links">
