@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test View Details - SWAPPIT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .image-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+        }
+        .image-test img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🖼️ Test de Carga de Imágenes - SWAPPIT</h1>
+        <p>Este archivo prueba si las imágenes se cargan correctamente desde las rutas absolutas.</p>
+        
+        <div class="image-test">
+            <h3>Imagen 1: Útiles Escolares</h3>
+            <p>Ruta: <code>/public/assets/logos/utiles-escolares.jpg</code></p>
+            <img src="/public/assets/logos/utiles-escolares.jpg" alt="Útiles Escolares" id="img1">
+            <div id="status1" class="status">Cargando...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Imagen 2: Business Login</h3>
+            <p>Ruta: <code>/public/assets/logos/businesslogin.jpeg</code></p>
+            <img src="/public/assets/logos/businesslogin.jpeg" alt="Business Login" id="img2">
+            <div id="status2" class="status">Cargando...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Imagen 3: Equipo Swappit</h3>
+            <p>Ruta: <code>/public/assets/logos/EquipoSwappit.jpeg</code></p>
+            <img src="/public/assets/logos/EquipoSwappit.jpeg" alt="Equipo Swappit" id="img3">
+            <div id="status3" class="status">Cargando...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Imagen 4: S Blanca</h3>
+            <p>Ruta: <code>/public/assets/logos/sBlanca.jpg</code></p>
+            <img src="/public/assets/logos/sBlanca.jpg" alt="S Blanca" id="img4">
+            <div id="status4" class="status">Cargando...</div>
+        </div>
+
+        <div class="image-test">
+            <h3>Imagen 5: Logo Largo</h3>
+            <p>Ruta: <code>/public/assets/logos/logolargo.png</code></p>
+            <img src="/public/assets/logos/logolargo.png" alt="Logo Largo" id="img5">
+            <div id="status5" class="status">Cargando...</div>
+        </div>
+
+        <div id="summary" style="margin-top: 30px; padding: 20px; background: #e9ecef; border-radius: 8px;">
+            <h3>📊 Resumen de Carga</h3>
+            <div id="summary-content">Verificando imágenes...</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            let loadedCount = 0;
+            let errorCount = 0;
+            
+            images.forEach((img, index) => {
+                const statusId = `status${index + 1}`;
+                const statusDiv = document.getElementById(statusId);
+                
+                img.addEventListener('load', function() {
+                    statusDiv.textContent = '✅ Cargada exitosamente';
+                    statusDiv.className = 'status success';
+                    loadedCount++;
+                    updateSummary();
+                });
+                
+                img.addEventListener('error', function() {
+                    statusDiv.textContent = '❌ Error al cargar la imagen';
+                    statusDiv.className = 'status error';
+                    errorCount++;
+                    updateSummary();
+                });
+            });
+            
+            function updateSummary() {
+                const summaryContent = document.getElementById('summary-content');
+                const total = loadedCount + errorCount;
+                
+                if (total === images.length) {
+                    summaryContent.innerHTML = `
+                        <p><strong>Total de imágenes:</strong> ${total}</p>
+                        <p><strong>✅ Cargadas exitosamente:</strong> ${loadedCount}</p>
+                        <p><strong>❌ Errores:</strong> ${errorCount}</p>
+                        <p><strong>📈 Tasa de éxito:</strong> ${Math.round((loadedCount/total)*100)}%</p>
+                        
+                        ${errorCount > 0 ? `
+                        <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+                            <h4>🔧 Soluciones si las imágenes no cargan:</h4>
+                            <ul>
+                                <li>Asegúrate de estar usando un servidor web (no abrir el archivo directamente)</li>
+                                <li>Verifica que el servidor esté sirviendo desde la raíz del proyecto</li>
+                                <li>Usa Live Server en VS Code o un servidor similar</li>
+                                <li>Verifica que las rutas comiencen con "/public/"</li>
+                            </ul>
+                        </div>
+                        ` : `
+                        <div style="margin-top: 15px; padding: 15px; background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 5px;">
+                            <h4>🎉 ¡Excelente! Todas las imágenes se cargan correctamente.</h4>
+                            <p>Las rutas absolutas están funcionando perfectamente.</p>
+                        </div>
+                        `}
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
