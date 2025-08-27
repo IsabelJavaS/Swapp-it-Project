@@ -172,7 +172,7 @@ class HeaderComponent extends HTMLElement {
                 .menu a {
                     color: var(--neutral-dark);
                     text-decoration: none;
-                    font-family: var(--font-primary);
+                    /* font-family: var(--font-primary); */
                     font-weight: 400;
                     font-size: 0.95rem;
                     padding: 0.5rem 1rem;
@@ -678,7 +678,7 @@ class HeaderComponent extends HTMLElement {
                     <div class="container">
                         <!-- Logo - Left -->
                         <a href="${this.getLogoDestination()}" class="logo">
-                            <img src="${logoPath}" alt="SWAPPIT Logo">
+                            <img src="${logoPath}" alt="SWAPP-IT Logo">
                         </a>
                         
                         <!-- Navigation Menu - Center -->
