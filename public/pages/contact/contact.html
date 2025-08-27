@@ -9,14 +9,135 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="../../css/style.css" rel="stylesheet">
-    <link href="/components/components.css" rel="stylesheet">
+    <link href="../../components/components.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
     <script src="../../js/css-path-fixer.js"></script>
+    <style>
+        /* Contact page color enhancements: blue (#3468c0) and orange (#ffa424) */
+        html, body { min-height: 100%; }
+        body {
+            background: linear-gradient(135deg, #3468c0 0%, #ffa424 100%);
+            background-attachment: fixed;
+        }
+        section.py-5.bg-light { background: transparent; margin-top: 36px; }
+        .header-gradient-bar {
+            height: 12px;
+            background: linear-gradient(90deg, #3468c0, #ffa424);
+            border-radius: 999px;
+            margin-top: 20px;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+            display: block;
+        }
+        .contact-separator {
+            height: 4px;
+            width: 120px;
+            margin: 0 auto;
+            background: linear-gradient(90deg, #ffa424, #3468c0);
+            border-radius: 999px;
+        }
+        h1.display-5 {
+            color: #3468c0;
+        }
+        .lead {
+            color: #000000;
+        }
+        .contact-highlight {
+            border-top: 4px solid #ffa424;
+            box-shadow: 0 8px 22px rgba(52, 104, 192, 0.08) !important;
+        }
+        .form-label {
+            color: #1e2b4d;
+            font-weight: 600;
+        }
+        .form-control {
+            border-color: #d7e2ff;
+        }
+        .form-control:focus {
+            border-color: #3468c0;
+            box-shadow: 0 0 0 0.2rem rgba(52, 104, 192, 0.15), 0 0 0 0.35rem rgba(255, 164, 36, 0.08);
+        }
+        main .btn-primary {
+            background: linear-gradient(135deg, #3468c0, #2d57a4);
+            border: none;
+            box-shadow: 0 6px 18px rgba(52, 104, 192, 0.25);
+        }
+        main .btn-primary:hover {
+            background: linear-gradient(135deg, #ffa424, #ff8c1a);
+            box-shadow: 0 8px 22px rgba(255, 164, 36, 0.35);
+            transform: translateY(-1px);
+        }
+        .contact-map-container {
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid #3468c0;
+        }
+        .contact-map {
+            width: 100%;
+            height: 300px;
+            border: 0;
+            filter: saturate(1.05) contrast(1.02);
+        }
+        .contact-info-box-overlay {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(6px);
+            border-left: 4px solid #ffa424;
+            border-radius: 10px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        }
+        .contact-info-box-overlay.right { right: 16px; }
+        main .text-primary { color: #3468c0 !important; }
+        .contact-info-card h5 { color: #3468c0; font-weight: 700; }
+        .contact-info-card li i { color: #3468c0 !important; }
+        /* Social icons (Facebook, Twitter, LinkedIn, Instagram) to orange */
+        .contact-info-card .mt-4.text-center a,
+        .contact-info-card .mt-4.text-center a i {
+            color: #ffa424 !important;
+        }
+        .contact-info-card .mt-4.text-center a:hover,
+        .contact-info-card .mt-4.text-center a:hover i {
+            color: #ffa424 !important;
+        }
+
+        /* Gradient only for "Send us a message" card (excludes .contact-info-card) */
+        .contact-highlight:not(.contact-info-card) {
+            background: linear-gradient(135deg, #3468c0 0%, #ffa424 100%);
+            color: #ffffff;
+        }
+        .contact-highlight:not(.contact-info-card) h4,
+        .contact-highlight:not(.contact-info-card) .form-label {
+            color: #ffffff;
+        }
+        .contact-highlight:not(.contact-info-card) h4 {
+            font-weight: 700;
+            font-size: 24px;
+        }
+        .contact-highlight:not(.contact-info-card) .form-control {
+            background: rgba(255, 255, 255, 0.96);
+            border-color: rgba(255, 255, 255, 0.75);
+            color: #1e2b4d;
+        }
+        .contact-highlight:not(.contact-info-card) .form-control::placeholder {
+            color: #6b7aa5;
+        }
+        .contact-highlight:not(.contact-info-card) .form-control:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25), 0 0 0 0.35rem rgba(52, 104, 192, 0.12);
+        }
+        .contact-highlight:not(.contact-info-card) .btn {
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
     <!-- Dynamic Header Container -->
-    <div id="header-container"></div>
+    <div id="header-container">
+        <header-component></header-component>
+    </div>
+    <div class="header-gradient-bar"></div>
     <!-- Main Content -->
     <main>
         <section class="py-5 bg-light">
@@ -92,14 +213,15 @@
     </main>
     <!-- Footer Component -->
     <app-footer></app-footer>
+    <!-- Footer Component -->
     <!-- JavaScript Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Web Components -->
-    <script src="/components/cart-component.js"></script>
-    <script src="/components/header-component.js"></script>
-    <script src="/components/header-auth-component.js"></script>
-    <script src="/components/footer-component.js"></script>
+    <script src="../../components/cart-component.js"></script>
+    <script src="../../components/header-component.js"></script>
+    <script src="../../components/header-auth-component.js"></script>
+    <script src="../../components/footer-component.js"></script>
     <!-- Global Header Manager -->
-    <script src="/js/global-header-manager.js"></script>
+    <script src="../../js/global-header-manager.js"></script>
 </body>
 </html> 
