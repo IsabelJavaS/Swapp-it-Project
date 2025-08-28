@@ -272,29 +272,24 @@ class ProductDetailPage {
         const currentPriceElement = document.querySelector('.current-price');
         const originalPriceElement = document.querySelector('.original-price');
         const discountBadgeElement = document.querySelector('.discount-badge');
-        
         const price = this.product.price || 0;
         const originalPrice = this.product.originalPrice || price;
-        
-        // Calculate Swappit Coin equivalent (1 SWAPPIT Coin = $0.03)
+        // Calcular Swappit Coins
         const swappitCoinRate = 0.03;
         const priceInSwappitCoins = price / swappitCoinRate;
         const originalPriceInSwappitCoins = originalPrice / swappitCoinRate;
-        
         if (currentPriceElement) {
             currentPriceElement.innerHTML = `
-                <span class="swappit-price">${priceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
+                <span class="swappit-price" style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:22px;vertical-align:middle;margin-right:4px;'>${priceInSwappitCoins.toFixed(0)}</span>
                 <span class="dollar-price">($${price.toFixed(2)})</span>
             `;
         }
-        
         if (originalPriceElement && originalPrice > price) {
             originalPriceElement.innerHTML = `
-                <span class="swappit-price">${originalPriceInSwappitCoins.toFixed(0)} SWAPP-IT Coins</span>
+                <span class="swappit-price" style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${originalPriceInSwappitCoins.toFixed(0)}</span>
                 <span class="dollar-price">($${originalPrice.toFixed(2)})</span>
             `;
             originalPriceElement.style.display = 'inline';
-            
             if (discountBadgeElement) {
                 const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
                 discountBadgeElement.textContent = `-${discount}%`;
@@ -578,7 +573,8 @@ class ProductDetailPage {
     // Create related product card
     createRelatedProductCard(product) {
         const imageUrl = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/300x200/f3f4f6/6b7280?text=No+Image';
-        
+        const swappitCoinRate = 0.03;
+        const priceInSwappitCoins = (product.price || 0) / swappitCoinRate;
         return `
             <div class="product-card">
                 <div class="product-image">
@@ -596,7 +592,7 @@ class ProductDetailPage {
                     <h3 class="product-title">${product.productName}</h3>
                     <p class="product-seller">by ${product.sellerDisplayName || product.sellerEmail}</p>
                     <div class="product-price">
-                        <span class="swappit-price">${(product.price / 0.03).toFixed(0)} SWAPP-IT Coins</span>
+                        <span class="swappit-price" style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${priceInSwappitCoins.toFixed(0)}</span>
                         <span class="dollar-price">($${product.price.toFixed(2)})</span>
                     </div>
                     <button class="btn btn-add-cart" onclick="productDetailPage.addToCart('${product.id}')">

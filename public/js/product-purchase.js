@@ -166,27 +166,22 @@ class ProductPurchasePage {
 
     updatePurchaseSummary() {
         if (!this.product) return;
-
         const productPrice = this.product.price || 0;
         const deliveryFee = this.deliveryFees[this.selectedDeliveryMethod] || 0;
         const total = productPrice + deliveryFee;
-
         // Update summary display
         const summaryPrice = document.getElementById('summary-price');
         if (summaryPrice) {
-            summaryPrice.textContent = `${productPrice.toFixed(2)} Swapp-it Coins`;
+            summaryPrice.innerHTML = `<span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${productPrice.toFixed(2)}</span>`;
         }
-
         const summaryDelivery = document.getElementById('summary-delivery');
         if (summaryDelivery) {
-            summaryDelivery.textContent = `${deliveryFee.toFixed(2)} Swapp-it Coins`;
+            summaryDelivery.innerHTML = `<span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${deliveryFee.toFixed(2)}</span>`;
         }
-
         const summaryTotal = document.getElementById('summary-total');
         if (summaryTotal) {
-            summaryTotal.textContent = `${total.toFixed(2)} Swapp-it Coins`;
+            summaryTotal.innerHTML = `<span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${total.toFixed(2)}</span>`;
         }
-
         // Check if user has sufficient funds
         this.checkInsufficientFunds();
     }
