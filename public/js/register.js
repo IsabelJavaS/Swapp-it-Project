@@ -76,8 +76,10 @@ function initializeRoleSelection() {
         switchToRole('business');
     });
     
-    // Set initial state
-    switchToRole('personal');
+    // Set initial state from query param if provided
+    const params = new URLSearchParams(window.location.search);
+    const initialRole = params.get('role') === 'business' ? 'business' : 'personal';
+    switchToRole(initialRole);
 }
 
 function switchToRole(role) {
