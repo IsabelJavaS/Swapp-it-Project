@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="../../css/style.css" rel="stylesheet">
+    <link href="../../css/contact.css" rel="stylesheet">
     <link href="/components/components.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
@@ -19,70 +20,79 @@
     <div id="header-container"></div>
     <!-- Main Content -->
     <main>
-        <section class="py-5 bg-light">
+        <section class="contact-hero-section py-5">
             <div class="container">
                 <div class="row justify-content-center mb-3">
                     <div class="col-lg-8 text-center">
-                        <!-- Animación SVG de sobre -->
-                        <div class="contact-svg-anim mb-3">
-                            <svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="5" y="20" width="60" height="35" rx="8" fill="#3468c0"/>
-                                <rect x="5" y="20" width="60" height="35" rx="8" stroke="#ffa424" stroke-width="2"/>
-                                <polyline points="5,20 35,45 65,20" fill="none" stroke="#fff" stroke-width="3"/>
-                                <animate attributeName="y" values="20;17;20" dur="1.2s" repeatCount="indefinite"/>
-                            </svg>
-                        </div>
-                        <!-- Separador decorativo -->
-                        <div class="contact-separator mb-2"></div>
-                        <h1 class="display-5 fw-bold mb-3">Contact Us</h1>
-                        <p class="lead">Have questions or need help? Fill out the form below or reach us through our contact information.</p>
+                        <h1 class="display-3 fw-bold mb-3 contact-title">
+                            <span id="typed-contact-title"></span>
+                        </h1>
+                        <p class="lead contact-hero-desc">Have questions or need help? Contact us through the form or the information below.</p>
                     </div>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card shadow-sm border-0 contact-highlight h-100">
-                            <div class="card-body p-4">
-                                <h4 class="mb-3">Send us a message</h4>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="message" class="form-label">Message</label>
-                                        <textarea class="form-control" id="message" rows="4" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
-                                </form>
+                <div class="row text-center contact-info-row mb-5">
+                    <div class="col-md-4 mb-4">
+                        <div class="contact-info-box">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-phone"></i>
                             </div>
+                            <h4 class="contact-info-title">(+507) 123-4567</h4>
+                            <p class="contact-info-desc">Call us for any questions or support.</p>
+                            <a href="#get-in-touch" class="contact-info-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="contact-info-box">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h4 class="contact-info-title">support@swappit.com</h4>
+                            <p class="contact-info-desc">Send us an email and we will reply soon.</p>
+                            <a href="mailto:support@swappit.com" class="contact-info-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="contact-info-box">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h4 class="contact-info-title">Panama City, Panama</h4>
+                            <p class="contact-info-desc">Visit us at our main office.</p>
+                            <a href="#map" class="contact-info-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-start contact-main-row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="contact-form-box">
+                            <h3 class="mb-3" id="get-in-touch">Get In Touch!</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control contact-input" placeholder="Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control contact-input" placeholder="Phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control contact-input" placeholder="Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control contact-input" rows="4" placeholder="Message" required></textarea>
+                                </div>
+                                <button type="submit" class="contact-submit-btn">Send Message</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-6 mb-4">
-                        <div class="card shadow-sm border-0 h-100 contact-highlight contact-info-card">
-                            <div class="card-body p-0 d-flex flex-column" style="height:100%;">
-                                <h5 class="mb-3 p-4 pb-0">Contact Information</h5>
-                                <!-- Mapa Google Maps con cuadro flotante a la derecha -->
-                                <div class="contact-map-container position-relative">
-                                    <iframe class="contact-map" src="https://www.google.com/maps?q=Panama+City,+Panama&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    <div class="contact-info-box-overlay p-3 px-4 right">
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="mb-2"><i class="fas fa-envelope me-2 text-primary"></i> support@swappit.com</li>
-                                            <li class="mb-2"><i class="fas fa-phone me-2 text-primary"></i> +507 123-4567</li>
-                                            <li><i class="fas fa-map-marker-alt me-2 text-primary"></i> Panama City, Panamá</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- Redes sociales debajo del mapa -->
-                                <div class="mt-4 text-center">
-                                    <a href="#" class="me-2 text-primary"><i class="fab fa-facebook fa-lg"></i></a>
-                                    <a href="#" class="me-2 text-primary"><i class="fab fa-twitter fa-lg"></i></a>
-                                    <a href="#" class="me-2 text-primary"><i class="fab fa-linkedin fa-lg"></i></a>
-                                    <a href="#" class="text-primary"><i class="fab fa-instagram fa-lg"></i></a>
-                                </div>
+                        <div class="contact-map-social-box">
+                            <div id="map" class="contact-map-embed mb-3">
+                                <iframe src="https://www.google.com/maps?q=Panama+City,+Panama&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                            <div class="contact-social-label mb-2">Social Media:</div>
+                            <div class="contact-social-icons">
+                                <a href="#" class="contact-social-icon"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="contact-social-icon"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="contact-social-icon"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
                     </div>
@@ -90,6 +100,47 @@
             </div>
         </section>
     </main>
+    <script>
+    // Typed effect for Contact Us
+    function startContactTitleAnimation() {
+        const text = 'Contact <span style="color:#000;">Us</span>';
+        const el = document.getElementById('typed-contact-title');
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                if(text[i] === '<') {
+                    // handle HTML tag
+                    let close = text.indexOf('>', i);
+                    el.innerHTML += text.substring(i, close+1);
+                    i = close+1;
+                } else {
+                    el.innerHTML += text[i];
+                    i++;
+                }
+                setTimeout(typeWriter, 70);
+            }
+        }
+        el.innerHTML = '';
+        typeWriter();
+    }
+    // Esperar a que el header esté cargado antes de animar el título
+    window.addEventListener('DOMContentLoaded', function() {
+        // Esperar a que el header-container tenga contenido (header cargado)
+        const headerContainer = document.getElementById('header-container');
+        if (headerContainer && headerContainer.children.length === 0) {
+            // Si el header se carga por JS, observar cambios
+            const observer = new MutationObserver(function(mutations, obs) {
+                if (headerContainer.children.length > 0) {
+                    setTimeout(startContactTitleAnimation, 350); // pequeño delay tras header
+                    obs.disconnect();
+                }
+            });
+            observer.observe(headerContainer, { childList: true });
+        } else {
+            setTimeout(startContactTitleAnimation, 350);
+        }
+    });
+    </script>
     <!-- Footer Component -->
     <app-footer></app-footer>
     <!-- JavaScript Dependencies -->
