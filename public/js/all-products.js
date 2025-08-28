@@ -433,15 +433,17 @@ class AllProducts {
     createProductCard(product) {
         const stars = this.generateStars(product.rating);
         const badges = this.generateBadges(product);
-        const originalPrice = product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : '';
+        // Calcular el precio en Swapp-it Coins (1 SWAPPIT Coin = $0.03)
+        const swappitCoinRate = 0.03;
+        const priceInSwappitCoins = product.price / swappitCoinRate;
+        const originalPriceInSwappitCoins = product.originalPrice ? product.originalPrice / swappitCoinRate : null;
+        const originalPrice = product.originalPrice ? `<span class="original-price"><span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${originalPriceInSwappitCoins.toFixed(0)}</span></span>` : '';
         const priceDisplay = product.transactionType === 'sale' ? 
-            `<div class="product-price">$${product.price} ${originalPrice}</div>` : 
+            `<div class="product-price"><span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:22px;vertical-align:middle;margin-right:4px;'>${priceInSwappitCoins.toFixed(0)}</span> ${originalPrice}</div>` : 
             `<div class="product-price swapp-price">For Swapp</div>`;
-        
         const defaultImage = product.images && product.images.length > 0 ? 
             product.images[0].url || product.images[0] : 
             '/assets/logos/utiles-escolares.jpg';
-
         return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image">
