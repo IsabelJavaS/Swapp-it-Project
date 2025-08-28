@@ -754,6 +754,67 @@ html {
     color: var(--swappit-orange);
 }
 
+/* === ANIMACIONES MEJORADAS PARA EL MARKETPLACE === */
+@keyframes card-bounce-in {
+  0% { opacity: 0; transform: scale(0.95) translateY(30px); }
+  60% { opacity: 1; transform: scale(1.03) translateY(-6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.product-card {
+  animation: card-bounce-in 0.7s cubic-bezier(.22,1.12,.58,1) both;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  border: 1.5px solid transparent;
+  transition: box-shadow 0.35s cubic-bezier(.22,1.12,.58,1), border-color 0.35s, transform 0.25s cubic-bezier(.22,1.12,.58,1);
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(0, 140, 255, 0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+  border-color: #1e90ff;
+  transform: translateY(-8px) scale(1.03);
+}
+
+.product-card:hover .product-image img {
+  filter: brightness(1.08) drop-shadow(0 0 8px #1e90ff33);
+  transform: scale(1.08) rotate(-1deg);
+  transition: filter 0.4s, transform 0.4s;
+}
+
+.product-card .product-price {
+  transition: color 0.3s cubic-bezier(.22,1.12,.58,1), text-shadow 0.3s;
+}
+
+.product-card:hover .product-price {
+  color: #ff9800;
+  text-shadow: 0 2px 8px #ff980055;
+}
+
+.product-card .product-info {
+  transition: background 0.3s;
+}
+
+.product-card:hover .product-info {
+  background: linear-gradient(90deg, #f0f7ff 0%, #e6f7ff 100%);
+}
+
+.product-card .product-title {
+  transition: color 0.3s;
+}
+
+.product-card:hover .product-title {
+  color: #1e90ff;
+}
+
+.product-card .product-badge {
+  transition: box-shadow 0.3s;
+}
+
+.product-card:hover .product-badge {
+  box-shadow: 0 2px 8px #1e90ff33;
+}
+
+/* === FIN DE ANIMACIONES MEJORADAS === */
+
 /* =========================================
    Responsive Design - Unified for all pages
    ========================================= */
