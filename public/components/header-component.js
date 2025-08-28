@@ -710,7 +710,7 @@ class HeaderComponent extends HTMLElement {
                                     <div class="dropdown-grid prada-style">
                                         <!-- Column 1: Large Image -->
                                         <div class="dropdown-col image-col">
-                                            <img src="${this.getBaseUrl()}/assets/logos/businesslogin.jpeg" alt="Marketplace Business" class="dropdown-image-large">
+                                            <img src="${this.getLogoPath()}" alt="SWAPP-IT Logo" class="dropdown-image-large">
                                         </div>
                                         <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
