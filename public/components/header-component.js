@@ -678,7 +678,7 @@ class HeaderComponent extends HTMLElement {
                     <div class="container">
                         <!-- Logo - Left -->
                         <a href="${this.getLogoDestination()}" class="logo">
-                            <img src="${logoPath}" alt="SWAPPIT Logo">
+                            <img src="${logoPath}" alt="SWAPP-IT Logo">
                         </a>
                         
                         <!-- Navigation Menu - Center -->
