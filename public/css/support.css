@@ -69,7 +69,7 @@ body {
     background: var(--neutral-light);
     border-radius: 1.2rem;
     box-shadow: 0 2px 12px var(--shadow-color);
-    padding: 2rem 1.5rem;
+    padding: 2rem 5rem 2rem 2rem;
     margin-bottom: 2rem;
 }
 .support-form-card h2 {
@@ -99,7 +99,7 @@ body {
     font-size: 1rem;
     background: var(--background-white);
     color: var(--neutral-dark);
-    margin-bottom: 0.2rem;
+    margin-bottom: 1.5rem;
     transition: border 0.2s;
 }
 .form-group input:focus,
