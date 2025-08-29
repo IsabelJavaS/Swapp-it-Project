@@ -181,7 +181,7 @@ body {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 24px rgba(52,104,192,0.10);
-  padding: 2.5rem 2rem 2rem;
+  padding: 2.5rem 2rem 1.5rem;
   flex: 1 1 320px;
   min-width: 320px;
   max-width: 420px;
