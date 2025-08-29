@@ -50,26 +50,16 @@ body {
     align-items: flex-start;
 }
 
-.support-left,
-.support-right {
-    flex: 1 1 500px;      /* Igual ancho para ambas columnas */
-    max-width: 500px;     /* Igual ancho máximo */
-}
-
-.support-form-card,
-.support-card {
-    min-height: 320px;    /* Opcional: igual altura mínima */
-}
-
-/* .support-left {
+.support-left {
     flex: 1 1 340px;
     max-width: 400px;
-} */
+}
+
 .support-form-card {
     background: var(--neutral-light);
     border-radius: 1.2rem;
     box-shadow: 0 2px 12px var(--shadow-color);
-    padding: 2rem 5rem 2rem 2rem;
+    padding: 2rem 4rem 2rem 2rem;
     margin-bottom: 1.5rem;
 }
 .support-form-card h2 {
@@ -91,7 +81,7 @@ body {
 }
 .form-group input,
 .form-group textarea {
-    width: 90%;
+    width: 100%;
     padding: 0.7rem 1rem;
     border-radius: 0.7rem;
     border: 1px solid var(--neutral-medium);
