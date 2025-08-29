@@ -42,7 +42,7 @@
                         <div id="formResponse"></div>
                     </div>
                 </div>
-                <!-- Columna derecha: General Help y Report a Problem -->
+                <!-- left column: General Help and Report a Problem -->
                 <div class="support-right">
                     <div class="support-card">
                         <h2><i class="fas fa-info-circle"></i> General Help</h2>
@@ -67,7 +67,7 @@
     
     <script type="module">
         import { onAuthStateChange } from '/firebase/auth.js';
-        // Header dinámico según autenticación
+        // Dynamic header based on authentication
         const headerPlaceholder = document.getElementById('header-placeholder');
         onAuthStateChange((user) => {
             if (user) {
@@ -76,7 +76,7 @@
                 headerPlaceholder.innerHTML = '<header-component></header-component>';
             }
         });
-        // Mostrar email si está loggeado, si no, dejar campo editable
+        // Show email if logged in, otherwise leave field editable
         const emailInput = document.getElementById('helpEmail');
         const userStatus = document.getElementById('userStatus');
         onAuthStateChange((user) => {
@@ -90,7 +90,7 @@
                 userStatus.innerHTML = `<span style="color:#ffa424;font-weight:600;">You are not logged in</span>`;
             }
         });
-        // Formulario de ayuda (solo ejemplo, no envía realmente)
+        // Help form (just an example, doesn't actually send)
         document.getElementById('helpForm').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('formResponse').innerHTML = '<span style="color:var(--swappit-blue);font-weight:600;">Thank you! We have received your message.</span>';
