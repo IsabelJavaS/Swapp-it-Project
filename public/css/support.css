@@ -49,12 +49,11 @@ body {
     justify-content: center;
     align-items: flex-start;
 }
-
+/* Support Columns left */
 .support-left {
     flex: 1 1 340px;
     max-width: 400px;
 }
-
 .support-form-card {
     background: var(--neutral-light);
     border-radius: 1.2rem;
