@@ -49,10 +49,22 @@ body {
     justify-content: center;
     align-items: flex-start;
 }
-.support-left {
+
+.support-left,
+.support-right {
+    flex: 1 1 500px;      /* Igual ancho para ambas columnas */
+    max-width: 500px;     /* Igual ancho máximo */
+}
+
+.support-form-card,
+.support-card {
+    min-height: 320px;    /* Opcional: igual altura mínima */
+}
+
+/* .support-left {
     flex: 1 1 340px;
     max-width: 400px;
-}
+} */
 .support-form-card {
     background: var(--neutral-light);
     border-radius: 1.2rem;
@@ -79,7 +91,7 @@ body {
 }
 .form-group input,
 .form-group textarea {
-    width: 100%;
+    width: 90%;
     padding: 0.7rem 1rem;
     border-radius: 0.7rem;
     border: 1px solid var(--neutral-medium);
