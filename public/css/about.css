@@ -96,19 +96,11 @@ body {
     color: #fff;
 }
 .about-hero-text h1 {
-<<<<<<< HEAD
   font-family: var(--font-primary);
   font-size: 3.4rem;
   font-weight: 800;
   margin-bottom: 1.2rem;
   letter-spacing: -1.2px;
-=======
-    font-family: var(--font-primary);
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 1.2rem;
-    letter-spacing: -1px;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .about-hero-text .highlight {
     color: var(--swappit-orange);
@@ -207,19 +199,11 @@ body {
     letter-spacing: 1px;
 }
 .mission-card h2 {
-<<<<<<< HEAD
   font-family: var(--font-primary);
   font-size: 2.2rem;
   font-weight: 800;
   margin-bottom: 1.2rem;
   color: var(--swappit-blue);
-=======
-    font-family: var(--font-primary);
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    color: var(--swappit-blue);
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .mission-card .lead {
     font-size: 1.1rem;
@@ -294,15 +278,9 @@ body {
     margin-bottom: 0.7rem;
 }
 .value-card-new p {
-<<<<<<< HEAD
   color: #000000;
   font-size: 1rem;
   margin: 0;
-=======
-    color: #64748b;
-    font-size: 1rem;
-    margin: 0;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 
 /* Timeline Section */
@@ -334,19 +312,11 @@ body {
     letter-spacing: 1px;
 }
 .timeline-card h2 {
-<<<<<<< HEAD
   font-family: var(--font-primary);
   font-size: 2.2rem;
   font-weight: 800;
   margin-bottom: 2rem;
   color: var(--swappit-blue);
-=======
-    font-family: var(--font-primary);
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--swappit-blue);
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .timeline-steps {
     display: flex;
@@ -375,13 +345,8 @@ body {
     margin-bottom: 0.3rem;
 }
 .timeline-desc {
-<<<<<<< HEAD
   color: #000000;
   font-size: 1rem;
-=======
-    color: #64748b;
-    font-size: 1rem;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .timeline-img {
     margin-top: 2rem;
@@ -400,7 +365,6 @@ body {
     text-align: center;
 }
 .team-title {
-<<<<<<< HEAD
   font-family: var(--font-primary);
   font-size: 2.6rem;
   font-weight: 800;
@@ -432,28 +396,9 @@ body {
   /* Hide scrollbar cross-browser */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
-=======
-    font-family: var(--font-primary);
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--swappit-blue);
-    margin-bottom: 0.5rem;
-}
-.team-lead {
-    color: #64748b;
-    font-size: 1.1rem;
-    margin-bottom: 2.5rem;
-}
-.team-cards {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .team-cards::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 .team-card-new {
-<<<<<<< HEAD
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(52,104,192,0.10);
@@ -469,28 +414,12 @@ body {
   transition: transform 0.2s, box-shadow 0.2s;
   scroll-snap-align: start;
   z-index: 1;
-=======
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(52,104,192,0.10);
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
-    min-width: 220px;
-    max-width: 320px;
-    flex: 1 1 220px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 .team-card-new:hover {
     transform: translateY(-6px) scale(1.04);
     box-shadow: 0 8px 32px rgba(52,104,192,0.18);
 }
 .team-avatar-new {
-<<<<<<< HEAD
   width: 180px;
   height: 240px;
   border-radius: 16px;
@@ -559,31 +488,6 @@ body {
   color: #000000;
   font-size: 0.98rem;
   margin: 0;
-=======
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    border: 4px solid var(--swappit-blue);
-}
-.team-card-new h5 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-    color: var(--swappit-blue);
-}
-.team-card-new .role {
-    color: var(--swappit-orange);
-    font-weight: 600;
-    margin-bottom: 0.7rem;
-    font-size: 0.98rem;
-}
-.team-card-new .bio {
-    color: #64748b;
-    font-size: 0.98rem;
-    margin: 0;
->>>>>>> e9d3b230b45019dc05b164e05207c08c7e1287ee
 }
 
 /* CTA Section */
