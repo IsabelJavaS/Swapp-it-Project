@@ -34,9 +34,9 @@
 /* =========================================
    Global Styles
    ========================================= */
-body {
+body, .all-products-main {
     font-family: var(--font-secondary);
-    background-color: var(--background-white);
+    background: var(--neutral-light) !important;
     color: var(--neutral-dark);
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
@@ -74,53 +74,151 @@ html {
    Banner Sections
    ========================================= */
 /* Marketplace Banner (orange/blue gradient) */
+/* Animación de entrada para el banner */
 .marketplace-banner {
-    background: linear-gradient(135deg, var(--swappit-blue) 0%, var(--swappit-orange) 100%);
-    padding: 3rem 0;
-    color: white;
-    text-align: center;
+  animation: bannerFadeIn 1.2s cubic-bezier(.22,1.12,.58,1) both;
+  background: url('/assets/logos/Marketplace.jpg') center center/cover no-repeat !important;
+  position: relative;
+  padding: 3rem 0;
+  color: white;
+  text-align: center;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  will-change: background-position;
 }
 
-.banner-content {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
+@media (min-width: 768px) {
+  .marketplace-banner {
+    background-attachment: fixed;
+  }
 }
 
+@keyframes bannerFadeIn {
+  0% { opacity: 0; transform: translateY(40px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+.marketplace-banner .banner-content {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.marketplace-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 41, 59, 0.45);
+  z-index: 1;
+}
+
+/* Animación para el texto */
 .banner-text h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  animation: titleZoomIn 1s 0.3s cubic-bezier(.22,1.12,.58,1) both;
+}
+
+@keyframes titleZoomIn {
+  0% { opacity: 0; transform: scale(0.8);}
+  100% { opacity: 1; transform: scale(1);}
 }
 
 .banner-text p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  animation: subtitleSlideIn 1s 0.7s cubic-bezier(.22,1.12,.58,1) both;
 }
 
+@keyframes subtitleSlideIn {
+  0% { opacity: 0; transform: translateY(30px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+/* Animación para el botón */
 .banner-actions .btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    transition: var(--transition);
+  animation: buttonBounceIn 1s 1.1s cubic-bezier(.22,1.12,.58,1) both;
+  background: rgba(255,255,255,0.18);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: background 0.3s, border 0.3s, transform 0.2s;
+  box-shadow: 0 4px 24px 0 rgba(52,104,192,0.10);
+}
+
+@keyframes buttonBounceIn {
+  0% { opacity: 0; transform: scale(0.7);}
+  60% { opacity: 1; transform: scale(1.1);}
+  100% { opacity: 1; transform: scale(1);}
 }
 
 .banner-actions .btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+  background: #fff;
+  color: #3468c0;
+  border-color: #fff;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 32px 0 rgba(52,104,192,0.18);
 }
 
 /* Page Header (blue gradient for categories/all-products) */
+/* Animaciones para el banner de All Products */
 .page-header {
-    background: linear-gradient(135deg, var(--swappit-blue) 0%, var(--swappit-blue-hover) 100%);
-    color: white;
-    padding: 3rem 0;
-    margin-bottom: 2rem;
+  background: url('/assets/logos/Markeplace2.jpg') center center/cover no-repeat !important;
+  color: white;
+  padding: 3rem 0;
+  position: relative;
+  background-size: cover;
+}
+
+.page-header .header-text h1 {
+  animation: allProductsTitleSlideIn 1.1s cubic-bezier(.22,1.12,.58,1) both;
+}
+@keyframes allProductsTitleSlideIn {
+  0% { opacity: 0; transform: translateX(-60px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.page-header .header-text p {
+  animation: allProductsSubtitleFadeIn 1.2s 0.3s cubic-bezier(.22,1.12,.58,1) both;
+}
+@keyframes allProductsSubtitleFadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 0.9; }
+}
+
+.page-header .header-actions .btn {
+  animation: allProductsButtonFadeIn 1.2s 0.7s cubic-bezier(.22,1.12,.58,1) both;
+  transition: background 0.3s, border 0.3s, transform 0.2s;
+}
+@keyframes allProductsButtonFadeIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.page-header::before {
+  display: none !important;
+}
+
+.page-header .marketplace-container,
+.page-header .header-content,
+.page-header .header-text,
+.page-header .header-actions {
+  position: relative;
+  z-index: 2;
+}
+
+.page-header h1,
+.page-header p {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.18);
 }
 
 .header-content {
@@ -166,6 +264,7 @@ html {
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     margin-top: 2rem;
+    margin-bottom: 2rem; /* Más arriba, menos espacio */
 }
 
 .products-grid.list-view {
@@ -647,8 +746,12 @@ html {
 }
 
 .load-more-container {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
     text-align: center;
     margin-top: 3rem;
+    margin-bottom: 1.5rem;
 }
 
 .load-more-container .btn {

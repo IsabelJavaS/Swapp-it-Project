@@ -1378,27 +1378,123 @@ section.visible {
    Swappit Zone Section Styles
    ========================================= */
 .swappit-zone-section {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  padding: 0;
+  min-height: 480px;
+  background: none;
+  overflow: hidden;
+}
+.swappit-zone-bg {
+  position: absolute;
+  inset: 0;
+  background: url('assets/logos/SwappZone.jpg') center center/contain no-repeat, linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+}
+.swappit-zone-content {
+  position: relative;
+  z-index: 2;
+  min-height: 480px;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+.section-title {
+  color: #fff;
+  font-size: 2.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 24px #0006;
+  margin-bottom: 0.5rem;
+  animation: swappZoneTitleIn 1.1s 0.2s cubic-bezier(.22,1.12,.58,1) both;
+}
+.section-subtitle {
+  color: #e2e8f0;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  animation: swappZoneSubtitleIn 1.1s 0.5s cubic-bezier(.22,1.12,.58,1) both;
+}
+@keyframes swappZoneTitleIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes swappZoneSubtitleIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.swappit-benefit-card {
+  background: rgba(255,255,255,0.85);
+  color: #3468c0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #3468c033;
+  padding: 1.1rem 1.7rem;
+  margin-bottom: 1.1rem;
+  min-width: 210px;
+  text-align: right;
+  transition: box-shadow 0.3s, transform 0.2s;
+  animation: swappZoneCardIn 1.1s cubic-bezier(.22,1.12,.58,1) both;
+}
+@keyframes swappZoneCardIn {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.zone-cta {
+  background: rgba(255,255,255,0.10);
+  border-radius: 18px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  box-shadow: 0 8px 32px 0 rgba(52,104,192,0.10);
+  margin-top: 2.5rem;
+  animation: swappZoneCtaIn 1.2s 0.8s cubic-bezier(.22,1.12,.58,1) both;
+}
+@keyframes swappZoneCtaIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-.swappit-zone-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-    opacity: 0.3;
-    z-index: 1;
+.zone-cta h3 {
+  color: #fff;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px #0005;
 }
 
-.swappit-zone-section .container {
-    position: relative;
-    z-index: 2;
+.zone-cta p {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.zone-cta .btn-primary-large, .zone-cta .btn-outline-primary-large {
+  font-size: 1.1rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 30px;
+  font-weight: 700;
+  margin: 0 0.5rem;
+  box-shadow: 0 2px 12px #3468c033;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.zone-cta .btn-primary-large:hover {
+  background: #fff;
+  color: #3468c0;
+  transform: translateY(-3px) scale(1.04);
+}
+
+.zone-cta .btn-outline-primary-large {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.zone-cta .btn-outline-primary-large:hover {
+  background: #3468c0;
+  color: #fff;
+  border-color: #3468c0;
+  transform: translateY(-3px) scale(1.04);
 }
 
 .zone-feature-card {
