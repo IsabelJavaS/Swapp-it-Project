@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="timeline-img">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Swapp-it Story">
+                    <img src="../../assets/fotos grupales/IMG_2710.JPG" alt="Swapp-it Story">
                 </div>
             </div>
         </section>
@@ -125,8 +125,8 @@
             <h2 class="team-title">Meet Our Team</h2>
             <p class="team-lead">The passionate people behind SWAPPIT</p>
             <div class="team-carousel">
-                <button class="team-nav team-prev" aria-label="Previous" type="button">
-                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                <button class="team-nav team-prev" aria-label="Previous team member">
+                    <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="team-cards" role="region" aria-label="Team members carousel">
                 <div class="team-card-new">
@@ -200,9 +200,21 @@
                     </div>
                 </div>
                 </div>
-                <button class="team-nav team-next" aria-label="Next" type="button">
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                <button class="team-nav team-next" aria-label="Next team member">
+                    <i class="fas fa-chevron-right"></i>
                 </button>
+                <div class="team-dots">
+                    <span class="team-dot active" data-slide="0"></span>
+                    <span class="team-dot" data-slide="1"></span>
+                    <span class="team-dot" data-slide="2"></span>
+                    <span class="team-dot" data-slide="3"></span>
+                    <span class="team-dot" data-slide="4"></span>
+                    <span class="team-dot" data-slide="5"></span>
+                    <span class="team-dot" data-slide="6"></span>
+                    <span class="team-dot" data-slide="7"></span>
+                    <span class="team-dot" data-slide="8"></span>
+                    <span class="team-dot" data-slide="9"></span>
+                </div>
             </div>
         </section>
 
@@ -228,92 +240,204 @@
     <script src="../../components/footer-component.js"></script>
     <script src="../../js/global-header-manager.js"></script>
     <script>
-        (function () {
-            var container = document.querySelector('.team-cards');
-            if (!container) return;
-            var prev = document.querySelector('.team-prev');
-            var next = document.querySelector('.team-next');
-            var card = container.querySelector('.team-card-new');
-            var autoTimer = null;
-            var AUTO_MS = 3000;
-            var ticking = false;
-            // Ensure we start from the very first profile
-            container.scrollTo({ left: 0 });
-
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.team-cards');
+            const prevBtn = document.querySelector('.team-prev');
+            const nextBtn = document.querySelector('.team-next');
+            const dots = document.querySelectorAll('.team-dot');
+            const cards = document.querySelectorAll('.team-card-new');
+            
+            if (!container || !cards.length) return;
+            
+            let currentIndex = 0;
+            let autoPlayInterval;
+            const AUTO_PLAY_DELAY = 4000;
+            let isScrolling = false;
+            
+            // Calculate scroll amount to center the card
             function getScrollAmount() {
-                if (!card) return 300;
-                var style = window.getComputedStyle(card);
-                var margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
-                return Math.ceil(card.getBoundingClientRect().width + margin);
+                const cardWidth = cards[0].offsetWidth;
+                const gap = 32; // 2rem gap
+                const containerWidth = container.offsetWidth;
+                const cardWithGap = cardWidth + gap;
+                
+                // Center the card in the container
+                return (cardWithGap * currentIndex) - (containerWidth / 2) + (cardWidth / 2);
             }
-
-            function scrollByAmount(dir, isAuto) {
-                var amount = dir * getScrollAmount();
-                var maxScrollLeft = container.scrollWidth - container.clientWidth;
-                if (isAuto && (container.scrollLeft + amount + 5 >= maxScrollLeft)) {
-                    container.scrollTo({ left: 0, behavior: 'smooth' });
-                    requestAnimationFrame(updateActive);
-                    return;
-                }
-                container.scrollBy({ left: amount, behavior: 'smooth' });
-                requestAnimationFrame(updateActive);
-            }
-
-            function startAuto() {
-                stopAuto();
-                autoTimer = setInterval(function(){ scrollByAmount(1, true); }, AUTO_MS);
-            }
-            function stopAuto() {
-                if (autoTimer) {
-                    clearInterval(autoTimer);
-                    autoTimer = null;
-                }
-            }
-
-            function updateActive() {
-                if (ticking) return; // throttle with rAF
-                ticking = true;
-                requestAnimationFrame(function(){
-                    var cards = Array.prototype.slice.call(container.querySelectorAll('.team-card-new'));
-                    if (!cards.length) { ticking = false; return; }
-                    var containerRect = container.getBoundingClientRect();
-                    var containerCenter = containerRect.left + containerRect.width / 2;
-                    var closestCard = null;
-                    var minDist = Infinity;
-                    // If we're at the very start, force the first card as active
-                    if (container.scrollLeft === 0) {
-                        closestCard = cards[0];
-                        minDist = 0;
+            
+            // Update active states based on which card is most centered
+            function updateActiveStates() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
+                
+                let closestCard = null;
+                let minDistance = Infinity;
+                
+                cards.forEach((card, index) => {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const distance = Math.abs(cardCenter - containerCenter);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCard = card;
+                        currentIndex = index;
                     }
-                    cards.forEach(function(c){
-                        var rect = c.getBoundingClientRect();
-                        var center = rect.left + rect.width / 2;
-                        var dist = Math.abs(center - containerCenter);
-                        if (dist < minDist) { minDist = dist; closestCard = c; }
-                    });
-                    cards.forEach(function(c){ c.classList.toggle('active', c === closestCard); });
-                    ticking = false;
+                    
+                    card.classList.remove('active');
+                });
+                
+                if (closestCard) {
+                    closestCard.classList.add('active');
+                }
+                
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
                 });
             }
-
-            prev && prev.addEventListener('click', function(){ stopAuto(); scrollByAmount(-1, false); startAuto(); });
-            next && next.addEventListener('click', function(){ stopAuto(); scrollByAmount(1, false); startAuto(); });
-
-            container.addEventListener('mouseenter', stopAuto);
-            container.addEventListener('mouseleave', startAuto);
-            container.addEventListener('scroll', updateActive, { passive: true });
-
-            // Start autoplay and ensure active state after images load
-            startAuto();
-            // Highlight first card on init
-            var firstCard = container.querySelector('.team-card-new');
-            if (firstCard) firstCard.classList.add('active');
-            if (document.readyState === 'complete') {
-                updateActive();
-            } else {
-                window.addEventListener('load', updateActive);
+            
+            // Scroll to specific index with centering
+            function scrollToIndex(index) {
+                if (isScrolling) return;
+                isScrolling = true;
+                
+                const cardWidth = cards[0].offsetWidth;
+                const gap = 32;
+                const containerWidth = container.offsetWidth;
+                const cardWithGap = cardWidth + gap;
+                
+                // Calculate position to center the card
+                const targetScroll = (cardWithGap * index) - (containerWidth / 2) + (cardWidth / 2);
+                
+                container.scrollTo({
+                    left: Math.max(0, targetScroll),
+                    behavior: 'smooth'
+                });
+                
+                currentIndex = index;
+                
+                // Update states after scroll animation
+                setTimeout(() => {
+                    updateActiveStates();
+                    isScrolling = false;
+                }, 500);
             }
-        })();
+            
+            // Next slide
+            function nextSlide() {
+                const nextIndex = (currentIndex + 1) % cards.length;
+                scrollToIndex(nextIndex);
+            }
+            
+            // Previous slide
+            function prevSlide() {
+                const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+                scrollToIndex(prevIndex);
+            }
+            
+            // Auto play
+            function startAutoPlay() {
+                stopAutoPlay();
+                autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+            }
+            
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                    autoPlayInterval = null;
+                }
+            }
+            
+            // Event listeners
+            nextBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            });
+            
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    stopAutoPlay();
+                    scrollToIndex(index);
+                    startAutoPlay();
+                });
+            });
+            
+            // Pause auto play on hover
+            container.addEventListener('mouseenter', stopAutoPlay);
+            container.addEventListener('mouseleave', startAutoPlay);
+            
+            // Touch/swipe support
+            let startX = 0;
+            let isDragging = false;
+            
+            container.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+                stopAutoPlay();
+            });
+            
+            container.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+            });
+            
+            container.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > 50) { // Minimum swipe distance
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                
+                startAutoPlay();
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    stopAutoPlay();
+                    prevSlide();
+                    startAutoPlay();
+                } else if (e.key === 'ArrowRight') {
+                    stopAutoPlay();
+                    nextSlide();
+                    startAutoPlay();
+                }
+            });
+            
+            // Initialize - center the first card
+            setTimeout(() => {
+                scrollToIndex(0);
+                startAutoPlay();
+            }, 100);
+            
+            // Scroll detection for manual scrolling
+            let scrollTimeout;
+            container.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if (!isScrolling) {
+                        updateActiveStates();
+                    }
+                }, 150);
+            });
+        });
     </script>
 </body>
 </html> 
