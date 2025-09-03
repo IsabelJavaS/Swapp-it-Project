@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Swapp-it</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="public/css/style.css" rel="stylesheet">
+    <link href="public/css/support.css" rel="stylesheet">
+    <link href="public/components/components.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="public/assets/logos/letraS.png">
+    <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
+    <script src="public/js/css-path-fixer.js"></script>
+    <style>
+        :root {
+        --swappit-blue: #3468c0;
+        --swappit-orange: #ffa424;
+        --swappit-blue-hover: #1d4ed8;
+        --swappit-orange-hover: #ff5722;
+        --neutral-dark: #1e293b;
+        --neutral-medium: #64748b;
+        --neutral-light: #f1f5f9;
+        --background-white: #ffffff;
+        --shadow-color: rgba(37, 99, 235, 0.1);
+        --font-primary: 'Poppins', sans-serif;
+        --font-secondary: 'Inter', sans-serif;
+    }
+    body {
+        background: var(--neutral-light);
+        font-family: var(--font-secondary);
+        color: var(--neutral-dark);
+    }
+    .support-hero {
+        background: linear-gradient(90deg, var(--swappit-blue) 60%, var(--swappit-orange) 100%);
+        color: var(--background-white);
+        padding: 3rem 0 2rem 0;
+        box-shadow: 0 4px 24px var(--shadow-color);
+        text-align: center;
+    }
+    .support-hero h1 {
+        font-family: var(--font-primary);
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+    }
+    .support-hero .lead {
+        color: var(--neutral-light);
+        font-size: 1.2rem;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .support-main-section {
+        background: var(--background-white);
+        padding: 2.5rem 0 2rem 0;
+    }
+    .support-main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        gap: 2.5rem;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .support-left {
+        flex: 1 1 340px;
+        max-width: 400px;
+    }
+
+    .support-form-card {
+        background: var(--neutral-light);
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 12px var(--shadow-color);
+        padding: 2rem 4rem 2rem 2rem;
+        margin-bottom: 1.5rem;
+    }
+    .support-form-card h2 {
+        color: var(--swappit-blue);
+        font-family: var(--font-primary);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+    .form-group label {
+        display: block;
+        font-family: var(--font-primary);
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+        color: var(--neutral-dark);
+    }
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        border-radius: 0.7rem;
+        border: 1px solid var(--neutral-medium);
+        font-family: var(--font-secondary);
+        font-size: 1rem;
+        background: var(--background-white);
+        color: var(--neutral-dark);
+        margin-bottom: 1.5rem;
+        transition: border 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border: 1.5px solid var(--swappit-blue);
+        outline: none;
+    }
+    .support-btn {
+        display: inline-block;
+        background: var(--swappit-orange);
+        color: var(--background-white);
+        font-family: var(--font-primary);
+        font-weight: 600;
+        font-size: 16px;
+        padding: 0.6rem 1.4rem;
+        border-radius: 2rem;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        margin-top: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+    .support-btn:hover {
+        background: var(--swappit-orange-hover);
+        color: var(--background-white);
+    }
+    .support-right {
+        flex: 2 1 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .support-card {
+        background: var(--neutral-light);
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 12px var(--shadow-color);
+        padding: 2rem 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .support-card h2 {
+        color: var(--swappit-blue);
+        font-family: var(--font-primary);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    .support-card p {
+        color: var(--neutral-medium);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    .support-card a {
+        display: inline-block;
+        background: var(--swappit-orange);
+        color: var(--background-white);
+        font-family: var(--font-primary);
+        font-weight: 600;
+        padding: 0.6rem 1.4rem;
+        border-radius: 2rem;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        margin-top: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+    .support-card a:hover {
+        background: var(--swappit-orange-hover);
+        color: var(--background-white);
+    }
+    .faq-section {
+        background: var(--neutral-light);
+        padding: 2.5rem 0;
+    }
+    .faq-section h2 {
+        color: var(--swappit-blue);
+        font-family: var(--font-primary);
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .faq-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .faq-item {
+        background: var(--background-white);
+        border-radius: 1rem;
+        box-shadow: 0 1px 6px var(--shadow-color);
+        margin-bottom: 1.2rem;
+        padding: 1.2rem 1.5rem;
+    }
+    .faq-item h3 {
+        color: var(--swappit-orange);
+        font-family: var(--font-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .faq-item p {
+        color: var(--neutral-dark);
+        font-size: 1rem;
+    }
+    @media (max-width: 900px) {
+        .support-main-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .support-right {
+            width: 100%;
+            align-items: center;
+        }
+        .support-left {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+    @media (max-width: 600px) {
+        .support-hero {
+            padding: 2rem 0 1rem 0;
+        }
+        .support-hero h1 {
+            font-size: 1.5rem;
+        }
+        .support-main-section {
+            padding: 1.2rem 0 0.7rem 0;
+        }
+        .support-form-card, .support-card {
+            padding: 1rem 0.5rem;
+        }
+        .faq-section {
+            padding: 1.2rem 0;
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main>
+        <section class="support-hero">
+            <div class="container">
+                <h1>How can we help you?</h1>
+                <p class="lead">Find answers, contact us, or report a problem with Swapp-it.</p>
+            </div>
+        </section>
+        <section class="support-main-section">
+            <div class="support-main-content">
+                <!-- Columna izquierda: Formulario de ayuda -->
+                <div class="support-left">
+                    <div class="support-form-card">
+                        <h2><i class="fas fa-paper-plane"></i> Need Help?</h2>
+                        <form id="helpForm">
+                            <div id="userStatus"></div>
+                            <div class="form-group">
+                                <label for="helpEmail">Email</label>
+                                <input type="email" id="helpEmail" name="email" required placeholder="Your email">
+                            </div>
+                            <div class="form-group">
+                                <label for="helpMessage">How can we help you?</label>
+                                <textarea id="helpMessage" name="message" rows="4" required placeholder="Describe your issue or question..."></textarea>
+                            </div>
+                            <button type="submit" class="support-btn">Send</button>
+                        </form>
+                        <div id="formResponse"></div>
+                    </div>
+                </div>
+                <!-- Columna derecha: General Help y Report a Problem -->
+                <div class="support-right">
+                    <div class="support-card">
+                        <h2><i class="fas fa-info-circle"></i> General Help</h2>
+                        <p>Learn more about how Swapp-it works and how to use our features.</p>
+                        <a href="public/pages/about/about.html" class="support-btn">About Swapp-it</a>
+                    </div>
+                    <div class="support-card">
+                        <h2><i class="fas fa-bug"></i> Report a Problem</h2>
+                        <p>Let us know if you find a bug or something isn't working as expected.</p>
+                        <a href="mailto:bugs@swappit.com" class="support-btn">Report a Problem</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <app-footer></app-footer>
+    
+    <!-- Component Scripts -->
+    <script src="public/components/header-component.js"></script>
+    <script src="public/components/header-auth-component.js"></script>
+    <script src="public/components/footer-component.js"></script>
+
+    <script type="module">
+        import { onAuthStateChange } from 'public/firebase/auth.js';
+        // Header dinámico según autenticación
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        onAuthStateChange((user) => {
+            if (user) {
+                headerPlaceholder.innerHTML = '<header-auth-component></header-auth-component>';
+            } else {
+                headerPlaceholder.innerHTML = '<header-component></header-component>';
+            }
+        });
+        // Mostrar email si está loggeado, si no, dejar campo editable
+        const emailInput = document.getElementById('helpEmail');
+        const userStatus = document.getElementById('userStatus');
+        onAuthStateChange((user) => {
+            if (user) {
+                emailInput.value = user.email;
+                emailInput.readOnly = true;
+                userStatus.innerHTML = `<span style="color:green;font-weight:600;">Logged in as ${user.email}</span>`;
+            } else {
+                emailInput.value = '';
+                emailInput.readOnly = false;
+                userStatus.innerHTML = `<span style="color:#ffa424;font-weight:600;">You are not logged in</span>`;
+            }
+        });
+        // Formulario de ayuda (solo ejemplo, no envía realmente)
+        document.getElementById('helpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('formResponse').innerHTML = '<span style="color:var(--swappit-blue);font-weight:600;">Thank you! We have received your message.</span>';
+            this.reset();
+        });
+    </script>
+</body>
+</html>

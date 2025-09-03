@@ -427,21 +427,24 @@ class AllProducts {
 
         productsGrid.innerHTML = productsToShow.map(product => this.createProductCard(product)).join('');
         this.updateLoadMoreButton();
+        this.attachProductCardHover();
     }
 
     // Create product card HTML
     createProductCard(product) {
         const stars = this.generateStars(product.rating);
         const badges = this.generateBadges(product);
-        const originalPrice = product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : '';
+        // Calcular el precio en Swapp-it Coins (1 SWAPPIT Coin = $0.03)
+        const swappitCoinRate = 0.03;
+        const priceInSwappitCoins = product.price / swappitCoinRate;
+        const originalPriceInSwappitCoins = product.originalPrice ? product.originalPrice / swappitCoinRate : null;
+        const originalPrice = product.originalPrice ? `<span class="original-price"><span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${originalPriceInSwappitCoins.toFixed(0)}</span></span>` : '';
         const priceDisplay = product.transactionType === 'sale' ? 
-            `<div class="product-price">$${product.price} ${originalPrice}</div>` : 
+            `<div class="product-price"><span style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:22px;vertical-align:middle;margin-right:4px;'>${priceInSwappitCoins.toFixed(0)}</span> ${originalPrice}</div>` : 
             `<div class="product-price swapp-price">For Swapp</div>`;
-        
         const defaultImage = product.images && product.images.length > 0 ? 
             product.images[0].url || product.images[0] : 
             '/assets/logos/utiles-escolares.jpg';
-
         return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image">
@@ -852,6 +855,58 @@ class AllProducts {
             productsGrid.style.display = 'none';
             console.log('Hiding products grid');
         }
+    }
+
+    attachProductCardHover() {
+        // Elimina cualquier preview anterior
+        let previewDiv = document.getElementById('product-hover-preview');
+        if (!previewDiv) {
+            previewDiv = document.createElement('div');
+            previewDiv.id = 'product-hover-preview';
+            previewDiv.style.position = 'fixed';
+            previewDiv.style.zIndex = '9999';
+            previewDiv.style.display = 'none';
+            previewDiv.style.background = '#fff';
+            previewDiv.style.border = '1px solid #ddd';
+            previewDiv.style.borderRadius = '8px';
+            previewDiv.style.boxShadow = '0 2px 12px rgba(0,0,0,0.15)';
+            previewDiv.style.padding = '12px';
+            previewDiv.style.minWidth = '220px';
+            previewDiv.style.maxWidth = '320px';
+            previewDiv.style.pointerEvents = 'none';
+            document.body.appendChild(previewDiv);
+        }
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                const productId = card.getAttribute('data-product-id');
+                const product = this.products.find(p => p.id === productId);
+                if (!product) return;
+                previewDiv.innerHTML = `
+                    <div style='display:flex;align-items:center;'>
+                        <img src="${product.images && product.images.length > 0 ? (product.images[0].url || product.images[0]) : '/assets/logos/utiles-escolares.jpg'}" style='width:60px;height:60px;object-fit:cover;border-radius:6px;margin-right:10px;'>
+                        <div>
+                            <div style='font-weight:bold;font-size:1rem;'>${product.title}</div>
+                            <div style='font-size:0.95rem;color:#666;'>${product.sellerName}</div>
+                            <div style='margin-top:4px;font-size:1.1rem;'><img src='/assets/coin_SwappIt.png' style='width:18px;vertical-align:middle;margin-right:4px;'>${(product.price/0.03).toFixed(0)}</div>
+                        </div>
+                    </div>
+                    <div style='margin-top:6px;font-size:0.95rem;color:#444;'>${product.description ? product.description.substring(0, 80) + (product.description.length > 80 ? '...' : '') : ''}</div>
+                `;
+                previewDiv.style.display = 'block';
+                previewDiv.style.pointerEvents = 'none';
+            });
+            card.addEventListener('mousemove', (e) => {
+                previewDiv.style.left = (e.clientX + 20) + 'px';
+                previewDiv.style.top = (e.clientY + 10) + 'px';
+            });
+            card.addEventListener('mouseleave', () => {
+                previewDiv.style.display = 'none';
+            });
+            card.addEventListener('click', (e) => {
+                const productId = card.getAttribute('data-product-id');
+                window.location.href = `/pages/marketplace/productDetail.html?id=${productId}`;
+            });
+        });
     }
 }
 

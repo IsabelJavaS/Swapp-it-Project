@@ -1,13 +1,13 @@
 /* =========================================
-   SWAPPIT Web Application Styles
-   Version: 1.0
+    SWAPPIT Web Application Styles
+    Version: 1.0
    ========================================= */
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 /* =========================================
-   Root Variables & Custom Properties
+    Root Variables & Custom Properties
    ========================================= */
 :root {
     /* Brand Colors */
@@ -31,7 +31,7 @@
 }
 
 /* =========================================
-   Global Typography Settings
+    Global Typography Settings
    ========================================= */
 body {
     font-family: var(--font-secondary);
@@ -40,7 +40,7 @@ body {
 }
 
 /* =========================================
-   Header & Navigation Styles
+    Header & Navigation Styles
    ========================================= */
 .navbar-custom {
     background-color: var(--background-white);

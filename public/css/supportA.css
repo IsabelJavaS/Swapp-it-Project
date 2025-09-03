@@ -49,6 +49,7 @@ body {
     justify-content: center;
     align-items: flex-start;
 }
+/* Support Columns left */
 .support-left {
     flex: 1 1 340px;
     max-width: 400px;
@@ -57,8 +58,8 @@ body {
     background: var(--neutral-light);
     border-radius: 1.2rem;
     box-shadow: 0 2px 12px var(--shadow-color);
-    padding: 2rem 1.5rem;
-    margin-bottom: 2rem;
+    padding: 2rem 4rem 2rem 2rem;
+    margin-bottom: 1.5rem;
 }
 .support-form-card h2 {
     color: var(--swappit-blue);
@@ -87,7 +88,7 @@ body {
     font-size: 1rem;
     background: var(--background-white);
     color: var(--neutral-dark);
-    margin-bottom: 0.2rem;
+    margin-bottom: 1.5rem;
     transition: border 0.2s;
 }
 .form-group input:focus,
@@ -101,6 +102,7 @@ body {
     color: var(--background-white);
     font-family: var(--font-primary);
     font-weight: 600;
+    font-size: 16px;
     padding: 0.6rem 1.4rem;
     border-radius: 2rem;
     text-decoration: none;
