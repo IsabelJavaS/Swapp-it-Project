@@ -111,6 +111,11 @@
         .contact-highlight:not(.contact-info-card) .form-label {
             color: #ffffff;
         }
+        /* Ensure any primary-colored text inside the message card appears white */
+        .contact-highlight:not(.contact-info-card) .text-primary,
+        .contact-highlight:not(.contact-info-card) a.text-primary {
+            color: #ffffff !important;
+        }
         .contact-highlight:not(.contact-info-card) h4 {
             font-weight: 700;
             font-size: 24px;

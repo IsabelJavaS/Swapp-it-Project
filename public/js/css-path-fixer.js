@@ -116,16 +116,22 @@
     function fixLinkPaths() {
         const base = getBaseUrl();
         
-        // Ajustar enlaces internos
+        // Ajustar enlaces internos: solo tocar rutas absolutas que empiezan con '/'
         const links = document.querySelectorAll('a[href]');
         links.forEach(link => {
             const href = link.getAttribute('href');
-            if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('#') && !href.startsWith('javascript:')) {
-                if (!href.startsWith('/')) {
-                    link.href = `${base}/${href}`;
-                } else {
-                    link.href = `${base}${href}`;
+            if (!href) return;
+            if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#') || href.startsWith('javascript:')) {
+                return; // externos o anclas
+            }
+            if (href.startsWith('/')) {
+                // Si ya empieza con el base, no volver a prefijar
+                if (base && href.startsWith(base + '/')) {
+                    return;
                 }
+                link.href = `${base}${href}`;
+            } else {
+                // Mantener rutas relativas (./, ../ o archivo en el mismo directorio) sin cambios
             }
         });
     }
@@ -159,11 +165,24 @@
         });
     });
 
-    // Observar cambios en el DOM
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+    // Observar cambios en el DOM (esperar a que body exista)
+    function startObserving() {
+        if (!document.body) return;
+        try {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        } catch (e) {
+            console.warn('MutationObserver no pudo iniciarse:', e);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startObserving);
+    } else {
+        startObserving();
+    }
 
     // Hacer disponible globalmente para uso manual
     window.PathFixer = {
