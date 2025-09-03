@@ -15,8 +15,8 @@ class FooterComponent extends HTMLElement {
     getBaseUrl() {
         // Detectar si estamos en Firebase Hosting o local
         const isFirebase = window.location.hostname.includes('firebaseapp.com') || 
-                          window.location.hostname.includes('web.app') ||
-                          window.location.hostname === 'localhost' && window.location.port === '5000';
+                        window.location.hostname.includes('web.app') ||
+                        window.location.hostname === 'localhost' && window.location.port === '5000';
         
         if (isFirebase) {
             return ''; // Firebase Hosting sirve desde la raíz

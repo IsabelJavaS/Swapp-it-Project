@@ -9,8 +9,20 @@
     <!-- Google Fonts: Poppins & Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
     <!-- Custom Styles -->
-    <link href="../../css/about.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/about.css">
     <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+    <style>
+        /* Inline tweaks to ensure visible changes without cache issues */
+        .team-title { font-size: 2.8rem; letter-spacing: -0.6px; }
+        .team-lead { font-size: 1.18rem; color:#000; }
+        .team-avatar-new { width: 200px; height: 260px; }
+        .team-cards { padding-left: 8vw; padding-right: 8vw; }
+        .team-card-new h5 { font-size: 1.08rem; }
+        .timeline-card h2, .mission-card h2 { font-size: 2.3rem; font-weight: 800; }
+        .about-hero-text h1 { font-size: 3.6rem; }
+        /* Use shadow instead of outline to avoid clipping when scaled */
+        .team-card-new.active { box-shadow: 0 0 0 3px #ffa424; }
+    </style>
 </head>
 <body>
     <!-- Header Web Component -->
@@ -42,7 +54,7 @@
                     </div>
                 </div>
                 <div class="about-hero-img" style="padding-top: 40px; padding-bottom: 40px;">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Swapp-it Team" class="hero-img">
+                    <img src="../../assets/logos/fto%20grupal.JPG" alt="Foto grupal Swappit" class="hero-img">
                 </div>
             </div>
         </section>
@@ -53,10 +65,7 @@
                 <span class="badge">Our Mission</span>
                 <h2>Making Education Accessible and Sustainable</h2>
                 <p class="lead">SWAPP-IT was born from a simple observation: students spend hundreds of dollars on supplies they barely use, while others struggled to afford basic educational materials.</p>
-<<<<<<< HEAD
-=======
                 <p class="lead">We collaborate with schools and local communities to make exchanges simple, safe, and reliable. By encouraging reuse and responsible consumption, we help students reduce costs while building a culture of sustainability.</p>
->>>>>>> 1ba11df05f3dbf0dfbc2009c6c3c7420837f3087
                 <ul class="feature-list-new">
                     <li><i class="fas fa-check-circle"></i>Reduce waste</li>
                     <li><i class="fas fa-check-circle"></i>Save money</li>
@@ -106,7 +115,7 @@
                     </div>
                 </div>
                 <div class="timeline-img">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Swapp-it Story">
+                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Swapp-it Story">
                 </div>
             </div>
         </section>
@@ -114,69 +123,86 @@
         <!-- Team Section -->
         <section class="about-team-section">
             <h2 class="team-title">Meet Our Team</h2>
-            <p class="team-lead">The passionate people behind SWAPP-IT</p>
-            <div class="team-cards">
+            <p class="team-lead">The passionate people behind SWAPPIT</p>
+            <div class="team-carousel">
+                <button class="team-nav team-prev" aria-label="Previous" type="button">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <div class="team-cards" role="region" aria-label="Team members carousel">
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Alex Rodriguez" class="team-avatar-new">
-                    <h5>Angela Angulo</h5>
-                    <div class="role"> PPT - WEB PAGE</div>
-                    <p class="bio">Designed and created the PowerPoint presentation for the website project. She ensured that each slide had an attractive and organized design to clearly communicate the information.</p>
+                    <img src="../../assets/logos/angela.png" alt="Angela Angulo" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Angela Angulo</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Sarah Chen" class="team-avatar-new">
-                    <h5>Cesar Benitez</h5>
-                    <div class="role"> PPT</div>
-                    <p class="bio">Improved and edited the PowerPoint presentation, making sure the content was easy to understand and that the main ideas of the project were visually appealing.</p>
+                    <img src="../../assets/logos/cesar.png" alt="Cesar Benitez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Cesar Benitez</h5>
+                        <div class="role">PPT</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Marcus Johnson" class="team-avatar-new">
-                    <h5>Isabel Carvajal</h5>
-                    <div class="role">PPT - WEB PAGE</div>
-                    <p class="bio">Organized and updated the project’s database. She also supported the design and functionality of the website, ensuring that the content was correctly implemented.</p>
+                    <img src="../../assets/logos/vivaiana.png" alt="Isabel Carvajal" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Isabel Carvajal</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Emily Carter" class="team-avatar-new">
-                    <h5>Vivivana Flores - WEB PAGE</h5>
-                    <div class="role">SCRIPT - PPT</div>
-                    <p class="bio">Maintained and organized the database, contributed to the creation of the PowerPoint presentation, and was responsible for updating the catalog integrated into the website.</p>
+                    <img src="../../assets/logos/viviana%20real.png" alt="Vivivana Flores" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Vivivana Flores</h5>
+                        <div class="role">Script • PPT</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="David Kim" class="team-avatar-new">
-                    <h5>Oliver Gonzalez</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Designed, programmed, and maintained the website, making sure it was functional and visually attractive. He also ensured the database was always up to date so that the information was displayed correctly.</p>
+                    <img src="../../assets/logos/oliver10.png" alt="Oliver Gonzalez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Oliver Gonzalez</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Priya Singh" class="team-avatar-new">
-                    <h5>Javier Mendez</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Managed and organized the project’s database and took part in preparing the PowerPoint presentation, contributing content and ideas to explain the website’s functionality.</p>
+                    <img src="../../assets/logos/javier.png" alt="Javier Mendez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Javier Mendez</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Javier Mendez" class="team-avatar-new">
-                    <h5>Allison Muñoz</h5>
-                    <div class="role">PPT - WEB PAGE</div>
-                    <p class="bio">Created visual elements for the PowerPoint presentation, ensuring consistency and good design. She also helped update and improve the website.</p>
+                    <img src="../../assets/logos/allison.png" alt="Allison Muñoz" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Allison Muñoz</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Linda Park" class="team-avatar-new">
-                    <h5>Yoli Ortiz</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Kept the database organized and contributed content for the PowerPoint presentation, helping ensure the information was presented in an orderly way.</p>
+                    <img src="../../assets/logos/yoli.png" alt="Yoli Ortiz" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Yoli Ortiz</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Mohamed Ali" class="team-avatar-new">
-                    <h5>Gabriela Vargas</h5>
-                    <div class="role">SCRIPT -  CATALOG</div>
-                    <p class="bio">Developed the marketing strategy to promote the project, organized and updated the website’s catalog, and wrote the script used as a guide for the PowerPoint presentation.</p>
+                    <img src="../../assets/logos/gaby.png" alt="Gabriela Vargas" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Gabriela Vargas</h5>
+                        <div class="role">Script • Catalog</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Julia Gomez" class="team-avatar-new">
-                    <h5>Albelis Zaragoza</h5>
-                    <div class="role">WEB PAGE - PPT</div>
-                    <p class="bio">Managed the database, contributed to the creation of the PowerPoint presentation, and supported the website’s development by providing ideas to improve its design and functionality.
-                    </p>
+                    <img src="../../assets/logos/albelis.png" alt="Albelis Zaragoza" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Albelis Zaragoza</h5>
+                        <div class="role">Web Page • PPT</div>
+                    </div>
                 </div>
+                </div>
+                <button class="team-nav team-next" aria-label="Next" type="button">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
             </div>
         </section>
 
@@ -184,11 +210,7 @@
         <section class="about-cta-section">
             <div class="cta-content">
                 <h2>Join the SWAPP-IT Community</h2>
-<<<<<<< HEAD
-                <p class="lead">Ready to start saving money and helping the environment? Join thousands of students already using SWAPPIT.</p>
-=======
                 <p class="lead">Ready to start saving money and helping the environment? Join thousands of students already using SWAPP-IT.</p>
->>>>>>> 1ba11df05f3dbf0dfbc2009c6c3c7420837f3087
                 <div class="cta-buttons">
                     <a href="../auth/register.html" class="btn btn-primary">
                         <i class="fas fa-rocket"></i>Get Started</a>
@@ -205,5 +227,93 @@
     <script src="../../components/header-auth-component.js"></script>
     <script src="../../components/footer-component.js"></script>
     <script src="../../js/global-header-manager.js"></script>
+    <script>
+        (function () {
+            var container = document.querySelector('.team-cards');
+            if (!container) return;
+            var prev = document.querySelector('.team-prev');
+            var next = document.querySelector('.team-next');
+            var card = container.querySelector('.team-card-new');
+            var autoTimer = null;
+            var AUTO_MS = 3000;
+            var ticking = false;
+            // Ensure we start from the very first profile
+            container.scrollTo({ left: 0 });
+
+            function getScrollAmount() {
+                if (!card) return 300;
+                var style = window.getComputedStyle(card);
+                var margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+                return Math.ceil(card.getBoundingClientRect().width + margin);
+            }
+
+            function scrollByAmount(dir, isAuto) {
+                var amount = dir * getScrollAmount();
+                var maxScrollLeft = container.scrollWidth - container.clientWidth;
+                if (isAuto && (container.scrollLeft + amount + 5 >= maxScrollLeft)) {
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                    requestAnimationFrame(updateActive);
+                    return;
+                }
+                container.scrollBy({ left: amount, behavior: 'smooth' });
+                requestAnimationFrame(updateActive);
+            }
+
+            function startAuto() {
+                stopAuto();
+                autoTimer = setInterval(function(){ scrollByAmount(1, true); }, AUTO_MS);
+            }
+            function stopAuto() {
+                if (autoTimer) {
+                    clearInterval(autoTimer);
+                    autoTimer = null;
+                }
+            }
+
+            function updateActive() {
+                if (ticking) return; // throttle with rAF
+                ticking = true;
+                requestAnimationFrame(function(){
+                    var cards = Array.prototype.slice.call(container.querySelectorAll('.team-card-new'));
+                    if (!cards.length) { ticking = false; return; }
+                    var containerRect = container.getBoundingClientRect();
+                    var containerCenter = containerRect.left + containerRect.width / 2;
+                    var closestCard = null;
+                    var minDist = Infinity;
+                    // If we're at the very start, force the first card as active
+                    if (container.scrollLeft === 0) {
+                        closestCard = cards[0];
+                        minDist = 0;
+                    }
+                    cards.forEach(function(c){
+                        var rect = c.getBoundingClientRect();
+                        var center = rect.left + rect.width / 2;
+                        var dist = Math.abs(center - containerCenter);
+                        if (dist < minDist) { minDist = dist; closestCard = c; }
+                    });
+                    cards.forEach(function(c){ c.classList.toggle('active', c === closestCard); });
+                    ticking = false;
+                });
+            }
+
+            prev && prev.addEventListener('click', function(){ stopAuto(); scrollByAmount(-1, false); startAuto(); });
+            next && next.addEventListener('click', function(){ stopAuto(); scrollByAmount(1, false); startAuto(); });
+
+            container.addEventListener('mouseenter', stopAuto);
+            container.addEventListener('mouseleave', startAuto);
+            container.addEventListener('scroll', updateActive, { passive: true });
+
+            // Start autoplay and ensure active state after images load
+            startAuto();
+            // Highlight first card on init
+            var firstCard = container.querySelector('.team-card-new');
+            if (firstCard) firstCard.classList.add('active');
+            if (document.readyState === 'complete') {
+                updateActive();
+            } else {
+                window.addEventListener('load', updateActive);
+            }
+        })();
+    </script>
 </body>
 </html> 
