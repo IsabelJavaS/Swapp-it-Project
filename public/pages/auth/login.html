@@ -4,11 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swapp-it - Login</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../components/components.css">
     <link rel="stylesheet" href="../../css/login.css">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     
     <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
     <script src="../../js/css-path-fixer.js"></script>
+    <style>
+        /* Swapp-it color scheme for Sign In */
+        html, body { min-height: 100%; }
+        body {
+            background: linear-gradient(135deg, #3468c0 0%, #ffa424 100%);
+            background-attachment: fixed;
+        }
+        /* Keep login box readable over gradient */
+        .login-box {
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 12px 30px rgba(52, 104, 192, 0.18);
+        }
+        /* Primary actions in brand colors */
+        .login-btn {
+            background: linear-gradient(135deg, #3468c0, #2d57a4);
+            border: none;
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(52, 104, 192, 0.25);
+        }
+        .login-btn:hover {
+            background: linear-gradient(135deg, #ffa424, #ff8c1a);
+            box-shadow: 0 8px 22px rgba(255, 164, 36, 0.35);
+        }
+        /* Links and accents */
+        .forgot-link, .signup-link { color: #3468c0; }
+        .forgot-link:hover, .signup-link:hover { color: #ffa424; }
+        /* Inputs focus accent */
+        .input-3d-wrapper input:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(52, 104, 192, 0.2), 0 0 0 0.35rem rgba(255, 164, 36, 0.12);
+            border-color: #3468c0;
+        }
+        /* Add breathing room so content isn't too tight to top/bottom */
+        .login-container { margin-top: 48px; margin-bottom: 32px; }
+        /* Set a more compact sign-in box size */
+        .login-box {
+            max-width: 420px;
+            padding: 1rem 1rem;
+        }
+        @media (max-width: 576px) {
+            .login-container { margin-top: 40px; margin-bottom: 32px; }
+            .login-box { max-width: 100%; padding: 1.5rem; }
+        }
+        /* Make Google and Microsoft logos clearer */
+        .social-login-buttons .social-btn.social-square {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            width: 56px;
+            height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        .social-login-buttons .social-btn.social-square:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+            transform: translateY(-1px);
+        }
+        .social-login-buttons .social-btn .social-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+    </style>
 </head>
 <body>
     
@@ -113,7 +179,7 @@
                         <span class="checkmark"></span>
                         <span class="remember-text">Remember me</span>
                     </label>
-                    <a href="/pages/auth/forgot-password.html" class="forgot-link" id="forgotLink">Forgot password?</a>
+                    <a href="forgot-password.html" class="forgot-link" id="forgotLink">Forgot password?</a>
                 </div>
                 <!-- Enhanced 3D button -->
                 <button type="submit" class="login-btn" id="loginBtn">
@@ -144,14 +210,14 @@
                         </span>
                     </button>
                 </div>
-                <p class="signup-text">Don't have an account? <a href="/pages/auth/register.html" class="signup-link" id="signupLink">Create Account</a></p>
+                <p class="signup-text">Don't have an account? <a href="register.html" class="signup-link" id="signupLink">Create Account</a></p>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="/js/config.js" type="module"></script>
-    <script src="/js/login.js" type="module"></script>
-    <script src="/js/spline-animations.js" type="module"></script>
+    <script src="../../js/config.js" type="module"></script>
+    <script src="../../js/login.js" type="module"></script>
+    <script src="../../js/spline-animations.js" type="module"></script>
 </body>
 </html>
