@@ -11,6 +11,18 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="../../css/about.css">
     <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
+    <style>
+        /* Inline tweaks to ensure visible changes without cache issues */
+        .team-title { font-size: 2.8rem; letter-spacing: -0.6px; }
+        .team-lead { font-size: 1.18rem; color:#000; }
+        .team-avatar-new { width: 200px; height: 260px; }
+        .team-cards { padding-left: 8vw; padding-right: 8vw; }
+        .team-card-new h5 { font-size: 1.08rem; }
+        .timeline-card h2, .mission-card h2 { font-size: 2.3rem; font-weight: 800; }
+        .about-hero-text h1 { font-size: 3.6rem; }
+        /* Use shadow instead of outline to avoid clipping when scaled */
+        .team-card-new.active { box-shadow: 0 0 0 3px #ffa424; }
+    </style>
 </head>
 <body>
     <!-- Header Web Component -->
@@ -42,7 +54,7 @@
                     </div>
                 </div>
                 <div class="about-hero-img" style="padding-top: 40px; padding-bottom: 40px;">
-                    <img src="/assets/logos/EquipoSwappit.jpeg" alt="Swapp-it Team" class="hero-img">
+                    <img src="../../assets/logos/fto%20grupal.JPG" alt="Foto grupal Swappit" class="hero-img">
                 </div>
             </div>
         </section>
@@ -103,7 +115,7 @@
                     </div>
                 </div>
                 <div class="timeline-img">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Swapp-it Story">
+                    <img src="../../assets/fotos grupales/IMG_2710.JPG" alt="Swapp-it Story">
                 </div>
             </div>
         </section>
@@ -111,68 +123,97 @@
         <!-- Team Section -->
         <section class="about-team-section">
             <h2 class="team-title">Meet Our Team</h2>
-            <p class="team-lead">The passionate people behind SWAPP-IT</p>
-            <div class="team-cards">
+            <p class="team-lead">The passionate people behind SWAPPIT</p>
+            <div class="team-carousel">
+                <button class="team-nav team-prev" aria-label="Previous team member">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="team-cards" role="region" aria-label="Team members carousel">
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Angela Angulo" class="team-avatar-new">
-                    <h5>Angela Angulo</h5>
-                    <div class="role"> PPT - WEB PAGE</div>
-                    <p class="bio">Designed and created the PowerPoint presentation for the website project. She ensured that each slide had an attractive and organized design to clearly communicate the information.</p>
+                    <img src="../../assets/logos/angela.png" alt="Angela Angulo" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Angela Angulo</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Cesar Benitez" class="team-avatar-new">
-                    <h5>Cesar Benitez</h5>
-                    <div class="role"> PPT</div>
-                    <p class="bio">Improved and edited the PowerPoint presentation, making sure the content was easy to understand and that the main ideas of the project were visually appealing.</p>
+                    <img src="../../assets/logos/cesar.png" alt="Cesar Benitez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Cesar Benitez</h5>
+                        <div class="role">PPT</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Isabel Carvajal" class="team-avatar-new">
-                    <h5>Isabel Carvajal</h5>
-                    <div class="role">PPT - WEB PAGE</div>
-                    <p class="bio">Organized and updated the project's database. She also supported the design and functionality of the website, ensuring that the content was correctly implemented.</p>
+                    <img src="../../assets/logos/vivaiana.png" alt="Isabel Carvajal" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Isabel Carvajal</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Viviana Flores" class="team-avatar-new">
-                    <h5>Viviana Flores - WEB PAGE</h5>
-                    <div class="role">SCRIPT - PPT</div>
-                    <p class="bio">Maintained and organized the database, contributed to the creation of the PowerPoint presentation, and was responsible for updating the catalog integrated into the website.</p>
+                    <img src="../../assets/logos/viviana%20real.png" alt="Vivivana Flores" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Vivivana Flores</h5>
+                        <div class="role">Script • PPT</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Oliver Gonzalez" class="team-avatar-new">
-                    <h5>Oliver Gonzalez</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Designed, programmed, and maintained the website, making sure it was functional and visually attractive. He also ensured the database was always up to date so that the information was displayed correctly.</p>
+                    <img src="../../assets/logos/oliver10.png" alt="Oliver Gonzalez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Oliver Gonzalez</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Javier Mendez" class="team-avatar-new">
-                    <h5>Javier Mendez</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Managed and organized the project's database and took part in preparing the PowerPoint presentation, contributing content and ideas to explain the website's functionality.</p>
+                    <img src="../../assets/logos/javier.png" alt="Javier Mendez" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Javier Mendez</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Allison Muñoz" class="team-avatar-new">
-                    <h5>Allison Muñoz</h5>
-                    <div class="role">PPT - WEB PAGE</div>
-                    <p class="bio">Created visual elements for the PowerPoint presentation, ensuring consistency and good design. She also helped update and improve the website.</p>
+                    <img src="../../assets/logos/allison.png" alt="Allison Muñoz" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Allison Muñoz</h5>
+                        <div class="role">PPT • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Yoli Ortiz" class="team-avatar-new">
-                    <h5>Yoli Ortiz</h5>
-                    <div class="role">DATABASE - WEB PAGE</div>
-                    <p class="bio">Kept the database organized and contributed content for the PowerPoint presentation, helping ensure the information was presented in an orderly way.</p>
+                    <img src="../../assets/logos/yoli.png" alt="Yoli Ortiz" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Yoli Ortiz</h5>
+                        <div class="role">Database • Web Page</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Gabriela Vargas" class="team-avatar-new">
-                    <h5>Gabriela Vargas</h5>
-                    <div class="role">SCRIPT -  CATALOG</div>
-                    <p class="bio">Developed the marketing strategy to promote the project, organized and updated the website's catalog, and wrote the script used as a guide for the PowerPoint presentation.</p>
+                    <img src="../../assets/logos/gaby.png" alt="Gabriela Vargas" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Gabriela Vargas</h5>
+                        <div class="role">Script • Catalog</div>
+                    </div>
                 </div>
                 <div class="team-card-new">
-                    <img src="/assets/Fotoequipo/EquipoSwappit.jpeg" alt="Albelis Zaragoza" class="team-avatar-new">
-                    <h5>Albelis Zaragoza</h5>
-                    <div class="role">WEB PAGE - PPT</div>
-                    <p class="bio">Managed the database, contributed to the creation of the PowerPoint presentation, and supported the website's development by providing ideas to improve its design and functionality.
-                    </p>
+                    <img src="../../assets/logos/albelis.png" alt="Albelis Zaragoza" class="team-avatar-new">
+                    <div class="team-info">
+                        <h5>Albelis Zaragoza</h5>
+                        <div class="role">Web Page • PPT</div>
+                    </div>
+                </div>
+                </div>
+                <button class="team-nav team-next" aria-label="Next team member">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="team-dots">
+                    <span class="team-dot active" data-slide="0"></span>
+                    <span class="team-dot" data-slide="1"></span>
+                    <span class="team-dot" data-slide="2"></span>
+                    <span class="team-dot" data-slide="3"></span>
+                    <span class="team-dot" data-slide="4"></span>
+                    <span class="team-dot" data-slide="5"></span>
+                    <span class="team-dot" data-slide="6"></span>
+                    <span class="team-dot" data-slide="7"></span>
+                    <span class="team-dot" data-slide="8"></span>
+                    <span class="team-dot" data-slide="9"></span>
                 </div>
             </div>
         </section>
@@ -198,5 +239,205 @@
     <script src="../../components/header-auth-component.js"></script>
     <script src="../../components/footer-component.js"></script>
     <script src="../../js/global-header-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.team-cards');
+            const prevBtn = document.querySelector('.team-prev');
+            const nextBtn = document.querySelector('.team-next');
+            const dots = document.querySelectorAll('.team-dot');
+            const cards = document.querySelectorAll('.team-card-new');
+            
+            if (!container || !cards.length) return;
+            
+            let currentIndex = 0;
+            let autoPlayInterval;
+            const AUTO_PLAY_DELAY = 4000;
+            let isScrolling = false;
+            
+            // Calculate scroll amount to center the card
+            function getScrollAmount() {
+                const cardWidth = cards[0].offsetWidth;
+                const gap = 32; // 2rem gap
+                const containerWidth = container.offsetWidth;
+                const cardWithGap = cardWidth + gap;
+                
+                // Center the card in the container
+                return (cardWithGap * currentIndex) - (containerWidth / 2) + (cardWidth / 2);
+            }
+            
+            // Update active states based on which card is most centered
+            function updateActiveStates() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
+                
+                let closestCard = null;
+                let minDistance = Infinity;
+                
+                cards.forEach((card, index) => {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const distance = Math.abs(cardCenter - containerCenter);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCard = card;
+                        currentIndex = index;
+                    }
+                    
+                    card.classList.remove('active');
+                });
+                
+                if (closestCard) {
+                    closestCard.classList.add('active');
+                }
+                
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+            
+            // Scroll to specific index with centering
+            function scrollToIndex(index) {
+                if (isScrolling) return;
+                isScrolling = true;
+                
+                const cardWidth = cards[0].offsetWidth;
+                const gap = 32;
+                const containerWidth = container.offsetWidth;
+                const cardWithGap = cardWidth + gap;
+                
+                // Calculate position to center the card
+                const targetScroll = (cardWithGap * index) - (containerWidth / 2) + (cardWidth / 2);
+                
+                container.scrollTo({
+                    left: Math.max(0, targetScroll),
+                    behavior: 'smooth'
+                });
+                
+                currentIndex = index;
+                
+                // Update states after scroll animation
+                setTimeout(() => {
+                    updateActiveStates();
+                    isScrolling = false;
+                }, 500);
+            }
+            
+            // Next slide
+            function nextSlide() {
+                const nextIndex = (currentIndex + 1) % cards.length;
+                scrollToIndex(nextIndex);
+            }
+            
+            // Previous slide
+            function prevSlide() {
+                const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+                scrollToIndex(prevIndex);
+            }
+            
+            // Auto play
+            function startAutoPlay() {
+                stopAutoPlay();
+                autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+            }
+            
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                    autoPlayInterval = null;
+                }
+            }
+            
+            // Event listeners
+            nextBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            });
+            
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    stopAutoPlay();
+                    scrollToIndex(index);
+                    startAutoPlay();
+                });
+            });
+            
+            // Pause auto play on hover
+            container.addEventListener('mouseenter', stopAutoPlay);
+            container.addEventListener('mouseleave', startAutoPlay);
+            
+            // Touch/swipe support
+            let startX = 0;
+            let isDragging = false;
+            
+            container.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+                stopAutoPlay();
+            });
+            
+            container.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+            });
+            
+            container.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > 50) { // Minimum swipe distance
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                
+                startAutoPlay();
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    stopAutoPlay();
+                    prevSlide();
+                    startAutoPlay();
+                } else if (e.key === 'ArrowRight') {
+                    stopAutoPlay();
+                    nextSlide();
+                    startAutoPlay();
+                }
+            });
+            
+            // Initialize - center the first card
+            setTimeout(() => {
+                scrollToIndex(0);
+                startAutoPlay();
+            }, 100);
+            
+            // Scroll detection for manual scrolling
+            let scrollTimeout;
+            container.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if (!isScrolling) {
+                        updateActiveStates();
+                    }
+                }, 150);
+            });
+        });
+    </script>
 </body>
 </html> 
