@@ -80,6 +80,11 @@ class HeaderComponent extends HTMLElement {
         return `${base}/pages/about/about.html`;
     }
 
+    getSubmenuAboutImagePath() {
+        const base = this.getBaseUrl();
+        return `${base}/assets/fotos grupales/SubmenuAboutUs.jpeg`;
+    }
+
     getContactPath() {
         const base = this.getBaseUrl();
         return `${base}/pages/contact/contact.html`;
@@ -87,6 +92,7 @@ class HeaderComponent extends HTMLElement {
 
     render() {
         const logoPath = this.getLogoPath();
+        const submenuAboutImagePath = this.getSubmenuAboutImagePath();
         
         this.shadowRoot.innerHTML = `
             <style>
@@ -526,7 +532,7 @@ class HeaderComponent extends HTMLElement {
                     background: #fff;
                     box-shadow: 0 8px 32px rgba(37,99,235,0.12), 0 1.5px 6px rgba(0,0,0,0.04);
                     border-radius: 0 0 18px 18px;
-                    padding: 205em max(8 20.5em) 20.5em max(8vw, 2.5rem);
+                    padding: 0;
                     z-index: 9999;
                     opacity: 0;
                     pointer-events: none;
@@ -611,31 +617,76 @@ class HeaderComponent extends HTMLElement {
                 .dropdown-grid.prada-style {
                     display: flex;
                     flex-direction: row;
-                    gap: 3rem;
-                    align-items: center;
+                    gap: 0;
+                    align-items: stretch;
                     justify-content: flex-start;
+                    height: 160px;
+                    background: #fff;
+                    border-radius: 0 0 18px 18px;
+                    overflow: hidden;
+                    margin-left: -2rem;
                 }
                 .dropdown-col.image-col {
-                    flex: 0 0 340px;
+                    flex: 0 0 75%;
+                    display: flex;
+                    align-items: stretch;
+                    justify-content: stretch;
+                    padding: 0;
+                    margin: 0;
+                }
+                .dropdown-image-large {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 0;
+                    box-shadow: none;
+                    object-fit: cover;
+                    object-position: center;
+                }
+                .dropdown-col.links-col {
+                    flex: 0 0 25%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 200px;
+                    padding: 0.5rem;
+                    margin: 0;
+                }
+                
+                /* Efecto hover extendido para About Us dropdown */
+                #aboutDropdown .dropdown-list {
+                    gap: 0.1rem;
+                    width: 100%;
+                }
+                #aboutDropdown .dropdown-list li {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                }
+                #aboutDropdown .dropdown-list li a {
+                    padding: 0.4rem 1rem;
+                    border-radius: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    color: #000;
+                    background: transparent;
+                    border-left: 2px solid transparent;
+                    border-right: 2px solid transparent;
+                    transition: all 0.3s ease;
+                    text-align: center;
                 }
-                .dropdown-image-large {
-                    width: 150px;
-                    max-height: 90;
-                    height: auto;
-                    border-radius: 14px;
-                    box-shadow: 0px 8px rgba(52104,0.10);
-                    object-fit: cover;
-                }
-                .dropdown-col.links-col {
-                    flex: 1 1 0;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-start;
-                    justify-content: center;
-                    min-width: 200px;
+                #aboutDropdown .dropdown-list li:hover a {
+                    background: var(--swappit-blue);
+                    color: #fff;
+                    border-left: 2px solid #fff;
+                    border-right: 2px solid #fff;
                 }
                 .dropdown-title {
                     font-size: 1.15rem;
@@ -730,17 +781,16 @@ class HeaderComponent extends HTMLElement {
                                 <a href="${this.getAboutPath()}" class="nav-link" id="aboutLink">About Us</a>
                                 <div class="dropdown-menu wide" id="aboutDropdown">
                                     <div class="dropdown-grid prada-style">
-                                        <div class="dropdown-col image-col">
-                                            <img src="${this.getLogoPath()}" alt="About Us" class="dropdown-image-large">
-                                        </div>
                                         <div class="dropdown-col links-col">
-                                            <div class="dropdown-title">About Us</div>
                                             <ul class="dropdown-list">
-                                                <li><a href="${this.getAboutPath()}#mission">Mission</a></li>
-                                                <li><a href="${this.getAboutPath()}#values">Values</a></li>
-                                                <li><a href="${this.getAboutPath()}#story">Our Story</a></li>
+                                                <li><a href="${this.getAboutPath()}#about-us">About Us</a></li>
                                                 <li><a href="${this.getAboutPath()}#team">Team</a></li>
+                                                <li><a href="${this.getAboutPath()}#our-story">Our Story</a></li>
+                                                <li><a href="${this.getAboutPath()}#our-tutors">Our Tutors</a></li>
                                             </ul>
+                                        </div>
+                                        <div class="dropdown-col image-col">
+                                            <img src="${submenuAboutImagePath}" alt="About Us" class="dropdown-image-large">
                                         </div>
                                     </div>
                                 </div>
