@@ -265,30 +265,61 @@
 
         <!-- Swappit Zone Section -->
         <section class="swappit-zone-section" id="swappit-zone">
-            <div class="swappit-zone-bg">
-                <!-- Imagen de fondo solo para decoración, controlada por CSS -->
+                    <div class="swappit-zone-bg">
+            <!-- Imagen de fondo solo para decoración, controlada por CSS -->
+            
+            <!-- Zonas interactivas de productos -->
+            <div class="product-zone" id="laptop-zone" data-product="Laptop Dell Inspiron 15" data-price="$450" data-description="Laptop en excelente estado, perfecta para estudiantes">
+                <!-- Zona de laptop -->
             </div>
+            
+            <div class="product-zone" id="books-zone" data-product="Libros de Texto" data-price="$25 c/u" data-description="Libros de matemáticas, física y química">
+                <!-- Zona de libros -->
+            </div>
+            
+            <div class="product-zone" id="calculator-zone" data-product="Calculadora Científica" data-price="$35" data-description="Calculadora TI-84 Plus, ideal para ingeniería">
+                <!-- Zona de calculadora -->
+            </div>
+            
+            <div class="product-zone" id="backpack-zone" data-product="Mochila Escolar" data-price="$40" data-description="Mochila resistente con compartimentos para laptop">
+                <!-- Zona de mochila -->
+            </div>
+            
+            <div class="product-zone" id="pens-zone" data-product="Kit de Útiles" data-price="$15" data-description="Plumas, lápices, marcadores y más">
+                <!-- Zona de útiles -->
+            </div>
+        </div>
             <div class="container swappit-zone-content">
-                <div class="row mb-5">
-                    <div class="col-lg-8 text-start">
-                        <h2 class="section-title">Swapp-it Zone</h2>
-                        <p class="section-subtitle">Your dedicated space for sustainable student exchanges and community building</p>
+                <div class="row align-items-center">
+                    <!-- Left Column - Title and Description -->
+                    <div class="col-lg-6">
+                        <div class="zone-text-content">
+                            <h2 class="section-title">Swapp-it Zone</h2>
+                            <p class="section-subtitle">Your dedicated space for sustainable student exchanges and community building</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column - Benefit Cards -->
+                    <div class="col-lg-6">
+                        <div class="zone-cards-container">
+                            <div class="swappit-benefit-card">Smart Changes</div>
+                            <div class="swappit-benefit-card">How it Works</div>
+                            <div class="swappit-benefit-card">Community Benefits</div>
+                        </div>
                     </div>
                 </div>
-                <div class="row justify-content-end align-items-end" style="min-height:220px;">
-                    <div class="col-lg-4 d-flex flex-column align-items-end">
-                        <div class="swappit-benefit-card mb-3">Smart Changes</div>
-                        <div class="swappit-benefit-card mb-3">How it Works</div>
-                        <div class="swappit-benefit-card">Community Benefits</div>
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col-12 text-start">
-                        <div class="zone-cta">
+                
+                <!-- CTA Section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="zone-cta" id="zoneCtaBox">
+                            <button class="cta-close-btn" id="ctaCloseBtn" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
                             <h3>Ready to Join the Swapp-it Zone?</h3>
                             <p>Start your sustainable journey today and become part of our growing community!</p>
-                            <div class="cta-buttons d-flex">
-                                <a href="pages/auth/register.html" class="btn btn-primary-large me-3">
+                            <div class="cta-buttons">
+                                <a href="pages/auth/register.html" class="btn btn-primary-large">
                                     <i class="fas fa-rocket me-2"></i>Join Now
                                 </a>
                                 <a href="pages/marketplace.html" class="btn btn-outline-primary-large">
