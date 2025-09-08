@@ -1,0 +1,424 @@
+/* Business Page Styles */
+:root {
+    --swappit-blue: #3468c0;
+    --swappit-orange: #ffa424;
+    --swappit-blue-hover: #1d4ed8;
+    --swappit-orange-hover: #ff5722;
+    --neutral-dark: #1e293b;
+    --neutral-medium: #64748b;
+    --neutral-light: #f1f5f9;
+    --background-white: #ffffff;
+    --shadow-color: rgba(37, 99, 235, 0.1);
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+}
+
+/* Hero Section */
+.business-hero-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 100px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.business-hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.business-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+
+.hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--neutral-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    font-family: var(--font-primary);
+}
+
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    color: var(--neutral-medium);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    font-family: var(--font-secondary);
+}
+
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary-large {
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
+    border: none;
+}
+
+.btn-primary-large:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 104, 192, 0.4);
+    color: white;
+}
+
+.btn-outline-primary {
+    color: var(--swappit-blue);
+    border: 2px solid var(--swappit-blue);
+    padding: 13px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--swappit-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
+}
+
+.business-hero-image {
+    position: relative;
+    z-index: 2;
+}
+
+.business-hero-image img {
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: auto;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.floating-card {
+    position: absolute;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--neutral-dark);
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-card:nth-child(1) {
+    top: 10%;
+    right: -10%;
+    animation-delay: 0s;
+}
+
+.floating-card:nth-child(2) {
+    bottom: 30%;
+    left: -15%;
+    animation-delay: 1s;
+}
+
+.floating-card:nth-child(3) {
+    top: 60%;
+    right: -5%;
+    animation-delay: 2s;
+}
+
+.floating-card i {
+    color: var(--swappit-blue);
+    font-size: 1.2rem;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Benefits Section */
+.business-benefits-section {
+    padding: 100px 0;
+    background: white;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--neutral-dark);
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+}
+
+.section-description {
+    font-size: 1.2rem;
+    color: var(--neutral-medium);
+    margin-bottom: 3rem;
+    font-family: var(--font-secondary);
+}
+
+.benefit-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid #f1f5f9;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: var(--swappit-blue);
+}
+
+.benefit-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.benefit-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.benefit-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--neutral-dark);
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+}
+
+.benefit-description {
+    color: var(--neutral-medium);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-family: var(--font-secondary);
+}
+
+.benefit-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.benefit-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+    color: var(--neutral-dark);
+    font-family: var(--font-secondary);
+}
+
+.benefit-features li i {
+    color: var(--swappit-blue);
+    font-size: 0.9rem;
+}
+
+
+/* How It Works Section */
+.how-it-works-section {
+    padding: 100px 0;
+    background: white;
+}
+
+.step-card {
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.step-number {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 auto 1.5rem;
+    font-family: var(--font-primary);
+}
+
+.step-content h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--neutral-dark);
+    margin-bottom: 1rem;
+    font-family: var(--font-primary);
+}
+
+.step-content p {
+    color: var(--neutral-medium);
+    line-height: 1.6;
+    font-family: var(--font-secondary);
+}
+
+/* CTA Final Section */
+.business-cta-final-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--swappit-blue), var(--swappit-orange));
+    color: white;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-primary);
+    color: white;
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    font-family: var(--font-secondary);
+    color: white;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.business-cta-final-section .btn-primary-large {
+    background: white;
+    color: var(--swappit-blue);
+}
+
+.business-cta-final-section .btn-primary-large:hover {
+    background: #f8fafc;
+    color: var(--swappit-blue);
+}
+
+.business-cta-final-section .btn-outline-primary {
+    color: white;
+    border-color: white;
+}
+
+.business-cta-final-section .btn-outline-primary:hover {
+    background: white;
+    color: var(--swappit-blue);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .floating-card {
+        display: none;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .benefit-card {
+        padding: 2rem;
+    }
+    
+    .cta-title {
+        font-size: 2.2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .cta-title {
+        font-size: 1.8rem;
+    }
+}
