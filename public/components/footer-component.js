@@ -218,6 +218,10 @@ class FooterComponent extends HTMLElement {
                     box-shadow: 0 8px 25px rgba(255, 164, 36, 0.4);
                 }
 
+
+
+
+
                 /* Footer Titles - Professional */
                 .footer-title {
                     color: white;

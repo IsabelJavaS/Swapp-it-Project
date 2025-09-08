@@ -21,14 +21,7 @@
             background: #ffffff;
         }
         section.py-5.bg-light { background: transparent; margin-top: 36px; }
-        .header-gradient-bar {
-            height: 12px;
-            background: linear-gradient(90deg, #3468c0, #ffa424);
-            border-radius: 999px;
-            margin-top: 20px;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.08);
-            display: block;
-        }
+
         .contact-separator {
             height: 4px;
             width: 120px;
@@ -164,6 +157,9 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
             border: 1px solid rgba(52, 104, 192, 0.1);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
         }
         
         .contact-info-box:hover {
@@ -182,6 +178,7 @@
             margin: 0 auto 1.5rem auto;
             color: white;
             font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(52, 104, 192, 0.3);
         }
         
         .contact-info-title {
@@ -189,12 +186,14 @@
             font-weight: 700;
             margin-bottom: 1rem;
             font-size: 1.3rem;
+            text-align: center;
         }
         
         .contact-info-desc {
             color: #666;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            text-align: center;
         }
         
         .contact-info-link {
@@ -202,6 +201,9 @@
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
+            margin-top: auto;
+            display: block;
+            text-align: center;
         }
         
         .contact-info-link:hover {
@@ -317,7 +319,7 @@
         .contact-social-icons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
+            justify-content: flex-start;
             margin-top: auto;
         }
         
@@ -343,6 +345,10 @@
             box-shadow: 0 8px 20px rgba(52, 104, 192, 0.4);
             color: white;
         }
+        
+
+        
+
         
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -376,7 +382,7 @@
     <div id="header-container">
         <header-component></header-component>
     </div>
-    <div class="header-gradient-bar"></div>
+
     <!-- Main Content -->
     <main>
         <section class="contact-hero-section py-5">
@@ -447,10 +453,10 @@
                             <div id="map" class="contact-map-embed mb-3">
                                 <iframe src="https://www.google.com/maps?q=Panama+City,+Panama&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
-                            <div class="contact-social-label mb-2">Social Media:</div>
+                            <div class="contact-social-label mb-2">Following:</div>
                             <div class="contact-social-icons">
                                 <a href="#" class="contact-social-icon"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="contact-social-icon"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="contact-social-icon"><i class="fab fa-instagram"></i></a>
                                 <a href="#" class="contact-social-icon"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
