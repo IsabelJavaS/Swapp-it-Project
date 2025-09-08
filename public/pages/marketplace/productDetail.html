@@ -18,6 +18,8 @@
     
     <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
     <script src="../../js/css-path-fixer.js"></script>
+    <!-- basicLightbox CSS para zoom de imagen -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css">
 </head>
 <body>
     <!-- Dynamic Header Container -->
@@ -46,30 +48,14 @@
                         <div class="product-gallery">
                             <div class="swiper gallery-main">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3" alt="Premium Notebook Set">
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716280-aa053eb21b45?ixlib=rb-4.0.3" alt="Premium Notebook Set Inside">
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716279-e514d1d45b10?ixlib=rb-4.0.3" alt="Premium Notebook Set Details">
-                                    </div>
+                                    <!-- Slides serán insertados dinámicamente por JS -->
                                 </div>
                                 <div class="swiper-button-next"></div>
                                 <div class="swiper-button-prev"></div>
                             </div>
                             <div class="swiper gallery-thumbs">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3" alt="Thumbnail 1">
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716280-aa053eb21b45?ixlib=rb-4.0.3" alt="Thumbnail 2">
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <img src="https://images.unsplash.com/photo-1544716279-e514d1d45b10?ixlib=rb-4.0.3" alt="Thumbnail 3">
-                                    </div>
+                                    <!-- Thumbnails serán insertados dinámicamente por JS -->
                                 </div>
                             </div>
                         </div>
@@ -78,28 +64,19 @@
                     <!-- Product Info -->
                     <div class="col-lg-6">
                         <div class="product-info-main">
-                            <div class="product-status">
-                                <span class="badge bg-success">In Stock</span>
-                                <span class="badge bg-primary">Verified Product</span>
-                            </div>
-                            <h1 class="product-title">Premium Notebook Set</h1>
+                            <div class="product-status"></div>
+                            <h1 class="product-title"></h1>
                             <div class="product-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span class="rating-count">(128 Reviews)</span>
+                                <div class="stars"></div>
+                                <span class="rating-count"></span>
                             </div>
                             <div class="product-price">
-                                <span class="current-price">$12.99</span>
-                                <span class="original-price">$15.99</span>
-                                <span class="discount-badge">-20%</span>
+                                <span class="current-price"></span>
+                                <span class="original-price"></span>
+                                <span class="discount-badge"></span>
                             </div>
                             <div class="product-short-description">
-                                <p>High-quality notebook set perfect for students and professionals. Includes 3 notebooks with different paper types and a premium pen.</p>
+                                <p></p>
                             </div>
                             <!-- Color options removed as requested -->
                             <div class="product-quantity">
@@ -109,7 +86,7 @@
                                     <input type="number" value="1" min="1" max="10">
                                     <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
                                 </div>
-                                <span class="stock-info">12 items left</span>
+                                <span class="stock-info"></span>
                             </div>
                             <div class="product-actions">
                                 <button class="btn btn-primary btn-add-to-cart">
@@ -480,8 +457,10 @@
     <script src="../../js/global-header-manager.js"></script>
     
     <!-- Product Detail JavaScript -->
-    <script src="../../js/productDetail.js"></script>
+    <script type="module" src="../../js/productDetail.js"></script>
 
     <!-- Product Detail JavaScript handles all dynamic functionality -->
+    <!-- basicLightbox JS para zoom de imagen -->
+    <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
 </body>
 </html> 
