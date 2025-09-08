@@ -7,485 +7,381 @@
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts: Poppins & Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Custom Styles -->
-    <link rel="stylesheet" href="../../css/about.css">
+    <link href="../../css/about.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/assets/logos/letraS.png">
-    <style>
-        /* Inline tweaks to ensure visible changes without cache issues */
-        .team-title { font-size: 2.8rem; letter-spacing: -0.6px; }
-        .team-lead { font-size: 1.18rem; color:#000; }
-        .team-avatar-new { width: 200px; height: 260px; }
-        .team-cards { padding-left: 8vw; padding-right: 8vw; }
-        .team-card-new h5 { font-size: 1.08rem; }
-        .timeline-card h2, .mission-card h2 { font-size: 2.3rem; font-weight: 800; }
-        .about-hero-text h1 { font-size: 3.6rem; }
-        /* Use shadow instead of outline to avoid clipping when scaled */
-        .team-card-new.active { box-shadow: 0 0 0 3px #ffa424; }
-    </style>
 </head>
 <body>
     <!-- Header Web Component -->
     <header-component></header-component>
+    
     <main>
         <!-- Hero Section -->
-        <section class="about-hero-improved">
-            <div class="about-bg-image"></div>
-            <div class="about-hero-overlay-improved"></div>
-            <div class="about-hero-content-improved">
-                <div class="about-hero-text-improved">
-                    <h1>We are <span class="highlight">SWAPP-IT</span></h1>
-                    <p class="lead">Your Exchange Network</p>
+        <section class="hero-section">
+            <div class="hero-background">
+                <div class="hero-overlay"></div>
+                <div class="hero-particles"></div>
+            </div>
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <span class="hero-badge">About SWAPP-IT</span>
+                        <h1 class="hero-title">
+                            Revolutionizing <span class="highlight">Education</span><br>
+                            Through Sustainable Exchange
+                        </h1>
+                        <p class="hero-description">
+                            We're transforming how students access educational resources through innovative 
+                            community-driven solutions that promote sustainability and accessibility.
+                        </p>
+                    </div>
+                    <div class="hero-image">
+                        <div class="image-container">
+                            <img src="../../assets/fotos grupales/Fondo.jpg" alt="SWAPP-IT Team" class="team-photo">
+                            <div class="image-glow"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="floating-cards-container">
-                    <div class="cards-top-row">
-                        <div class="stat-card-improved floating-element" data-delay="0">
-                            <div class="stat-icon-improved">
-                            <i class="fas fa-users"></i>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Our Mission</span>
+                    <h2 class="section-title">Making Education Accessible and Sustainable</h2>
+                </div>
+                <div class="mission-content">
+                    <div class="mission-text">
+                        <p class="lead">
+                            SWAPP-IT was born from a simple observation: students spend hundreds of dollars 
+                            on supplies they barely use, while others struggle to afford basic educational materials.
+                        </p>
+                        <p>
+                            We collaborate with schools and local communities to make exchanges simple, safe, 
+                            and reliable. By encouraging reuse and responsible consumption, we help students 
+                            reduce costs while building a culture of sustainability.
+                        </p>
+                    </div>
+                    <div class="mission-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-recycle"></i>
                             </div>
-                            <div class="stat-number-improved">+10,000</div>
-                            <div class="stat-label-improved">Active Users</div>
+                            <h3>Reduce Waste</h3>
+                            <p>Promoting circular economy in education</p>
                         </div>
-                        <div class="stat-card-improved floating-element" data-delay="500">
-                            <div class="stat-icon-improved">
-                            <i class="fas fa-exchange-alt"></i>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-dollar-sign"></i>
                             </div>
-                            <div class="stat-number-improved">+50,000</div>
-                            <div class="stat-label-improved">Exchanges</div>
+                            <h3>Save Money</h3>
+                            <p>Affordable access to quality materials</p>
                         </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Build Community</h3>
+                            <p>Connecting students across campuses</p>
                         </div>
-                    <div class="cards-bottom-row">
-                        <div class="stat-card-improved floating-element" data-delay="1000">
-                            <div class="stat-icon-improved">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>Support Education</h3>
+                            <p>Ensuring equal learning opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="values-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Our Values</span>
+                    <h2 class="section-title">What Drives Us Forward</h2>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
                             <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Sustainability</h3>
+                        <p>We're committed to reducing waste and promoting eco-friendly practices in education. 
+                        Every exchange on our platform helps reduce the environmental impact of school supplies.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Community</h3>
+                        <p>We believe in the power of community. Our platform connects students, fosters 
+                        relationships, and creates a supportive network of learners helping learners.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-universal-access"></i>
+                        </div>
+                        <h3>Accessibility</h3>
+                        <p>Education should be accessible to everyone. We work to break down financial 
+                        barriers and ensure all students have access to the supplies they need to succeed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Story Timeline -->
+        <section class="story-section">
+            <div class="container">
+                <div class="story-content">
+                    <div class="story-text">
+                        <span class="section-badge">Our Story</span>
+                        <h2 class="section-title">From Idea to Impact</h2>
+                        <p class="lead">
+                            What started as a simple observation on a college campus has grown into 
+                            a nationwide movement transforming how students access educational resources.
+                        </p>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-year">2023</div>
+                                <div class="timeline-content">
+                                    <h4>Founded on Campus</h4>
+                                    <p>Started with a simple idea to help students share resources</p>
+                                </div>
                             </div>
-                            <div class="stat-number-improved">100%</div>
-                            <div class="stat-label-improved">Eco Friendly</div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2024</div>
+                                <div class="timeline-content">
+                                    <h4>Nationwide Expansion</h4>
+                                    <p>Grew to serve students across multiple universities</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2025</div>
+                                <div class="timeline-content">
+                                    <h4>Global Vision</h4>
+                                    <p>Preparing for international launch and impact</p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="story-image">
+                        <img src="/assets/logos/Banner.jpg" alt="SWAPP-IT Story" class="story-photo">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section (moved from homepage) -->
-        <section class="about-section" id="about-us">
-            <div class="about-content">
-                <div class="about-text">
-                    <div class="about-badge">
-                        <span>About Us</span>
-                    </div>
-                    <h2 class="about-title">We are <span class="highlight">SWAPP-IT</span></h2>
-                    <p class="about-description">
-                        We are a team of passionate students who believe that education should be accessible to everyone. 
-                        Our platform connects students who have unused supplies with those who need them, creating a 
-                        sustainable and cost-effective solution for educational resources.
-                    </p>
+        <!-- Featured Team Section -->
+        <section class="featured-team-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Leadership Team</span>
+                    <h2 class="section-title">Meet Our Founders</h2>
                 </div>
-                <div class="about-image-container">
-                    <img src="../../assets/fotos grupales/fto%20grupal.JPG" alt="SWAPP-IT Team" class="about-image">
-                </div>
-            </div>
-        </section>
-
-        <!-- Team Section - First Team (Isabel and Viviana) -->
-        <section class="about-team-section" id="team">
-            <div class="team-exclusive-container">
-                <div class="team-member-left">
-                    <div class="member-image-container">
-                        <img src="../../assets/Fotoequipo/Isa.jpeg" alt="Isabel Carvajal" class="member-image">
-                        <div class="member-overlay">
-                            <h3>Isabel Carvajal</h3>
-                            <p>CEO & Co-founder</p>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="/assets/Fotoequipo/Vivi.jpeg" alt="Viviana Flores">
+                            <div class="member-overlay">
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                                        <div class="member-description">
-                        <h3>Viviana Flores</h3>
-                        <p>Co-founder & Creative Director</p>
-                        <div class="member-skills">
-                            <span class="skill-tag">Script</span>
-                            <span class="skill-tag">PPT</span>
-                        </div>
-                    </div>
-                </div>
-                                <div class="team-member-right">
-                    <div class="member-image-container">
-                        <img src="../../assets/Fotoequipo/Vivi.jpeg" alt="Viviana Flores" class="member-image">
-                        <div class="member-overlay">
+                        <div class="member-info">
                             <h3>Viviana Flores</h3>
-                            <p>CEO & Co-founder</p>
+                            <p class="member-role">Co-Founder & Creative Director</p>
+                            <p class="member-bio">Leading our creative vision and user experience design with passion and innovation.</p>
                         </div>
-                </div>
-                    <div class="member-description">
-                        <h3>Isabel Carvajal</h3>
-                        <p>Co-founder & Lead Developer</p>
-                        <div class="member-skills">
-                            <span class="skill-tag">PPT</span>
-                            <span class="skill-tag">Web Page</span>
                     </div>
-                </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="/assets/Fotoequipo/yoli.png" alt="Yoli Ortiz">
+                            <div class="member-overlay">
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h3>Yoli Ortiz</h3>
+                            <p class="member-role">Database Specialist</p>
+                            <p class="member-bio">Ensuring data integrity and system performance with technical expertise.</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="/assets/Fotoequipo/JAvi.jpeg" alt="Javier Mendez">
+                            <div class="member-overlay">
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h3>Javier Mendez</h3>
+                            <p class="member-role">Backend Developer</p>
+                            <p class="member-bio">Building robust and scalable backend systems that power our platform.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Team Section - Additional Team Members -->
-        <section class="about-team-section">
-            <div class="team-additional-container">
-                <div class="team-member-third">
-                    <div class="member-image-container">
-                        <img src="../../assets/Fotoequipo/yoli.png" alt="Yoli Ortiz" class="member-image">
-                        <div class="member-overlay"></div>
-                    </div>
-                    <div class="member-description">
-                        <h3>Yoli Ortiz</h3>
-                        <p>Database Specialist</p>
-                        <div class="member-skills">
-                            <span class="skill-tag">Database</span>
-                            <span class="skill-tag">Web Page</span>
+        <!-- Full Team Carousel -->
+        <section class="full-team-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Complete Team</span>
+                    <h2 class="section-title">The People Behind SWAPP-IT</h2>
+                </div>
+                <div class="team-carousel">
+                    <div class="carousel-container">
+                        <div class="team-cards" id="teamCards">
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/angela.png" alt="Angela Angulo">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Angela Angulo</h4>
+                                    <p>PPT - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/cesar.png" alt="Cesar Benitez">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Cesar Benitez</h4>
+                                    <p>PPT</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/Isa.jpeg" alt="Isabel Carvajal">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Isabel Carvajal</h4>
+                                    <p>PPT - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/Vivi.jpeg" alt="Viviana Flores">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Viviana Flores</h4>
+                                    <p>Script - PPT</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/oliver10.png" alt="Oliver Gonzalez">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Oliver Gonzalez</h4>
+                                    <p>Database - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/JAvi.jpeg" alt="Javier Mendez">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Javier Mendez</h4>
+                                    <p>Database - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/Ali.jpeg" alt="Allison Muñoz">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Allison Muñoz</h4>
+                                    <p>PPT - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/yoli.png" alt="Yoli Ortiz">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Yoli Ortiz</h4>
+                                    <p>Database - Web Page</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/gaby.png" alt="Gabriela Vargas">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Gabriela Vargas</h4>
+                                    <p>Script - Catalog</p>
+                                </div>
+                            </div>
+                            <div class="team-card">
+                                <div class="card-image">
+                                    <img src="/assets/Fotoequipo/albelis.png" alt="Albelis Zaragoza">
+                                </div>
+                                <div class="card-content">
+                                    <h4>Albelis Zaragoza</h4>
+                                    <p>Web Page - PPT</p>
+                                </div>
+                            </div>
                         </div>
+                        <button class="carousel-btn prev" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
-                </div>
-                                <div class="team-member-fourth">
-                    <div class="member-image-container">
-                        <img src="../../assets/Fotoequipo/JAvi.jpeg" alt="Javier Mendez" class="member-image">
-                        <div class="member-overlay"></div>
-                    </div>
-                    <div class="member-description">
-                        <h3>Javier Mendez</h3>
-                        <p>Backend Developer</p>
-                        <div class="member-skills">
-                            <span class="skill-tag">Database</span>
-                            <span class="skill-tag">Web Page</span>
-                        </div>
-                    </div>
-                </div>
-                                <div class="team-member-fifth">
-                    <div class="member-image-container">
-                        <img src="../../assets/Fotoequipo/oliver10.png" alt="Oliver Gonzalez" class="member-image">
-                        <div class="member-overlay"></div>
-            </div>
-                    <div class="member-description">
-                        <h3>Oliver Gonzalez</h3>
-                        <p>Full Stack Developer</p>
-                        <div class="member-skills">
-                            <span class="skill-tag">Database</span>
-                            <span class="skill-tag">Web Page</span>
-                </div>
-                </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Web Designers Section -->
-        <section class="web-designers-section" id="our-tutors">
-            <div class="designers-container">
-                <div class="designer-card" data-designer="gaby">
-                    <div class="designer-image-container">
-                        <img src="../../assets/Fotoequipo/gaby.png" alt="Gaby" class="designer-image">
-                    </div>
-                    <div class="designer-info">
-                        <h3>Gaby</h3>
-                        <p>Web Designer</p>
-                    </div>
-                </div>
-                
-                <div class="designer-card" data-designer="cesar">
-                    <div class="designer-image-container">
-                        <img src="../../assets/Fotoequipo/cesar.png" alt="Cesar" class="designer-image">
-                    </div>
-                    <div class="designer-info">
-                        <h3>Cesar</h3>
-                        <p>Web Designer</p>
-                    </div>
-                </div>
-                
-                <div class="designer-card" data-designer="angela">
-                    <div class="designer-image-container">
-                        <img src="../../assets/Fotoequipo/angela.png" alt="Angela" class="designer-image">
-                    </div>
-                    <div class="designer-info">
-                        <h3>Angela</h3>
-                        <p>Web Designer</p>
-                    </div>
-                </div>
-                
-                <div class="designer-card" data-designer="albelis">
-                    <div class="designer-image-container">
-                        <img src="../../assets/Fotoequipo/albelis.png" alt="Albelis" class="designer-image">
-                    </div>
-                    <div class="designer-info">
-                        <h3>Albelis</h3>
-                        <p>Web Designer</p>
-                    </div>
-            </div>
-                
-                <div class="designer-card" data-designer="ali">
-                    <div class="designer-image-container">
-                        <img src="../../assets/Fotoequipo/Ali.jpeg" alt="Ali" class="designer-image">
-                </div>
-                    <div class="designer-info">
-                        <h3>Ali</h3>
-                        <p>Web Designer</p>
-                </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Story Timeline Section -->
-        <section class="about-story-timeline" id="our-story">
-            <div class="timeline-card">
-                <span class="badge">Our Story</span>
-                <h2>From a Simple Idea to a Growing Community</h2>
-                <div class="timeline-steps">
-                    <div class="timeline-step">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2023</div>
-                        <div class="timeline-desc">Founded on college campus</div>
-                    </div>
-                    <div class="timeline-step">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2024</div>
-                        <div class="timeline-desc">Expanded nationwide</div>
-                    </div>
-                    <div class="timeline-step">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-year">2025</div>
-                        <div class="timeline-desc">International launch</div>
-                    </div>
-                </div>
-                <div class="timeline-img">
-                    <img src="../../assets/fotos grupales/IMG_2710.JPG" alt="Swapp-it Story">
+                    <div class="carousel-dots" id="carouselDots"></div>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="about-cta-section">
-            <div class="cta-content">
-                <h2>Join the SWAPP-IT Community</h2>
-                <p class="lead">Ready to start saving money and helping the environment? Join thousands of students already using SWAPP-IT.</p>
-                <div class="cta-buttons">
-                    <a href="../auth/register.html" class="btn btn-primary">
-                        <i class="fas fa-rocket"></i>Get Started</a>
-                    <a href="../contact/contact.html" class="btn btn-outline">
-                        <i class="fas fa-envelope"></i>Contact Us
-                    </a>
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Join the SWAPP-IT Revolution</h2>
+                    <p class="cta-description">
+                        Ready to start saving money and helping the environment? Join thousands of students 
+                        already using SWAPP-IT to transform their educational experience.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="../auth/register.html" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Get Started Today
+                        </a>
+                        <a href="../contact/contact.html" class="btn btn-outline">
+                            <i class="fas fa-envelope"></i>
+                            Contact Us
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+
     <!-- Footer Web Component -->
     <app-footer></app-footer>
+
+    <!-- Scripts -->
     <script src="../../components/header-component.js"></script>
     <script src="../../components/header-auth-component.js"></script>
     <script src="../../components/footer-component.js"></script>
     <script src="../../js/global-header-manager.js"></script>
-    <script>
-        // Floating Animation Controller
-        document.addEventListener('DOMContentLoaded', function() {
-            const floatingElements = document.querySelectorAll('.floating-element');
-
-            function animateElement(element, delay) {
-                setTimeout(() => {
-                    element.classList.add('animate');
-                }, delay);
-            }
-
-            // Animate each element with its specified delay
-            floatingElements.forEach(element => {
-                const delay = parseInt(element.getAttribute('data-delay'));
-                animateElement(element, delay);
-            });
-
-            // Team hover effects
-            const teamLeft = document.querySelector('.team-member-left');
-            const teamRight = document.querySelector('.team-member-right');
-
-            // First team section (Isabel and Viviana)
-            teamLeft.addEventListener('mouseenter', function() {
-                const rightImage = teamRight.querySelector('.member-image-container');
-                const rightDescription = teamRight.querySelector('.member-description');
-
-                rightImage.style.opacity = '0';
-                rightImage.style.transform = 'scale(0.8)';
-                rightDescription.style.opacity = '1';
-                rightDescription.style.transform = 'scale(1)';
-            });
-
-            teamLeft.addEventListener('mouseleave', function() {
-                const rightImage = teamRight.querySelector('.member-image-container');
-                const rightDescription = teamRight.querySelector('.member-description');
-
-                rightImage.style.opacity = '1';
-                rightImage.style.transform = 'scale(1)';
-                rightDescription.style.opacity = '0';
-                rightDescription.style.transform = 'scale(0.8)';
-            });
-
-            teamRight.addEventListener('mouseenter', function() {
-                const leftImage = teamLeft.querySelector('.member-image-container');
-                const leftDescription = teamLeft.querySelector('.member-description');
-
-                leftImage.style.opacity = '0';
-                leftImage.style.transform = 'scale(0.8)';
-                leftDescription.style.opacity = '1';
-                leftDescription.style.transform = 'scale(1)';
-            });
-
-            teamRight.addEventListener('mouseleave', function() {
-                const leftImage = teamLeft.querySelector('.member-image-container');
-                const leftDescription = teamLeft.querySelector('.member-description');
-
-                leftImage.style.opacity = '1';
-                leftImage.style.transform = 'scale(1)';
-                leftDescription.style.opacity = '0';
-                leftDescription.style.transform = 'scale(0.8)';
-            });
-
-            // Second team section (Yoli, Javi, Oliver) - Efecto cruzado específico
-            const teamThird = document.querySelector('.team-member-third'); // Yoli
-            const teamFourth = document.querySelector('.team-member-fourth'); // Javier
-            const teamFifth = document.querySelector('.team-member-fifth'); // Oliver
-
-            // Hover en Yoli (tercero) → Desaparece Javier (cuarto), muestra info de Yoli en lugar de Javier
-            teamThird.addEventListener('mouseenter', function() {
-                const javierImage = teamFourth.querySelector('.member-image-container');
-                const javierDescription = teamFourth.querySelector('.member-description');
-                
-                // Cambiar el contenido para mostrar info de Yoli
-                javierDescription.innerHTML = `
-                    <h3>Yoli Ortiz</h3>
-                    <p>Database Specialist</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                javierImage.style.opacity = '0';
-                javierImage.style.transform = 'scale(0.8)';
-                javierDescription.style.opacity = '1';
-                javierDescription.style.transform = 'scale(1)';
-            });
-
-            teamThird.addEventListener('mouseleave', function() {
-                const javierImage = teamFourth.querySelector('.member-image-container');
-                const javierDescription = teamFourth.querySelector('.member-description');
-                
-                // Restaurar el contenido original de Javier
-                javierDescription.innerHTML = `
-                    <h3>Javier Mendez</h3>
-                    <p>Backend Developer</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                javierImage.style.opacity = '1';
-                javierImage.style.transform = 'scale(1)';
-                javierDescription.style.opacity = '0';
-                javierDescription.style.transform = 'scale(0.8)';
-            });
-
-            // Hover en Javier (cuarto) → Desaparece Oliver (quinto), muestra info de Javier en lugar de Oliver
-            teamFourth.addEventListener('mouseenter', function() {
-                const oliverImage = teamFifth.querySelector('.member-image-container');
-                const oliverDescription = teamFifth.querySelector('.member-description');
-                
-                // Cambiar el contenido para mostrar info de Javier
-                oliverDescription.innerHTML = `
-                    <h3>Javier Mendez</h3>
-                    <p>Backend Developer</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                oliverImage.style.opacity = '0';
-                oliverImage.style.transform = 'scale(0.8)';
-                oliverDescription.style.opacity = '1';
-                oliverDescription.style.transform = 'scale(1)';
-            });
-
-            teamFourth.addEventListener('mouseleave', function() {
-                const oliverImage = teamFifth.querySelector('.member-image-container');
-                const oliverDescription = teamFifth.querySelector('.member-description');
-                
-                // Restaurar el contenido original de Oliver
-                oliverDescription.innerHTML = `
-                    <h3>Oliver Gonzalez</h3>
-                    <p>Full Stack Developer</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                oliverImage.style.opacity = '1';
-                oliverImage.style.transform = 'scale(1)';
-                oliverDescription.style.opacity = '0';
-                oliverDescription.style.transform = 'scale(0.8)';
-            });
-
-            // Hover en Oliver (quinto) → Desaparece Javier (cuarto), muestra info de Oliver en lugar de Javier
-            teamFifth.addEventListener('mouseenter', function() {
-                const javierImage = teamFourth.querySelector('.member-image-container');
-                const javierDescription = teamFourth.querySelector('.member-description');
-                
-                // Cambiar el contenido para mostrar info de Oliver
-                javierDescription.innerHTML = `
-                    <h3>Oliver Gonzalez</h3>
-                    <p>Full Stack Developer</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                javierImage.style.opacity = '0';
-                javierImage.style.transform = 'scale(0.8)';
-                javierDescription.style.opacity = '1';
-                javierDescription.style.transform = 'scale(1)';
-            });
-
-            teamFifth.addEventListener('mouseleave', function() {
-                const javierImage = teamFourth.querySelector('.member-image-container');
-                const javierDescription = teamFourth.querySelector('.member-description');
-                
-                // Restaurar el contenido original de Javier
-                javierDescription.innerHTML = `
-                    <h3>Javier Mendez</h3>
-                    <p>Backend Developer</p>
-                    <div class="member-skills">
-                        <span class="skill-tag">Database</span>
-                        <span class="skill-tag">Web Page</span>
-                    </div>
-                `;
-
-                javierImage.style.opacity = '1';
-                javierImage.style.transform = 'scale(1)';
-                javierDescription.style.opacity = '0';
-                javierDescription.style.transform = 'scale(0.8)';
-            });
-
-            // Web Designers Section - Efecto de agrandamiento
-            const designerCards = document.querySelectorAll('.designer-card');
-            
-            designerCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    // Agrandar la tarjeta actual
-                    this.style.flex = '2';
-                    this.style.zIndex = '10';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    // Restaurar tamaño normal
-                    this.style.flex = '1';
-                    this.style.zIndex = '1';
-                });
-            });
-        });
-    </script>
+    <script src="../../js/team-carousel.js"></script>
 </body>
-</html> 
+</html>
