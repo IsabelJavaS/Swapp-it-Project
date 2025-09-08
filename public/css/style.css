@@ -294,9 +294,9 @@ body {
 /* =========================================
    Main Content Spacing
    ========================================= */
-main {
+/* main { */
     /* ELIMINADO: width, max-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, transition, opacity, transform, etc. */
-}
+/* } */
 
 /* =========================================
    Hero Section Styles
@@ -867,8 +867,8 @@ main {
 .service-icon i {
     font-size: 1.75rem;
     background: linear-gradient(135deg, var(--swappit-blue) 0%, var(--swappit-orange) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    --webkit-background-clip: text;
+    --webkit-text-fill-color: transparent;
 }
 
 .service-title {
@@ -1197,13 +1197,13 @@ html {
 }
 
 /* Section Transition Styles */
-section {
+/* section { */
     /* ELIMINADO: opacity, transform, transition, width, max-width, min-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, etc. */
-}
+/* } */
 
-section.visible {
+/* section.visible { */
     /* ELIMINADO: opacity, transform, transition, width, max-width, min-width, margin, padding, overflow, box-shadow, border-radius, background, min-height, height, display, flex, grid, align-items, justify-content, position, top, left, right, bottom, z-index, etc. */
-}
+/* } */
 
 /* Contact Page Custom Styles */
 .contact-svg-anim {
@@ -1910,7 +1910,6 @@ section.visible {
         width: 100%;
         max-width: 300px;
     }
-}
     
     .zone-stats {
         padding: 2rem 1rem;
