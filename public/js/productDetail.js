@@ -1,6 +1,9 @@
 // Product Detail Page JavaScript
 console.log('ProductDetail.js loaded successfully');
 
+// Importar funciones de autenticación
+import { isAuthenticated } from './auth-state.js';
+
 class ProductDetailPage {
     constructor() {
         console.log('ProductDetailPage constructor called');
@@ -167,6 +170,67 @@ class ProductDetailPage {
         
         // Reinitialize Swiper
         this.initializeSwiper();
+        // Agregar zoom a la imagen principal después de renderizar
+        setTimeout(() => {
+            const mainImage = document.querySelector('.gallery-main .swiper-slide img');
+            if (mainImage) {
+                mainImage.style.cursor = 'zoom-in';
+                mainImage.addEventListener('click', function() {
+                    if (window.basicLightbox) {
+                        // Crea el contenedor con la imagen y zoom interactivo
+                        const wrapper = document.createElement('div');
+                        wrapper.style.display = 'flex';
+                        wrapper.style.justifyContent = 'center';
+                        wrapper.style.alignItems = 'center';
+                        wrapper.style.width = '100%';
+                        wrapper.style.height = '100%';
+                        wrapper.style.background = 'rgba(255,255,255,0.98)';
+                        const img = document.createElement('img');
+                        img.src = mainImage.src;
+                        img.style.maxWidth = '90vw';
+                        img.style.maxHeight = '90vh';
+                        img.style.objectFit = 'contain';
+                        img.style.cursor = 'zoom-in';
+                        img.style.transition = 'transform 0.2s, cursor 0.2s';
+                        img.style.boxShadow = '0 8px 32px rgba(37,99,235,0.18)';
+                        img.style.borderRadius = '12px';
+                        let scale = 1;
+                        // Función para actualizar el cursor
+                        function updateCursor() {
+                            img.style.cursor = scale > 1 ? 'zoom-out' : 'zoom-in';
+                        }
+                        // Zoom con scroll
+                        img.addEventListener('wheel', (e) => {
+                            e.preventDefault();
+                            if (e.deltaY < 0) {
+                                scale = Math.min(scale + 0.2, 4);
+                            } else {
+                                scale = Math.max(scale - 0.2, 1);
+                            }
+                            img.style.transform = `scale(${scale})`;
+                            updateCursor();
+                        });
+                        // Zoom con doble clic
+                        img.addEventListener('dblclick', (e) => {
+                            e.preventDefault();
+                            if (scale === 1) {
+                                scale = 2;
+                            } else {
+                                scale = 1;
+                            }
+                            img.style.transform = `scale(${scale})`;
+                            updateCursor();
+                        });
+                        // Asegura el cursor correcto al entrar/salir
+                        img.addEventListener('mouseenter', updateCursor);
+                        img.addEventListener('mousemove', updateCursor);
+                        img.addEventListener('mouseleave', updateCursor);
+                        wrapper.appendChild(img);
+                        window.basicLightbox.create(wrapper).show();
+                    }
+                });
+            }
+        }, 200);
         console.log('Product gallery updated successfully');
     }
 
@@ -660,13 +724,27 @@ class ProductDetailPage {
 
     // Proceed to swap functionality
     proceedToSwap() {
-        // Redirect to swap process page
+        // Verificar autenticación
+        if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
+            // Redirigir a login con redirect de regreso
+            const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#swap`);
+            window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
+            return;
+        }
+        // Redirigir a swap process page
         window.location.href = `swap-process.html?productId=${this.productId}`;
     }
 
     // Buy now functionality
     buyNow() {
-        // Redirect to product purchase page
+        // Verificar autenticación
+        if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
+            // Redirigir a login con redirect de regreso
+            const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#buy`);
+            window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
+            return;
+        }
+        // Redirigir a product purchase page
         window.location.href = `../../pages/marketplace/product-purchase.html?productId=${this.productId}&quantity=${this.quantity}`;
     }
 

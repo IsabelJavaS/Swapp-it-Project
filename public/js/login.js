@@ -134,17 +134,26 @@ async function handleLogin(formData) {
         // 3. Update last login timestamp
         await updateLastLogin(authResult.user.uid);
 
-        // 4. Success - redirect to marketplace
+        // 4. Success - redirect to marketplace or redirect param
         showSuccessAnimation();
-        showSuccess('Login successful! Redirecting to marketplace...');
+        showSuccess('Login successful! Redirecting...');
         
         // Store login info for welcome icon (but don't show icon yet)
         sessionStorage.setItem('justLoggedIn', 'true');
         sessionStorage.setItem('userRole', userProfile.role);
-        
-        setTimeout(() => {
-            pathConfig.redirectTo(pathConfig.getMarketplacePath());
-        }, 2000);
+
+        // Obtener parámetro de redirección si existe
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+        if (redirect) {
+            setTimeout(() => {
+                window.location.href = decodeURIComponent(redirect);
+            }, 2000);
+        } else {
+            setTimeout(() => {
+                pathConfig.redirectTo(pathConfig.getMarketplacePath());
+            }, 2000);
+        }
 
     } catch (error) {
         console.error('Login error:', error);
