@@ -593,7 +593,7 @@ class FooterComponent extends HTMLElement {
                                     <li><a href="${this.getBaseUrl()}/pages/about/about.html">About Us</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/support/support.html">Support Center</a></li>
                                     <li><a href="${this.getBaseUrl()}/pages/swapcoin/buy-coins.html">Swapp-it Coins</a></li>
-                                    <li><a href="#">Student Portal</a></li>
+                                    <li><a href="${this.getBaseUrl()}/pages/auth/login.html">Student Portal</a></li>
                                 </ul>
                             </div>
 
@@ -660,16 +660,15 @@ class FooterComponent extends HTMLElement {
             });
         });
 
-        // Footer links
+        // Footer links: permitir navegación normal siempre
         const footerLinks = this.shadowRoot.querySelectorAll('.footer-links a');
         footerLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                // Permitir navegación normal para enlaces internos
-                if (link.href && !link.href.includes('#')) {
-                    return; // Permitir navegación normal
+                // Si es un ancla (#), prevenir; de lo contrario, permitir navegación
+                if (!link.getAttribute('href') || link.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    console.log('Footer link clicked:', link.textContent.trim());
                 }
-                e.preventDefault();
-                console.log('Footer link clicked:', link.textContent.trim());
             });
         });
     }

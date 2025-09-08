@@ -5,15 +5,21 @@
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html {
+    overflow-y: auto;
+}
+
 body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 48px;
 }
 
 /* Spline-style Background */
@@ -309,7 +315,7 @@ body {
 .login-box {
     background: #fff;
     border-radius: 18px;
-    padding: 16px 32px; /* Reducido el padding vertical */
+    padding: 12px 20px; /* Compactar altura */
     box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     border: 1px solid #ececec;
     animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -318,8 +324,6 @@ body {
     overflow: hidden;
     margin: 0 auto;
     max-width: 480px;
-    /* Puedes agregar un max-height si es necesario */
-    /* max-height: 90vh; */
 }
 
 .login-box::before {
@@ -515,7 +519,7 @@ body {
 
 /* Enhanced Form Groups with 3D effects */
 .form-group {
-    margin-bottom: 12px;
+    margin-bottom: 8px; /* Compactar separación vertical */
     position: relative;
     perspective: 1000px;
 }
@@ -565,7 +569,7 @@ body {
 /* Enhanced Input Fields */
 input {
     width: 100%;
-    padding: 10px 12px; /* Reducido el padding vertical */
+    padding: 8px 12px; /* Compactar altura de input */
     border: 2px solid #e2e8f0;
     border-radius: 12px;
     font-size: 1rem;
@@ -574,7 +578,7 @@ input {
     font-family: inherit;
     position: relative;
     z-index: 1;
-    height: 40px; /* Reducido el alto del input */
+    height: 36px; /* Más compacto */
 }
 
 input:focus {
@@ -648,19 +652,19 @@ input:focus {
 /* Enhanced 3D Button */
 .login-btn {
     width: 100%;
-    padding: 8px 0;
+    padding: 6px 0; /* Reducir altura del botón */
     background: linear-gradient(135deg, #ffa424, #3468c0);
     color: white;
     border: none;
     border-radius: 12px;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     overflow: hidden;
     transform-style: preserve-3d;
-    margin-top: 8px;
+    margin-top: 6px;
     margin-bottom: 6px;
-    height: 40px;
+    height: 36px; /* Más compacto */
 }
 
 .btn-3d-wrapper {
@@ -844,7 +848,7 @@ input:focus {
 
 /* Enhanced Additional Options */
 .additional-options {
-    margin-top: 32px;
+    margin-top: 20px; /* Reducir espacio antes de redes */
     text-align: center;
 }
 

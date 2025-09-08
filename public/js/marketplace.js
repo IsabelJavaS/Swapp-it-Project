@@ -532,15 +532,15 @@ class MarketplaceLogged {
             product.images[0].url || product.images[0] : 
             '/assets/logos/utiles-escolares.jpg';
         return `
-            <div class="product-card" data-product-id="${product.id}">
+            <div class="product-card" data-product-id="${product.id}" onclick="marketplace.showProductDetails('${product.id}')" style="cursor: pointer;">
                 <div class="product-image">
                     <img src="${defaultImage}" alt="${product.title}" loading="lazy">
                     ${badges}
                     <div class="product-overlay">
-                        <button class="btn-quick-view" onclick="marketplace.showProductDetails('${product.id}')">
+                        <button class="btn-quick-view" onclick="event.stopPropagation(); marketplace.showProductDetails('${product.id}')">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button class="btn-wishlist" onclick="marketplace.toggleWishlist('${product.id}')">
+                        <button class="btn-wishlist" onclick="event.stopPropagation(); marketplace.toggleWishlist('${product.id}')">
                             <i class="fas fa-heart"></i>
                         </button>
                     </div>
@@ -555,14 +555,14 @@ class MarketplaceLogged {
                     ${priceDisplay}
                     <div class="product-actions">
                         ${product.transactionType === 'sale' ? 
-                            `<button class="btn btn-add-cart" onclick="marketplace.addToCart('${product.id}')">
+                            `<button class="btn btn-add-cart" onclick="event.stopPropagation(); marketplace.addToCart('${product.id}')">
                                 <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                             </button>` : 
-                            `<button class="btn btn-swapp" onclick="marketplace.initiateSwapp('${product.id}')">
+                            `<button class="btn btn-swapp" onclick="event.stopPropagation(); marketplace.initiateSwapp('${product.id}')">
                                 <i class="fas fa-exchange-alt me-2"></i>Initiate Swapp
                             </button>`
                         }
-                        <a href="/pages/marketplace/productDetail.html?id=${product.id}" class="btn btn-details">
+                        <a href="/pages/marketplace/productDetail.html?id=${product.id}" class="btn btn-details" onclick="event.stopPropagation()">
                             <i class="fas fa-info-circle me-2"></i>Details
                         </a>
                     </div>

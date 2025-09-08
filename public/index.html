@@ -96,6 +96,39 @@
             </div>
         </section>
 
+        <!-- Mission & Values Section -->
+        <section class="about-mission-values">
+            <div class="mission-card">
+                <span class="badge">Our Mission</span>
+                <h2>Making Education Accessible and Sustainable</h2>
+                <p class="lead">SWAPP-IT was born from a simple observation: students spend hundreds of dollars on supplies they barely use, while others struggled to afford basic educational materials.</p>
+                <p class="lead">We collaborate with schools and local communities to make exchanges simple, safe, and reliable. By encouraging reuse and responsible consumption, we help students reduce costs while building a culture of sustainability.</p>
+                <ul class="feature-list-new">
+                    <li><i class="fas fa-check-circle"></i>Reduce waste</li>
+                    <li><i class="fas fa-check-circle"></i>Save money</li>
+                    <li><i class="fas fa-check-circle"></i>Build community</li>
+                    <li><i class="fas fa-check-circle"></i>Support education</li>
+                </ul>
+            </div>
+            <div class="values-cards">
+                <div class="value-card-new">
+                    <div class="value-icon-new"><i class="fas fa-leaf"></i></div>
+                    <h4>Sustainability</h4>
+                    <p>We're committed to reducing waste and promoting eco-friendly practices in education. Every exchange on our platform helps reduce the environmental impact of school supplies.</p>
+                </div>
+                <div class="value-card-new">
+                    <div class="value-icon-new"><i class="fas fa-users"></i></div>
+                    <h4>Community</h4>
+                    <p>We believe in the power of community. Our platform connects students, fosters relationships, and creates a supportive network of learners helping learners.</p>
+                </div>
+                <div class="value-card-new">
+                    <div class="value-icon-new"><i class="fas fa-graduation-cap"></i></div>
+                    <h4>Accessibility</h4>
+                    <p>Education should be accessible to everyone. We work to break down financial barriers and ensure all students have access to the supplies they need to succeed.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Features Section -->
         <section class="features-section">
             <div class="container">
@@ -232,59 +265,61 @@
 
         <!-- Swappit Zone Section -->
         <section class="swappit-zone-section" id="swappit-zone">
-            <div class="container">
-                <div class="row justify-content-center text-center mb-5">
-                    <div class="col-lg-8">
-                        <h2 class="section-title">Swapp-it Zone</h2>
-                        <p class="section-subtitle">Your dedicated space for sustainable student exchanges and community building</p>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <!-- Zone Features -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="zone-feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
-                            <h3>Smart Exchanges</h3>
-                            <p>Connect with fellow students to trade supplies, textbooks, and equipment. Our intelligent matching system helps you find the perfect swap partners.</p>
+                    <div class="swappit-zone-bg">
+            <!-- Imagen de fondo solo para decoración, controlada por CSS -->
+            
+            <!-- Zonas interactivas de productos -->
+            <div class="product-zone" id="laptop-zone" data-product="Laptop Dell Inspiron 15" data-price="$450" data-description="Laptop en excelente estado, perfecta para estudiantes">
+                <!-- Zona de laptop -->
+            </div>
+            
+            <div class="product-zone" id="books-zone" data-product="Libros de Texto" data-price="$25 c/u" data-description="Libros de matemáticas, física y química">
+                <!-- Zona de libros -->
+            </div>
+            
+            <div class="product-zone" id="calculator-zone" data-product="Calculadora Científica" data-price="$35" data-description="Calculadora TI-84 Plus, ideal para ingeniería">
+                <!-- Zona de calculadora -->
+            </div>
+            
+            <div class="product-zone" id="backpack-zone" data-product="Mochila Escolar" data-price="$40" data-description="Mochila resistente con compartimentos para laptop">
+                <!-- Zona de mochila -->
+            </div>
+            
+            <div class="product-zone" id="pens-zone" data-product="Kit de Útiles" data-price="$15" data-description="Plumas, lápices, marcadores y más">
+                <!-- Zona de útiles -->
+            </div>
+        </div>
+            <div class="container swappit-zone-content">
+                <div class="row align-items-center">
+                    <!-- Left Column - Title and Description -->
+                    <div class="col-lg-6">
+                        <div class="zone-text-content">
+                            <h2 class="section-title">Swapp-it Zone</h2>
+                            <p class="section-subtitle">Your dedicated space for sustainable student exchanges and community building</p>
                         </div>
                     </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="zone-feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-leaf"></i>
-                            </div>
-                            <h3>Eco-Friendly</h3>
-                            <p>Reduce waste and environmental impact by giving new life to educational materials. Every swap helps create a more sustainable campus community.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="zone-feature-card">
-                            <div class="feature-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3>Community Hub</h3>
-                            <p>Join study groups, share resources, and build lasting connections with students who share your academic interests and sustainability values.</p>
-                        </div>
-                    </div>
-
                     
+                    <!-- Right Column - Benefit Cards -->
+                    <div class="col-lg-6">
+                        <div class="zone-cards-container">
+                            <div class="swappit-benefit-card">Smart Changes</div>
+                            <div class="swappit-benefit-card">How it Works</div>
+                            <div class="swappit-benefit-card">Community Benefits</div>
+                        </div>
+                    </div>
                 </div>
-
                 
-
-                <!-- Call to Action -->
-                <div class="row mt-5">
-                    <div class="col-12 text-center">
-                        <div class="zone-cta">
+                <!-- CTA Section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="zone-cta" id="zoneCtaBox">
+                            <button class="cta-close-btn" id="ctaCloseBtn" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
                             <h3>Ready to Join the Swapp-it Zone?</h3>
                             <p>Start your sustainable journey today and become part of our growing community!</p>
-                            <div class="cta-buttons d-flex justify-content-center">
-                                <a href="pages/auth/register.html" class="btn btn-primary-large me-3">
+                            <div class="cta-buttons">
+                                <a href="pages/auth/register.html" class="btn btn-primary-large">
                                     <i class="fas fa-rocket me-2"></i>Join Now
                                 </a>
                                 <a href="pages/marketplace.html" class="btn btn-outline-primary-large">

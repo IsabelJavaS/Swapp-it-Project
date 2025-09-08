@@ -444,11 +444,11 @@ class AllProducts {
             `<div class="product-price swapp-price">For Swapp</div>`;
         const defaultImage = product.images && product.images.length > 0 ? 
             product.images[0].url || product.images[0] : 
-            '/assets/logos/utiles-escolares.jpg';
+            '/assets/logos/Marketplace.jpg';
         return `
             <div class="product-card" data-product-id="${product.id}">
                 <div class="product-image">
-                    <img src="${defaultImage}" alt="${product.title}" loading="lazy">
+                    <img src="${defaultImage}" alt="${product.title}" loading="lazy" onerror="this.src='/assets/logos/Marketplace.jpg'; this.onerror=null;">
                     ${badges}
                     <div class="product-overlay">
                         <button class="btn-quick-view" onclick="allProducts.showProductDetails('${product.id}')">
@@ -883,7 +883,7 @@ class AllProducts {
                 if (!product) return;
                 previewDiv.innerHTML = `
                     <div style='display:flex;align-items:center;'>
-                        <img src="${product.images && product.images.length > 0 ? (product.images[0].url || product.images[0]) : '/assets/logos/utiles-escolares.jpg'}" style='width:60px;height:60px;object-fit:cover;border-radius:6px;margin-right:10px;'>
+                        <img src="${product.images && product.images.length > 0 ? (product.images[0].url || product.images[0]) : '/assets/logos/Marketplace.jpg'}" style='width:60px;height:60px;object-fit:cover;border-radius:6px;margin-right:10px;' onerror="this.src='/assets/logos/Marketplace.jpg'; this.onerror=null;">
                         <div>
                             <div style='font-weight:bold;font-size:1rem;'>${product.title}</div>
                             <div style='font-size:0.95rem;color:#666;'>${product.sellerName}</div>
