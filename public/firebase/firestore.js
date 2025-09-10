@@ -711,4 +711,125 @@ export const subscribeToUserTransactions = (userId, callback) => {
     });
     callback(transactions);
   });
+};
+
+// ==================== TRANSACTION QUERY FUNCTIONS ====================
+export const getTransactions = async (filters = {}) => {
+  try {
+    const transactionsRef = collection(db, COLLECTIONS.TRANSACTIONS);
+    let q = query(transactionsRef);
+    
+    // Apply filters
+    if (filters.buyerId) {
+      q = query(q, where('buyerId', '==', filters.buyerId));
+    }
+    
+    if (filters.sellerId) {
+      q = query(q, where('sellerId', '==', filters.sellerId));
+    }
+    
+    if (filters.status) {
+      q = query(q, where('status', '==', filters.status));
+    }
+    
+    // Order by creation date
+    q = query(q, orderBy('createdAt', 'desc'));
+    
+    // Limit results
+    if (filters.limit) {
+      q = query(q, limit(filters.limit));
+    }
+    
+    const querySnapshot = await getDocs(q);
+    const transactions = [];
+    
+    querySnapshot.forEach((doc) => {
+      const transactionData = doc.data();
+      transactions.push({
+        id: doc.id,
+        ...transactionData
+      });
+    });
+    
+    return { success: true, transactions };
+  } catch (error) {
+    console.error('Error getting transactions:', error);
+    return { success: false, error: error.message, transactions: [] };
+  }
+};
+
+// ==================== NOTIFICATION FUNCTIONS ====================
+export const getNotifications = async (filters = {}) => {
+  try {
+    const notificationsRef = collection(db, COLLECTIONS.NOTIFICATIONS);
+    let q = query(notificationsRef);
+    
+    // Apply filters
+    if (filters.userId) {
+      q = query(q, where('userId', '==', filters.userId));
+    }
+    
+    if (filters.unread) {
+      q = query(q, where('read', '==', false));
+    }
+    
+    if (filters.type) {
+      q = query(q, where('type', '==', filters.type));
+    }
+    
+    // Order by creation date
+    q = query(q, orderBy('createdAt', 'desc'));
+    
+    // Limit results
+    if (filters.limit) {
+      q = query(q, limit(filters.limit));
+    }
+    
+    const querySnapshot = await getDocs(q);
+    const notifications = [];
+    
+    querySnapshot.forEach((doc) => {
+      const notificationData = doc.data();
+      notifications.push({
+        id: doc.id,
+        ...notificationData
+      });
+    });
+    
+    return { success: true, notifications };
+  } catch (error) {
+    console.error('Error getting notifications:', error);
+    return { success: false, error: error.message, notifications: [] };
+  }
+};
+
+export const createNotification = async (notificationData) => {
+  try {
+    const notificationsRef = collection(db, COLLECTIONS.NOTIFICATIONS);
+    const notificationRef = await addDoc(notificationsRef, {
+      ...notificationData,
+      createdAt: serverTimestamp(),
+      read: false
+    });
+    
+    return { success: true, notificationId: notificationRef.id };
+  } catch (error) {
+    console.error('Error creating notification:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const markNotificationAsRead = async (notificationId) => {
+  try {
+    const notificationRef = doc(db, COLLECTIONS.NOTIFICATIONS, notificationId);
+    await updateDoc(notificationRef, {
+      read: true,
+      readAt: serverTimestamp()
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    return { success: false, error: error.message };
+  }
 }; 
