@@ -673,7 +673,10 @@ class BusinessAddProduct extends HTMLElement {
 
             // Show success notification
             this.showSuccessNotification('Product added successfully!', 'Your product has been uploaded and is now available in the marketplace.');
-
+            
+            // Dispatch product added event for badge manager
+            document.dispatchEvent(new CustomEvent('productAdded'));
+            
             // Reset form and preview
             form.reset();
             imagePreview.innerHTML = '';

@@ -995,7 +995,7 @@ class HeaderComponent extends HTMLElement {
                             
                         
                     
-                        </a>
+,                        </a>
                         <a href="${this.getContactPath()}" class="mobile-menu-item">
                             <i class="fas fa-envelope"></i>
                             Contact

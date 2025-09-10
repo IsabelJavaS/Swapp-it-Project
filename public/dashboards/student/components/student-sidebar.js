@@ -9,6 +9,7 @@ class StudentSidebar extends HTMLElement {
     connectedCallback() {
         this.render();
         this.attachEventListeners();
+        this.setupBadgeManager();
     }
 
     render() {
@@ -406,7 +407,7 @@ class StudentSidebar extends HTMLElement {
                             <a href="#" class="nav-link" data-section="my-products" data-tooltip="My Products">
                                 <i class="fas fa-box"></i>
                                 <span class="nav-text">My Products</span>
-                                <span class="nav-badge">12</span>
+                                <span class="nav-badge" id="my-products-badge">0</span>
                             </a>
                         </li>
                     </ul>
@@ -419,14 +420,14 @@ class StudentSidebar extends HTMLElement {
                             <a href="#" class="nav-link" data-section="purchases" data-tooltip="Purchases">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span class="nav-text">Purchases</span>
-                                <span class="nav-badge">5</span>
+                                <span class="nav-badge" id="purchases-badge">0</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link" data-section="sales" data-tooltip="Sales">
                                 <i class="fas fa-dollar-sign"></i>
                                 <span class="nav-text">Sales</span>
-                                <span class="nav-badge">8</span>
+                                <span class="nav-badge" id="sales-badge">0</span>
                             </a>
                         </li>
                     </ul>
@@ -439,7 +440,7 @@ class StudentSidebar extends HTMLElement {
                             <a href="#" class="nav-link" data-section="notifications" data-tooltip="Notifications">
                                 <i class="fas fa-bell"></i>
                                 <span class="nav-text">Notifications</span>
-                                <span class="nav-badge">3</span>
+                                <span class="nav-badge" id="notifications-badge">0</span>
                             </a>
                         </li>
                     </ul>
@@ -639,6 +640,61 @@ class StudentSidebar extends HTMLElement {
                 link.classList.add('active');
             }
         });
+    }
+
+    // Setup badge manager for dynamic updates
+    setupBadgeManager() {
+        // Wait for BadgeManager to be available
+        const checkBadgeManager = () => {
+            if (window.BadgeManager) {
+                console.log('StudentSidebar: Setting up BadgeManager');
+                
+                // Add listener for badge updates
+                window.BadgeManager.addListener((badges) => {
+                    this.updateBadges(badges);
+                });
+                
+                // Initial badge update
+                this.updateBadges(window.BadgeManager.getAllBadges());
+            } else {
+                setTimeout(checkBadgeManager, 100);
+            }
+        };
+        
+        checkBadgeManager();
+    }
+
+    // Update badge counts
+    updateBadges(badges) {
+        console.log('StudentSidebar: Updating badges:', badges);
+        
+        // Update My Products badge
+        const myProductsBadge = this.shadowRoot.getElementById('my-products-badge');
+        if (myProductsBadge) {
+            myProductsBadge.textContent = badges.myProducts || 0;
+            myProductsBadge.style.display = badges.myProducts > 0 ? 'block' : 'none';
+        }
+        
+        // Update Purchases badge
+        const purchasesBadge = this.shadowRoot.getElementById('purchases-badge');
+        if (purchasesBadge) {
+            purchasesBadge.textContent = badges.purchases || 0;
+            purchasesBadge.style.display = badges.purchases > 0 ? 'block' : 'none';
+        }
+        
+        // Update Sales badge
+        const salesBadge = this.shadowRoot.getElementById('sales-badge');
+        if (salesBadge) {
+            salesBadge.textContent = badges.sales || 0;
+            salesBadge.style.display = badges.sales > 0 ? 'block' : 'none';
+        }
+        
+        // Update Notifications badge
+        const notificationsBadge = this.shadowRoot.getElementById('notifications-badge');
+        if (notificationsBadge) {
+            notificationsBadge.textContent = badges.notifications || 0;
+            notificationsBadge.style.display = badges.notifications > 0 ? 'block' : 'none';
+        }
     }
 }
 
