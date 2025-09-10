@@ -166,6 +166,9 @@ class CartComponent extends HTMLElement {
         this.updateCartCount();
         this.showNotification('Product added to cart');
         
+        // Dispatch cart updated event for badge manager
+        document.dispatchEvent(new CustomEvent('cartUpdated'));
+        
         // Debug cart items
         this.debugCartItems();
         
@@ -180,6 +183,9 @@ class CartComponent extends HTMLElement {
         this.updateCartDisplay();
         this.updateCartCount();
         this.showNotification('Product removed from cart');
+        
+        // Dispatch cart updated event for badge manager
+        document.dispatchEvent(new CustomEvent('cartUpdated'));
     }
 
     // Update item quantity

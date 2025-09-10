@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Badge System - SWAPPIT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .badge-demo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .nav-badge {
+            background: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        .test-button {
+            background: #3468c0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #1d4ed8;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e7f3ff;
+            border-radius: 4px;
+            border-left: 4px solid #3468c0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test del Sistema de Badges Dinámicos</h1>
+    
+    <div class="test-container">
+        <h2>📊 Estado Actual de los Badges</h2>
+        <div class="badge-demo">
+            <span>🛒 Carrito:</span>
+            <span class="nav-badge" id="cart-badge">0</span>
+        </div>
+        <div class="badge-demo">
+            <span>📦 Mis Productos:</span>
+            <span class="nav-badge" id="my-products-badge">0</span>
+        </div>
+        <div class="badge-demo">
+            <span>🛍️ Compras:</span>
+            <span class="nav-badge" id="purchases-badge">0</span>
+        </div>
+        <div class="badge-demo">
+            <span>💰 Ventas:</span>
+            <span class="nav-badge" id="sales-badge">0</span>
+        </div>
+        <div class="badge-demo">
+            <span>🔔 Notificaciones:</span>
+            <span class="nav-badge" id="notifications-badge">0</span>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎮 Simulador de Eventos</h2>
+        <p>Haz clic en los botones para simular acciones del usuario y ver cómo se actualizan los badges:</p>
+        
+        <h3>🛒 Carrito</h3>
+        <button class="test-button" onclick="simulateAddToCart()">Agregar al Carrito</button>
+        <button class="test-button" onclick="simulateRemoveFromCart()">Quitar del Carrito</button>
+        
+        <h3>📦 Productos</h3>
+        <button class="test-button" onclick="simulateAddProduct()">Agregar Producto</button>
+        <button class="test-button" onclick="simulateDeleteProduct()">Eliminar Producto</button>
+        
+        <h3>🛍️ Transacciones</h3>
+        <button class="test-button" onclick="simulatePurchase()">Realizar Compra</button>
+        <button class="test-button" onclick="simulateSale()">Realizar Venta</button>
+        
+        <h3>🔔 Notificaciones</h3>
+        <button class="test-button" onclick="simulateNotification()">Recibir Notificación</button>
+        
+        <h3>🔄 Actualización</h3>
+        <button class="test-button" onclick="refreshBadges()">Actualizar Badges</button>
+    </div>
+
+    <div class="test-container">
+        <h2>📋 Log de Eventos</h2>
+        <div id="event-log" style="background: #f8f9fa; padding: 10px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+            <div>Esperando eventos...</div>
+        </div>
+    </div>
+
+    <div class="status">
+        <h3>✅ Sistema de Badges Dinámicos</h3>
+        <p><strong>Funcionalidades implementadas:</strong></p>
+        <ul>
+            <li>✅ Badges se actualizan automáticamente basándose en datos reales</li>
+            <li>✅ Los badges solo aparecen cuando hay elementos (números > 0)</li>
+            <li>✅ Sistema de eventos para actualizaciones en tiempo real</li>
+            <li>✅ Integración con Firebase para datos persistentes</li>
+            <li>✅ Compatible con dashboards de estudiante y negocio</li>
+        </ul>
+        <p><strong>Nota:</strong> Los badges se actualizarán automáticamente cuando el usuario realice acciones en la aplicación real.</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/badge-manager.js" type="module"></script>
+    <script>
+        // Simulador de eventos para testing
+        let badgeCounts = {
+            cart: 0,
+            myProducts: 0,
+            purchases: 0,
+            sales: 0,
+            notifications: 0
+        };
+
+        function logEvent(message) {
+            const log = document.getElementById('event-log');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML += `<div>[${time}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateBadgeDisplay() {
+            document.getElementById('cart-badge').textContent = badgeCounts.cart;
+            document.getElementById('my-products-badge').textContent = badgeCounts.myProducts;
+            document.getElementById('purchases-badge').textContent = badgeCounts.purchases;
+            document.getElementById('sales-badge').textContent = badgeCounts.sales;
+            document.getElementById('notifications-badge').textContent = badgeCounts.notifications;
+        }
+
+        function simulateAddToCart() {
+            badgeCounts.cart++;
+            updateBadgeDisplay();
+            logEvent('🛒 Producto agregado al carrito');
+            document.dispatchEvent(new CustomEvent('cartUpdated'));
+        }
+
+        function simulateRemoveFromCart() {
+            if (badgeCounts.cart > 0) {
+                badgeCounts.cart--;
+                updateBadgeDisplay();
+                logEvent('🛒 Producto removido del carrito');
+                document.dispatchEvent(new CustomEvent('cartUpdated'));
+            }
+        }
+
+        function simulateAddProduct() {
+            badgeCounts.myProducts++;
+            updateBadgeDisplay();
+            logEvent('📦 Producto agregado');
+            document.dispatchEvent(new CustomEvent('productAdded'));
+        }
+
+        function simulateDeleteProduct() {
+            if (badgeCounts.myProducts > 0) {
+                badgeCounts.myProducts--;
+                updateBadgeDisplay();
+                logEvent('📦 Producto eliminado');
+                document.dispatchEvent(new CustomEvent('productDeleted'));
+            }
+        }
+
+        function simulatePurchase() {
+            badgeCounts.purchases++;
+            updateBadgeDisplay();
+            logEvent('🛍️ Compra realizada');
+            document.dispatchEvent(new CustomEvent('transactionCreated'));
+        }
+
+        function simulateSale() {
+            badgeCounts.sales++;
+            updateBadgeDisplay();
+            logEvent('💰 Venta realizada');
+            document.dispatchEvent(new CustomEvent('transactionCreated'));
+        }
+
+        function simulateNotification() {
+            badgeCounts.notifications++;
+            updateBadgeDisplay();
+            logEvent('🔔 Notificación recibida');
+            document.dispatchEvent(new CustomEvent('notificationReceived'));
+        }
+
+        function refreshBadges() {
+            logEvent('🔄 Actualizando badges...');
+            if (window.BadgeManager) {
+                window.BadgeManager.refresh();
+            }
+        }
+
+        // Listen for badge updates from BadgeManager
+        document.addEventListener('DOMContentLoaded', () => {
+            logEvent('🚀 Sistema de badges inicializado');
+            
+            // Listen for badge updates
+            if (window.BadgeManager) {
+                window.BadgeManager.addListener((badges) => {
+                    logEvent(`📊 Badges actualizados: Cart=${badges.cart}, Products=${badges.myProducts}, Purchases=${badges.purchases}, Sales=${badges.sales}, Notifications=${badges.notifications}`);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
