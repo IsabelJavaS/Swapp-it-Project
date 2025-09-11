@@ -323,6 +323,11 @@ class FooterComponent extends HTMLElement {
                     font-size: 0.9rem;
                 }
 
+                .footer-contact p a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+
 
 
                 /* Footer Bottom - Professional */
@@ -330,7 +335,7 @@ class FooterComponent extends HTMLElement {
                     background: rgba(0, 0, 0, 0.3);
                     padding: 1.5rem 0;
                     border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    margin-top: 2rem;
+                    /*margin-top: 2rem;*/
                 }
 
                 .footer-bottom-content {
@@ -613,10 +618,10 @@ class FooterComponent extends HTMLElement {
                             <div class="footer-column">
                                 <h3 class="footer-title">Contact Us</h3>
                                 <div class="footer-contact">
-                                    <p><i class="fas fa-envelope"></i>hello@swappit.com</p>
-                                    <p><i class="fas fa-phone"></i>+1 (555) 123-4567</p>
-                                    <p><i class="fas fa-location-dot"></i>123 Education Street, ST 12345</p>
-                                    <p><i class="fas fa-clock"></i>Mon-Fri: 9AM-6PM EST</p>
+                                    <p><i class="fas fa-envelope"></i>swapp.it.p@gmail.com</p>
+                                    <p><i class="fas fa-phone"></i>+507 369-3076</p>
+                                    <p><i class="fas fa-location-dot"></i><a href="https://www.google.com/maps?q=Centro+%C2%A1Sup%C3%A9rate!+Fundaci%C3%B3n+Alberto+Motta+Villa+Guadalupe+Calle+E,+San+Miguelito,+Panama" target="_blank" rel="noopener">Centro ¡Supérate! Fundación Alberto Motta Villa Guadalupe Calle E, San Miguelito, Panama</a></p>
+                                    <p><i class="fas fa-clock"></i>Mon-Fri: 8:00AM-5:00PM</p>
                                 </div>
                             </div>
                         </div>
