@@ -485,13 +485,14 @@ class HeaderComponent extends HTMLElement {
                         justify-content: space-between;
                     }
                     
-                    /* Hide buttons and cart on mobile */
+                    /* Hide buttons on mobile */
                     .buttons {
                         display: none !important;
                     }
                     
+                    /* Show cart component on mobile */
                     cart-component {
-                        display: none !important;
+                        display: block !important;
                     }
                     
                     /* Show only logo and hamburger menu */
@@ -908,7 +909,7 @@ class HeaderComponent extends HTMLElement {
                                 </a>
                             </div>
                             
-                            <!-- Cart Component - Hidden on Mobile -->
+                            <!-- Cart Component - Now visible on mobile -->
                             <cart-component></cart-component>
                         </div>
                     </div>
@@ -1322,6 +1323,25 @@ class HeaderComponent extends HTMLElement {
             mobileMenu.classList.remove('show');
             document.body.style.overflow = '';
         }
+    }
+
+    attachEventListeners() {
+        // Mobile menu toggle
+        const mobileToggle = this.shadowRoot.getElementById('mobileToggle');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', () => this.toggleMobileMenu());
+        }
+
+        // Debug: Check if cart component is loaded
+        setTimeout(() => {
+            const cartComponent = document.querySelector('cart-component');
+            console.log('Cart component found:', cartComponent);
+            if (cartComponent) {
+                console.log('Cart component shadow root:', cartComponent.shadowRoot);
+                const cartButton = cartComponent.shadowRoot?.querySelector('.cart-button');
+                console.log('Cart button found:', cartButton);
+            }
+        }, 1000);
     }
 }
 
