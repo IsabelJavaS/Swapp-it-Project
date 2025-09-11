@@ -625,7 +625,7 @@ class FooterComponent extends HTMLElement {
                         <div class="footer-bottom-content">
                             <div class="footer-bottom-left">
                                 <p class="copyright">
-                                    © 2024 SWAPP-IT. All rights reserved. | Making education sustainable, one exchange at a time.
+                                    © 2025 SWAPP-IT. All rights reserved. | Making education sustainable, one exchange at a time.
                                 </p>
                             </div>
                             <div class="footer-legal">

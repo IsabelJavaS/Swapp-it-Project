@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail - SWAPPIT Marketplace</title>
+    <title>Product Details - Swapp-it</title>
     
     <!-- External CSS Dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -680,6 +680,36 @@
             transform: translateY(-1px);
         }
 
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .btn-details {
+            background: transparent;
+            color: var(--swappit-blue);
+            border: 2px solid var(--swappit-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-details:hover {
+            background: var(--swappit-blue);
+            color: white;
+            transform: translateY(-1px);
+        }
+
         /* Responsive Design */
         @media (max-width: 991px) {
             .banner-content {
@@ -859,7 +889,7 @@
                                     <span class="seller-info">Loading...</span>
                                 </div>
                                 <div class="best-seller-badge">
-                                    #1 Artículo más vendido en Útiles Escolares >
+                                    #1 Best-selling item in School Supplies >
                                 </div>
                             </div>
 
@@ -888,24 +918,16 @@
 
                             <!-- Mega Offer -->
                             <div class="mega-offer">
-                                <div class="offer-header">Mega oferta</div>
+                                <div class="offer-header">Mega Offer</div>
                                 <div class="countdown-timer">
-                                    Termina en <span class="timer">28:00:51:40</span>
+                                    Ends in <span class="timer" id="countdown-timer">--:--:--:--</span>
                                 </div>
                             </div>
 
                             <!-- Product Options -->
                             <div class="product-options">
                                 <div class="option-group">
-                                    <label class="option-label">Color:</label>
-                                    <select class="option-select">
-                                        <option>1 PC</option>
-                                        <option>2 PC</option>
-                                        <option>3 PC</option>
-                                    </select>
-                                </div>
-                                <div class="option-group">
-                                    <label class="option-label">Cant.</label>
+                                    <label class="option-label">Qty.</label>
                                     <div class="quantity-selector">
                                         <button class="qty-btn minus">-</button>
                                         <input type="number" value="1" class="quantity-input">
@@ -918,50 +940,50 @@
                             <div class="action-buttons">
                                 <button class="btn-primary btn-add-cart">
                                     <i class="fas fa-shopping-cart"></i>
-                                    Añadir al carrito
+                                    Add to Cart
                                 </button>
-                                <div class="discount-info">59% DE DESCUENTO</div>
+                                <div class="discount-info">59% DISCOUNT</div>
                             </div>
 
                             <!-- Shipping Info -->
                             <div class="shipping-info">
                                 <div class="shipping-header">
-                                    <i class="fas fa-truck"></i>
-                                    <span>Puerta a puerta Envío gratis en cada pedido ></span>
+                                    <i class="fas fa-store"></i>
+                                    <span>Pickup at Swappit Zone of your school</span>
                                 </div>
                                 <div class="delivery-estimate">
-                                    <span class="delivery-date">6-23 sep</span>
-                                    <span class="carrier">Premium Rush Shop aeropost AEROPOST</span>
+                                    <span class="delivery-date">Available immediately</span>
+                                    <span class="carrier">Go to the Swappit Zone of your corresponding school</span>
                                 </div>
                             </div>
 
                             <!-- Why Choose Swapp-it -->
                             <div class="why-choose-section">
-                                <h3>¿Por qué elegir Swapp-it?</h3>
+                                <h3>Why Choose Swapp-it?</h3>
                                 
                                 <div class="benefit-group">
-                                    <h4>Seguridad y privacidad</h4>
+                                    <h4>Security and Privacy</h4>
                                     <ul class="benefit-list">
-                                        <li><i class="fas fa-check"></i> Pagos seguros</li>
-                                        <li><i class="fas fa-check"></i> Privacidad segura</li>
+                                        <li><i class="fas fa-check"></i> Secure payments</li>
+                                        <li><i class="fas fa-check"></i> Secure privacy</li>
                                     </ul>
                                 </div>
 
                                 <div class="benefit-group">
-                                    <h4>Entrega garantizada</h4>
+                                    <h4>Guaranteed Delivery</h4>
                                     <ul class="benefit-list">
-                                        <li><i class="fas fa-check"></i> B/.2.00 de crédito por retraso</li>
-                                        <li><i class="fas fa-check"></i> Reembolso por 30 días sin actualizaciones</li>
-                                        <li><i class="fas fa-check"></i> Devolución</li>
-                                        <li><i class="fas fa-check"></i> Reembolso pur</li>
+                                        <li><i class="fas fa-check"></i> B/.2.00 credit for delay</li>
+                                        <li><i class="fas fa-check"></i> 30-day refund without updates</li>
+                                        <li><i class="fas fa-check"></i> Returns</li>
+                                        <li><i class="fas fa-check"></i> Pure refund</li>
                                     </ul>
                                 </div>
                             </div>
 
                             <!-- Additional Links -->
                             <div class="additional-links">
-                                <a href="#" class="link-item">Devoluciones de 90 días. Ajuste de precios ></a>
-                                <a href="#" class="link-item">Programa de plantación de árboles Swapp-it (21M+ de árboles) ></a>
+                                <a href="#" class="link-item">90-day returns. Price adjustment ></a>
+                                <a href="#" class="link-item">Swapp-it tree planting program (21M+ trees) ></a>
                             </div>
                         </div>
                     </div>
@@ -971,69 +993,93 @@
             <!-- Related Products Section -->
             <section class="related-products">
                 <div class="container">
-                    <h2 class="section-title">Productos Relacionados</h2>
+                    <h2 class="section-title">Related Products</h2>
                     <div class="related-products-grid">
                         <div class="product-card">
                             <div class="product-image">
-                                <img src="../../assets/logos/utiles-escolares.jpg" alt="Producto Relacionado">
-                                <div class="product-badge">Nuevo</div>
+                                <img src="../../assets/logos/utiles-escolares.jpg" alt="Related Product">
+                                <div class="product-badge">New</div>
                             </div>
                             <div class="product-info">
-                                <h3>Cuaderno Lujoso</h3>
-                                <p>por Premium Stationary</p>
+                                <h3>Luxury Notebook</h3>
+                                <p>by Premium Stationary</p>
                                 <div class="product-price">B/.14.99</div>
-                                <button class="btn-add-cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Añadir al Carrito
-                                </button>
+                                <div class="product-actions">
+                                    <button class="btn-add-cart" data-product-id="luxury-notebook-001">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Add to Cart
+                                    </button>
+                                    <button class="btn-details" data-product-id="luxury-notebook-001">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
                         <div class="product-card">
                             <div class="product-image">
-                                <img src="../../assets/logos/businesslogin.jpeg" alt="Producto Relacionado">
-                                <div class="product-badge sale">Oferta</div>
+                                <img src="../../assets/logos/businesslogin.jpeg" alt="Related Product">
+                                <div class="product-badge sale">Sale</div>
                             </div>
                             <div class="product-info">
-                                <h3>Libreta de Arte</h3>
-                                <p>por Creative Arts</p>
+                                <h3>Art Notebook</h3>
+                                <p>by Creative Arts</p>
                                 <div class="product-price">B/.11.99</div>
-                                <button class="btn-add-cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Añadir al Carrito
-                                </button>
+                                <div class="product-actions">
+                                    <button class="btn-add-cart" data-product-id="art-notebook-002">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Add to Cart
+                                    </button>
+                                    <button class="btn-details" data-product-id="art-notebook-002">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
                         <div class="product-card">
                             <div class="product-image">
-                                <img src="../../assets/logos/EquipoSwappit.jpeg" alt="Producto Relacionado">
-                                <div class="product-badge bestseller">Más Vendido</div>
+                                <img src="../../assets/logos/Marketplace.jpg" alt="Related Product">
+                                <div class="product-badge bestseller">Best Seller</div>
                             </div>
                             <div class="product-info">
-                                <h3>Planner de Estudio</h3>
-                                <p>por Study Essentials</p>
+                                <h3>Study Planner</h3>
+                                <p>by Study Essentials</p>
                                 <div class="product-price">B/.9.99</div>
-                                <button class="btn-add-cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Añadir al Carrito
-                                </button>
+                                <div class="product-actions">
+                                    <button class="btn-add-cart" data-product-id="study-planner-003">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Add to Cart
+                                    </button>
+                                    <button class="btn-details" data-product-id="study-planner-003">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
                         <div class="product-card">
                             <div class="product-image">
-                                <img src="../../assets/logos/sBlanca.jpg" alt="Producto Relacionado">
-                                <div class="product-badge">Limitado</div>
+                                <img src="../../assets/logos/sBlanca.jpg" alt="Related Product">
+                                <div class="product-badge">Limited</div>
                             </div>
                             <div class="product-info">
-                                <h3>Set de Diario</h3>
-                                <p>por Daily Writers</p>
+                                <h3>Journal Set</h3>
+                                <p>by Daily Writers</p>
                                 <div class="product-price">B/.16.99</div>
-                                <button class="btn-add-cart">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Añadir al Carrito
-                                </button>
+                                <div class="product-actions">
+                                    <button class="btn-add-cart" data-product-id="journal-set-004">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Add to Cart
+                                    </button>
+                                    <button class="btn-details" data-product-id="journal-set-004">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1081,6 +1127,316 @@
                     console.log('Image loaded successfully:', this.src);
                 });
             });
+        });
+
+        // Función de prueba para cargar un producto con imágenes
+        window.loadTestProduct = function() {
+            return {
+                id: 'test-product-123',
+                productName: 'Premium Study Planner',
+                description: 'A complete study planner with modern design and advanced features for university students.',
+                price: 25.99,
+                originalPrice: 35.99,
+                category: 'School Supplies',
+                brand: 'Study Essentials',
+                sellerName: 'Study Essentials',
+                sellerType: 'business',
+                transactionType: 'buy',
+                rating: 4.5,
+                reviewCount: 1961,
+                status: 'active',
+                images: [
+                    'https://proyect-swapp-it.web.app/assets/logos/utiles-escolares.jpg',
+                    'https://proyect-swapp-it.web.app/assets/logos/Marketplace.jpg',
+                    'https://proyect-swapp-it.web.app/assets/logos/businesslogin.jpeg'
+                ],
+                specifications: {
+                    'Material': 'Premium paper',
+                    'Size': 'A5',
+                    'Pages': '200',
+                    'Color': 'Navy blue'
+                },
+                features: [
+                    'Weekly and monthly planning',
+                    'Notes section',
+                    'Academic calendar',
+                    'Task list'
+                ]
+            };
+        };
+
+        // Timer dinámico para Mega oferta
+        function startCountdownTimer() {
+            const timerElement = document.getElementById('countdown-timer');
+            if (!timerElement) return;
+
+            // Establecer tiempo de finalización (24 horas desde ahora)
+            const endTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
+
+                if (timeLeft > 0) {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    timerElement.textContent = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    timerElement.textContent = '00:00:00:00';
+                    // Ocultar la oferta cuando expire
+                    const megaOffer = document.querySelector('.mega-offer');
+                    if (megaOffer) {
+                        megaOffer.style.display = 'none';
+                    }
+                }
+            }
+
+            // Actualizar inmediatamente y luego cada segundo
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Mejorar funcionalidad del carrito
+        function enhanceCartFunctionality() {
+            // Agregar event listeners a todos los botones de "Add to Cart"
+            const addToCartBtns = document.querySelectorAll('.btn-add-cart');
+            addToCartBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const productId = this.getAttribute('data-product-id');
+                    
+                    // Si es un producto relacionado, obtener sus datos específicos
+                    if (productId) {
+                        const productData = getRelatedProductData(productId);
+                        if (productData) {
+                            addToCart(productData);
+                        }
+                    } else {
+                        // Si es el producto principal, obtener sus datos
+                        const productData = getCurrentProductData();
+                        if (productData) {
+                            addToCart(productData);
+                        }
+                    }
+                });
+            });
+
+            // Agregar event listeners a los botones de "Details"
+            const detailsBtns = document.querySelectorAll('.btn-details');
+            detailsBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const productId = this.getAttribute('data-product-id');
+                    if (productId) {
+                        // Redirigir a la página de detalles del producto
+                        window.location.href = `productDetail.html?id=${productId}`;
+                    }
+                });
+            });
+        }
+
+        // Obtener datos de productos relacionados
+        function getRelatedProductData(productId) {
+            console.log('Getting related product data for:', productId);
+            
+            const relatedProducts = {
+                'luxury-notebook-001': {
+                    id: 'luxury-notebook-001',
+                    title: 'Luxury Notebook',
+                    price: 14.99,
+                    images: ['https://proyect-swapp-it.web.app/assets/logos/utiles-escolares.jpg'],
+                    sellerName: 'Premium Stationary',
+                    description: 'High-quality luxury notebook with premium paper and elegant design.',
+                    category: 'School Supplies',
+                    brand: 'Premium Stationary',
+                    transactionType: 'buy',
+                    sellerType: 'business'
+                },
+                'art-notebook-002': {
+                    id: 'art-notebook-002',
+                    title: 'Art Notebook',
+                    price: 11.99,
+                    images: ['https://proyect-swapp-it.web.app/assets/logos/businesslogin.jpeg'],
+                    sellerName: 'Creative Arts',
+                    description: 'Professional art notebook perfect for sketching and drawing.',
+                    category: 'School Supplies',
+                    brand: 'Creative Arts',
+                    transactionType: 'buy',
+                    sellerType: 'business'
+                },
+                'study-planner-003': {
+                    id: 'study-planner-003',
+                    title: 'Study Planner',
+                    price: 9.99,
+                    images: ['https://proyect-swapp-it.web.app/assets/logos/Marketplace.jpg'],
+                    sellerName: 'Study Essentials',
+                    description: 'Comprehensive study planner to organize your academic life.',
+                    category: 'School Supplies',
+                    brand: 'Study Essentials',
+                    transactionType: 'buy',
+                    sellerType: 'business'
+                },
+                'journal-set-004': {
+                    id: 'journal-set-004',
+                    title: 'Journal Set',
+                    price: 16.99,
+                    images: ['https://proyect-swapp-it.web.app/assets/logos/sBlanca.jpg'],
+                    sellerName: 'Daily Writers',
+                    description: 'Complete journal set for daily writing and reflection.',
+                    category: 'School Supplies',
+                    brand: 'Daily Writers',
+                    transactionType: 'buy',
+                    sellerType: 'business'
+                }
+            };
+            
+            const productData = relatedProducts[productId];
+            if (productData) {
+                console.log('Found related product data:', productData);
+                return productData;
+            } else {
+                console.warn('Related product not found:', productId);
+                return null;
+            }
+        }
+
+        // Obtener datos del producto actual
+        function getCurrentProductData() {
+            console.log('Getting current product data...');
+            
+            // Intentar obtener datos del producto desde la instancia de ProductDetailPage
+            if (window.productDetailPage && window.productDetailPage.product) {
+                const product = window.productDetailPage.product;
+                console.log('Product found from ProductDetailPage:', product);
+                
+                const productData = {
+                    id: product.id,
+                    title: product.productName || product.title || 'Product',
+                    price: product.price || 0,
+                    images: product.images || [],
+                    sellerName: product.sellerName || product.sellerDisplayName || 'Seller',
+                    description: product.description || '',
+                    category: product.category || '',
+                    brand: product.brand || '',
+                    transactionType: product.transactionType || 'buy',
+                    sellerType: product.sellerType || 'student'
+                };
+                
+                console.log('Formatted product data:', productData);
+                return productData;
+            }
+            
+            // Fallback: crear datos básicos del producto
+            console.log('Using fallback product data');
+            return {
+                id: 'test-product-123',
+                title: 'Premium Study Planner',
+                price: 25.99,
+                images: ['https://proyect-swapp-it.web.app/assets/logos/utiles-escolares.jpg'],
+                sellerName: 'Study Essentials',
+                description: 'A complete study planner with modern design and advanced features for university students.',
+                category: 'School Supplies',
+                brand: 'Study Essentials',
+                transactionType: 'buy',
+                sellerType: 'business'
+            };
+        }
+
+        // Función para agregar al carrito
+        function addToCart(product) {
+            console.log('Adding product to cart:', product);
+            
+            // Esperar a que el componente del carrito esté disponible
+            waitForCartComponent().then(() => {
+                if (window.SwappitCart) {
+                    console.log('SwappitCart found, adding product to cart');
+                    window.SwappitCart.addToCart(product);
+                    
+                    // Actualizar contador del carrito en el header
+                    updateCartCounter();
+                    
+                    // Abrir sidebar del carrito automáticamente
+                    setTimeout(() => {
+                        openCartSidebar();
+                    }, 500);
+                } else {
+                    console.error('SwappitCart not found');
+                }
+            });
+        }
+
+        // Esperar a que el componente del carrito esté disponible
+        function waitForCartComponent() {
+            return new Promise((resolve) => {
+                const checkCart = () => {
+                    if (window.SwappitCart) {
+                        resolve();
+                    } else {
+                        setTimeout(checkCart, 100);
+                    }
+                };
+                checkCart();
+            });
+        }
+
+        // Actualizar contador del carrito
+        function updateCartCounter() {
+            if (window.SwappitCart) {
+                const count = window.SwappitCart.getCartCount();
+                console.log('Updating cart count to:', count);
+                
+                // Actualizar contador en el header
+                const cartCounters = document.querySelectorAll('.cart-count, .cart-badge');
+                cartCounters.forEach(counter => {
+                    counter.textContent = count;
+                    counter.style.display = count > 0 ? 'block' : 'none';
+                });
+            }
+        }
+
+        // Abrir sidebar del carrito
+        function openCartSidebar() {
+            console.log('Attempting to open cart sidebar...');
+            
+            // Buscar el botón del carrito en el header
+            const cartButton = document.querySelector('.cart-button, .cart-icon, [data-cart-toggle], .header-cart, .cart-toggle');
+            if (cartButton) {
+                console.log('Found cart button, clicking...');
+                cartButton.click();
+            } else {
+                console.log('Cart button not found, trying alternative methods...');
+                
+                // Intentar abrir directamente si hay un método disponible
+                if (window.SwappitCart && window.SwappitCart.openSidebar) {
+                    window.SwappitCart.openSidebar();
+                } else if (window.SwappitCart && window.SwappitCart.toggleSidebar) {
+                    window.SwappitCart.toggleSidebar();
+                } else {
+                    // Buscar en el shadow DOM del header
+                    const headerComponent = document.querySelector('header-component, header-auth-component');
+                    if (headerComponent && headerComponent.shadowRoot) {
+                        const shadowCartButton = headerComponent.shadowRoot.querySelector('.cart-button, .cart-icon, [data-cart-toggle]');
+                        if (shadowCartButton) {
+                            console.log('Found cart button in shadow DOM, clicking...');
+                            shadowCartButton.click();
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            startCountdownTimer();
+            enhanceCartFunctionality();
         });
     </script>
 </body>

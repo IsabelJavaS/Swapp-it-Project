@@ -40,7 +40,7 @@ class MarketplaceLogged {
             this.showLoadingState();
             
             // Import Firebase functions
-            const { getProducts } = await import('/firebase/firestore.js');
+            const { getProducts } = await import('../../firebase/firestore.js');
             
             // Use custom filters if provided, otherwise use default
             const filters = customFilters || {
@@ -364,20 +364,20 @@ class MarketplaceLogged {
     renderProducts() {
         console.log('renderProducts called');
         
-        // Render Best Sellers
-        const bestSellers = this.getBestSellers();
-        console.log('Best sellers:', bestSellers.length);
-        this.renderSection('bestSellersGrid', bestSellers, 4);
+        // Render New Products
+        const newProducts = this.getNewArrivals();
+        console.log('New products:', newProducts.length);
+        this.renderSection('newProductsGrid', newProducts, 4);
         
-        // Render New Arrivals
-        const newArrivals = this.getNewArrivals();
-        console.log('New arrivals:', newArrivals.length);
-        this.renderSection('newArrivalsGrid', newArrivals, 4);
+        // Render Swap Products
+        const swapProducts = this.getSwapProducts();
+        console.log('Swap products:', swapProducts.length);
+        this.renderSection('swapProductsGrid', swapProducts, 4);
         
-        // Render Featured Products
-        const featured = this.getFeaturedProducts();
-        console.log('Featured products:', featured.length);
-        this.renderSection('featuredGrid', featured, 4);
+        // Render Business Products
+        const businessProducts = this.getBusinessProducts();
+        console.log('Business products:', businessProducts.length);
+        this.renderSection('businessProductsGrid', businessProducts, 4);
     }
 
     // Render a specific section
@@ -441,6 +441,22 @@ class MarketplaceLogged {
         return this.products
             .filter(product => product.views >= 5 || product.rating >= 4)
             .sort((a, b) => (b.views + b.rating) - (a.views + a.rating))
+            .slice(0, 8);
+    }
+
+    // Get Swap Products (products available for swapping)
+    getSwapProducts() {
+        return this.products
+            .filter(product => product.transactionType === 'swapp')
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 8);
+    }
+
+    // Get Business Products (products from business sellers)
+    getBusinessProducts() {
+        return this.products
+            .filter(product => product.sellerType === 'business')
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .slice(0, 8);
     }
 

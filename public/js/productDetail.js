@@ -1,8 +1,7 @@
 // Product Detail Page JavaScript
 console.log('ProductDetail.js loaded successfully');
 
-// Importar funciones de autenticación
-import { isAuthenticated } from './auth-state.js';
+// Importar funciones de autenticación - se cargará dinámicamente
 
 class ProductDetailPage {
     constructor() {
@@ -91,8 +90,8 @@ class ProductDetailPage {
                 // Create a demo product if no products exist
                 this.product = {
                     id: this.productId,
-                    productName: "Producto de Demostración",
-                    description: "Este es un producto de demostración. Para ver productos reales, agrega algunos productos a la base de datos.",
+                    productName: "Demo Product",
+                    description: "This is a demo product. To see real products, add some products to the database.",
                     price: 25.99,
                     originalPrice: 35.99,
                     category: "demo",
@@ -277,30 +276,86 @@ class ProductDetailPage {
         // Main slide
         const mainSlide = document.createElement('div');
         mainSlide.className = 'swiper-slide';
+        
+        // Create loading placeholder
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'image-loading';
+        loadingDiv.style.cssText = `
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 14px;
+        `;
+        loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading image...';
+        
         const mainImg = document.createElement('img');
-        mainImg.src = imageUrl;
+        mainImg.style.cssText = 'width: 100%; height: 400px; object-fit: cover; cursor: zoom-in; display: none;';
         mainImg.alt = altText;
+        
+        mainImg.onload = function() {
+            console.log(`Image loaded successfully: ${imageUrl}`);
+            loadingDiv.style.display = 'none';
+            this.style.display = 'block';
+        };
+        
         mainImg.onerror = function() {
             console.warn('Failed to load image:', this.src);
+            loadingDiv.innerHTML = '<i class="fas fa-image me-2"></i>Image not available';
+            loadingDiv.style.color = '#dc3545';
             this.src = '/assets/logos/LogoSinFondo.png';
             this.onerror = null; // Prevenir loops infinitos
         };
+        
+        mainSlide.appendChild(loadingDiv);
         mainSlide.appendChild(mainImg);
         mainSwiper.appendChild(mainSlide);
         
         // Thumbnail slide
         const thumbSlide = document.createElement('div');
         thumbSlide.className = 'swiper-slide';
+        
+        const thumbLoadingDiv = document.createElement('div');
+        thumbLoadingDiv.className = 'thumb-loading';
+        thumbLoadingDiv.style.cssText = `
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 12px;
+        `;
+        thumbLoadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
         const thumbImg = document.createElement('img');
-        thumbImg.src = imageUrl;
+        thumbImg.style.cssText = 'width: 100%; height: 80px; object-fit: cover; display: none;';
         thumbImg.alt = altText;
+        
+        thumbImg.onload = function() {
+            thumbLoadingDiv.style.display = 'none';
+            this.style.display = 'block';
+        };
+        
         thumbImg.onerror = function() {
             console.warn('Failed to load thumbnail:', this.src);
+            thumbLoadingDiv.innerHTML = '<i class="fas fa-image"></i>';
+            thumbLoadingDiv.style.color = '#dc3545';
             this.src = '/assets/logos/LogoSinFondo.png';
             this.onerror = null; // Prevenir loops infinitos
         };
+        
+        thumbSlide.appendChild(thumbLoadingDiv);
         thumbSlide.appendChild(thumbImg);
         thumbsSwiper.appendChild(thumbSlide);
+        
+        // Start loading the image
+        mainImg.src = imageUrl;
+        thumbImg.src = imageUrl;
         
         console.log(`Image slide added successfully: ${altText}`);
     }
@@ -308,6 +363,13 @@ class ProductDetailPage {
     // Initialize Swiper gallery
     initializeSwiper() {
         console.log('Initializing Swiper gallery...');
+        
+        // Check if Swiper is available
+        if (typeof Swiper === 'undefined') {
+            console.warn('Swiper not available, retrying in 100ms...');
+            setTimeout(() => this.initializeSwiper(), 100);
+            return;
+        }
         
         // Destroy existing Swiper instances if they exist
         if (window.galleryThumbs) {
@@ -371,14 +433,14 @@ class ProductDetailPage {
             const salesCountElement = document.querySelector('.sales-count');
             if (salesCountElement) {
                 const salesCount = this.product.salesCount || this.product.views || '0';
-                salesCountElement.textContent = `${salesCount}+ ventas`;
+                salesCountElement.textContent = `${salesCount}+ sales`;
                 console.log('Sales count updated:', salesCount);
             }
             
             const sellerInfoElement = document.querySelector('.seller-info');
             if (sellerInfoElement) {
                 const sellerName = this.product.sellerDisplayName || this.product.sellerEmail || 'Unknown Seller';
-                sellerInfoElement.textContent = `Vendido por ${sellerName}`;
+                sellerInfoElement.textContent = `Sold by ${sellerName}`;
                 console.log('Seller info updated:', sellerName);
             }
             
@@ -816,26 +878,36 @@ class ProductDetailPage {
     }
 
     // Proceed to swap functionality
-    proceedToSwap() {
-        // Verificar autenticación
-        if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
-            // Redirigir a login con redirect de regreso
-            const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#swap`);
-            window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
-            return;
+    async proceedToSwap() {
+        // Verificar autenticación dinámicamente
+        try {
+            const { isAuthenticated } = await import('./auth-state.js');
+            if (!isAuthenticated()) {
+                // Redirigir a login con redirect de regreso
+                const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#swap`);
+                window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
+                return;
+            }
+        } catch (error) {
+            console.warn('Could not load auth state, proceeding anyway');
         }
         // Redirigir a swap process page
         window.location.href = `swap-process.html?productId=${this.productId}`;
     }
 
     // Buy now functionality
-    buyNow() {
-        // Verificar autenticación
-        if (typeof isAuthenticated === 'function' && !isAuthenticated()) {
-            // Redirigir a login con redirect de regreso
-            const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#buy`);
-            window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
-            return;
+    async buyNow() {
+        // Verificar autenticación dinámicamente
+        try {
+            const { isAuthenticated } = await import('./auth-state.js');
+            if (!isAuthenticated()) {
+                // Redirigir a login con redirect de regreso
+                const redirectUrl = encodeURIComponent(window.location.pathname + window.location.search + `#buy`);
+                window.location.href = `../../pages/auth/login.html?redirect=${redirectUrl}`;
+                return;
+            }
+        } catch (error) {
+            console.warn('Could not load auth state, proceeding anyway');
         }
         // Redirigir a product purchase page
         window.location.href = `../../pages/marketplace/product-purchase.html?productId=${this.productId}&quantity=${this.quantity}`;
@@ -1044,4 +1116,6 @@ class ProductDetailPage {
 let productDetailPage;
 document.addEventListener('DOMContentLoaded', () => {
     productDetailPage = new ProductDetailPage();
+    // Exponer globalmente para acceso desde el HTML
+    window.productDetailPage = productDetailPage;
 }); 

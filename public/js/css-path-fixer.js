@@ -76,7 +76,9 @@
                 }
             } catch (e) {
                 // Ignorar errores de CORS en hojas de estilo externas
-                console.warn('No se pudo acceder a la hoja de estilos:', e);
+                if (e.name !== 'SecurityError') {
+                    console.warn('No se pudo acceder a la hoja de estilos:', e);
+                }
             }
         }
     }
