@@ -629,11 +629,11 @@ class FooterComponent extends HTMLElement {
                                 </p>
                             </div>
                             <div class="footer-legal">
-                                <a href="${this.getBaseUrl()}/pages/policy/privacy.html">Privacy Policy</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/terms.html">Terms of Service</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/cookies.html">Cookie Policy</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/data-protection.html">Data Protection</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/accessibility.html">Accessibility</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/privacy.html">Política de Privacidad</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/terms.html">Términos y Condiciones</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/cookies.html">Política de Cookies</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/data-protection.html">Protección de Datos</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/accessibility.html">Accesibilidad</a>
                             </div>
                         </div>
                     </div>
@@ -664,6 +664,18 @@ class FooterComponent extends HTMLElement {
                 if (!link.getAttribute('href') || link.getAttribute('href').startsWith('#')) {
                     e.preventDefault();
                     console.log('Footer link clicked:', link.textContent.trim());
+                }
+            });
+        });
+
+        // Footer legal links: permitir navegación normal siempre
+        const footerLegalLinks = this.shadowRoot.querySelectorAll('.footer-legal a');
+        footerLegalLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Si es un ancla (#), prevenir; de lo contrario, permitir navegación
+                if (!link.getAttribute('href') || link.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    console.log('Footer legal link clicked:', link.textContent.trim());
                 }
             });
         });
