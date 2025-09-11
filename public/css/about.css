@@ -85,6 +85,7 @@ body {
     align-items: center;
     background: var(--gradient-primary);
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(255, 164, 36, 0.2);
 }
 
 /* Removed all background overlays to eliminate blue tint */
@@ -100,7 +101,8 @@ body {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 2rem 1rem 1rem 4rem;
+
 }
 
 .hero-content {
@@ -115,6 +117,7 @@ body {
 
 .hero-text {
     color: var(--white);
+    padding-left: 1rem;
 }
 
 .hero-badge {
@@ -315,7 +318,7 @@ body {
     backdrop-filter: blur(15px);
     padding: 2rem 1.5rem;
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(255, 164, 36, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
@@ -426,6 +429,7 @@ body {
     background: linear-gradient(135deg, var(--swappit-blue) 0%, #1e40af 50%, var(--swappit-orange) 100%);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(255, 164, 36, 0.2);
 }
 
 .values-section .section-badge {
@@ -467,11 +471,11 @@ body {
 }
 
 .value-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     backdrop-filter: blur(10px);
     padding: 3rem 3rem;
     border-radius: 25px;
-    box-shadow: 0 20px 40px rgba(255, 164, 36, 0.2);
+    box-shadow: 0 20px 40px rgba(255, 164, 36, 0.8);
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid rgba(255, 164, 36, 0.2);
@@ -492,13 +496,13 @@ body {
 }
 
 .value-card:nth-child(3) {
-    border-left: 4px solid var(--swappit-blue);
+    border-left: 4px solid var(--swappit-orange);
 }
 
 .value-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(255, 164, 36, 0.4);
-    border-color: rgba(255, 164, 36, 0.4);
+    box-shadow: 0 30px 60px rgba(255, 164, 36, 0.8);
+    border-color: rgba(255, 164, 36, 0.6);
 }
 
 .value-icon {
@@ -939,70 +943,123 @@ body {
 }
 
 .team-card {
-    flex: 0 0 300px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    flex: 0 0 260px;
+    background: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(255, 164, 36, 0.3);
     overflow: hidden;
     transition: all 0.3s ease;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 164, 36, 0.2);
     position: relative;
     margin: 0;
     z-index: 1;
     transform: none;
-    height: 350px;
+    height: 340px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 2rem;
+    padding: 0;
     text-align: center;
-    min-width: 300px;
+    min-width: 260px;
+    max-width: 260px;
 }
 
 .team-card:hover {
     transform: translateY(-10px) scale(1.02);
     z-index: 10;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(255, 164, 36, 0.5);
 }
 
 .card-image {
     width: 100%;
-    height: 180px;
+    height: 220px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px 20px 0 0;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center top;
     transition: all 0.3s ease;
+    border-radius: 0;
+    filter: none;
+    transform: scale(1.3);
 }
 
 .team-card:hover .card-image img {
-    transform: scale(1.05);
+    transform: scale(1.25);
+}
+
+/* Ajustes específicos para posicionamiento de imágenes - Todas alineadas arriba para eliminar espacio blanco */
+.team-card:nth-child(1) .card-image img,
+.team-card:nth-child(11) .card-image img {
+    object-position: center top;
+}
+
+.team-card:nth-child(6) .card-image img,
+.team-card:nth-child(16) .card-image img {
+    object-position: center top;
+}
+
+.team-card:nth-child(7) .card-image img,
+.team-card:nth-child(17) .card-image img {
+    object-position: center top;
+}
+
+.team-card:nth-child(9) .card-image img,
+.team-card:nth-child(19) .card-image img {
+    object-position: center top;
+}
+
+/* Las demás también alineadas arriba para eliminar espacio blanco */
+.team-card:nth-child(2) .card-image img,
+.team-card:nth-child(12) .card-image img,
+.team-card:nth-child(3) .card-image img,
+.team-card:nth-child(13) .card-image img,
+.team-card:nth-child(4) .card-image img,
+.team-card:nth-child(14) .card-image img,
+.team-card:nth-child(5) .card-image img,
+.team-card:nth-child(15) .card-image img,
+.team-card:nth-child(8) .card-image img,
+.team-card:nth-child(18) .card-image img,
+.team-card:nth-child(10) .card-image img,
+.team-card:nth-child(20) .card-image img {
+    object-position: center top;
 }
 
 .card-content {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     text-align: center;
+    background: #ffffff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-content h4 {
     font-family: var(--font-primary);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--white);
+    color: #1a1a1a;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
+    line-height: 1.3;
 }
 
 .card-content p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
+    color: #555555;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
+    line-height: 1.4;
+    margin: 0;
 }
 
 .carousel-btn {
@@ -1049,6 +1106,7 @@ body {
     text-align: center;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 40px rgba(255, 164, 36, 0.15);
 }
 
 .cta-section::before {
@@ -1118,6 +1176,8 @@ body {
     flex-wrap: wrap;
     position: relative;
     z-index: 2;
+    margin: 3rem 2rem;
+    max-width: 800px;
 }
 
 .btn {
@@ -1137,7 +1197,7 @@ body {
 .btn-primary {
     background: linear-gradient(135deg, var(--swappit-blue) 0%, #1e40af 100%);
     color: var(--white);
-    box-shadow: 0 8px 25px rgba(52, 104, 192, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 164, 36, 0.4);
     border: 2px solid var(--swappit-blue);
 }
 
@@ -1145,7 +1205,7 @@ body {
     background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
     color: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(52, 104, 192, 0.5);
+    box-shadow: 0 12px 35px rgba(255, 164, 36, 0.6);
 }
 
 .btn-outline {
