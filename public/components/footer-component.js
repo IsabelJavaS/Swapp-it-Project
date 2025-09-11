@@ -629,11 +629,11 @@ class FooterComponent extends HTMLElement {
                                 </p>
                             </div>
                             <div class="footer-legal">
-                                <a href="${this.getBaseUrl()}/pages/policy/privacy.html">Política de Privacidad</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/terms.html">Términos y Condiciones</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/cookies.html">Política de Cookies</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/data-protection.html">Protección de Datos</a>
-                                <a href="${this.getBaseUrl()}/pages/policy/accessibility.html">Accesibilidad</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/privacy.html">Privacy Policy</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/terms.html">Terms & Conditions</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/cookies.html">Cookies Policy</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/data-protection.html">Data Protection</a>
+                                <a href="${this.getBaseUrl()}/pages/policy/accessibility.html">Accessibility</a>
                             </div>
                         </div>
                     </div>
