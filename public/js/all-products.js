@@ -451,10 +451,7 @@ class AllProducts {
                     <img src="${defaultImage}" alt="${product.title}" loading="lazy" onerror="this.src='/assets/logos/Marketplace.jpg'; this.onerror=null;">
                     ${badges}
                     <div class="product-overlay">
-                        <button class="btn-quick-view" onclick="allProducts.showProductDetails('${product.id}')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn-wishlist" onclick="allProducts.toggleWishlist('${product.id}')">
+                        <button class="btn-wishlist" onclick="allProducts.toggleWishlist('${product.id}')" title="Add to Wishlist">
                             <i class="fas fa-heart"></i>
                         </button>
                     </div>
@@ -650,8 +647,59 @@ class AllProducts {
 
     // Toggle wishlist
     toggleWishlist(productId) {
-        // Implement wishlist functionality
-        this.showNotification('Product added to wishlist!');
+        try {
+            // Get current wishlist from localStorage
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            
+            // Check if product is already in wishlist
+            const existingIndex = wishlist.findIndex(item => item.id === productId);
+            
+            if (existingIndex > -1) {
+                // Remove from wishlist
+                wishlist.splice(existingIndex, 1);
+                this.showNotification('Removed from wishlist!', 'info');
+            } else {
+                // Add to wishlist
+                const product = this.products.find(p => p.id === productId);
+                if (product) {
+                    wishlist.push({
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        image: product.image || '/assets/logos/Marketplace.jpg',
+                        addedAt: new Date().toISOString()
+                    });
+                    this.showNotification('Added to wishlist!', 'success');
+                }
+            }
+            
+            // Save updated wishlist
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            
+            // Update UI
+            this.updateWishlistButton(productId, existingIndex === -1);
+            
+        } catch (error) {
+            console.error('Error toggling wishlist:', error);
+            this.showNotification('Error updating wishlist', 'error');
+        }
+    }
+    
+    // Update wishlist button appearance
+    updateWishlistButton(productId, isAdded) {
+        const button = document.querySelector(`[data-product-id="${productId}"] .btn-wishlist`);
+        if (button) {
+            const icon = button.querySelector('i');
+            if (isAdded) {
+                icon.classList.add('fas');
+                icon.classList.remove('far');
+                button.style.color = '#e74c3c';
+            } else {
+                icon.classList.add('far');
+                icon.classList.remove('fas');
+                button.style.color = '#6c757d';
+            }
+        }
     }
 
     // Show notification

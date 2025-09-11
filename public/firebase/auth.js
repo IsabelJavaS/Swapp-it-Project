@@ -8,7 +8,11 @@ import {
   updateEmail as firebaseUpdateEmail,
   updatePassword as firebaseUpdatePassword,
   sendPasswordResetEmail,
-  confirmPasswordReset as firebaseConfirmPasswordReset
+  confirmPasswordReset as firebaseConfirmPasswordReset,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
 import { auth } from '../firebase/config.js';
 import { getUserProfile, updateLastLogin } from '../firebase/firestore.js';
@@ -150,4 +154,67 @@ export const confirmPasswordReset = async (actionCode, newPassword) => {
     console.error('Error confirming password reset:', error);
     return { success: false, error: error.message };
   }
-}; 
+};
+
+// Google Authentication
+const googleProvider = new GoogleAuthProvider();
+
+// Configure Google provider
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+// Sign in with Google using popup
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    // Extract user information
+    const userData = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      provider: 'google'
+    };
+    
+    return { success: true, user: userData };
+  } catch (error) {
+    console.error('Error signing in with Google:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Sign in with Google using redirect (for mobile)
+export const signInWithGoogleRedirect = async () => {
+  try {
+    await signInWithRedirect(auth, googleProvider);
+    return { success: true };
+  } catch (error) {
+    console.error('Error signing in with Google redirect:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// Handle Google redirect result
+export const handleGoogleRedirectResult = async () => {
+  try {
+    const result = await getRedirectResult(auth);
+    if (result) {
+      const user = result.user;
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        provider: 'google'
+      };
+      return { success: true, user: userData };
+    }
+    return { success: false, error: 'No redirect result' };
+  } catch (error) {
+    console.error('Error handling Google redirect result:', error);
+    return { success: false, error: error.message };
+  }
+};
