@@ -688,6 +688,78 @@ class HeaderComponent extends HTMLElement {
                     border-left: 2px solid #fff;
                     border-right: 2px solid #fff;
                 }
+
+                /* Efecto hover extendido para Marketplace dropdown */
+                #marketplaceDropdown .dropdown-list {
+                    gap: 0.1rem;
+                    width: 100%;
+                }
+                #marketplaceDropdown .dropdown-list li {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                }
+                #marketplaceDropdown .dropdown-list li a {
+                    padding: 0.4rem 1rem;
+                    border-radius: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    color: #000;
+                    background: transparent;
+                    border-left: 2px solid transparent;
+                    border-right: 2px solid transparent;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                }
+                #marketplaceDropdown .dropdown-list li:hover a {
+                    background: var(--swappit-orange);
+                    color: #fff;
+                    border-left: 2px solid #fff;
+                    border-right: 2px solid #fff;
+                }
+
+                /* Efecto hover extendido para Contact dropdown */
+                #contactDropdown .dropdown-list {
+                    gap: 0.1rem;
+                    width: 100%;
+                }
+                #contactDropdown .dropdown-list li {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                }
+                #contactDropdown .dropdown-list li a {
+                    padding: 0.4rem 1rem;
+                    border-radius: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    color: #000;
+                    background: transparent;
+                    border-left: 2px solid transparent;
+                    border-right: 2px solid transparent;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                }
+                #contactDropdown .dropdown-list li:hover a {
+                    background: var(--swappit-orange);
+                    color: #fff;
+                    border-left: 2px solid #fff;
+                    border-right: 2px solid #fff;
+                }
                 .dropdown-title {
                     font-size: 1.15rem;
                     font-weight: 700;
@@ -759,20 +831,20 @@ class HeaderComponent extends HTMLElement {
                                 <a href="${this.getMarketplacePath()}" class="nav-link marketplace-link" id="marketplaceLink">Marketplace</a>
                                 <div class="dropdown-menu wide" id="marketplaceDropdown">
                                     <div class="dropdown-grid prada-style">
-                                        <!-- Column 1: Large Image -->
-                                        <div class="dropdown-col image-col">
-                                            <img src="${this.getLogoPath()}" alt="SWAPP-IT Logo" class="dropdown-image-large">
-                                        </div>
-                                        <!-- Column 2: Title + Links -->
                                         <div class="dropdown-col links-col">
-                                            <div class="dropdown-title">Marketplace</div>
                                             <ul class="dropdown-list">
-                                                <li><a href="${this.getMarketplacePath()}">View Products</a></li>
-                                                <li><a href="${this.getMarketplacePath()}?action=add">Post a Product</a></li>
-                                                <li><a href="${this.getMarketplacePath()}#categories">Categories</a></li>
-                                                <li><a href="${this.getMarketplacePath()}#featured">Featured Products</a></li>
-                                                <li><a href="${this.getMarketplacePath()}#bestsellers">Best Sellers</a></li>
+                                                <li><a href="${this.getMarketplacePath()}">All Products</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/sections/new-products.html">New Products</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/sections/swap-products.html">Swap Products</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/sections/business-products.html">Business Products</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/books.html">Books & Textbooks</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/notebooks.html">Notebooks</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/electronics.html">Electronics</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/marketplace/categories/school-bags.html">School Bags</a></li>
                                             </ul>
+                                        </div>
+                                        <div class="dropdown-col image-col">
+                                            <img src="${this.getBaseUrl()}/assets/logos/Submenu.jpeg" alt="SWAPP-IT Marketplace" class="dropdown-image-large">
                                         </div>
                                     </div>
                                 </div>
@@ -799,17 +871,20 @@ class HeaderComponent extends HTMLElement {
                                 <a href="${this.getContactPath()}" class="nav-link" id="contactLink">Contact</a>
                                 <div class="dropdown-menu wide" id="contactDropdown">
                                     <div class="dropdown-grid prada-style">
-                                        <div class="dropdown-col image-col">
-                                            <img src="${this.getLogoPath()}" alt="Contact" class="dropdown-image-large">
-                                        </div>
                                         <div class="dropdown-col links-col">
-                                            <div class="dropdown-title">Contact</div>
                                             <ul class="dropdown-list">
+                                                <li><a href="${this.getContactPath()}">Contact Us</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/support/support.html">Help & Support</a></li>
+                                                <li><a href="${this.getBaseUrl()}/pages/policy/terms.html">Terms & Conditions</a></li>
                                                 <li><a href="${this.getContactPath()}#form">Contact Form</a></li>
                                                 <li><a href="${this.getContactPath()}#info">Information</a></li>
                                                 <li><a href="${this.getContactPath()}#hours">Business Hours</a></li>
                                                 <li><a href="${this.getContactPath()}#social">Social Media</a></li>
+                                                <li><a href="mailto:support@swappit.com">Email Support</a></li>
                                             </ul>
+                                        </div>
+                                        <div class="dropdown-col image-col">
+                                            <img src="${this.getBaseUrl()}/assets/logos/Submenu2.jpg" alt="SWAPP-IT Contact" class="dropdown-image-large">
                                         </div>
                                     </div>
                                 </div>
