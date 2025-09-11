@@ -2,8 +2,8 @@
 console.log('Register script loaded');
 
 // Import Firebase functions
-import { registerUser } from '../firebase/auth.js';
-import { createUserProfile } from '../firebase/firestore.js';
+import { registerUser, signInWithGoogle, handleGoogleRedirectResult } from '../firebase/auth.js';
+import { createUserProfile, getUserProfile, updateLastLogin } from '../firebase/firestore.js';
 
 // DOM elements
 let registerForm, registerBtn, personalBtn, businessBtn, personalFields, businessFields;
@@ -525,13 +525,100 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
     
+    // Initialize social authentication
+    initializeSocialAuth();
+    
     console.log('Register page initialization complete');
 });
+
+// ==================== SOCIAL AUTHENTICATION ====================
+function initializeSocialAuth() {
+    // Google register button
+    const googleBtn = document.querySelector('.google-btn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!isLoading) {
+                handleGoogleRegister();
+            }
+        });
+    }
+
+}
+
+async function handleGoogleRegister() {
+    try {
+        setLoadingState(true);
+        
+        // Sign in with Google
+        const googleResult = await signInWithGoogle();
+        
+        if (!googleResult.success) {
+            throw new Error(googleResult.error);
+        }
+
+        const googleUser = googleResult.user;
+        
+        // Check if user profile already exists
+        const existingProfile = await getUserProfile(googleUser.uid);
+        if (existingProfile.success) {
+            showError('An account with this email already exists. Please use login instead.');
+            return;
+        }
+        
+        // Create new user profile
+        const newProfile = {
+            uid: googleUser.uid,
+            email: googleUser.email,
+            displayName: googleUser.displayName,
+            photoURL: googleUser.photoURL,
+            role: 'student', // Default role for social signup
+            provider: 'google',
+            createdAt: new Date(),
+            lastLogin: new Date(),
+            isActive: true
+        };
+        
+        const createResult = await createUserProfile(newProfile);
+        if (!createResult.success) {
+            throw new Error('Failed to create user profile');
+        }
+
+        // Success - redirect to marketplace
+        showSuccess('Account created successfully! Redirecting...');
+        
+        // Store login info
+        sessionStorage.setItem('justLoggedIn', 'true');
+        sessionStorage.setItem('userRole', newProfile.role);
+
+        // Redirect to marketplace
+        setTimeout(() => {
+            window.location.href = '/pages/marketplace/marketplace.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Google register error:', error);
+        
+        let errorMessage = 'Google registration failed. Please try again.';
+        
+        if (error.message.includes('popup-closed-by-user')) {
+            errorMessage = 'Registration cancelled. Please try again.';
+        } else if (error.message.includes('account-exists-with-different-credential')) {
+            errorMessage = 'An account already exists with this email. Please use login instead.';
+        }
+        
+        showError(errorMessage);
+    } finally {
+        setLoadingState(false);
+    }
+}
+
 
 // Make functions available globally for testing
 window.registerFunctions = {
     switchToRole,
     validateForm,
     showError,
-    showSuccess
+    showSuccess,
+    handleGoogleRegister
 }; 

@@ -412,7 +412,8 @@ html {
     top: 1rem;
     right: 1rem;
     display: flex;
-    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
@@ -424,23 +425,31 @@ html {
 }
 
 .product-overlay button {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     border-radius: 50%;
-    background: var(--background-white);
-    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--neutral-dark);
+    color: #6c757d;
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .product-overlay button:hover {
-    background: var(--swappit-blue);
+    background: #e74c3c;
     color: white;
+    border-color: #e74c3c;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.product-overlay button i {
+    font-size: 16px;
 }
 
 .product-info {

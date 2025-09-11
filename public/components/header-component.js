@@ -809,24 +809,6 @@ class HeaderComponent extends HTMLElement {
                         <div class="menu">
                             <div class="dropdown-container">
                                 <a href="${this.getHomePath()}" class="nav-link" id="homeLink">Home</a>
-                                <div class="dropdown-menu wide" id="homeDropdown">
-                                    <div class="dropdown-grid prada-style">
-                                        <!-- Column 1: Large Image -->
-                                        <div class="dropdown-col image-col">
-                                            <img src="${this.getLogoPath()}" alt="SWAPPIT Home" class="dropdown-image-large">
-                                        </div>
-                                        <!-- Column 2: Title + Links -->
-                                        <div class="dropdown-col links-col">
-                                            <div class="dropdown-title">Home</div>
-                                            <ul class="dropdown-list">
-                                                <li><a href="${this.getHomePath()}#hero">Hero Section</a></li>
-                                                <li><a href="${this.getHomePath()}#features">Features</a></li>
-                                                <li><a href="${this.getHomePath()}#services">Services</a></li>
-                                                <li><a href="${this.getHomePath()}#contact">Contact</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="dropdown-container">
                                 <a href="${this.getMarketplacePath()}" class="nav-link marketplace-link" id="marketplaceLink">Marketplace</a>
@@ -885,7 +867,7 @@ class HeaderComponent extends HTMLElement {
                                             </ul>
                                         </div>
                                         <div class="dropdown-col image-col">
-                                            <img src="${this.getBaseUrl()}/assets/logos/Submenu2.jpg" alt="SWAPP-IT Contact" class="dropdown-image-large">
+                                            <img src="${this.getBaseUrl()}/assets/logos/submenu3.jpeg" alt="SWAPP-IT Contact" class="dropdown-image-large">
                                         </div>
                                     </div>
                                 </div>
@@ -945,16 +927,14 @@ class HeaderComponent extends HTMLElement {
     setupDropdownHover() {
         const shadow = this.shadowRoot;
         
-        // Setup for Home dropdown
-        const homeContainer = shadow.querySelector('.dropdown-container:first-of-type');
-        const homeDropdown = shadow.getElementById('homeDropdown');
+        // Home dropdown removed - no longer needed
         
         // Setup for Marketplace dropdown
-        const marketplaceContainer = shadow.querySelector('.dropdown-container:nth-of-type(2)'); // Changed to nth-of-type(2)
+        const marketplaceContainer = shadow.querySelector('.dropdown-container:nth-of-type(2)');
         const marketplaceDropdown = shadow.getElementById('marketplaceDropdown');
 
         // Setup for About dropdown
-        const aboutContainer = shadow.querySelector('.dropdown-container:nth-of-type(3)'); // Changed to nth-of-type(3)
+        const aboutContainer = shadow.querySelector('.dropdown-container:nth-of-type(3)');
         const aboutDropdown = shadow.getElementById('aboutDropdown');
 
         // Setup for Contact dropdown
@@ -1020,7 +1000,6 @@ class HeaderComponent extends HTMLElement {
         };
 
         // Setup all dropdowns
-        setupDropdown(homeContainer, homeDropdown);
         setupDropdown(marketplaceContainer, marketplaceDropdown);
         setupDropdown(aboutContainer, aboutDropdown);
         setupDropdown(contactContainer, contactDropdown);
