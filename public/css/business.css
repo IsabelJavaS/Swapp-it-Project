@@ -16,7 +16,7 @@
 /* Hero Section */
 .business-hero-section {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    padding: 100px 0 60px;
+    padding: 100px 0 20px;
     position: relative;
     overflow: hidden;
 }
@@ -192,8 +192,11 @@
 
 /* Benefits Section */
 .business-benefits-section {
-    padding: 100px 0;
+    padding: 40px 0 100px;
     background: white;
+    margin-top: -40px;
+    position: relative;
+    z-index: 3;
 }
 
 .section-title {

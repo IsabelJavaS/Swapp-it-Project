@@ -29,7 +29,13 @@ class BusinessDashboardOverview extends HTMLElement {
                 }
 
                 .dashboard-overview {
-                    padding: 0.5rem 3rem 0.5rem 3rem;
+                    padding: 1rem;
+                }
+
+                @media (min-width: 768px) {
+                    .dashboard-overview {
+                        padding: 0.5rem 3rem 0.5rem 3rem;
+                    }
                 }
 
                 .section-header {
@@ -53,20 +59,39 @@ class BusinessDashboardOverview extends HTMLElement {
                 /* Stats Cards */
                 .stats-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 1.5rem;
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
                     margin-bottom: 2rem;
+                }
+
+                @media (min-width: 640px) {
+                    .stats-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    .stats-grid {
+                        grid-template-columns: repeat(4, 1fr);
+                    }
                 }
 
                 .stat-card {
                     background: white;
                     border-radius: 16px;
-                    padding: 1.5rem;
+                    padding: 1rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
                     transition: all 0.3s ease;
                     position: relative;
                     overflow: hidden;
+                }
+
+                @media (min-width: 640px) {
+                    .stat-card {
+                        padding: 1.5rem;
+                    }
                 }
 
                 .stat-card::before {

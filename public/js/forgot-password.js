@@ -79,7 +79,7 @@ async function handlePasswordReset(email) {
         
         // Validate email
         if (!validateEmail(email)) {
-            throw new Error('Por favor ingresa un email válido');
+            throw new Error('Please enter a valid email address');
         }
         
         console.log('Attempting to send password reset email to:', email);
@@ -91,7 +91,7 @@ async function handlePasswordReset(email) {
         
         if (result.success) {
             showMessage(
-                '¡Email enviado exitosamente! Revisa tu bandeja de entrada y sigue las instrucciones para restablecer tu contraseña.',
+                '🎉 Password reset email sent successfully! Check your inbox and follow the instructions to reset your password.',
                 'success'
             );
             
@@ -101,13 +101,13 @@ async function handlePasswordReset(email) {
             // Show additional instructions
             setTimeout(() => {
                 showMessage(
-                    'Si no encuentras el email, revisa tu carpeta de spam o correo no deseado.',
+                    '💡 If you don\'t see the email, please check your spam or junk folder.',
                     'info'
                 );
             }, 3000);
             
         } else {
-            throw new Error(result.error || 'Error desconocido');
+            throw new Error(result.error || 'Unknown error occurred');
         }
         
     } catch (error) {
@@ -119,24 +119,24 @@ async function handlePasswordReset(email) {
         });
         
         // Handle specific Firebase Auth errors
-        let errorMessage = 'Error al enviar el email de recuperación. Por favor intenta de nuevo.';
+        let errorMessage = '❌ Failed to send password reset email. Please try again.';
         
         if (error.message.includes('user-not-found') || error.message.includes('auth/user-not-found')) {
-            errorMessage = 'No se encontró una cuenta con este email. Verifica que el email sea correcto.';
+            errorMessage = '🔍 No account found with this email address. Please verify your email is correct.';
         } else if (error.message.includes('too-many-requests') || error.message.includes('auth/too-many-requests')) {
-            errorMessage = 'Demasiados intentos. Por favor espera unos minutos antes de intentar de nuevo.';
+            errorMessage = '⏰ Too many attempts. Please wait a few minutes before trying again.';
         } else if (error.message.includes('invalid-email') || error.message.includes('auth/invalid-email')) {
-            errorMessage = 'El formato del email no es válido.';
+            errorMessage = '📧 Invalid email format. Please enter a valid email address.';
         } else if (error.message.includes('network-request-failed') || error.message.includes('auth/network-request-failed')) {
-            errorMessage = 'Error de conexión. Verifica tu conexión a internet e intenta de nuevo.';
+            errorMessage = '🌐 Connection error. Please check your internet connection and try again.';
         } else if (error.message.includes('Firebase Auth not initialized')) {
-            errorMessage = 'Error de configuración. Por favor recarga la página e intenta de nuevo.';
+            errorMessage = '⚙️ Configuration error. Please refresh the page and try again.';
         } else if (error.message.includes('auth/operation-not-allowed')) {
-            errorMessage = 'La recuperación de contraseña no está habilitada en este proyecto.';
+            errorMessage = '🚫 Password recovery is not enabled for this project.';
         } else if (error.message.includes('auth/invalid-action-code')) {
-            errorMessage = 'El enlace de recuperación no es válido.';
+            errorMessage = '🔗 Invalid recovery link.';
         } else if (error.message.includes('auth/expired-action-code')) {
-            errorMessage = 'El enlace de recuperación ha expirado.';
+            errorMessage = '⏳ Recovery link has expired.';
         }
         
         showMessage(errorMessage, 'error');
@@ -154,7 +154,7 @@ async function handleFormSubmit(event) {
     const email = emailInput.value.trim();
     
     if (!email) {
-        showMessage('Por favor ingresa tu email', 'error');
+        showMessage('📧 Please enter your email address', 'error');
         emailInput.focus();
         return;
     }
