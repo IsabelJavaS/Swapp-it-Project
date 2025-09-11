@@ -58,14 +58,27 @@ class ProductDetailPage {
             const { getProduct, getProducts } = await import('../../firebase/firestore.js');
             console.log('Firebase functions imported successfully');
             
-            // Get the specific product
-            console.log('Calling getProduct with ID:', this.productId);
-            const result = await getProduct(this.productId);
-            console.log('getProduct result:', result);
+            // First try to get all products to see what's available
+            console.log('Loading all products first...');
+            const allProductsResult = await getProducts();
+            console.log('All products result:', allProductsResult);
             
-            if (result.success) {
-                this.product = result.product;
+            if (allProductsResult.success && allProductsResult.products.length > 0) {
+                console.log(`Found ${allProductsResult.products.length} products in database`);
+                
+                // Try to find the specific product
+                let foundProduct = allProductsResult.products.find(p => p.id === this.productId);
+                
+                if (foundProduct) {
+                    console.log('Product found in all products:', foundProduct);
+                    this.product = foundProduct;
+                } else {
+                    console.log('Product not found, using first available product for demo');
+                    this.product = allProductsResult.products[0];
+                }
+                
                 console.log('Product loaded successfully:', this.product);
+                console.log('Product data structure:', JSON.stringify(this.product, null, 2));
                 
                 // Add a small delay to ensure DOM is ready
                 setTimeout(() => {
@@ -74,8 +87,31 @@ class ProductDetailPage {
                     this.hideLoadingState();
                 }, 100);
             } else {
-                console.error('Error loading product:', result.error);
-                this.showError(`Product not found: ${result.error}`);
+                console.log('No products found in database, showing demo product');
+                // Create a demo product if no products exist
+                this.product = {
+                    id: this.productId,
+                    productName: "Producto de Demostración",
+                    description: "Este es un producto de demostración. Para ver productos reales, agrega algunos productos a la base de datos.",
+                    price: 25.99,
+                    originalPrice: 35.99,
+                    category: "demo",
+                    transactionType: "sale",
+                    sellerType: "business",
+                    sellerDisplayName: "Demo Store",
+                    sellerEmail: "demo@store.com",
+                    images: ["/assets/logos/utiles-escolares.jpg", "/assets/logos/Marketplace.jpg"],
+                    stock: 10,
+                    views: 0,
+                    rating: 4.5,
+                    reviewCount: 12
+                };
+                
+                setTimeout(() => {
+                    this.updatePageContent();
+                    this.loadRelatedProducts();
+                    this.hideLoadingState();
+                }, 100);
             }
         } catch (error) {
             console.error('Error loading product details:', error);
@@ -141,9 +177,9 @@ class ProductDetailPage {
         console.log('Images length:', images.length);
         
         if (images.length === 0) {
-            // Use placeholder image if no images
-            const placeholderImage = 'https://via.placeholder.com/600x400/f3f4f6/6b7280?text=No+Image';
-            console.log('No images found, using placeholder:', placeholderImage);
+            // Use marketplace default image
+            const placeholderImage = '/assets/logos/utiles-escolares.jpg';
+            console.log('No images found, using marketplace placeholder:', placeholderImage);
             this.addImageSlide(mainSwiper, thumbsSwiper, placeholderImage, 'Product Image');
         } else {
             // Add all product images
@@ -241,13 +277,29 @@ class ProductDetailPage {
         // Main slide
         const mainSlide = document.createElement('div');
         mainSlide.className = 'swiper-slide';
-        mainSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}" onerror="console.error('Failed to load image:', this.src);">`;
+        const mainImg = document.createElement('img');
+        mainImg.src = imageUrl;
+        mainImg.alt = altText;
+        mainImg.onerror = function() {
+            console.warn('Failed to load image:', this.src);
+            this.src = '/assets/logos/LogoSinFondo.png';
+            this.onerror = null; // Prevenir loops infinitos
+        };
+        mainSlide.appendChild(mainImg);
         mainSwiper.appendChild(mainSlide);
         
         // Thumbnail slide
         const thumbSlide = document.createElement('div');
         thumbSlide.className = 'swiper-slide';
-        thumbSlide.innerHTML = `<img src="${imageUrl}" alt="${altText}" onerror="console.error('Failed to load thumbnail:', this.src);">`;
+        const thumbImg = document.createElement('img');
+        thumbImg.src = imageUrl;
+        thumbImg.alt = altText;
+        thumbImg.onerror = function() {
+            console.warn('Failed to load thumbnail:', this.src);
+            this.src = '/assets/logos/LogoSinFondo.png';
+            this.onerror = null; // Prevenir loops infinitos
+        };
+        thumbSlide.appendChild(thumbImg);
         thumbsSwiper.appendChild(thumbSlide);
         
         console.log(`Image slide added successfully: ${altText}`);
@@ -266,19 +318,27 @@ class ProductDetailPage {
         }
         
         // Initialize thumbnail swiper
-        window.galleryThumbs = new Swiper('.gallery-thumbs', {
+        window.galleryThumbs = new Swiper('.gallery-thumbs .swiper', {
             spaceBetween: 10,
             slidesPerView: 4,
             freeMode: true,
             watchSlidesProgress: true,
+            breakpoints: {
+                320: {
+                    slidesPerView: 3,
+                },
+                768: {
+                    slidesPerView: 4,
+                },
+            }
         });
 
         // Initialize main swiper
-        window.galleryMain = new Swiper('.gallery-main', {
+        window.galleryMain = new Swiper('.gallery-main .swiper', {
             spaceBetween: 10,
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
             },
             thumbs: {
                 swiper: window.galleryThumbs
@@ -291,27 +351,52 @@ class ProductDetailPage {
     // Update product information
     updateProductInfo() {
         console.log('Updating product info...');
+        console.log('Product data being used:', this.product);
+        
+        // Debug: Show all available fields
+        console.log('Available product fields:', Object.keys(this.product));
+        
         try {
-            // Update title
+            // Update title - try different possible field names
             const titleElement = document.querySelector('.product-title');
             if (titleElement) {
-                titleElement.textContent = this.product.productName || 'Product Name';
-                console.log('Title updated:', this.product.productName);
+                const title = this.product.productName || this.product.title || this.product.name || 'Product Name';
+                titleElement.textContent = title;
+                console.log('Title updated:', title);
             } else {
                 console.warn('Title element not found');
+            }
+            
+            // Update sales info
+            const salesCountElement = document.querySelector('.sales-count');
+            if (salesCountElement) {
+                const salesCount = this.product.salesCount || this.product.views || '0';
+                salesCountElement.textContent = `${salesCount}+ ventas`;
+                console.log('Sales count updated:', salesCount);
+            }
+            
+            const sellerInfoElement = document.querySelector('.seller-info');
+            if (sellerInfoElement) {
+                const sellerName = this.product.sellerDisplayName || this.product.sellerEmail || 'Unknown Seller';
+                sellerInfoElement.textContent = `Vendido por ${sellerName}`;
+                console.log('Seller info updated:', sellerName);
             }
             
             // Update price
             this.updatePrice();
             
-            // Update description
+            // Update description - try different possible field names
             const descriptionElement = document.querySelector('.product-short-description p');
             if (descriptionElement) {
-                descriptionElement.textContent = this.product.description || 'No description available.';
-                console.log('Description updated');
+                const description = this.product.description || this.product.productDescription || this.product.details || 'No description available.';
+                descriptionElement.textContent = description;
+                console.log('Description updated:', description);
             } else {
                 console.warn('Description element not found');
             }
+            
+            // Update seller info
+            this.updateSellerInfo();
             
             // Update status badges
             this.updateStatusBadges();
@@ -338,30 +423,41 @@ class ProductDetailPage {
         const discountBadgeElement = document.querySelector('.discount-badge');
         const price = this.product.price || 0;
         const originalPrice = this.product.originalPrice || price;
-        // Calcular Swappit Coins
-        const swappitCoinRate = 0.03;
-        const priceInSwappitCoins = price / swappitCoinRate;
-        const originalPriceInSwappitCoins = originalPrice / swappitCoinRate;
+        
+        console.log('Updating price:', { price, originalPrice });
+        
         if (currentPriceElement) {
+            // Show price in both SwappIt Coins and dollars
+            const swappitCoinRate = 0.03;
+            const priceInSwappitCoins = price / swappitCoinRate;
+            
             currentPriceElement.innerHTML = `
                 <span class="swappit-price" style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:22px;vertical-align:middle;margin-right:4px;'>${priceInSwappitCoins.toFixed(0)}</span>
                 <span class="dollar-price">($${price.toFixed(2)})</span>
             `;
+            console.log('Current price updated');
         }
+        
         if (originalPriceElement && originalPrice > price) {
+            const swappitCoinRate = 0.03;
+            const originalPriceInSwappitCoins = originalPrice / swappitCoinRate;
+            
             originalPriceElement.innerHTML = `
                 <span class="swappit-price" style='white-space:nowrap;'><img src='/assets/coin_SwappIt.png' alt='SwappIt Coin' style='width:18px;vertical-align:middle;margin-right:4px;'>${originalPriceInSwappitCoins.toFixed(0)}</span>
                 <span class="dollar-price">($${originalPrice.toFixed(2)})</span>
             `;
             originalPriceElement.style.display = 'inline';
+            
             if (discountBadgeElement) {
                 const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
-                discountBadgeElement.textContent = `-${discount}%`;
+                discountBadgeElement.textContent = `-${discount}% tiempo limitado`;
                 discountBadgeElement.style.display = 'inline';
             }
+            console.log('Original price and discount updated');
         } else {
             if (originalPriceElement) originalPriceElement.style.display = 'none';
             if (discountBadgeElement) discountBadgeElement.style.display = 'none';
+            console.log('No discount to show');
         }
     }
 

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
     <!-- Custom Styles -->
-    <link href="../../css/view-details.css" rel="stylesheet">
+    <link href="../../css/productDetail.css" rel="stylesheet">
     <link href="../../components/components.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     
@@ -102,58 +102,28 @@
             box-shadow: var(--shadow-light);
         }
 
-        .main-image-container {
-            position: relative;
-            border-radius: var(--border-radius);
-            overflow: hidden;
+        /* Swiper Gallery Styles */
+        .gallery-main {
             margin-bottom: 1rem;
         }
 
-        .main-image {
+        .gallery-main .swiper {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .gallery-main .swiper-slide img {
             width: 100%;
             height: 400px;
             object-fit: cover;
-            border-radius: var(--border-radius);
+            cursor: zoom-in;
         }
 
-        .image-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .main-image-container:hover .image-overlay {
-            opacity: 1;
-        }
-
-        .play-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            color: var(--swappit-blue);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .play-button:hover {
-            background: white;
-            transform: scale(1.1);
-        }
-
-        /* Thumbnail Gallery */
-        .thumbnail-gallery {
-            display: flex;
-            gap: 0.5rem;
+        .gallery-thumbs {
             margin-bottom: 1.5rem;
         }
 
-        .thumbnail-item {
+        .gallery-thumbs .swiper-slide {
             width: 80px;
             height: 80px;
             border-radius: 8px;
@@ -163,9 +133,29 @@
             transition: var(--transition);
         }
 
-        .thumbnail-item.active,
-        .thumbnail-item:hover {
+        .gallery-thumbs .swiper-slide:hover,
+        .gallery-thumbs .swiper-slide-thumb-active {
             border-color: var(--swappit-blue);
+            transform: scale(1.05);
+        }
+
+        .gallery-thumbs .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-pagination {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .swiper-pagination-bullet {
+            background: var(--swappit-blue);
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--swappit-orange);
         }
 
         .thumbnail-item img {
@@ -777,26 +767,7 @@
 
     <main class="product-detail-main">
         <div class="container-fluid px-0">
-            <!-- Sale Banner -->
-            <div class="sale-banner">
-                <div class="container">
-                    <div class="banner-content">
-                        <div class="banner-left">
-                            <span class="sale-text">REBAJAS DE TEMPORADA</span>
-                        </div>
-                        <div class="banner-right">
-                            <span class="benefit-item">
-                                <i class="fas fa-check-circle"></i>
-                                Envío gratis
-                            </span>
-                            <span class="benefit-item">
-                                <i class="fas fa-check-circle"></i>
-                                B/.2.00 de crédito por retraso
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Sale Banner - Removed as requested -->
 
             <!-- Product Detail Container -->
             <div class="container py-4">
@@ -804,29 +775,22 @@
                     <!-- Product Gallery -->
                     <div class="col-lg-7">
                         <div class="product-gallery-container">
-                            <!-- Main Image -->
-                            <div class="main-image-container">
-                                <img src="../../assets/logos/utiles-escolares.jpg" alt="Producto Principal" class="main-image">
-                                <div class="image-overlay">
-                                    <button class="play-button">
-                                        <i class="fas fa-play"></i>
-                                    </button>
+                            <!-- Swiper Gallery -->
+                            <div class="gallery-main">
+                                <div class="swiper">
+                                    <div class="swiper-wrapper">
+                                        <!-- Images will be dynamically loaded here -->
+                                    </div>
+                                    <div class="swiper-pagination"></div>
                                 </div>
                             </div>
                             
                             <!-- Thumbnail Gallery -->
-                            <div class="thumbnail-gallery">
-                                <div class="thumbnail-item active">
-                                    <img src="../../assets/logos/utiles-escolares.jpg" alt="Miniatura 1">
-                                </div>
-                                <div class="thumbnail-item">
-                                    <img src="../../assets/logos/businesslogin.jpeg" alt="Miniatura 2">
-                                </div>
-                                <div class="thumbnail-item">
-                                    <img src="../../assets/logos/EquipoSwappit.jpeg" alt="Miniatura 3">
-                                </div>
-                                <div class="thumbnail-item">
-                                    <img src="../../assets/logos/sBlanca.jpg" alt="Miniatura 4">
+                            <div class="gallery-thumbs">
+                                <div class="swiper">
+                                    <div class="swiper-wrapper">
+                                        <!-- Thumbnails will be dynamically loaded here -->
+                                    </div>
                                 </div>
                             </div>
 
@@ -888,11 +852,11 @@
                             <!-- Product Title -->
                             <div class="product-title-section">
                                 <h1 class="product-title">
-                                    Set Premium de Cuadernos Académicos - Edición Estudiantil
+                                    Loading...
                                 </h1>
                                 <div class="sales-info">
-                                    <span class="sales-count">31K+ ventas</span>
-                                    <span class="seller-info">Vendido por -></span>
+                                    <span class="sales-count">Loading...</span>
+                                    <span class="seller-info">Loading...</span>
                                 </div>
                                 <div class="best-seller-badge">
                                     #1 Artículo más vendido en Útiles Escolares >
@@ -914,10 +878,10 @@
                             <!-- Product Price -->
                             <div class="product-price-section">
                                 <div class="price-main">
-                                    <span class="current-price">B/.2.89</span>
+                                    <span class="current-price">Loading...</span>
                                     <div class="price-details">
-                                        <span class="original-price">7.21</span>
-                                        <span class="discount-badge">-59% tiempo limitado</span>
+                                        <span class="original-price" style="display: none;"></span>
+                                        <span class="discount-badge" style="display: none;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -1093,8 +1057,11 @@
     <!-- Global Header Manager -->
     <script src="../../js/global-header-manager.js"></script>
     
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
     <!-- View Details JavaScript -->
-    <script src="../../js/view-details.js"></script>
+    <script src="../../js/productDetail.js"></script>
     
     <!-- Image Loading Test -->
     <script>
@@ -1104,9 +1071,10 @@
             
             images.forEach(img => {
                 img.addEventListener('error', function() {
-                    console.error('Error loading image:', this.src);
-                    // Fallback a una imagen de placeholder
-                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pjwvc3ZnPg==';
+                    console.warn('Image failed to load:', this.src);
+                    // Fallback a una imagen de placeholder más simple
+                    this.src = '/assets/logos/LogoSinFondo.png';
+                    this.onerror = null; // Prevenir loops infinitos
                 });
                 
                 img.addEventListener('load', function() {

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Errors Test - SWAPP-IT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            background: #3468c0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .test-btn:hover {
+            background: #1d4ed8;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .console-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Console Errors Test</h1>
+        <p>This page helps test and fix console errors in the product details page.</p>
+        
+        <div class="info">
+            <h3>Common Console Errors Fixed:</h3>
+            <ul>
+                <li>✅ Image loading errors - Now use console.warn instead of console.error</li>
+                <li>✅ Fallback images - Use marketplace logo instead of complex SVG</li>
+                <li>✅ Infinite loops - Prevented with onerror = null</li>
+                <li>✅ Better error handling - More descriptive warnings</li>
+            </ul>
+        </div>
+        
+        <button class="test-btn" onclick="testProductDetails()">Test Product Details Page</button>
+        <button class="test-btn" onclick="testWithDemo()">Test with Demo Product</button>
+        <button class="test-btn" onclick="clearConsole()">Clear Console</button>
+        
+        <div class="info">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Open browser console (F12)</li>
+                <li>Click "Test Product Details Page"</li>
+                <li>Check console for any errors</li>
+                <li>Should only see warnings (yellow) not errors (red)</li>
+            </ol>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div class="console-output" id="consoleOutput">
+            <h4>Console Output:</h4>
+            <div id="consoleText">Open browser console to see output...</div>
+        </div>
+    </div>
+
+    <script>
+        function testProductDetails() {
+            window.open('/pages/marketplace/productDetail.html?id=demo', '_blank');
+        }
+        
+        function testWithDemo() {
+            window.open('/pages/marketplace/productDetail.html?id=test-product-123', '_blank');
+        }
+        
+        function clearConsole() {
+            console.clear();
+            document.getElementById('consoleText').innerHTML = 'Console cleared. Open browser console to see new output.';
+        }
+        
+        // Override console methods to capture output
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            updateConsoleOutput('LOG', args.join(' '));
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            updateConsoleOutput('WARN', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            updateConsoleOutput('ERROR', args.join(' '));
+        };
+        
+        function updateConsoleOutput(type, message) {
+            const consoleText = document.getElementById('consoleText');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'ERROR' ? 'red' : type === 'WARN' ? 'orange' : 'black';
+            consoleText.innerHTML += `<div style="color: ${color}; margin: 2px 0;">[${timestamp}] ${type}: ${message}</div>`;
+            consoleText.scrollTop = consoleText.scrollHeight;
+        }
+        
+        // Make functions global
+        window.testProductDetails = testProductDetails;
+        window.testWithDemo = testWithDemo;
+        window.clearConsole = clearConsole;
+    </script>
+</body>
+</html>

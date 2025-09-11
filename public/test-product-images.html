@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Images Test - SWAPP-IT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-btn {
+            background: #3468c0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .test-btn:hover {
+            background: #1d4ed8;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .image-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            background: white;
+        }
+        .image-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .image-card h4 {
+            margin: 10px 0 5px 0;
+            color: #333;
+        }
+        .image-card p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Product Images Test</h1>
+        <p>This page tests that product images are correctly displayed using the marketplace images.</p>
+        
+        <div class="info">
+            <h3>Expected Images:</h3>
+            <p>The products should now use the same images that appear in the marketplace:</p>
+            <ul>
+                <li>✅ <code>/assets/logos/utiles-escolares.jpg</code> - School supplies image</li>
+                <li>✅ <code>/assets/logos/Marketplace.jpg</code> - Marketplace banner image</li>
+                <li>✅ <code>/assets/logos/LogoSinFondo.png</code> - Logo as fallback</li>
+            </ul>
+        </div>
+        
+        <button class="test-btn" onclick="addProductsWithCorrectImages()">Add Products with Correct Images</button>
+        <button class="test-btn" onclick="testProductDetails()">Test Product Details Page</button>
+        <button class="test-btn" onclick="showImagePreviews()">Show Image Previews</button>
+        
+        <div id="result"></div>
+        <div id="imagePreviews" class="image-preview"></div>
+    </div>
+
+    <script type="module">
+        async function addProductsWithCorrectImages() {
+            try {
+                const { addProduct } = await import('/firebase/firestore.js');
+                
+                const productsWithCorrectImages = [
+                    {
+                        productName: "Mochila Escolar Premium",
+                        description: "Mochila resistente y cómoda para estudiantes. Incluye múltiples compartimentos y correas ajustables.",
+                        price: 25.99,
+                        originalPrice: 35.99,
+                        category: "utiles-escolares",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-1",
+                        sellerDisplayName: "School Supplies Store",
+                        sellerEmail: "store@schoolsupplies.com",
+                        images: [
+                            "/assets/logos/utiles-escolares.jpg",
+                            "/assets/logos/Marketplace.jpg"
+                        ],
+                        stock: 10,
+                        condition: "new",
+                        brand: "Premium School",
+                        color: "Blue",
+                        material: "Polyester",
+                        dimensions: "40cm x 30cm x 15cm",
+                        weight: "0.8kg",
+                        views: 45,
+                        rating: 4.5,
+                        reviewCount: 12
+                    },
+                    {
+                        productName: "Set de Cuadernos Académicos",
+                        description: "Set premium de cuadernos diseñado específicamente para estudiantes. Incluye 5 cuadernos de alta calidad.",
+                        price: 12.50,
+                        originalPrice: 18.99,
+                        category: "utiles-escolares",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-2",
+                        sellerDisplayName: "Academic Supplies",
+                        sellerEmail: "academic@supplies.com",
+                        images: [
+                            "/assets/logos/Marketplace.jpg",
+                            "/assets/logos/utiles-escolares.jpg"
+                        ],
+                        stock: 25,
+                        condition: "new",
+                        brand: "Academic Pro",
+                        color: "Multi-color",
+                        material: "Paper",
+                        dimensions: "21cm x 29.7cm",
+                        weight: "0.5kg",
+                        views: 78,
+                        rating: 4.8,
+                        reviewCount: 23
+                    },
+                    {
+                        productName: "Calculadora Científica",
+                        description: "Calculadora científica avanzada con 300+ funciones. Perfecta para matemáticas, física y química.",
+                        price: 45.00,
+                        originalPrice: 60.00,
+                        category: "electronica",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-3",
+                        sellerDisplayName: "Tech Store",
+                        sellerEmail: "tech@store.com",
+                        images: [
+                            "/assets/logos/LogoSinFondo.png"
+                        ],
+                        stock: 8,
+                        condition: "new",
+                        brand: "TechCalc",
+                        color: "Black",
+                        material: "Plastic",
+                        dimensions: "15cm x 8cm x 2cm",
+                        weight: "0.2kg",
+                        views: 23,
+                        rating: 4.2,
+                        reviewCount: 8
+                    }
+                ];
+                
+                let successCount = 0;
+                let errorCount = 0;
+                
+                for (const product of productsWithCorrectImages) {
+                    const result = await addProduct(product);
+                    if (result.success) {
+                        successCount++;
+                        console.log(`Product added: ${product.productName}`);
+                    } else {
+                        errorCount++;
+                        console.error(`Error adding product: ${product.productName}`, result.error);
+                    }
+                }
+                
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h3>Products with Correct Images Added!</h3>
+                        <p>✅ Successfully added: ${successCount} products</p>
+                        <p>❌ Errors: ${errorCount} products</p>
+                        <p>These products now use the same images as the marketplace!</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="error">
+                        <h3>Error Adding Products</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function testProductDetails() {
+            window.open('/pages/marketplace/productDetail.html?id=demo', '_blank');
+        }
+        
+        function showImagePreviews() {
+            const imagePreviews = document.getElementById('imagePreviews');
+            imagePreviews.innerHTML = '';
+            
+            const images = [
+                {
+                    name: "School Supplies Image",
+                    url: "/assets/logos/utiles-escolares.jpg",
+                    description: "Used for school supplies products"
+                },
+                {
+                    name: "Marketplace Image",
+                    url: "/assets/logos/Marketplace.jpg",
+                    description: "Used for general marketplace products"
+                },
+                {
+                    name: "Logo Fallback",
+                    url: "/assets/logos/LogoSinFondo.png",
+                    description: "Used as fallback when no image is available"
+                }
+            ];
+            
+            images.forEach(image => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'image-card';
+                imageCard.innerHTML = `
+                    <img src="${image.url}" alt="${image.name}" onerror="this.src='/assets/logos/LogoSinFondo.png';">
+                    <h4>${image.name}</h4>
+                    <p>${image.description}</p>
+                `;
+                imagePreviews.appendChild(imageCard);
+            });
+        }
+        
+        // Make functions global
+        window.addProductsWithCorrectImages = addProductsWithCorrectImages;
+        window.testProductDetails = testProductDetails;
+        window.showImagePreviews = showImagePreviews;
+    </script>
+</body>
+</html>

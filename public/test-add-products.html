@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Test Products - SWAPP-IT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-btn {
+            background: #3468c0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .test-btn:hover {
+            background: #1d4ed8;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Add Test Products</h1>
+        <p>This page adds sample products to Firebase so the product details page can work properly.</p>
+        
+        <button class="test-btn" onclick="addTestProducts()">Add Test Products</button>
+        <button class="test-btn" onclick="checkProducts()">Check Existing Products</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script type="module">
+        async function addTestProducts() {
+            try {
+                const { addProduct } = await import('/firebase/firestore.js');
+                
+                const testProducts = [
+                    {
+                        productName: "Mochila Escolar Premium",
+                        description: "Mochila resistente y cómoda para estudiantes. Incluye múltiples compartimentos y correas ajustables.",
+                        price: 25.99,
+                        originalPrice: 35.99,
+                        category: "utiles-escolares",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-1",
+                        sellerDisplayName: "School Supplies Store",
+                        sellerEmail: "store@schoolsupplies.com",
+                        images: [
+                            "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+                            "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=500"
+                        ],
+                        stock: 10,
+                        condition: "new",
+                        brand: "Premium School",
+                        color: "Blue",
+                        material: "Polyester",
+                        dimensions: "40cm x 30cm x 15cm",
+                        weight: "0.8kg"
+                    },
+                    {
+                        productName: "Set de Cuadernos Académicos",
+                        description: "Set premium de cuadernos diseñado específicamente para estudiantes. Incluye 5 cuadernos de alta calidad.",
+                        price: 12.50,
+                        originalPrice: 18.99,
+                        category: "utiles-escolares",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-2",
+                        sellerDisplayName: "Academic Supplies",
+                        sellerEmail: "academic@supplies.com",
+                        images: [
+                            "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500",
+                            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500"
+                        ],
+                        stock: 25,
+                        condition: "new",
+                        brand: "Academic Pro",
+                        color: "Multi-color",
+                        material: "Paper",
+                        dimensions: "21cm x 29.7cm",
+                        weight: "0.5kg"
+                    },
+                    {
+                        productName: "Calculadora Científica",
+                        description: "Calculadora científica avanzada con 300+ funciones. Perfecta para matemáticas, física y química.",
+                        price: 45.00,
+                        originalPrice: 60.00,
+                        category: "electronica",
+                        transactionType: "sale",
+                        sellerType: "business",
+                        sellerId: "test-seller-3",
+                        sellerDisplayName: "Tech Store",
+                        sellerEmail: "tech@store.com",
+                        images: [
+                            "https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=500"
+                        ],
+                        stock: 8,
+                        condition: "new",
+                        brand: "TechCalc",
+                        color: "Black",
+                        material: "Plastic",
+                        dimensions: "15cm x 8cm x 2cm",
+                        weight: "0.2kg"
+                    }
+                ];
+                
+                let successCount = 0;
+                let errorCount = 0;
+                
+                for (const product of testProducts) {
+                    const result = await addProduct(product);
+                    if (result.success) {
+                        successCount++;
+                        console.log(`Product added: ${product.productName}`);
+                    } else {
+                        errorCount++;
+                        console.error(`Error adding product: ${product.productName}`, result.error);
+                    }
+                }
+                
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h3>Products Added Successfully!</h3>
+                        <p>✅ Successfully added: ${successCount} products</p>
+                        <p>❌ Errors: ${errorCount} products</p>
+                        <p>You can now test the product details page!</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="error">
+                        <h3>Error Adding Products</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function checkProducts() {
+            try {
+                const { getProducts } = await import('/firebase/firestore.js');
+                const result = await getProducts();
+                
+                if (result.success) {
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>Existing Products (${result.products.length})</h3>
+                            <ul>
+                                ${result.products.map(p => `<li>${p.productName || p.title || 'Unnamed'} - $${p.price || 0}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <div class="error">
+                            <h3>Error Loading Products</h3>
+                            <p>${result.error}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="error">
+                        <h3>Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Make functions global
+        window.addTestProducts = addTestProducts;
+        window.checkProducts = checkProducts;
+    </script>
+</body>
+</html>
