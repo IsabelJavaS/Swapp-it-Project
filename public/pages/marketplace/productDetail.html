@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Notebook Set - SWAPP-IT Marketplace</title>
+    <title>Detalles del Producto - SWAPPIT Marketplace</title>
     
     <!-- External CSS Dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,434 +11,1071 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
     <!-- Custom Styles -->
-    <link href="../../css/productDetail.css" rel="stylesheet">
-    <link href="../../css/marketplace.css" rel="stylesheet">
+    <link href="../../css/view-details.css" rel="stylesheet">
     <link href="../../components/components.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../../assets/logos/letraS.png">
     
-    <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
+    <!-- CSS Path Fixer -->
     <script src="../../js/css-path-fixer.js"></script>
-    <!-- basicLightbox CSS para zoom de imagen -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css">
+    
+    <!-- Critical CSS Styles -->
+    <style>
+        /* CSS Variables */
+        :root {
+            --swappit-blue: #3468c0;
+            --swappit-blue-hover: #1d4ed8;
+            --swappit-orange: #ffa424;
+            --swappit-orange-hover: #ff5722;
+            --neutral-dark: #1e293b;
+            --neutral-medium: #64748b;
+            --neutral-light: #f8fafc;
+            --background-white: #ffffff;
+            --border-color: #e2e8f0;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Inter', sans-serif;
+        }
+
+        /* Global Styles */
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--background-white);
+            color: var(--neutral-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .product-detail-main {
+            padding-top: 80px;
+            min-height: 100vh;
+            background: var(--neutral-light);
+        }
+
+        /* Sale Banner */
+        .sale-banner {
+            background: linear-gradient(135deg, var(--swappit-orange) 0%, var(--swappit-orange-hover) 100%);
+            color: white;
+            padding: 0.75rem 0;
+            font-weight: 600;
+        }
+
+        .banner-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .banner-left .sale-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .banner-right {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .benefit-item i {
+            color: var(--success-green);
+        }
+
+        /* Product Gallery */
+        .product-gallery-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .main-image-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .main-image-container:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            color: var(--swappit-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .play-button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        /* Thumbnail Gallery */
+        .thumbnail-gallery {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .thumbnail-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .thumbnail-item.active,
+        .thumbnail-item:hover {
+            border-color: var(--swappit-blue);
+        }
+
+        .thumbnail-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Reviews Summary */
+        .reviews-summary {
+            margin-bottom: 1rem;
+        }
+
+        .reviews-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stars {
+            color: var(--swappit-orange);
+            font-size: 0.9rem;
+        }
+
+        .reviews-count {
+            font-size: 0.9rem;
+            color: var(--neutral-medium);
+        }
+
+        /* Product Tags */
+        .product-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: var(--neutral-light);
+            color: var(--neutral-medium);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--swappit-blue);
+            color: white;
+        }
+
+        /* Customer Reviews */
+        .customer-reviews {
+            background: var(--neutral-light);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+
+        .review-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: var(--neutral-dark);
+        }
+
+        .review-rating {
+            color: var(--swappit-orange);
+            font-size: 0.8rem;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            color: var(--neutral-medium);
+            margin: 0;
+        }
+
+        /* Product Info */
+        .product-info-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-light);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Product Title */
+        .product-title-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--neutral-dark);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .sales-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sales-count {
+            color: var(--success-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .seller-info {
+            color: var(--neutral-medium);
+            font-size: 0.9rem;
+        }
+
+        .best-seller-badge {
+            background: var(--swappit-orange);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* Product Rating */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-stars {
+            color: var(--swappit-orange);
+            font-size: 1rem;
+        }
+
+        .rating-score {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--neutral-dark);
+        }
+
+        /* Product Price */
+        .product-price-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .price-main {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--swappit-orange);
+        }
+
+        .original-price {
+            font-size: 1.2rem;
+            color: var(--neutral-medium);
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: var(--error-red);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Mega Offer */
+        .mega-offer {
+            background: linear-gradient(135deg, var(--swappit-orange) 0%, var(--swappit-orange-hover) 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .offer-header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-timer {
+            font-size: 0.9rem;
+        }
+
+        .timer {
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Product Options */
+        .product-options {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-label {
+            font-weight: 600;
+            color: var(--neutral-dark);
+            min-width: 60px;
+        }
+
+        .option-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--neutral-light);
+            color: var(--neutral-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .qty-btn:hover {
+            background: var(--swappit-blue);
+            color: white;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-weight: 600;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            background: var(--swappit-blue);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--swappit-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .discount-info {
+            text-align: center;
+            color: var(--error-red);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Shipping Info */
+        .shipping-info {
+            background: var(--neutral-light);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .shipping-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--neutral-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-estimate {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--neutral-medium);
+        }
+
+        /* Why Choose Section */
+        .why-choose-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .why-choose-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--neutral-dark);
+            margin-bottom: 1rem;
+        }
+
+        .benefit-group {
+            margin-bottom: 1rem;
+        }
+
+        .benefit-group h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--neutral-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .benefit-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--neutral-medium);
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-list i {
+            color: var(--success-green);
+            font-size: 0.7rem;
+        }
+
+        /* Additional Links */
+        .additional-links {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .link-item {
+            display: block;
+            color: var(--swappit-blue);
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .link-item:hover {
+            color: var(--swappit-blue-hover);
+            text-decoration: underline;
+        }
+
+        /* Related Products */
+        .related-products {
+            background: white;
+            padding: 3rem 0;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neutral-dark);
+            margin-bottom: 2rem;
+        }
+
+        .related-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .product-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: var(--swappit-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .product-badge.sale {
+            background: var(--error-red);
+        }
+
+        .product-badge.bestseller {
+            background: var(--success-green);
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .product-info p {
+            font-size: 0.8rem;
+            color: var(--neutral-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--swappit-orange);
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-add-cart {
+            background: var(--swappit-blue);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-cart:hover {
+            background: var(--swappit-blue-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .banner-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .banner-right {
+                justify-content: center;
+            }
+            
+            .product-info-container {
+                position: static;
+                margin-top: 1rem;
+            }
+            
+            .related-products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-detail-main {
+                padding-top: 60px;
+            }
+            
+            .product-gallery-container,
+            .product-info-container {
+                padding: 1rem;
+            }
+            
+            .main-image {
+                height: 300px;
+            }
+            
+            .thumbnail-item {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .product-title {
+                font-size: 1.2rem;
+            }
+            
+            .current-price {
+                font-size: 1.5rem;
+            }
+            
+            .related-products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .banner-right {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .main-image {
+                height: 250px;
+            }
+            
+            .thumbnail-gallery {
+                justify-content: center;
+            }
+            
+            .product-tags {
+                justify-content: center;
+            }
+            
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Dynamic Header Container -->
     <div id="header-container">
         <!-- Header will be dynamically inserted here -->
     </div>
-    
-    <main class="product-detail-page">
-        <!-- Breadcrumb -->
-        <div class="container">
-            <nav aria-label="breadcrumb" class="product-breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../../index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../marketplace/marketplace.html">Marketplace</a></li>
-                    <li class="breadcrumb-item active">Product Details</li>
-                </ol>
-            </nav>
-        </div>
 
-        <!-- Product Main Section -->
-        <section class="product-main">
-            <div class="container">
-                <div class="row">
+    <main class="product-detail-main">
+        <div class="container-fluid px-0">
+            <!-- Sale Banner -->
+            <div class="sale-banner">
+                <div class="container">
+                    <div class="banner-content">
+                        <div class="banner-left">
+                            <span class="sale-text">REBAJAS DE TEMPORADA</span>
+                        </div>
+                        <div class="banner-right">
+                            <span class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                Envío gratis
+                            </span>
+                            <span class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                B/.2.00 de crédito por retraso
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Detail Container -->
+            <div class="container py-4">
+                <div class="row g-4">
                     <!-- Product Gallery -->
-                    <div class="col-lg-6">
-                        <div class="product-gallery">
-                            <div class="swiper gallery-main">
-                                <div class="swiper-wrapper">
-                                    <!-- Slides serán insertados dinámicamente por JS -->
+                    <div class="col-lg-7">
+                        <div class="product-gallery-container">
+                            <!-- Main Image -->
+                            <div class="main-image-container">
+                                <img src="../../assets/logos/utiles-escolares.jpg" alt="Producto Principal" class="main-image">
+                                <div class="image-overlay">
+                                    <button class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </button>
                                 </div>
-                                <div class="swiper-button-next"></div>
-                                <div class="swiper-button-prev"></div>
                             </div>
-                            <div class="swiper gallery-thumbs">
-                                <div class="swiper-wrapper">
-                                    <!-- Thumbnails serán insertados dinámicamente por JS -->
+                            
+                            <!-- Thumbnail Gallery -->
+                            <div class="thumbnail-gallery">
+                                <div class="thumbnail-item active">
+                                    <img src="../../assets/logos/utiles-escolares.jpg" alt="Miniatura 1">
+                                </div>
+                                <div class="thumbnail-item">
+                                    <img src="../../assets/logos/businesslogin.jpeg" alt="Miniatura 2">
+                                </div>
+                                <div class="thumbnail-item">
+                                    <img src="../../assets/logos/EquipoSwappit.jpeg" alt="Miniatura 3">
+                                </div>
+                                <div class="thumbnail-item">
+                                    <img src="../../assets/logos/sBlanca.jpg" alt="Miniatura 4">
+                                </div>
+                            </div>
+
+                            <!-- Reviews Summary -->
+                            <div class="reviews-summary">
+                                <div class="reviews-header">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="reviews-count">1,961 reseñas | 4.5</span>
+                                </div>
+                            </div>
+
+                            <!-- Product Tags -->
+                            <div class="product-tags">
+                                <span class="tag">Son muy buenos (78)</span>
+                                <span class="tag"> En muy buen estado (27)</span>
+                            </div>
+
+                            <!-- Customer Reviews -->
+                            <div class="customer-reviews">
+                                <div class="review-item">
+                                    <div class="review-header">
+                                        <span class="reviewer-name">Noris Diaz</span>
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="review-text">En muy buen estado</p>
+                                </div>
+                                <div class="review-item">
+                                    <div class="review-header">
+                                        <span class="reviewer-name">Katerine Rodriguez</span>
+                                        <div class="review-rating">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p class="review-text">Me encanto el producto</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Product Info -->
-                    <div class="col-lg-6">
-                        <div class="product-info-main">
-                            <div class="product-status"></div>
-                            <h1 class="product-title"></h1>
+                    <div class="col-lg-5">
+                        <div class="product-info-container">
+                            <!-- Product Title -->
+                            <div class="product-title-section">
+                                <h1 class="product-title">
+                                    Set Premium de Cuadernos Académicos - Edición Estudiantil
+                                </h1>
+                                <div class="sales-info">
+                                    <span class="sales-count">31K+ ventas</span>
+                                    <span class="seller-info">Vendido por -></span>
+                                </div>
+                                <div class="best-seller-badge">
+                                    #1 Artículo más vendido en Útiles Escolares >
+                                </div>
+                            </div>
+
+                            <!-- Product Rating -->
                             <div class="product-rating">
-                                <div class="stars"></div>
-                                <span class="rating-count"></span>
-                            </div>
-                            <div class="product-price">
-                                <span class="current-price"></span>
-                                <span class="original-price"></span>
-                                <span class="discount-badge"></span>
-                            </div>
-                            <div class="product-short-description">
-                                <p></p>
-                            </div>
-                            <!-- Color options removed as requested -->
-                            <div class="product-quantity">
-                                <h6>Quantity</h6>
-                                <div class="quantity-selector">
-                                    <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                                    <input type="number" value="1" min="1" max="10">
-                                    <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
                                 </div>
-                                <span class="stock-info"></span>
+                                <span class="rating-score">4.5</span>
                             </div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary btn-add-to-cart">
+
+                            <!-- Product Price -->
+                            <div class="product-price-section">
+                                <div class="price-main">
+                                    <span class="current-price">B/.2.89</span>
+                                    <div class="price-details">
+                                        <span class="original-price">7.21</span>
+                                        <span class="discount-badge">-59% tiempo limitado</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mega Offer -->
+                            <div class="mega-offer">
+                                <div class="offer-header">Mega oferta</div>
+                                <div class="countdown-timer">
+                                    Termina en <span class="timer">28:00:51:40</span>
+                                </div>
+                            </div>
+
+                            <!-- Product Options -->
+                            <div class="product-options">
+                                <div class="option-group">
+                                    <label class="option-label">Color:</label>
+                                    <select class="option-select">
+                                        <option>1 PC</option>
+                                        <option>2 PC</option>
+                                        <option>3 PC</option>
+                                    </select>
+                                </div>
+                                <div class="option-group">
+                                    <label class="option-label">Cant.</label>
+                                    <div class="quantity-selector">
+                                        <button class="qty-btn minus">-</button>
+                                        <input type="number" value="1" class="quantity-input">
+                                        <button class="qty-btn plus">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <button class="btn-primary btn-add-cart">
                                     <i class="fas fa-shopping-cart"></i>
-                                    Add to Cart
+                                    Añadir al carrito
                                 </button>
-                                <button class="btn btn-outline-primary btn-buy-now">
-                                    <i class="fas fa-bolt"></i>
-                                    Buy Now
-                                </button>
-                                <button class="btn btn-wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
+                                <div class="discount-info">59% DE DESCUENTO</div>
                             </div>
-                            <div class="product-delivery">
-                                <div class="delivery-option">
+
+                            <!-- Shipping Info -->
+                            <div class="shipping-info">
+                                <div class="shipping-header">
                                     <i class="fas fa-truck"></i>
-                                    <div class="delivery-info">
-                                        <h6>Free Delivery</h6>
-                                        <p>Enter your postal code for delivery availability</p>
-                                    </div>
+                                    <span>Puerta a puerta Envío gratis en cada pedido ></span>
                                 </div>
-                                <div class="delivery-option">
-                                    <i class="fas fa-undo"></i>
-                                    <div class="delivery-info">
-                                        <h6>Return Delivery</h6>
-                                        <p>Free 30 Days Delivery Returns. <a href="#">Details</a></p>
-                                    </div>
+                                <div class="delivery-estimate">
+                                    <span class="delivery-date">6-23 sep</span>
+                                    <span class="carrier">Premium Rush Shop aeropost AEROPOST</span>
                                 </div>
+                            </div>
+
+                            <!-- Why Choose Swapp-it -->
+                            <div class="why-choose-section">
+                                <h3>¿Por qué elegir Swapp-it?</h3>
+                                
+                                <div class="benefit-group">
+                                    <h4>Seguridad y privacidad</h4>
+                                    <ul class="benefit-list">
+                                        <li><i class="fas fa-check"></i> Pagos seguros</li>
+                                        <li><i class="fas fa-check"></i> Privacidad segura</li>
+                                    </ul>
+                                </div>
+
+                                <div class="benefit-group">
+                                    <h4>Entrega garantizada</h4>
+                                    <ul class="benefit-list">
+                                        <li><i class="fas fa-check"></i> B/.2.00 de crédito por retraso</li>
+                                        <li><i class="fas fa-check"></i> Reembolso por 30 días sin actualizaciones</li>
+                                        <li><i class="fas fa-check"></i> Devolución</li>
+                                        <li><i class="fas fa-check"></i> Reembolso pur</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Additional Links -->
+                            <div class="additional-links">
+                                <a href="#" class="link-item">Devoluciones de 90 días. Ajuste de precios ></a>
+                                <a href="#" class="link-item">Programa de plantación de árboles Swapp-it (21M+ de árboles) ></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Product Details Tabs -->
-        <section class="product-details">
-            <div class="container">
-                <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="description-tab" data-bs-toggle="tab" href="#description">Description</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="specifications-tab" data-bs-toggle="tab" href="#specifications">Specifications</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reviews</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="productTabsContent">
-                    <!-- Description Tab -->
-                    <div class="tab-pane fade show active" id="description">
-                        <div class="product-description">
-                            <h3>Premium Quality Notebook Set</h3>
-                            <p>Experience the perfect blend of style and functionality with our Premium Notebook Set. Designed for students and professionals who appreciate quality stationery, this set includes three notebooks with different paper types to suit all your writing and sketching needs.</p>
-                            
-                            <h4>What's Included:</h4>
-                            <ul>
-                                <li>1x Lined Paper Notebook (120 pages)</li>
-                                <li>1x Dot Grid Notebook (120 pages)</li>
-                                <li>1x Plain Paper Notebook (120 pages)</li>
-                                <li>1x Premium Gel Pen</li>
-                            </ul>
-
-                            <h4>Key Features:</h4>
-                            <ul>
-                                <li>Premium 100 GSM paper</li>
-                                <li>Hardcover with elegant design</li>
-                                <li>Bookmark ribbon</li>
-                                <li>Inner pocket for loose papers</li>
-                                <li>Elastic closure band</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Specifications Tab -->
-                    <div class="tab-pane fade" id="specifications">
-                        <div class="product-specifications">
-                            <div class="spec-group">
-                                <h4>Physical Specifications</h4>
-                                <div class="spec-item">
-                                    <span class="spec-label">Dimensions</span>
-                                    <span class="spec-value">21 x 14.8 cm (A5)</span>
-                                </div>
-                                <div class="spec-item">
-                                    <span class="spec-label">Weight</span>
-                                    <span class="spec-value">250g per notebook</span>
-                                </div>
-                                <div class="spec-item">
-                                    <span class="spec-label">Paper Weight</span>
-                                    <span class="spec-value">100 GSM</span>
-                                </div>
+            <!-- Related Products Section -->
+            <section class="related-products">
+                <div class="container">
+                    <h2 class="section-title">Productos Relacionados</h2>
+                    <div class="related-products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../../assets/logos/utiles-escolares.jpg" alt="Producto Relacionado">
+                                <div class="product-badge">Nuevo</div>
                             </div>
-                            <div class="spec-group">
-                                <h4>Materials</h4>
-                                <div class="spec-item">
-                                    <span class="spec-label">Cover Material</span>
-                                    <span class="spec-value">Vegan Leather</span>
-                                </div>
-                                <div class="spec-item">
-                                    <span class="spec-label">Paper Type</span>
-                                    <span class="spec-value">Acid-free Paper</span>
-                                </div>
-                                <div class="spec-item">
-                                    <span class="spec-label">Binding</span>
-                                    <span class="spec-value">Thread-bound</span>
-                                </div>
+                            <div class="product-info">
+                                <h3>Cuaderno Lujoso</h3>
+                                <p>por Premium Stationary</p>
+                                <div class="product-price">B/.14.99</div>
+                                <button class="btn-add-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Añadir al Carrito
+                                </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Reviews Tab -->
-                    <div class="tab-pane fade" id="reviews">
-                        <div class="product-reviews">
-                            <div class="reviews-summary">
-                                <div class="rating-average">
-                                    <h2>4.5</h2>
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                    <p>Based on 128 reviews</p>
-                                </div>
-                                <div class="rating-bars">
-                                    <div class="rating-bar">
-                                        <span class="stars">5 stars</span>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 75%"></div>
-                                        </div>
-                                        <span class="count">96</span>
-                                    </div>
-                                    <div class="rating-bar">
-                                        <span class="stars">4 stars</span>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 15%"></div>
-                                        </div>
-                                        <span class="count">19</span>
-                                    </div>
-                                    <div class="rating-bar">
-                                        <span class="stars">3 stars</span>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 7%"></div>
-                                        </div>
-                                        <span class="count">9</span>
-                                    </div>
-                                    <div class="rating-bar">
-                                        <span class="stars">2 stars</span>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 2%"></div>
-                                        </div>
-                                        <span class="count">3</span>
-                                    </div>
-                                    <div class="rating-bar">
-                                        <span class="stars">1 star</span>
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 1%"></div>
-                                        </div>
-                                        <span class="count">1</span>
-                                    </div>
-                                </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../../assets/logos/businesslogin.jpeg" alt="Producto Relacionado">
+                                <div class="product-badge sale">Oferta</div>
                             </div>
-
-                            <!-- Individual Reviews -->
-                            <div class="reviews-list">
-                                <div class="review-item">
-                                    <div class="review-header">
-                                        <img src="https://ui-avatars.com/api/?name=Sarah+Johnson" alt="Sarah J." class="reviewer-avatar">
-                                        <div class="reviewer-info">
-                                            <h5>Sarah Johnson</h5>
-                                            <div class="stars">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <span class="review-date">2 days ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="review-content">
-                                        <p>Absolutely love these notebooks! The paper quality is exceptional, and the different types of paper make it perfect for all my needs. The included pen is also of great quality.</p>
-                                        <div class="review-images">
-                                            <img src="https://images.unsplash.com/photo-1544716280-aa053eb21b45?ixlib=rb-4.0.3" alt="Review Image">
-                                            <img src="https://images.unsplash.com/photo-1544716279-e514d1d45b10?ixlib=rb-4.0.3" alt="Review Image">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="review-item">
-                                    <div class="review-header">
-                                        <img src="https://ui-avatars.com/api/?name=Michael+Smith" alt="Michael S." class="reviewer-avatar">
-                                        <div class="reviewer-info">
-                                            <h5>Michael Smith</h5>
-                                            <div class="stars">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <span class="review-date">1 week ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="review-content">
-                                        <p>Great quality notebooks. The paper doesn't bleed through, and the cover feels very durable. Would definitely recommend for students.</p>
-                                    </div>
-                                </div>
+                            <div class="product-info">
+                                <h3>Libreta de Arte</h3>
+                                <p>por Creative Arts</p>
+                                <div class="product-price">B/.11.99</div>
+                                <button class="btn-add-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Añadir al Carrito
+                                </button>
                             </div>
+                        </div>
 
-                            <!-- Write Review Button -->
-                            <div class="write-review">
-                                <button class="btn btn-primary">Write a Review</button>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../../assets/logos/EquipoSwappit.jpeg" alt="Producto Relacionado">
+                                <div class="product-badge bestseller">Más Vendido</div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Planner de Estudio</h3>
+                                <p>por Study Essentials</p>
+                                <div class="product-price">B/.9.99</div>
+                                <button class="btn-add-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Añadir al Carrito
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="../../assets/logos/sBlanca.jpg" alt="Producto Relacionado">
+                                <div class="product-badge">Limitado</div>
+                            </div>
+                            <div class="product-info">
+                                <h3>Set de Diario</h3>
+                                <p>por Daily Writers</p>
+                                <div class="product-price">B/.16.99</div>
+                                <button class="btn-add-cart">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Añadir al Carrito
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Seller Information -->
-        <section class="seller-info">
-            <div class="container">
-                <div class="seller-card">
-                    <div class="seller-header">
-                        <img src="https://ui-avatars.com/api/?name=John+Smith" alt="John Smith" class="seller-avatar">
-                        <div class="seller-details">
-                            <h4>John Smith</h4>
-                            <div class="seller-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span>(4.8 / 5)</span>
-                            </div>
-                            <span class="seller-status">
-                                <i class="fas fa-check-circle"></i> Verified Seller
-                            </span>
-                        </div>
-                        <button class="btn btn-outline-primary">Visit Store</button>
-                    </div>
-                    <div class="seller-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">98%</span>
-                            <span class="stat-label">Positive Feedback</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">1,234</span>
-                            <span class="stat-label">Products Sold</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">24h</span>
-                            <span class="stat-label">Response Time</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Related Products -->
-        <section class="related-products">
-            <div class="container">
-                <h2 class="section-title">Related Products</h2>
-                <div class="swiper related-swiper">
-                    <div class="swiper-wrapper">
-                        <!-- Related Product 1 -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3" alt="Related Product">
-                                    <div class="product-overlay">
-                                        <button class="btn btn-quick-view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-wishlist"><i class="fas fa-heart"></i></button>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h3 class="product-title">Luxury Notebook</h3>
-                                    <p class="product-seller">by Premium Stationary</p>
-                                    <div class="product-price">$14.99</div>
-                                    <button class="btn btn-add-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Related Product 2 -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <img src="https://images.unsplash.com/photo-1544716280-aa053eb21b45?ixlib=rb-4.0.3" alt="Related Product">
-                                    <div class="product-overlay">
-                                        <button class="btn btn-quick-view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-wishlist"><i class="fas fa-heart"></i></button>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h3 class="product-title">Art Sketchbook</h3>
-                                    <p class="product-seller">by Creative Arts</p>
-                                    <div class="product-price">$11.99</div>
-                                    <button class="btn btn-add-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Related Product 3 -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <img src="https://images.unsplash.com/photo-1544716279-e514d1d45b10?ixlib=rb-4.0.3" alt="Related Product">
-                                    <div class="product-overlay">
-                                        <button class="btn btn-quick-view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-wishlist"><i class="fas fa-heart"></i></button>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h3 class="product-title">Study Planner</h3>
-                                    <p class="product-seller">by Study Essentials</p>
-                                    <div class="product-price">$9.99</div>
-                                    <button class="btn btn-add-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Related Product 4 -->
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3" alt="Related Product">
-                                    <div class="product-overlay">
-                                        <button class="btn btn-quick-view"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-wishlist"><i class="fas fa-heart"></i></button>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h3 class="product-title">Journal Set</h3>
-                                    <p class="product-seller">by Daily Writers</p>
-                                    <div class="product-price">$16.99</div>
-                                    <button class="btn btn-add-cart">Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
     <!-- Footer Component -->
@@ -446,7 +1083,7 @@
 
     <!-- JavaScript Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
     <!-- Web Components -->
     <script src="../../components/cart-component.js"></script>
     <script src="../../components/header-component.js"></script>
@@ -456,11 +1093,27 @@
     <!-- Global Header Manager -->
     <script src="../../js/global-header-manager.js"></script>
     
-    <!-- Product Detail JavaScript -->
-    <script type="module" src="../../js/productDetail.js"></script>
-
-    <!-- Product Detail JavaScript handles all dynamic functionality -->
-    <!-- basicLightbox JS para zoom de imagen -->
-    <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
+    <!-- View Details JavaScript -->
+    <script src="../../js/view-details.js"></script>
+    
+    <!-- Image Loading Test -->
+    <script>
+        // Verificar si las imágenes se cargan correctamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.error('Error loading image:', this.src);
+                    // Fallback a una imagen de placeholder
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pjwvc3ZnPg==';
+                });
+                
+                img.addEventListener('load', function() {
+                    console.log('Image loaded successfully:', this.src);
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

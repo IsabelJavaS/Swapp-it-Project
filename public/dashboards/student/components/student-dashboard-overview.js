@@ -26,7 +26,13 @@ class StudentDashboardOverview extends HTMLElement {
                 }
 
                 .dashboard-overview {
-                    padding: 0.5rem 3rem 0.5rem 3rem;
+                    padding: 1rem;
+                }
+
+                @media (min-width: 768px) {
+                    .dashboard-overview {
+                        padding: 0.5rem 3rem 0.5rem 3rem;
+                    }
                 }
 
                 .section-header {
@@ -50,20 +56,39 @@ class StudentDashboardOverview extends HTMLElement {
                 /* Stats Cards */
                 .stats-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: 1.5rem;
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
                     margin-bottom: 2rem;
+                }
+
+                @media (min-width: 640px) {
+                    .stats-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    .stats-grid {
+                        grid-template-columns: repeat(4, 1fr);
+                    }
                 }
 
                 .stat-card {
                     background: white;
                     border-radius: 16px;
-                    padding: 1.5rem;
+                    padding: 1rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
                     transition: all 0.3s ease;
                     position: relative;
                     overflow: hidden;
+                }
+
+                @media (min-width: 640px) {
+                    .stat-card {
+                        padding: 1.5rem;
+                    }
                 }
 
                 .stat-card::before {
@@ -121,11 +146,17 @@ class StudentDashboardOverview extends HTMLElement {
                 }
 
                 .stat-number {
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                     font-weight: 700;
                     color: #1e293b;
                     line-height: 1;
                     margin-bottom: 0.25rem;
+                }
+
+                @media (min-width: 640px) {
+                    .stat-number {
+                        font-size: 2rem;
+                    }
                 }
 
                 .stat-label {
@@ -158,27 +189,49 @@ class StudentDashboardOverview extends HTMLElement {
                 /* Charts Section */
                 .charts-section {
                     display: grid;
-                    grid-template-columns: 2fr 1fr;
-                    gap: 1.5rem;
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
                     margin-bottom: 2rem;
                     align-items: start;
+                }
+
+                @media (min-width: 1024px) {
+                    .charts-section {
+                        grid-template-columns: 2fr 1fr;
+                        gap: 1.5rem;
+                    }
                 }
 
                 .chart-card {
                     background: white;
                     border-radius: 16px;
-                    padding: 1.5rem;
+                    padding: 1rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
                     display: flex;
                     flex-direction: column;
                 }
 
+                @media (min-width: 640px) {
+                    .chart-card {
+                        padding: 1.5rem;
+                    }
+                }
+
                 .chart-header {
                     display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                    flex-direction: column;
+                    gap: 1rem;
                     margin-bottom: 1.5rem;
+                }
+
+                @media (min-width: 640px) {
+                    .chart-header {
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 0;
+                    }
                 }
 
                 .chart-title {
@@ -191,6 +244,14 @@ class StudentDashboardOverview extends HTMLElement {
                 .chart-period {
                     display: flex;
                     gap: 0.5rem;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+
+                @media (min-width: 640px) {
+                    .chart-period {
+                        justify-content: flex-end;
+                    }
                 }
 
                 .period-btn {
@@ -217,6 +278,24 @@ class StudentDashboardOverview extends HTMLElement {
                     color: #3468c0;
                 }
 
+                .chart-container {
+                    height: 200px;
+                    width: 100%;
+                    position: relative;
+                }
+
+                @media (min-width: 640px) {
+                    .chart-container {
+                        height: 250px;
+                    }
+                }
+
+                @media (min-width: 1024px) {
+                    .chart-container {
+                        height: 280px;
+                    }
+                }
+
                 .chart-placeholder {
                     flex: 1;
                     min-height: 250px;
@@ -234,7 +313,7 @@ class StudentDashboardOverview extends HTMLElement {
                 .activity-card {
                     background: white;
                     border-radius: 16px;
-                    padding: 1.5rem;
+                    padding: 1rem;
                     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                     border: 1px solid rgba(0, 0, 0, 0.05);
                     height: 100%;
@@ -242,11 +321,26 @@ class StudentDashboardOverview extends HTMLElement {
                     flex-direction: column;
                 }
 
+                @media (min-width: 640px) {
+                    .activity-card {
+                        padding: 1.5rem;
+                    }
+                }
+
                 .activity-header {
                     display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                    flex-direction: column;
+                    gap: 0.5rem;
                     margin-bottom: 1.5rem;
+                }
+
+                @media (min-width: 640px) {
+                    .activity-header {
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 0;
+                    }
                 }
 
                 .activity-title {
@@ -361,48 +455,18 @@ class StudentDashboardOverview extends HTMLElement {
                     margin: 0;
                 }
 
-                /* Responsive */
-                @media (max-width: 1200px) {
-                    .charts-section {
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                    }
-                }
-
-                @media (max-width: 1024px) {
-                    .charts-section {
-                        grid-template-columns: 1fr;
-                        min-height: auto;
-                    }
-                    
-                    .chart-card,
-                    .activity-card {
-                        height: auto;
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .stats-grid {
-                        grid-template-columns: 1fr;
-                    }
-
+                /* Responsive - Mobile First */
+                @media (max-width: 480px) {
                     .section-header h1 {
                         font-size: 1.5rem;
                     }
                     
-                    .charts-section {
-                        gap: 1rem;
+                    .stat-card {
+                        padding: 0.75rem;
                     }
                     
-                    .chart-placeholder {
-                        min-height: 200px;
-                    }
-                }
-
-                @media (max-width: 480px) {
-                    .chart-placeholder {
-                        min-height: 150px;
-                        font-size: 0.875rem;
+                    .stat-number {
+                        font-size: 1.25rem;
                     }
                     
                     .activity-item {
@@ -521,7 +585,7 @@ class StudentDashboardOverview extends HTMLElement {
                                 <button class="period-btn" id="btn90D">90D</button>
                             </div>
                         </div>
-                        <div style="height: 280px;">
+                        <div class="chart-container">
                             <canvas id="trendChart" width="100%" height="100%"></canvas>
                         </div>
                     </div>
@@ -569,20 +633,20 @@ class StudentDashboardOverview extends HTMLElement {
                         console.log('StudentDashboardOverview: Auth state changed:', user ? 'User authenticated' : 'No user');
                         unsubscribe(); // Stop listening after first change
                         if (user) {
-                            this.loadUserData(user);
+                            this.loadUserData(user).then(() => resolve());
                         } else {
                             this.showDefaultDashboard();
+                            resolve();
                         }
-                        resolve();
                     });
                     
-                    // Timeout after 5 seconds
+                    // Timeout after 3 seconds
                     setTimeout(() => {
                         console.log('StudentDashboardOverview: Auth state timeout, showing default dashboard');
                         unsubscribe();
                         this.showDefaultDashboard();
                         resolve();
-                    }, 5000);
+                    }, 3000);
                 });
             }
             

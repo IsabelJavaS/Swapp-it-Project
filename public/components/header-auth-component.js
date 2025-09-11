@@ -1571,37 +1571,28 @@ class HeaderAuthComponent extends HTMLElement {
             categoriesNav.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('Categories nav clicked');
-                // Get the filters sidebar component - try multiple selectors
+                
+                // Try to find existing filters sidebar
                 let filtersSidebar = document.querySelector('filters-sidebar-component');
                 
-                // If not found, try to find it in the document body
-                if (!filtersSidebar) {
-                    filtersSidebar = document.body.querySelector('filters-sidebar-component');
-                }
-                
-                // If still not found, try to find it by tag name
-                if (!filtersSidebar) {
-                    const allComponents = document.getElementsByTagName('*');
-                    for (let element of allComponents) {
-                        if (element.tagName === 'FILTERS-SIDEBAR-COMPONENT') {
-                            filtersSidebar = element;
-                            break;
-                        }
-                    }
-                }
-                
-                console.log('Filters sidebar component:', filtersSidebar);
-                if (filtersSidebar) {
-                    console.log('Opening filters sidebar');
+                if (filtersSidebar && typeof filtersSidebar.open === 'function') {
+                    console.log('Opening existing filters sidebar');
                     filtersSidebar.open();
                 } else {
-                    console.log('Filters sidebar component not found - creating one dynamically');
-                    // Create the component dynamically if not found
+                    console.log('Filters sidebar not found or not ready - creating new one');
+                    // Create the component dynamically
                     const newFiltersSidebar = document.createElement('filters-sidebar-component');
                     document.body.appendChild(newFiltersSidebar);
+                    
+                    // Wait for the component to be ready
                     setTimeout(() => {
-                        newFiltersSidebar.open();
-                    }, 100);
+                        if (typeof newFiltersSidebar.open === 'function') {
+                            newFiltersSidebar.open();
+                        } else {
+                            console.log('Fallback: Navigating to all products page');
+                            window.location.href = '/pages/marketplace/all-products.html';
+                        }
+                    }, 200);
                 }
             });
         }
@@ -2408,8 +2399,11 @@ class HeaderAuthComponent extends HTMLElement {
                     this.closeMobileMenu();
                     // Trigger categories sidebar
                     const filtersSidebar = document.querySelector('filters-sidebar-component');
-                    if (filtersSidebar && filtersSidebar.open) {
+                    if (filtersSidebar && typeof filtersSidebar.open === 'function') {
                         filtersSidebar.open();
+                    } else {
+                        // Fallback: navigate to all products page
+                        window.location.href = '/pages/marketplace/all-products.html';
                     }
                 });
             }
