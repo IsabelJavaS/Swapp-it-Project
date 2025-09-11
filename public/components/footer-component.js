@@ -96,7 +96,7 @@ class FooterComponent extends HTMLElement {
 
                 /* Main Footer Content */
                 .footer-main {
-                    padding: 3rem 0 1.5rem;
+                    padding: 2rem 0 1rem;
                     position: relative;
                 }
 
@@ -324,7 +324,7 @@ class FooterComponent extends HTMLElement {
                 /* Footer Bottom - Professional */
                 .footer-bottom {
                     background: rgba(0, 0, 0, 0.3);
-                    padding: 1.5rem 0;
+                    padding: 1rem 0 0.5rem 0;
                     border-top: 1px solid rgba(255, 255, 255, 0.1);
                     /*margin-top: 2rem;*/
                 }
