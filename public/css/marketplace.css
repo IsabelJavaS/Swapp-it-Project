@@ -173,7 +173,7 @@ html {
 .page-header {
   background: url('/assets/logos/Markeplace2.jpg') center center/cover no-repeat !important;
   color: white;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   position: relative;
   background-size: cover;
   background-attachment: fixed;
@@ -181,6 +181,9 @@ html {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   image-rendering: optimize-contrast;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
 }
 
 .page-header::before {
@@ -229,6 +232,12 @@ html {
   z-index: 2;
 }
 
+.page-header .container {
+  display: flex;
+  align-items: center;
+  min-height: 200px;
+}
+
 .page-header h1,
 .page-header p {
   color: white;
@@ -246,21 +255,34 @@ html {
 
 .header-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
 }
 
 .header-text h1 {
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
+    text-align: center;
 }
 
 .header-text p {
     font-size: 1.1rem;
     margin: 0;
     opacity: 0.9;
+    text-align: center;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .header-actions .btn {
