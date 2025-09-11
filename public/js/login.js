@@ -1,6 +1,6 @@
 // Firebase imports
-import { loginUser } from '../firebase/auth.js';
-import { getUserProfile, updateLastLogin } from '../firebase/firestore.js';
+import { loginUser, signInWithGoogle, handleGoogleRedirectResult } from '../firebase/auth.js';
+import { getUserProfile, updateLastLogin, createUserProfile } from '../firebase/firestore.js';
 import { isAuthenticated, navigateToDashboard } from './auth-state.js';
 import pathConfig from './config.js';
 
@@ -104,6 +104,81 @@ function setLoadingState(loading) {
         loginBtn.classList.remove('loading');
         loginBtn.disabled = false;
         loginBtn.querySelector('.btn-text').textContent = 'Sign In';
+    }
+}
+
+
+// ==================== GOOGLE AUTHENTICATION ====================
+async function handleGoogleLogin() {
+    try {
+        setLoadingState(true);
+        
+        // Sign in with Google
+        const googleResult = await signInWithGoogle();
+        
+        if (!googleResult.success) {
+            throw new Error(googleResult.error);
+        }
+
+        const googleUser = googleResult.user;
+        
+        // Check if user profile exists in Firestore
+        let profileResult = await getUserProfile(googleUser.uid);
+        
+        // If profile doesn't exist, create one
+        if (!profileResult.success) {
+            console.log('Creating new user profile for Google user');
+            
+            const newProfile = {
+                uid: googleUser.uid,
+                email: googleUser.email,
+                displayName: googleUser.displayName,
+                photoURL: googleUser.photoURL,
+                role: 'student', // Default role
+                provider: 'google',
+                createdAt: new Date(),
+                lastLogin: new Date(),
+                isActive: true
+            };
+            
+            const createResult = await createUserProfile(newProfile);
+            if (!createResult.success) {
+                throw new Error('Failed to create user profile');
+            }
+            
+            profileResult = { success: true, data: newProfile };
+        } else {
+            // Update last login for existing user
+            await updateLastLogin(googleUser.uid);
+        }
+
+        // Success - redirect to marketplace
+        showSuccessAnimation();
+        showSuccess('Login successful! Redirecting...');
+        
+        // Store login info
+        sessionStorage.setItem('justLoggedIn', 'true');
+        sessionStorage.setItem('userRole', profileResult.data.role);
+
+        // Redirect to marketplace
+        setTimeout(() => {
+            pathConfig.redirectTo(pathConfig.getMarketplacePath());
+        }, 2000);
+
+    } catch (error) {
+        console.error('Google login error:', error);
+        
+        let errorMessage = 'Google login failed. Please try again.';
+        
+        if (error.message.includes('popup-closed-by-user')) {
+            errorMessage = 'Login cancelled. Please try again.';
+        } else if (error.message.includes('account-exists-with-different-credential')) {
+            errorMessage = 'An account already exists with this email. Please use email/password login.';
+        }
+        
+        showError(errorMessage);
+    } finally {
+        setLoadingState(false);
     }
 }
 
@@ -361,12 +436,72 @@ if (togglePasswordBtn) {
     togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
 }
 
+// Google login button
+const googleBtn = document.querySelector('.google-btn');
+if (googleBtn) {
+    googleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!isLoading) {
+            handleGoogleLogin();
+        }
+    });
+}
+
+
 // Check if user is already logged in
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Check if user is already authenticated
     if (isAuthenticated()) {
         pathConfig.redirectTo(pathConfig.getMarketplacePath());
     }
+    
+    // Handle Google redirect result (for mobile devices)
+    try {
+        const googleRedirectResult = await handleGoogleRedirectResult();
+        if (googleRedirectResult.success) {
+            console.log('Google redirect login successful');
+            // Handle the redirect login similar to popup login
+            const googleUser = googleRedirectResult.user;
+            
+            // Check if user profile exists in Firestore
+            let profileResult = await getUserProfile(googleUser.uid);
+            
+            // If profile doesn't exist, create one
+            if (!profileResult.success) {
+                console.log('Creating new user profile for Google redirect user');
+                
+                const newProfile = {
+                    uid: googleUser.uid,
+                    email: googleUser.email,
+                    displayName: googleUser.displayName,
+                    photoURL: googleUser.photoURL,
+                    role: 'student', // Default role
+                    provider: 'google',
+                    createdAt: new Date(),
+                    lastLogin: new Date(),
+                    isActive: true
+                };
+                
+                const createResult = await createUserProfile(newProfile);
+                if (createResult.success) {
+                    profileResult = { success: true, data: newProfile };
+                }
+            } else {
+                // Update last login for existing user
+                await updateLastLogin(googleUser.uid);
+            }
+            
+            // Store login info and redirect
+            sessionStorage.setItem('justLoggedIn', 'true');
+            sessionStorage.setItem('userRole', profileResult.data.role);
+            
+            // Redirect to marketplace
+            pathConfig.redirectTo(pathConfig.getMarketplacePath());
+        }
+    } catch (error) {
+        console.error('Error handling Google redirect:', error);
+    }
+    
     
     // Initialize animations
     addInputAnimations();

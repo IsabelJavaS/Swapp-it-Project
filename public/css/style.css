@@ -1552,8 +1552,8 @@ html {
   padding: 3rem 0;
 }
 @keyframes swappZoneTitleIn {
-  0% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes swappZoneSubtitleIn {
   0% { opacity: 0; transform: translateY(30px); }
