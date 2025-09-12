@@ -38,18 +38,18 @@
 <body>
     <!-- Aviso de cookies -->
     <div id="cookie-banner" style="display:none; position:fixed; left:0; right:0; bottom:0; z-index:99999; background:rgba(255,255,255,0.98); box-shadow:0 -2px 16px rgba(0,0,0,0.08); padding:1.5rem 1rem; text-align:center; font-family:'Inter',sans-serif;">
-                <span style="font-size:1rem; color:#1e293b;">We use cookies to enhance your experience on Swapp-it. By continuing to browse, you accept our <a href="pages/policy/terms.html" style="color:#3468c0; text-decoration:underline;">cookie policy</a>.</span>
-      <button id="acceptCookiesBtn" style="margin-left:1.5rem; background:#3468c0; color:#fff; border:none; border-radius:6px; padding:0.6rem 1.5rem; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(52,104,192,0.10); transition:background 0.2s;">Accept cookies</button>
+        <span style="font-size:1rem; color:#1e293b;">We use cookies to enhance your experience on Swapp-it. By continuing to browse, you accept our <a href="pages/policy/terms.html" style="color:#3468c0; text-decoration:underline;">cookie policy</a>.</span>
+        <button id="acceptCookiesBtn" style="margin-left:1.5rem; background:#3468c0; color:#fff; border:none; border-radius:6px; padding:0.6rem 1.5rem; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(52,104,192,0.10); transition:background 0.2s;">Accept cookies</button>
     </div>
     <script>
       // Mostrar el banner solo si no se ha aceptado
-      if (!localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-      }
-      document.getElementById('acceptCookiesBtn').onclick = function() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookie-banner').style.display = 'none';
-      };
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+        document.getElementById('acceptCookiesBtn').onclick = function() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
+        };
     </script>
     <!-- Dynamic Header Container -->
     <div id="header-container">
@@ -278,7 +278,7 @@
                         <div class="zone-vertical-layout">
                             <!-- Title and Description -->
                             <div class="zone-text-content">
-                                <h2 class="section-title">Swapp-it Zone</h2>
+                                <h2 class="hero-title">Swapp-it Zone</h2>
                                 <p class="section-subtitle">A dedicated space designed to foster sustainable student exchanges and build strong, inclusive communities through meaningful cross-cultural connections and shared learning experiences</p>
                             </div>
                             

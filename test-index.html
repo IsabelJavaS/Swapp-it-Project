@@ -1,4 +1,40 @@
-/* =========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SWAPPIT - Your School Supplies Marketplace">
+    <title>SWAPP-IT - Sustainable Student Marketplace</title>
+
+    <!-- External CSS Dependenciessss -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome - Preload to prevent FOUC -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <!-- Font Awesome for Web Components -->
+    <script>
+        // Ensure Font Awesome works in Shadow DOM
+        if (!window.FontAwesome) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+            document.head.appendChild(link);
+        }
+    </script>
+    
+    <link rel="icon" type="image/png" href="/public/assets/logos/letraS.png">
+
+    
+    <!-- Custom Styles -->
+    <link href="/public/components/components.css" rel="stylesheet">
+    
+    <!-- CSS Path Fixer - Ajusta rutas automáticamente -->
+    <script src="/public/js/css-path-fixer.js"></script>
+    <style>
+        /* =========================================
     Version: 1.0
    ========================================= */
 
@@ -41,44 +77,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-/* Section Title Styles */
-.section-title {
-    font-family: var(--font-primary);
-    color: var(--swappit-blue);
-    font-weight: 700;
-    text-shadow: none;
-    text-align: center;
-}
-
-/* Responsive centering for About Us content */
-@media (max-width: 1024px) {
-    .section-title {
-        text-align: center;
-    }
-    
-    .features-section .container,
-    .swappit-zone-section .container {
-        text-align: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .section-title {
-        text-align: center;
-        font-size: 2rem;
-    }
-    
-    .features-section .container,
-    .swappit-zone-section .container {
-        text-align: center;
-    }
-    
-    .features-section .row,
-    .swappit-zone-section .row {
-        justify-content: center;
-    }
 }
 
 /* =========================================
@@ -341,14 +339,16 @@ body {
 /* } */
 
 /* =========================================
-    Hero Section Styles
+   Hero Section Styles
    ========================================= */
 .hero-section {
-    background: url('/assets/logos/Banner.jpg') no-repeat center center;
+    background: url('/public/assets/logos/SwappZone.jpg') no-repeat center center;
     background-color: rgba(0, 0, 0, 0.5);
+    background-size: 100% 100%;
+    background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    min-height: calc(100vh - 80px);  
+    min-height: calc(100vh - 80px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -476,8 +476,7 @@ body {
     font-family: var(--font-primary);
     font-weight: 700;
     font-size: 2.25rem;
-    color: var(--swappit-blue) !important;
-    text-shadow: none !important;
+    color: #000000 !important;
     text-align: center;
     margin-bottom: 3rem;
 }
@@ -552,29 +551,9 @@ body {
 }
 
 /* Responsive Adjustments */
-/* Pantallas muy grandes - evitar estiramiento horizontal */
-@media (min-width: 1400px) {
-    .hero-section {
-        background-size: cover;
-        background-position: center center;
-    }
-}
-
-/* Orientación landscape en móviles - evitar estiramiento */
-@media (max-width: 768px) and (orientation: landscape) {
-    .hero-section {
-        background-size: cover;
-        background-position: center center;
-        min-height: 100vh;
-    }
-}
-
 @media (max-width: 768px) {
     .hero-section {
         padding: 0 1rem;
-        background-attachment: fixed; /* Imagen fija como fondo */
-        background-size: cover;
-        background-position: center center;
     }
     
     .hero-content {
@@ -612,9 +591,6 @@ body {
 @media (max-width: 480px) {
     .hero-section {
         padding: 0 0.5rem;
-        background-size: cover;
-        background-position: center center;
-        min-height: calc(100vh - 60px); /* Altura ajustada para móviles */
     }
     
     .hero-content {
@@ -1462,51 +1438,91 @@ main {
 }
 
 /* =========================================
-    Swappit Zone Section Styles
+   Swappit Zone Section Styles
    ========================================= */
 .swappit-zone-section {
-    position: relative;
-    padding: 80px 0;
-    background: none;
-    overflow: hidden;
-    min-height: 450px;
-    cursor: grab;
-    user-select: none;
+  position: relative;
+  padding: 80px 0;
+  background: none;
+  overflow: hidden;
+  min-height: 450px;
+  cursor: grab;
+  user-select: none;
 }
 
 .swappit-zone-section:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 .swappit-zone-section.dragging {
-    cursor: grabbing;
+  cursor: grabbing;
 }
-
 .swappit-zone-bg {
-    background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
-    background-size: cover !important; /* Mantener tamaño original */
     position: absolute;
     inset: 0;
+    background: url('/public/assets/logos/SwappZone.jpg') center center/cover no-repeat;
     z-index: 1;
     width: 100%;
     height: 100%;
     opacity: 1;
+    transition: transform 0.1s ease-out;
+    background-size: 100%;
+    background-position: center center;
+    pointer-events: auto;
     filter: brightness(0.6) contrast(1.1) saturate(1.05);
-    transform: none !important; /* Eliminar cualquier transformación */
 }
 
 /* Overlay oscuro para mejorar el contraste del texto */
 .swappit-zone-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%);
-    z-index: 2;
-    pointer-events: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
+/* Indicador visual de que se puede arrastrar */
+.swappit-zone-section::before {
+  content: "🖱️ Arrastra para explorar";
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 100;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.swappit-zone-section:hover::before {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Indicador de arrastre activo */
+.swappit-zone-section.dragging::before {
+  content: "🔄 Explorando...";
+  background: rgba(59, 130, 246, 0.9);
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Efecto de transición suave para el arrastre */
+.swappit-zone-bg {
+  will-change: background-position, transform;
+}
+
+/* Zonas interactivas de productos - ELIMINADOS */
+
 /* Tooltip de información del producto - ELIMINADOS */
-/* .product-tooltip {
+.product-tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.9);
   color: white;
@@ -1536,86 +1552,85 @@ main {
   transform: translateX(-50%);
   border: 6px solid transparent;
   border-top-color: rgba(0, 0, 0, 0.9);
-} */
-
+}
 .swappit-zone-content {
-    position: relative;
-    z-index: 2;
-    padding: 0;
-    pointer-events: none;
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  pointer-events: none;
 }
 
 .swappit-zone-content * {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 /* Asegurar que el contenido no interfiera con el arrastre */
 .swappit-zone-content .btn,
 .swappit-zone-content a,
 .swappit-zone-content button {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 .zone-text-content {
-    padding: 2rem 0;
-    color: #ffffff;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  padding: 2rem 0;
+  color: #ffffff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .zone-text-content p {
-    color: #ffffff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .section-title {
-    color: var(--swappit-orange);
-    font-size: 4.5rem;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(52, 104, 192, 0.6);
-    margin-bottom: 1.5rem;
-    animation: swappZoneTitleIn 1.1s 0.2s cubic-bezier(.22,1.12,.58,1) both;
+  color: #3468c0;
+  font-size: 4.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(52, 104, 192, 0.6);
+  margin-bottom: 1.5rem;
+  animation: swappZoneTitleIn 1.1s 0.2s cubic-bezier(.22,1.12,.58,1) both;
 }
 
 .section-subtitle {
-    color: #ffffff;
-    font-size: 1.8rem;
-    margin-bottom: 0;
-    animation: swappZoneSubtitleIn 1.1s 0.5s cubic-bezier(.22,1.12,.58,1) both;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(52, 104, 192, 0.4);
-    line-height: 1.4;
-    font-weight: 500;
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 0;
+  animation: swappZoneSubtitleIn 1.1s 0.5s cubic-bezier(.22,1.12,.58,1) both;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(52, 104, 192, 0.4);
+  line-height: 1.4;
+  font-weight: 500;
 }
 
 .zone-cards-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 3rem 0;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem 0;
+  flex-wrap: wrap;
 }
 
 .zone-cards-container-horizontal {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 @keyframes swappZoneTitleIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes swappZoneSubtitleIn {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 .swappit-benefit-card {
   background: linear-gradient(135deg, #3468c0 0%, #2a5aa0 50%, #1e3a8a 100%);
@@ -3612,13 +3627,14 @@ main {
 /* Responsive Design - Updated */
 @media (max-width: 991px) {
     .swappit-zone-bg {
-        background-size: 100%;
+        background-size: 100% 100%;
+        background-position: center center;
         opacity: 1;
         filter: brightness(0.5) contrast(1.2) saturate(1.1);
     }
     
-    .swappit-zone-section::before {
-        background: rgba(0, 0, 0, 0.5); /* Overlay más oscuro en móviles */
+    .swappit-zone-bg::after {
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.7) 100%);
     }
     
     .zone-cards-container-horizontal {
@@ -3639,13 +3655,14 @@ main {
 
 @media (max-width: 768px) {
     .swappit-zone-bg {
-        background-size: 100%;
+        background-size: 100% 100%;
+        background-position: center center;
         opacity: 1;
         filter: brightness(0.45) contrast(1.3) saturate(1.2);
     }
     
-    .swappit-zone-section::before {
-        background: rgba(0, 0, 0, 0.6); /* Overlay aún más oscuro en móviles pequeños */
+    .swappit-zone-bg::after {
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 100%);
     }
     
     .swappit-benefit-card {
@@ -3677,7 +3694,8 @@ main {
 
 @media (max-width: 480px) {
     .swappit-zone-bg {
-        background-size: 100%;
+        background-size: 100% 100%;
+        background-position: center center;
         filter: brightness(0.4) contrast(1.4) saturate(1.3);
     }
     
@@ -3731,7 +3749,7 @@ main {
 
 /* Responsive adjustments for larger text */
 @media (max-width: 1200px) {
-  .section-title{
+  .section-title {
     font-size: 4rem;
   }
   
@@ -3741,7 +3759,7 @@ main {
 }
 
 @media (max-width: 768px) {
-  .section-title{
+  .section-title {
     font-size: 3.2rem;
     letter-spacing: 1px;
   }
@@ -3799,3 +3817,331 @@ main {
   max-width: 900px;
   margin: 0 auto;
 }
+    </style>
+</head>
+<body>
+    <body>
+        <!-- Aviso de cookies -->
+        <div id="cookie-banner" style="display:none; position:fixed; left:0; right:0; bottom:0; z-index:99999; background:rgba(255,255,255,0.98); box-shadow:0 -2px 16px rgba(0,0,0,0.08); padding:1.5rem 1rem; text-align:center; font-family:'Inter',sans-serif;">
+                    <span style="font-size:1rem; color:#1e293b;">We use cookies to enhance your experience on Swapp-it. By continuing to browse, you accept our <a href="pages/policy/terms.html" style="color:#3468c0; text-decoration:underline;">cookie policy</a>.</span>
+          <button id="acceptCookiesBtn" style="margin-left:1.5rem; background:#3468c0; color:#fff; border:none; border-radius:6px; padding:0.6rem 1.5rem; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(52,104,192,0.10); transition:background 0.2s;">Accept cookies</button>
+        </div>
+        <script>
+          // Mostrar el banner solo si no se ha aceptado
+          if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookie-banner').style.display = 'block';
+          }
+          document.getElementById('acceptCookiesBtn').onclick = function() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
+          };
+        </script>
+        <!-- Dynamic Header Container -->
+        <div id="header-container">
+            <!-- Header will be dynamically inserted here -->
+        </div>
+    
+        <!-- Main Content -->
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section" id="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">SWAPP-IT</h1>
+                    <p class="hero-subtitle">Save money and help the environment!</p>
+                    <div class="hero-buttons">
+                        <a href="/public/pages/auth/register.html" class="btn btn-primary-large">
+                            <i class="fas fa-rocket me-2"></i>Get Started
+                        </a>
+                        <a href="/public/pages/auth/login.html" class="btn btn-secondary-large">
+                            <i class="fas fa-sign-in-alt me-2"></i>Log In
+                        </a>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- About Section -->
+            <section class="about-section" id="about">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="about-content">
+                                <span class="about-badge">About Us</span>
+                                <h2 class="about-title">Transforming How Students Exchange Supplies</h2>
+                                <p class="about-description">
+                                    SWAPP-IT is revolutionizing the way students and businesses handle educational resources. Our platform creates a sustainable ecosystem where unused supplies find new homes, making education more accessible and environmentally friendly.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="about-image-container">
+                                <img src="/public/assets/fotos grupales/Fondo.jpg" alt="SWAPP-IT Team" class="img-fluid" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Mission & Values Section -->
+            <section class="about-mission-values">
+                <div class="mission-card">
+                    <span class="badge">Our Mission</span>
+                    <h2>Making Education Accessible and Sustainable</h2>
+                    <p class="lead">SWAPP-IT was born from a simple observation: students spend hundreds of dollars on supplies they barely use, while others struggled to afford basic educational materials.</p>
+                    <p class="lead">We collaborate with schools and local communities to make exchanges simple, safe, and reliable. By encouraging reuse and responsible consumption, we help students reduce costs while building a culture of sustainability.</p>
+                    <ul class="feature-list-new">
+                        <li><i class="fas fa-check-circle"></i>Reduce waste</li>
+                        <li><i class="fas fa-check-circle"></i>Save money</li>
+                        <li><i class="fas fa-check-circle"></i>Build community</li>
+                        <li><i class="fas fa-check-circle"></i>Support education</li>
+                    </ul>
+                </div>
+                <div class="values-cards">
+                    <div class="value-card-new">
+                        <div class="value-icon-new"><i class="fas fa-leaf"></i></div>
+                        <h4>Sustainability</h4>
+                        <p>We're committed to reducing waste and promoting eco-friendly practices in education. Every exchange on our platform helps reduce the environmental impact of school supplies.</p>
+                    </div>
+                    <div class="value-card-new">
+                        <div class="value-icon-new"><i class="fas fa-users"></i></div>
+                        <h4>Community</h4>
+                        <p>We believe in the power of community. Our platform connects students, fosters relationships, and creates a supportive network of learners helping learners.</p>
+                    </div>
+                    <div class="value-card-new">
+                        <div class="value-icon-new"><i class="fas fa-graduation-cap"></i></div>
+                        <h4>Accessibility</h4>
+                        <p>Education should be accessible to everyone. We work to break down financial barriers and ensure all students have access to the supplies they need to succeed.</p>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="container">
+                    <h2 class="section-title">SWAPP-IT YOUR BEST CHOICE!</h2>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <h3 class="feature-title">Easy Exchange</h3>
+                                <p class="feature-description">Quickly list your unused supplies and find what you need from other students in your area.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <h3 class="feature-title">Save Money</h3>
+                                <p class="feature-description">Get the supplies you need at a fraction of retail prices. Perfect for budget-conscious students.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h3 class="feature-title">Eco-Friendly</h3>
+                                <p class="feature-description">Reduce waste by giving school supplies a second life. Join our sustainable community.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+    
+            <!-- Services Section -->
+            <section class="services-section" id="services">
+                <div class="container">
+                    <h2 class="services-title">Connecting Students & Businesses</h2>
+                    <p class="services-subtitle">Discover our innovative marketplace solutions for both students and educational supply businesses</p>
+                    
+                    <div class="row">
+                        <!-- Student Services -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <h3 class="service-title">Student Exchange</h3>
+                                <p class="service-description">List and exchange your unused school supplies with other students in your area. Save money while helping others.</p>
+                            </div>
+                        </div>
+    
+                        <!-- Verified Sellers -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <h3 class="service-title">Business Portal</h3>
+                                <p class="service-description">Special platform for educational supply stores to sell excess inventory at competitive prices.</p>
+                            </div>
+                        </div>
+    
+                        <!-- Secure Transactions -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h3 class="service-title">Secure Trading</h3>
+                                <p class="service-description">Safe and secure transaction system with buyer protection and seller verification.</p>
+                            </div>
+                        </div>
+    
+                        <!-- Smart Matching -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="service-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-magic"></i>
+                                </div>
+                                <h3 class="service-title">Smart Matching</h3>
+                                <p class="service-description">Intelligent system that connects you with the right buyers or sellers based on your needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Business Call to Action Section -->
+            <section class="business-cta-section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="business-cta-content">
+                                <span class="cta-badge">For Businesses</span>
+                                <h2 class="cta-title">Expand Your Reach in the Educational Market</h2>
+                                <p class="cta-description">
+                                    Join SWAPP-IT as a verified business partner and connect with thousands of students actively seeking school supplies. Our platform offers a unique opportunity to showcase your products to a dedicated educational community.
+                                </p>
+                                <div class="cta-features">
+                                    <div class="feature">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Access to Growing Student Market</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-store"></i>
+                                        <span>Dedicated Business Dashboard</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <span>Competitive Commission Rates</span>
+                                    </div>
+                                </div>
+                                <div class="cta-buttons">
+                                    <a href="/public/pages/auth/register.html?role=business" class="btn btn-primary-large">
+                                        <i class="fas fa-building me-2"></i>Register as Business
+                                    </a>
+                                    <a href="/public/pages/business/business.html" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center text-center">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="business-cta-image">
+                                <img src="/public/assets/logos/businesslogin.jpeg" alt="Business Office Environment" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <!-- Swappit Zone Section -->
+            <section class="swappit-zone-section" id="swappit-zone">
+                        <div class="swappit-zone-bg">
+                <!-- Imagen de fondo solo para decoración, controlada por CSS -->
+                
+                <!-- Zonas interactivas de productos - ELIMINADAS -->
+            </div>
+                <div class="container swappit-zone-content">
+                    <div class="row justify-content-center">
+                        <!-- Single Column - All Content Vertically Aligned -->
+                        <div class="col-lg-10 col-xl-8">
+                            <div class="zone-vertical-layout">
+                                <!-- Title and Description -->
+                                <div class="zone-text-content">
+                                    <h2 class="section-title">Swapp-it Zone</h2>
+                                    <p class="section-subtitle">A dedicated space designed to foster sustainable student exchanges and build strong, inclusive communities through meaningful cross-cultural connections and shared learning experiences</p>
+                                </div>
+                                
+                                <!-- Benefit Cards - ELIMINADOS -->
+                                
+                                <!-- Additional Information Section -->
+                                <div class="zone-additional-info">
+                                    <div class="quick-tips">
+                                        <div class="quick-tips-title-container">
+                                            <h5 class="quick-tips-title">
+                                                <i class="fas fa-lightbulb"></i> Steps to use the Swapp-it Zone
+                                            </h5>
+                                            <a href="/public/pages/marketplace/marketplace.html" class="quick-tips-marketplace-btn">
+                                                <i class="fas fa-store"></i>
+                                                Go to Marketplace
+                                            </a>
+                                        </div>
+                                        <ul>
+                                            <li>Bring your supplies in good condition</li>
+                                            <li>Fill out the form with your name, shift and grade</li>
+                                            <li>Decide what to do: trade, buy, sell or donate</li>
+                                            <li>Place the item in the corresponding area</li>
+                                            <li>Explore what others have brought, trade, and mark it on the label</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Popular Categories section - ELIMINADA -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CTA Section -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="zone-cta" id="zoneCtaBox">
+                                <button class="cta-close-btn" id="ctaCloseBtn" aria-label="Close">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <h3>Ready to Join the Swapp-it Zone?</h3>
+                                <p>Start your sustainable journey today and become part of our growing community!</p>
+                                <div class="cta-buttons">
+                                    <a href="/public/pages/auth/register.html" class="btn btn-primary-large">
+                                        <i class="fas fa-rocket me-2"></i>Join Now
+                                    </a>
+                                    <a href="/public/pages/marketplace.html" class="btn btn-outline-primary-large">
+                                        <i class="fas fa-search me-2"></i>Explore Zone
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    
+        <!-- Footer Component -->
+        <app-footer></app-footer>
+    
+        <!-- JavaScript Dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+        <!-- Custom JavaScript -->
+        <script src="/public/js/main.js" type="module"></script>
+    
+        <!-- Web Components -->
+        <script src="/public/components/cart-component.js"></script>
+        <script src="/public/components/filters-sidebar-component.js"></script>
+        <script src="/public/components/header-component.js"></script>
+        <script src="/public/components/header-auth-component.js"></script>
+        <script src="/public/components/footer-component.js"></script>
+    
+        <!-- Global Header Manager -->
+        <script src="/public/js/global-header-manager.js"></script>
+    
+        <!-- Deploy Cart Check (Remove in production) -->
+        <!-- Removed debug script: js/deploy-cart-check.js -->
+    
+        <!-- Scripts -->
+        <script src="/public/js/config.js" type="module"></script>
+        <script src="//code.tidio.co/oboslkopbjpary6klf6yadlh2aktas2g.js" async></script>
+    </body>
+    </html>

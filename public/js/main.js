@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // CTA Box close functionality
     initCtaCloseFunctionality();
 
-    // Simple background effect for Swapp Zone image
-    initSimpleBackgroundEffect();
+    // 360° drag functionality for Swapp Zone image
+    init360DragFunctionality();
 
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-link');
@@ -251,103 +251,137 @@ function initCtaCloseFunctionality() {
     };
 }
 
-// Función para inicializar el efecto de fondo con parallax
-function initSimpleBackgroundEffect() {
+// Función para inicializar la funcionalidad de arrastre 360°
+function init360DragFunctionality() {
     const zoneSection = document.querySelector('.swappit-zone-section');
-    
-    if (!zoneSection) {
+    const zoneBg = document.querySelector('.swappit-zone-bg');
+    if (!zoneSection || !zoneBg) {
         console.log('❌ No se encontró la sección Swapp Zone');
         return;
     }
 
-    console.log('✅ Inicializando efecto de fondo con parallax');
-    console.log('📍 Sección encontrada:', zoneSection);
-    console.log('🎨 Estilos del fondo:', window.getComputedStyle(zoneSection).backgroundImage);
+    console.log('✅ Inicializando funcionalidad de arrastre 360°');
     
-    // Verificar que la imagen se está cargando
-    const bgImage = window.getComputedStyle(zoneSection).backgroundImage;
-    if (bgImage && bgImage !== 'none') {
-        console.log('✅ Imagen de fondo detectada:', bgImage);
-    } else {
-        console.log('❌ No se detectó imagen de fondo');
-    }
-    
-    // Detectar si es móvil o tablet
-    const isMobile = window.innerWidth <= 991;
-    console.log(`📱 Ancho de ventana: ${window.innerWidth}px, es móvil: ${isMobile}`);
-    
-    if (isMobile) {
-        console.log('📱 Detectado dispositivo móvil/tablet - Activando parallax manual');
-        zoneSection.style.transform = ''; // Limpiar transform inicial
-        zoneSection.classList.add('mobile-parallax');
-        console.log('🎨 Clase mobile-parallax agregada:', zoneSection.classList.contains('mobile-parallax'));
-        console.log('🎨 Estilos aplicados:', {
-            backgroundAttachment: window.getComputedStyle(zoneSection).backgroundAttachment,
-            backgroundPosition: window.getComputedStyle(zoneSection).backgroundPosition,
-            transform: window.getComputedStyle(zoneSection).transform
-        });
-        initMobileParallax(zoneSection);
-    } else {
-        console.log('🖥️ Detectado dispositivo desktop - Usando parallax CSS');
-        zoneSection.classList.remove('mobile-parallax');
-    }
-}
+    // Inicializar zonas de productos
+    initProductZones();
 
-// Función para parallax manual en móviles
-function initMobileParallax(zoneSection) {
-    console.log('🚀 Iniciando parallax móvil para:', zoneSection);
-    
-    function updateParallax() {
-        const scrolled = window.pageYOffset;
-        const sectionTop = zoneSection.offsetTop;
-        const sectionHeight = zoneSection.offsetHeight;
-        const windowHeight = window.innerHeight;
-        
-        // Calcular si la sección está visible
-        const sectionBottom = sectionTop + sectionHeight;
-        const isVisible = scrolled + windowHeight > sectionTop && scrolled < sectionBottom;
-        
-        if (isVisible) {
-            // Parallax solo en el background, no en la sección completa
-            const sectionStart = sectionTop - windowHeight;
-            const sectionEnd = sectionTop + sectionHeight;
-            const totalSectionHeight = sectionEnd - sectionStart;
-            
-            // Calcular el progreso del scroll a través de la sección
-            const scrollProgress = Math.max(0, Math.min(1, (scrolled - sectionStart) / totalSectionHeight));
-            
-            // Solo mover el background, no la sección completa
-            const bgYPos = 33 + (scrollProgress * 20); // Mover background suavemente
-            zoneSection.style.backgroundPosition = `center ${bgYPos}%`;
-            
-            console.log(`📱 Parallax móvil: scroll=${scrolled}, progress=${scrollProgress.toFixed(2)}, bgPos=${bgYPos.toFixed(1)}%`);
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let backgroundX = 50; // Porcentaje inicial
+    let backgroundY = 50; // Porcentaje inicial
+
+    // Event listeners para mouse
+    zoneSection.addEventListener('mousedown', startDrag);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', endDrag);
+
+    // Event listeners para touch (móviles)
+    zoneSection.addEventListener('touchstart', startDragTouch);
+    document.addEventListener('touchmove', dragTouch);
+    document.addEventListener('touchend', endDrag);
+
+    function startDrag(e) {
+        // Solo arrastrar si no se está haciendo clic en un elemento interactivo
+        if (e.target.closest('a, button, input, select, textarea, .product-zone, .swappit-zone-content')) {
+            console.log('🚫 Arrastre bloqueado por elemento interactivo');
+            return;
         }
-    }
-    
-    // Event listener para scroll
-    window.addEventListener('scroll', updateParallax);
-    
-    // Actualizar posición inicial
-    updateParallax();
-    
-    // Recalcular en resize
-    window.addEventListener('resize', function() {
-        const isMobile = window.innerWidth <= 991;
-        const hasMobileClass = zoneSection.classList.contains('mobile-parallax');
         
-        if (!isMobile && hasMobileClass) {
-            // Si cambió a desktop, restaurar parallax CSS
-            zoneSection.style.backgroundPosition = '';
-            zoneSection.style.transform = '';
-            zoneSection.classList.remove('mobile-parallax');
-            window.removeEventListener('scroll', updateParallax);
-            console.log('🖥️ Cambió a desktop - Restaurando parallax CSS');
-        } else if (isMobile && !hasMobileClass) {
-            // Si cambió a móvil, activar parallax manual
-            zoneSection.style.transform = ''; // Limpiar transform inicial
-            zoneSection.classList.add('mobile-parallax');
-            initMobileParallax(zoneSection);
-            console.log('📱 Cambió a móvil - Activando parallax manual');
+        console.log('🖱️ Iniciando arrastre');
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        zoneSection.classList.add('dragging');
+        e.preventDefault();
+    }
+
+    function startDragTouch(e) {
+        // Solo arrastrar si no se está tocando un elemento interactivo
+        if (e.target.closest('a, button, input, select, textarea, .product-zone, .swappit-zone-content')) return;
+        
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        zoneSection.classList.add('dragging');
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        
+        currentX = e.clientX;
+        currentY = e.clientY;
+        updateBackgroundPosition();
+    }
+
+    function dragTouch(e) {
+        if (!isDragging) return;
+        
+        currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
+        updateBackgroundPosition();
+    }
+
+    function endDrag() {
+        isDragging = false;
+        zoneSection.classList.remove('dragging');
+    }
+
+    function updateBackgroundPosition() {
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+        
+        // Calcular el factor de movimiento (ajustable)
+        const sensitivity = 0.5;
+        
+        // Actualizar posición del background
+        backgroundX = Math.max(0, Math.min(100, 50 + (deltaX * sensitivity)));
+        backgroundY = Math.max(0, Math.min(100, 50 + (deltaY * sensitivity)));
+        
+        // Aplicar la nueva posición
+        zoneBg.style.backgroundPosition = `${backgroundX}% ${backgroundY}%`;
+        
+        console.log(`📍 Posición: ${backgroundX}%, ${backgroundY}%`);
+    }
+
+    // Reset al hacer doble clic
+    zoneSection.addEventListener('dblclick', function(e) {
+        // Solo reset si no se está haciendo doble clic en un elemento interactivo
+        if (e.target.closest('a, button, input, select, textarea, .product-zone, .swappit-zone-content')) return;
+        
+        backgroundX = 50;
+        backgroundY = 50;
+        zoneBg.style.backgroundPosition = 'center center';
+        zoneBg.style.backgroundSize = '120% 120%';
+    });
+
+    // Efecto de zoom al hacer scroll
+    zoneSection.addEventListener('wheel', function(e) {
+        // Solo zoom si no se está haciendo scroll en un elemento interactivo
+        if (e.target.closest('a, button, input, select, textarea, .product-zone, .swappit-zone-content')) return;
+        
+        e.preventDefault();
+        
+        const currentSize = parseInt(zoneBg.style.backgroundSize) || 120;
+        const delta = e.deltaY > 0 ? -5 : 5;
+        const newSize = Math.max(100, Math.min(200, currentSize + delta));
+        
+        zoneBg.style.backgroundSize = `${newSize}% ${newSize}%`;
+    });
+
+    // Indicador visual de que se puede arrastrar
+    zoneSection.addEventListener('mouseenter', function() {
+        if (!isDragging) {
+            zoneBg.style.transform = 'scale(1.02)';
+        }
+    });
+
+    zoneSection.addEventListener('mouseleave', function() {
+        if (!isDragging) {
+            zoneBg.style.transform = 'scale(1)';
         }
     });
 }
