@@ -86,6 +86,7 @@ body {
     background: var(--gradient-primary);
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(255, 164, 36, 0.2);
+    padding-top: 6rem;
 }
 
 /* Removed all background overlays to eliminate blue tint */
@@ -101,7 +102,7 @@ body {
     width: 100%;
     max-width: 100%;
     margin: 0 auto;
-    padding: 2rem 1rem 1rem 4rem;
+    padding: 3rem 1rem 2rem 4rem;
 
 }
 
