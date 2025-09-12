@@ -355,26 +355,42 @@ class CartComponent extends HTMLElement {
         console.log('Cart items rendered successfully');
     }
 
-    // Show notification
+    // Show notification - UNIFIED NOTIFICATION SYSTEM
     showNotification(message) {
+        // Remove any existing notifications first
+        const existingNotifications = document.querySelectorAll('.cart-notification, .notification-toast, .alert');
+        existingNotifications.forEach(notif => {
+            if (notif.parentNode) {
+                notif.remove();
+            }
+        });
+
         // Create notification element
         const notification = document.createElement('div');
         notification.className = 'cart-notification';
-        notification.textContent = message;
+        notification.innerHTML = `
+            <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2rem; margin-right: 0.5rem;"></i>
+            <span>${message}</span>
+        `;
         notification.style.cssText = `
             position: fixed;
             top: 100px;
             right: 20px;
-            background: #3468c0;
-            color: white;
+            background: white;
+            color: #1e293b;
             padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(52, 104, 192, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid #10b981;
             z-index: 10000;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            align-items: center;
+            min-width: 300px;
+            max-width: 400px;
         `;
         
         document.body.appendChild(notification);
@@ -384,13 +400,15 @@ class CartComponent extends HTMLElement {
             notification.style.transform = 'translateX(0)';
         }, 100);
         
-        // Remove after 3 seconds
+        // Remove after 4 seconds
         setTimeout(() => {
-            notification.style.transform = 'translateX(100%)';
+            notification.style.transform = 'translateX(400px)';
             setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 400);
+        }, 4000);
     }
 
     render() {

@@ -630,8 +630,7 @@ class MarketplaceLogged {
                 console.log('SwappitCart found, adding product to cart');
                 window.SwappitCart.addToCart(product);
                 
-                // Show success notification
-                this.showNotification(`"${product.title}" added to cart successfully!`, 'success');
+                // Notification is handled by cart component
                 
                 // Update cart counter in header
                 this.updateCartCounter();
@@ -804,40 +803,7 @@ class MarketplaceLogged {
         }
     }
 
-    // Show notification
-    showNotification(message, type = 'success') {
-        const toast = document.getElementById('notificationToast');
-        const toastMessage = toast.querySelector('.toast-message');
-        const toastIcon = toast.querySelector('.toast-content i');
-        
-        if (toast && toastMessage) {
-            // Set message
-            toastMessage.textContent = message;
-            
-            // Set icon based on type
-            const icons = {
-                success: 'fas fa-check-circle',
-                error: 'fas fa-exclamation-circle',
-                info: 'fas fa-info-circle',
-                warning: 'fas fa-exclamation-triangle'
-            };
-            
-            if (toastIcon) {
-                toastIcon.className = icons[type] || icons.success;
-            }
-            
-            // Set notification type class
-            toast.className = `notification-toast ${type}`;
-            
-            // Show notification
-            toast.classList.add('show');
-            
-            // Auto hide after 4 seconds
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
-        }
-    }
+    // Notification functionality removed - handled by cart component
 
     // Update product count
     updateProductCount() {

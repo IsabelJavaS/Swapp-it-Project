@@ -1047,10 +1047,8 @@ class HeaderComponent extends HTMLElement {
                         </a>
                         <a href="${this.getAboutPath()}" class="mobile-menu-item">
                             <i class="fas fa-info-circle"></i>
-                            
-                        
-                    
-,                        </a>
+                            About Us
+                        </a>
                         <a href="${this.getContactPath()}" class="mobile-menu-item">
                             <i class="fas fa-envelope"></i>
                             Contact
