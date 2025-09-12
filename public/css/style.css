@@ -1401,24 +1401,24 @@ main {
 }
 
 /* =========================================
-   Swappit Zone Section Styles
+    Swappit Zone Section Styles
    ========================================= */
 .swappit-zone-section {
-  position: relative;
-  padding: 80px 0;
-  background: none;
-  overflow: hidden;
-  min-height: 450px;
-  cursor: grab;
-  user-select: none;
+    position: relative;
+    padding: 80px 0;
+    background: none;
+    overflow: hidden;
+    min-height: 450px;
+    cursor: grab;
+    user-select: none;
 }
 
 .swappit-zone-section:active {
-  cursor: grabbing;
+    cursor: grabbing;
 }
 
 .swappit-zone-section.dragging {
-  cursor: grabbing;
+    cursor: grabbing;
 }
 .swappit-zone-bg {
     position: absolute;
@@ -1429,23 +1429,22 @@ main {
     height: 100%;
     opacity: 1;
     transition: transform 0.1s ease-out;
-    background-size: 100%;
     pointer-events: auto;
     filter: brightness(0.6) contrast(1.1) saturate(1.05);
 }
 
 /* Overlay oscuro para mejorar el contraste del texto */
 .swappit-zone-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%);
-  z-index: 2;
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 /* Indicador visual de que se puede arrastrar */
-.swappit-zone-section::before {
+/* .swappit-zone-section::before {
   content: "🖱️ Arrastra para explorar";
   position: absolute;
   top: 20px;
@@ -1462,22 +1461,22 @@ main {
   pointer-events: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.2);
-}
+} */
 
-.swappit-zone-section:hover::before {
+/* .swappit-zone-section:hover::before {
   opacity: 1;
   transform: translateY(-2px);
-}
+} */
 
 /* Indicador de arrastre activo */
-.swappit-zone-section.dragging::before {
+/* .swappit-zone-section.dragging::before {
   content: "🔄 Explorando...";
   background: rgba(59, 130, 246, 0.9);
   transform: translateY(-2px) scale(1.05);
-}
+} */
 
 /* Tooltip de información del producto - ELIMINADOS */
-.product-tooltip {
+/* .product-tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.9);
   color: white;
@@ -1507,85 +1506,86 @@ main {
   transform: translateX(-50%);
   border: 6px solid transparent;
   border-top-color: rgba(0, 0, 0, 0.9);
-}
+} */
+
 .swappit-zone-content {
-  position: relative;
-  z-index: 2;
-  padding: 0;
-  pointer-events: none;
+    position: relative;
+    z-index: 2;
+    padding: 0;
+    pointer-events: none;
 }
 
 .swappit-zone-content * {
-  pointer-events: auto;
+    pointer-events: auto;
 }
 
 /* Asegurar que el contenido no interfiera con el arrastre */
 .swappit-zone-content .btn,
 .swappit-zone-content a,
 .swappit-zone-content button {
-  pointer-events: auto;
+    pointer-events: auto;
 }
 .zone-text-content {
-  padding: 2rem 0;
-  color: #ffffff;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    padding: 2rem 0;
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .zone-text-content p {
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .section-title {
-  color: #3468c0;
-  font-size: 4.5rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(52, 104, 192, 0.6);
-  margin-bottom: 1.5rem;
-  animation: swappZoneTitleIn 1.1s 0.2s cubic-bezier(.22,1.12,.58,1) both;
+    color: var(--swappit-orange);
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(52, 104, 192, 0.6);
+    margin-bottom: 1.5rem;
+    animation: swappZoneTitleIn 1.1s 0.2s cubic-bezier(.22,1.12,.58,1) both;
 }
 
 .section-subtitle {
-  color: #ffffff;
-  font-size: 1.8rem;
-  margin-bottom: 0;
-  animation: swappZoneSubtitleIn 1.1s 0.5s cubic-bezier(.22,1.12,.58,1) both;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(52, 104, 192, 0.4);
-  line-height: 1.4;
-  font-weight: 500;
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin-bottom: 0;
+    animation: swappZoneSubtitleIn 1.1s 0.5s cubic-bezier(.22,1.12,.58,1) both;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(52, 104, 192, 0.4);
+    line-height: 1.4;
+    font-weight: 500;
 }
 
 .zone-cards-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  padding: 3rem 0;
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem 0;
+    flex-wrap: wrap;
 }
 
 .zone-cards-container-horizontal {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 @keyframes swappZoneTitleIn {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 @keyframes swappZoneSubtitleIn {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 .swappit-benefit-card {
   background: linear-gradient(135deg, #3468c0 0%, #2a5aa0 50%, #1e3a8a 100%);
