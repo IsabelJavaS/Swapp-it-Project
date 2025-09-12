@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // CTA Box close functionality
     initCtaCloseFunctionality();
 
-    // 360° drag functionality for Swapp Zone image
-    init360DragFunctionality();
+    // 360° drag functionality for Swapp Zone image - DISABLED
+    // init360DragFunctionality();
 
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-link');

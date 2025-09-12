@@ -303,7 +303,7 @@ body {
 /* } */
 
 /* =========================================
-   Hero Section Styles
+    Hero Section Styles
    ========================================= */
 .hero-section {
     background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
@@ -439,15 +439,6 @@ body {
     font-weight: 700;
     font-size: 2.25rem;
     color: #000000 !important;
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.zone-section-title{
-    font-family: var(--font-primary);
-    font-weight: 700;
-    font-size: 2.25rem;
-    color: #fff !important;
     text-align: center;
     margin-bottom: 3rem;
 }
@@ -1077,7 +1068,7 @@ textarea.form-control {
         padding: 4rem 0;
     }
 
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 2rem;
     }
 
@@ -1106,7 +1097,7 @@ textarea.form-control {
 }
 
 @media (max-width: 767px) {
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 1.75rem;
     }
 
@@ -1429,14 +1420,16 @@ main {
     cursor: grabbing;
 }
 .swappit-zone-bg {
+    background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
+    background-size: cover !important; /* Mantener tamaño original */
     position: absolute;
     inset: 0;
-    background: url('/assets/logos/SwappZone.jpg') center center/cover no-repeat;
     z-index: 1;
     width: 100%;
     height: 100%;
     opacity: 1;
     filter: brightness(0.6) contrast(1.1) saturate(1.05);
+    transform: none !important; /* Eliminar cualquier transformación */
 }
 
 /* Overlay oscuro para mejorar el contraste del texto */
@@ -2117,7 +2110,7 @@ main {
         padding: 1.5rem 0;
     }
     
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 2.2rem;
     }
     
@@ -2136,7 +2129,7 @@ main {
         padding: 1rem 0;
     }
     
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 1.8rem;
     }
     
@@ -3642,7 +3635,7 @@ main {
         font-size: 2rem;
     }
     
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 2.2rem;
     }
     
@@ -3666,7 +3659,7 @@ main {
         min-height: 160px;
     }
     
-    .section-title, .zone-section-title {
+    .section-title {
         font-size: 1.8rem;
     }
     
@@ -3707,7 +3700,7 @@ main {
 
 /* Responsive adjustments for larger text */
 @media (max-width: 1200px) {
-  .section-title, .zone-section-title {
+  .section-title{
     font-size: 4rem;
   }
   
@@ -3717,7 +3710,7 @@ main {
 }
 
 @media (max-width: 768px) {
-  .section-title, .zone-section-title{
+  .section-title{
     font-size: 3.2rem;
     letter-spacing: 1px;
   }
@@ -3728,7 +3721,7 @@ main {
 }
 
 @media (max-width: 480px) {
-  .section-title, .zone-section-title {
+  .section-title {
     font-size: 2.8rem;
   }
   
