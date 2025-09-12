@@ -444,6 +444,15 @@ body {
     margin-bottom: 3rem;
 }
 
+.zone-section-title{
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 2.25rem;
+    color: #fff !important;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
 .feature-card {
     background: white;
     border-radius: 1rem;
@@ -1069,7 +1078,7 @@ textarea.form-control {
         padding: 4rem 0;
     }
 
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 2rem;
     }
 
@@ -1098,7 +1107,7 @@ textarea.form-control {
 }
 
 @media (max-width: 767px) {
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 1.75rem;
     }
 
@@ -2111,7 +2120,7 @@ main {
         padding: 1.5rem 0;
     }
     
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 2.2rem;
     }
     
@@ -2130,7 +2139,7 @@ main {
         padding: 1rem 0;
     }
     
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 1.8rem;
     }
     
@@ -3636,7 +3645,7 @@ main {
         font-size: 2rem;
     }
     
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 2.2rem;
     }
     
@@ -3660,7 +3669,7 @@ main {
         min-height: 160px;
     }
     
-    .section-title {
+    .section-title, .zone-section-title {
         font-size: 1.8rem;
     }
     
@@ -3701,7 +3710,7 @@ main {
 
 /* Responsive adjustments for larger text */
 @media (max-width: 1200px) {
-  .section-title {
+  .section-title, .zone-section-title {
     font-size: 4rem;
   }
   
@@ -3711,7 +3720,7 @@ main {
 }
 
 @media (max-width: 768px) {
-  .section-title {
+  .section-title, .zone-section-title{
     font-size: 3.2rem;
     letter-spacing: 1px;
   }
@@ -3722,7 +3731,7 @@ main {
 }
 
 @media (max-width: 480px) {
-  .section-title {
+  .section-title, .zone-section-title {
     font-size: 2.8rem;
   }
   
