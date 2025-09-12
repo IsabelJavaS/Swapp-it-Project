@@ -345,6 +345,7 @@ body {
    ========================================= */
 .hero-section {
     background: url('/assets/logos/Banner.jpg') no-repeat center center;
+    background-size: cover;
     background-color: rgba(0, 0, 0, 0.5);
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -560,21 +561,30 @@ body {
     }
 }
 
-/* Orientación landscape en móviles - evitar estiramiento */
+/* Orientación landscape en móviles - mantener parallax */
 @media (max-width: 768px) and (orientation: landscape) {
     .hero-section {
+        background: url('/assets/logos/Banner.jpg') no-repeat center center;
         background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en landscape móvil */
         background-position: center center;
         min-height: 100vh;
+    }
+    
+    .swappit-zone-bg {
+        background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en landscape móvil para Swappit Zone */
     }
 }
 
 @media (max-width: 768px) {
     .hero-section {
-        padding: 0 1rem;
-        background-attachment: fixed; /* Imagen fija como fondo */
+        background: url('/assets/logos/Banner.jpg') no-repeat center center;
         background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en móviles */
         background-position: center center;
+        padding: 0 1rem;
     }
     
     .hero-content {
@@ -611,9 +621,11 @@ body {
 
 @media (max-width: 480px) {
     .hero-section {
-        padding: 0 0.5rem;
+        background: url('/assets/logos/Banner.jpg') no-repeat center center;
         background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en móviles pequeños */
         background-position: center center;
+        padding: 0 0.5rem;
         min-height: calc(100vh - 60px); /* Altura ajustada para móviles */
     }
     
@@ -1485,6 +1497,7 @@ main {
 .swappit-zone-bg {
     background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
     background-size: cover !important; /* Mantener tamaño original */
+    background-attachment: fixed; /* Efecto parallax */
     position: absolute;
     inset: 0;
     z-index: 1;
@@ -2095,6 +2108,12 @@ main {
         min-height: 380px;
     }
     
+    .swappit-zone-bg {
+        background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en tablets */
+    }
+    
     .zone-cards-container {
         align-items: center;
         margin-top: 1.5rem;
@@ -2137,6 +2156,12 @@ main {
         min-height: 320px;
     }
     
+    .swappit-zone-bg {
+        background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en móviles medianos */
+    }
+    
     .zone-text-content {
         padding: 1.5rem 0;
     }
@@ -2154,6 +2179,12 @@ main {
     .swappit-zone-section {
         padding: 30px 0;
         min-height: 280px;
+    }
+    
+    .swappit-zone-bg {
+        background: url('/assets/logos/SwappZone.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed; /* Mantener parallax en móviles pequeños */
     }
     
     .zone-text-content {

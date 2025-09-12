@@ -562,20 +562,14 @@ class FooterComponent extends HTMLElement {
                                     SWAPP-IT is revolutionizing how students access educational resources. We create a sustainable ecosystem where unused supplies find new homes.
                                 </p>
                                 <div class="footer-social">
-                                    <a href="#" class="social-link" title="Facebook">
+                                    <a href="https://www.facebook.com/_swappit" class="social-link" title="Facebook" target="_blank" rel="noopener">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
-                                    <a href="#" class="social-link" title="Twitter">
+                                    <a href="https://x.com/_swappit" class="social-link" title="X (Twitter)" target="_blank" rel="noopener">
                                         <i class="fab fa-twitter"></i>
                                     </a>
-                                    <a href="#" class="social-link" title="LinkedIn">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                    <a href="#" class="social-link" title="Instagram">
+                                    <a href="https://www.instagram.com/_swappit" class="social-link" title="Instagram" target="_blank" rel="noopener">
                                         <i class="fab fa-instagram"></i>
-                                    </a>
-                                    <a href="#" class="social-link" title="YouTube">
-                                        <i class="fab fa-youtube"></i>
                                     </a>
                                 </div>
                             </div>
@@ -646,13 +640,12 @@ class FooterComponent extends HTMLElement {
     }
 
     attachEventListeners() {
-        // Social links
+        // Social links - permitir navegación normal
         const socialLinks = this.shadowRoot.querySelectorAll('.social-link');
         socialLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
+                // Permitir navegación normal a las redes sociales
                 console.log('Social link clicked:', link.title);
-                // Implementar lógica para redes sociales
             });
         });
 
